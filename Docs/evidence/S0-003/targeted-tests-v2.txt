@@ -1,0 +1,15 @@
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (16.1319ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (19.4613ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.6617ms)
+(node:5176) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+OSQUERY_LAB_FAST {"synthetic":true,"nativeLinux":false,"nativeOsquery":false,"hosts":3,"offlineMs":1076,"queued":6,"allDelivered":true}
+✔ three isolated lab sources -> authenticated HTTP ingest; disk retry/restart, idempotency, safe five-table projection (5971.1656ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6210.6294

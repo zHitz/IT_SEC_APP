@@ -1,0 +1,16 @@
+{
+  "sourceMode": "osqueryi",
+  "osqueryBinary": "/usr/bin/osqueryi",
+  "osqueryConfig": "collectors/osquery/osquery.deb.conf",
+  "ecosystem": "deb",
+  "endpoint": "https://inventory.example.test/api/v1/ingest/osquery",
+  "queueDirectory": "var/osquery/queue",
+  "maxQueueBytes": 67108864,
+  "maxBatchRows": 200,
+  "collectIntervalMs": 60000,
+  "sendIntervalMs": 15000,
+  "queryTimeoutMs": 15000,
+  "timeoutMs": 15000,
+  "backoffMs": 1000,
+  "attempts": 3
+}

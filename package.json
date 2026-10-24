@@ -19,7 +19,9 @@
     "db:inspect": "node --env-file=.env backend/db/migrate.mjs inspect",
     "db:verify": "node scripts/verify-db.mjs",
     "cloudflare:verify": "node scripts/verify-cloudflare.mjs",
-    "start:cloudflare": "node --env-file=.env collectors/cloudflare/main.mjs"
+    "start:cloudflare": "node --env-file=.env collectors/cloudflare/main.mjs",
+    "osquery:verify": "node scripts/verify-osquery.mjs",
+    "start:osquery": "node --env-file=.env collectors/osquery/main.mjs"
   },
   "dependencies": {
     "pg": "8.23.1"

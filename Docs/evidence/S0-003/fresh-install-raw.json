@@ -1,0 +1,64 @@
+{
+  "synthetic": true,
+  "source": "Actual raw batches from the executed fourth-source fresh-install lab",
+  "nativeLinux": false,
+  "nativeOsquery": false,
+  "batches": [
+    {
+      "batch_id": "89191576-b71c-458e-b6b1-cae9325056b7",
+      "collected_at": "2026-10-24T18:03:28.651Z",
+      "host": {
+        "hostname": "linux-simulator-4",
+        "host_uuid": "synthetic-host-4",
+        "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+        "os_version": "12.4"
+      },
+      "packages": [],
+      "listening_ports": [
+        {
+          "port": 8004,
+          "protocol": "tcp",
+          "bind_address": "192.0.2.4",
+          "pid": 104,
+          "process": "synthetic-web-4"
+        }
+      ],
+      "process_evidence": {
+        "non_listening_count": 1,
+        "records": [
+          {
+            "pid": 204,
+            "name": "synthetic-worker-4"
+          }
+        ]
+      }
+    },
+    {
+      "batch_id": "cb635595-c5f9-4285-a11d-d3469953d27a",
+      "collected_at": "2026-10-24T18:03:28.651Z",
+      "host": {
+        "hostname": "linux-simulator-4",
+        "host_uuid": "synthetic-host-4",
+        "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+        "os_version": "12.4"
+      },
+      "packages": [
+        {
+          "name": "synthetic-php-4",
+          "version": "8.4.0",
+          "ecosystem": "deb"
+        },
+        {
+          "name": "synthetic-web-4",
+          "version": "1.4.0",
+          "ecosystem": "deb"
+        }
+      ],
+      "listening_ports": [],
+      "process_evidence": {
+        "non_listening_count": 0,
+        "records": []
+      }
+    }
+  ]
+}

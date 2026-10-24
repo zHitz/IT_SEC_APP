@@ -78,3 +78,7 @@ Chỉ khi chủ động muốn xóa dữ liệu database **local của project n
 ## Ranh giới mở rộng
 
 S0-002 v2 was ACCEPTED by the Lead on 2026-10-24 at22:19; S0-003 and S0-004 were then opened separately. S0-004 now has a GET-only DNS ingestion worker with synthetic acceptance tests. Run `npm run cloudflare:verify`; see `collectors/cloudflare/README.md` for configuration, scope and evidence. This is a separate worker, with no DNS inventory UI or DNS mutation API. SSO/RBAC, CVE matching, search and discovery scanners remain outside this work. Future business APIs follow SRS §20 `/api/v1/`; do not change project scope implicitly.
+
+## Osquery ingest PoC (S0-003)
+
+The optional authenticated endpoint, SELECT-only collector, durable queue and isolated simulator lab are documented in `collectors/osquery/README.md` and `API.md`. `npm run osquery:verify` performs a real ten-minute queue/restart experiment using explicitly simulated Linux inventory sources; it is not evidence of native Linux/osquery deployment. See `INSTALL-LAB.md` for exactly five reproducible fresh simulator steps. Existing UI/UX is preserved.

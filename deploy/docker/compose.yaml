@@ -7,6 +7,11 @@ services:
       BACKEND_HOST: ${BACKEND_HOST:?Set BACKEND_HOST}
       BACKEND_PORT: ${BACKEND_PORT:?Set BACKEND_PORT}
       DATABASE_URL: ${DATABASE_URL:-}
+      OSQUERY_AGENT_TOKENS: ${OSQUERY_AGENT_TOKENS:-}
+      OSQUERY_RAW_DIRECTORY: ${OSQUERY_RAW_DIRECTORY:-var/osquery/raw}
+      OSQUERY_ENVIRONMENT: ${OSQUERY_ENVIRONMENT:-lab}
+    volumes:
+      - osquery-raw:/app/var/osquery
     ports:
       - "${BACKEND_PUBLISH_HOST:?Set BACKEND_PUBLISH_HOST}:${BACKEND_PUBLISH_PORT:?Set BACKEND_PUBLISH_PORT}:${BACKEND_PORT:?Set BACKEND_PORT}"
     healthcheck:
@@ -38,3 +43,4 @@ services:
       - database-data:/var/lib/postgresql/data
 volumes:
   database-data:
+  osquery-raw:
