@@ -1,0 +1,42 @@
+{
+  "task": "S0-004",
+  "version": "v7",
+  "tests": 39,
+  "lintModules": 60,
+  "build": "PASS",
+  "schema": "22+2/114FK unchanged",
+  "browser": {
+    "owner": "sample-12.test",
+    "provenance": true,
+    "dns": "A/198.51.100.25/false/300/Flagged",
+    "backSearch": "sample-",
+    "backPage": "2of3"
+  },
+  "actualProof": [
+    "DOMAIN_EXACT_V7_PROOF {\"synthetic\":true,\"engine\":\"PostgreSQL17.5WASM\",\"readOnlyTransaction\":true,\"owned\":32,\"trapExcluded\":true,\"pagination\":true,\"missing404\":true,\"invalid400\":true,\"getOnly\":true,\"schemaChanged\":false,\"cloudflareRequests\":0}",
+    "DOMAIN_DETAIL_V7_PROOF {\"synthetic\":true,\"actualHttpPostgres\":true,\"exactOwnerApi\":true,\"substringTrapExcluded\":true,\"records\":31,\"childPages\":2,\"provenance\":true,\"typeValueProxiedTtlTagsFlag\":true,\"backSearchFilterPage\":true,\"cloudflareRequests\":0}"
+  ],
+  "limits": [
+    "synthetic PostgreSQL17.5WASM not liveCloudflare/native",
+    "Domain standalone deep-link persistence not assigned",
+    "10001-count frontend metadata test is mocked count, not10001inserted rows"
+  ],
+  "sha256": {
+    "backend/src/inventory/exact-reader.mjs": "aa0a6ca5d730e7f88450265d5af73b59e5f6d4318223aae3db5b9774663daa71",
+    "backend/src/app.mjs": "816627630538db222a0ab48dc1bdd110c12a345ebbec439f4218d893bf30898b",
+    "backend/src/server.mjs": "fc1e642cc35b8ed99303197a930d5fdb714b159986866b0bb7b7f71ce3505737",
+    "backend/test/domain-exact.test.mjs": "2619e0a070d1f0496e9b39b06b3073cf565666f7e2b565ac100a60412e1ba1d4",
+    "frontend/server.mjs": "d2d7d35d9c77543ab26129f73bffba16b47957e358f094bebbb19f0bbd71f6b6",
+    "frontend/src/inventory-detail.mjs": "44968ab9d78a90ac6dbdbdca538e32322209672a3879f7d2b5120234a4168ce2",
+    "frontend/test/domain-detail.test.mjs": "5f761c6c1b7188a41eaa7750cced0857b7c0c27d070acd97a2aa7243210a5e3d",
+    "frontend/test/domain-proxy.test.mjs": "e959165d5d8116ec335a52117df063b21ebbaf76774d254a0f4475a1bf9b3a75",
+    "scripts/inventory-ui-lab.mjs": "f8cac2b68783d9eabf327d06a3c8576d90311bbb6735584d03d4f935e9f7fdd9",
+    "Docs/DOMAIN-INVENTORY-API.md": "604c5d9a7d79046b15960d8f3de40f74ffec5f3e33468ab0108e1a2d8a3ea3d3",
+    "Docs/DOMAIN-INVENTORY-UI.md": "0dec72e564404c6dbc259f7ece3aded9e8b524d9bae874da7a38dce91d8d9e66",
+    "Docs/evidence/S0-004/test-v7.txt": "afd5a06829790cfce21da5c9bc2c0b83da3bba923488409db7520648deb8c580",
+    "Docs/evidence/S0-004/lint-v7.txt": "08b77e9ab1dd8c85aa56f9db0944ebcb29da3b16ef6654921d290984baab95ae",
+    "Docs/evidence/S0-004/build-v7.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-004/exact-v7.png": "a0de72352d8177176da1d145bd9554ff094b79152b2dc1b9895271ed463930ef",
+    "Docs/evidence/S0-004/back-v7.png": "c9ee76b84a20606f85f557d36a8b5e88ebaa3dd07bb426d29f05d980137a90d4"
+  }
+}

@@ -1,4 +1,6 @@
-# Domain/DNS inventory page — S0-004 v5
+# Domain/DNS inventory page — S0-004
+
+Current V7 detail uses exact-owner API. The V6 candidate-search description below is historical and superseded.
 
 ## Local synthetic quick start
 
@@ -36,3 +38,12 @@ Click a Domain name on the Domains resource to open an in-page detail view in th
 Uses only the accepted v4/v5 GET list APIs, with no new backend contract/schema. Because DNS search is literal substring rather than exact equality, detail reads all bounded candidate pages for the selected fqdn (up to100pages x100candidates), then enforces row.domain===selected.fqdn before rendering/local25-rowpaging and exact-owner counts. For fqdn longer than200characters, existing API search uses the first200 as candidate prefix while full equality remains mandatory. Overlapping names such as api.sample-12.test cannot leak into sample-12.test detail. More than100candidate pages or any error yields explicit unavailable/limit state with no partial records; timeout8seconds and Retry/Back remain. No claimed support for unbounded inventory; narrow exact-owner API can be separately assigned later. Candidate snapshots can change between requests; no new cross-page transaction guarantee.
 
 Reproduce in explicit lab: search sample-, select10rows, Next, click sample-12.test. Verify sourcecloudflare/confidenceconfirmed/observationtimestamps, DNSA/198.51.100.25/proxiedfalse/TTL300/tags/Flagged; Back keeps sample- and page2. Apply Flagged, open sample-08.test and Back; filtertrue retained. Automated DOM+actual HTTP/PostgreSQL test additionally creates31records for one exact owner plus one overlapping-name trap; detail shows31/2childpages and excludes trap, then confirms Backsearch/filter/page. Above100candidatepages fails closed. No real Cloudflare request or osquery change.
+
+
+## V7 exact-owner detail
+
+Detail now re-reads GET /api/v1/inventory/domains/:id for authoritative current metadata, then GET /domains/:id/dns-records?page=N&page_size=25. One parent and one requested child page; no substring candidate collection or100-page candidate cap. Counts/page bounds are supplied by exact-owner SQL. Returned child domains are validated against current parent fqdn before rendering. All existing visible fields, stored flag semantics, Atlas style, Back/search/filter/page retention remain.
+
+Unknown owner returns Domain not found and clears metadata/related rows; other failures expose Retry/Back with no previous-owner partial data. This version does not add Domain standalone deep-link/reload persistence; context navigation remains as documented. No backend/schema or live data capability beyond the exact read-only lookup assigned by Lead.
+
+Run `node --test backend/test/domain-exact.test.mjs frontend/test/domain-detail.test.mjs frontend/test/domain-proxy.test.mjs`; full lint/test/build. Actual SQL/HTTP tests prove exact-owner equality with overlapping trap, server pages/counts,32owned records, missing404 and disabled gates. Frontend tests retain31record/2childpage/back proof and verify10001server-count metadata without scanning; no claim that10001fixture records were inserted. Explicit synthetic lab remains the same command; no token required.

@@ -7,21 +7,11 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch}={}){
  function info(row){get('detail-info').replaceChildren();for(const [key,label]of(mode==='domain'?[['fqdn','Domain'],['id','Domain ID'],['source','Source'],['first_seen_at','First seen'],['last_seen_at','Last seen'],['confidence','Confidence'],['tags','Tags']]:[['hostname','Hostname'],['os','OS'],['os_version','OS version'],['id','Host ID']])){get('detail-info').append(textNode('dt',label),textNode('dd',Array.isArray(row[key])?row[key].join(', '):row[key]));}}
  async function read(resource,page,signal){
   if(mode==='domain'){
-   const fqdn=selected.fqdn,exact=[];let totalPages=1;
-   // Existing v4 search is substring-only; exhaust bounded candidates, then enforce exact domain equality.
-   for(let candidate=1;candidate<=totalPages;candidate++){
-    const query=new URLSearchParams({search:fqdn.slice(0,200),page:String(candidate),page_size:'100'});
-    const response=await fetcher(`/api/v1/inventory/dns-records?${query}`,{signal,headers:{Accept:'application/json'}});
-    if(!response.ok)throw Error('DETAIL_UNAVAILABLE');const payload=validateInventory(await response.json(),'dns-records');
-    if(payload.meta.page!==candidate||payload.meta.page_size!==100||payload.meta.total_pages>100)throw Error('DETAIL_CANDIDATE_LIMIT');
-    totalPages=payload.meta.total_pages;
-    for(const row of payload.data)if(row.domain===fqdn){
-     if(!(row.proxied===null||typeof row.proxied==='boolean')||!(row.ttl===null||Number.isSafeInteger(row.ttl)))throw Error('INVALID_DNS_DETAIL');
-     exact.push({...row,outside_flag:row.tags.includes('cloudflare:outside-known-range')?'Flagged':'Not flagged'});
-    }
-   }
-   const unique=[...new Map(exact.map(row=>[row.id,row])).values()];
-   return{data:unique.slice((page-1)*25,page*25),meta:{page,page_size:25,total:unique.length,total_pages:Math.ceil(unique.length/25)}};
+   const response=await fetcher(`/api/v1/inventory/domains/${encodeURIComponent(selected.id)}/dns-records?page=${page}&page_size=25`,{signal,headers:{Accept:'application/json'}});
+   if(!response.ok)throw Error(response.status===404?'DOMAIN_NOT_FOUND':'DETAIL_UNAVAILABLE');
+   const payload=validateInventory(await response.json(),'dns-records');
+   if(payload.meta.page!==page||payload.meta.page_size!==25||payload.data.some(row=>row.domain!==selected.fqdn||!(row.proxied===null||typeof row.proxied==='boolean')||!(row.ttl===null||Number.isSafeInteger(row.ttl))))throw Error('DETAIL_SCOPE_MISMATCH');
+   return{...payload,data:payload.data.map(row=>({...row,outside_flag:row.tags.includes('cloudflare:outside-known-range')?'Flagged':'Not flagged'}))};
   }
   const query=new URLSearchParams({host_id:selected.id,page:String(page),page_size:'25'});
   const response=await fetcher(`/api/v1/inventory/${resource}?${query}`,{signal,headers:{Accept:'application/json'}});
@@ -40,10 +30,17 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch}={}){
  }
  async function load(){
   active?.abort();const controller=new AbortController();active=controller;const current=++version,timeout=setTimeout(()=>controller.abort(),8000);
-  get('detail-related').replaceChildren();get('detail-status').textContent='Loading details…';get('detail-retry').hidden=true;get('inventory-detail').setAttribute('aria-busy','true');
-  try{const resources=mode==='domain'?['dns-records']:['packages','listening-ports'];const payloads=await Promise.all(resources.map(resource=>read(resource,pages[resource],controller.signal)));if(current!==version)return;
+  get('detail-related').replaceChildren();if(mode==='domain')get('detail-info').replaceChildren();get('detail-status').textContent='Loading details…';get('detail-retry').hidden=true;get('inventory-detail').setAttribute('aria-busy','true');
+  try{
+   if(mode==='domain'){
+    const response=await fetcher(`/api/v1/inventory/domains/${encodeURIComponent(selected.id)}`,{signal:controller.signal,headers:{Accept:'application/json'}});
+    if(!response.ok)throw Error(response.status===404?'DOMAIN_NOT_FOUND':'DETAIL_UNAVAILABLE');
+    const payload=await response.json();validateInventory({data:[payload.data],meta:{page:1,page_size:25,total:1,total_pages:1}},'domains');
+    if(payload.data.id!==selected.id)throw Error('DETAIL_SCOPE_MISMATCH');if(current!==version)return;selected=payload.data;info(selected);
+   }
+   const resources=mode==='domain'?['dns-records']:['packages','listening-ports'];const payloads=await Promise.all(resources.map(resource=>read(resource,pages[resource],controller.signal)));if(current!==version)return;
    get('detail-related').replaceChildren(...resources.map((resource,i)=>renderChildren(resource,payloads[i])));get('detail-status').textContent='';
-  }catch(error){if(current!==version)return;get('detail-status').textContent=error.message==='DETAIL_CANDIDATE_LIMIT'?'This domain has too many candidate records to display safely. Return to the list; no partial result was shown.':'Could not load the selected '+mode+' details. Retry or return to the list.';get('detail-retry').hidden=false;}
+  }catch(error){if(current!==version)return;get('detail-info').replaceChildren();get('detail-status').textContent=error.message==='DOMAIN_NOT_FOUND'?'Domain not found. Return to the list.':'Could not load the selected '+mode+' details. Retry or return to the list.';get('detail-retry').hidden=false;}
   finally{clearTimeout(timeout);if(current===version)get('inventory-detail').setAttribute('aria-busy','false');}
  }
  function showList(){version++;active?.abort();get('inventory-list').hidden=false;get('inventory-detail').hidden=true;try{lastFocus?.focus();}catch{} }

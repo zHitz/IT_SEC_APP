@@ -2,10 +2,11 @@ import { createApp } from './app.mjs';
 import { backendConfig } from './config.mjs';
 import { createOsqueryStore } from './ingest/osquery-store.mjs';
 import { createOsqueryRoute } from './ingest/osquery-route.mjs';
+import {createExactInventoryReader} from './inventory/exact-reader.mjs';
 import { createInventoryReader } from './inventory/reader.mjs';
 
 const config = backendConfig(process.env);
-let db, inventoryDb, ingestOsquery, readInventory;
+let db, inventoryDb, ingestOsquery, readInventory, readExactInventory;
 try {
   if (process.env.OSQUERY_AGENT_TOKENS) {
     if (!process.env.DATABASE_URL || !process.env.OSQUERY_RAW_DIRECTORY) throw Error('INGEST_CONFIG');
@@ -24,11 +25,12 @@ try {
       options: '-c default_transaction_read_only=on -c statement_timeout=5000' });
     await inventoryDb.query('SELECT 1');
     readInventory = createInventoryReader({ db: inventoryDb });
+    readExactInventory = createExactInventoryReader({db:inventoryDb});
   }
 } catch {
   console.error('Backend database/configuration failed; no credentials logged.');
   if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); process.exit(1);
 }
-const app = createApp({ ingestOsquery, readInventory });
+const app = createApp({ ingestOsquery, readInventory, readExactInventory });
 app.listen(config.port, config.host, () => console.log(`Backend listening on configured port ${config.port}`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => app.close(async () => { if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); }));

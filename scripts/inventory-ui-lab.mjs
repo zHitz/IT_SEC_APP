@@ -1,6 +1,7 @@
 import {PGlite} from '@electric-sql/pglite';
 import {migrate,seed} from '../backend/db/migrate.mjs';
 import {createApp} from '../backend/src/app.mjs';
+import {createExactInventoryReader} from '../backend/src/inventory/exact-reader.mjs';
 import {createInventoryReader} from '../backend/src/inventory/reader.mjs';
 import {createFrontend} from '../frontend/server.mjs';
 import {fileURLToPath} from 'node:url';
@@ -23,7 +24,7 @@ export async function startInventoryUiLab({hostFixtures=false}={}){
   await db.query(`INSERT INTO asset_inventory.listening_port(id,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment,tags,host_id,protocol,port,bind_address,process,pid)
    SELECT $1::uuid,'osquery',first_seen_at,last_seen_at,observed_at,'confirmed','seed://host-ui-v5','synthetic-test',ARRAY['synthetic'],$2::uuid,'tcp',$3,'127.0.0.1','synthetic-listener',$4 FROM asset_inventory.listening_port LIMIT 1`,[id(index+200),id(index),8000+index,100+index]);
  }
- const api=createApp({readInventory:createInventoryReader({db})});await new Promise(resolve=>api.listen(0,'127.0.0.1',resolve));
+ const api=createApp({readInventory:createInventoryReader({db}),readExactInventory:createExactInventoryReader({db})});await new Promise(resolve=>api.listen(0,'127.0.0.1',resolve));
  const app=createFrontend({root:fileURLToPath(new URL('../frontend/src/',import.meta.url)),backendOrigin:`http://127.0.0.1:${api.address().port}`,inventoryEnabled:true});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
  return {origin:`http://127.0.0.1:${app.address().port}`,db,async close(){await new Promise(resolve=>app.close(resolve));await new Promise(resolve=>api.close(resolve));await db.close();}};
 }

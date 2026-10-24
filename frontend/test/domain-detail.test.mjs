@@ -20,10 +20,13 @@ test('Domain detail renders exact-domain DNS fields/provenance/flag, pages throu
   get('detail-back').dispatchEvent(new window.Event('click'));assert.equal(ui.list.state.page,2);assert.equal(ui.list.state.search,'sample-');assert.equal(get('inventory-rows').textContent,prior);
   ui.list.state.flag='true';ui.list.state.page=1;get('range-filter').querySelector('option[value="true"]').selected=true;await ui.list.reload();const row=(await(await fetch(lab.origin+'/api/v1/inventory/domains?search=sample-08')).json()).data[0];await ui.open(row);ui.back();assert.equal(ui.list.state.flag,'true');assert.equal(get('range-filter').value,'true');
   assert.ok(requests.filter(x=>x.includes('/dns-records?')).every(x=>!x.includes('outside_known_range=')));
-  console.log('DOMAIN_DETAIL_V6_PROOF',JSON.stringify({synthetic:true,actualHttpPostgres:true,exactDomain:true,substringTrapExcluded:true,records:31,childPages:2,provenance:true,typeValueProxiedTtlTagsFlag:true,backSearchFilterPage:true,cloudflareRequests:0}));
+  console.log('DOMAIN_DETAIL_V7_PROOF',JSON.stringify({synthetic:true,actualHttpPostgres:true,exactOwnerApi:true,substringTrapExcluded:true,records:31,childPages:2,provenance:true,typeValueProxiedTtlTagsFlag:true,backSearchFilterPage:true,cloudflareRequests:0}));
  }finally{ui.destroy();await lab.close();}
 });
-test('Domain detail fails closed above candidate bound with no partial rows',async()=>{
- const{document}=parseHTML(html);const row={id:'10000000-0000-4000-8000-000000000012',fqdn:'safe.test',source:'cloudflare',first_seen_at:null,last_seen_at:null,confidence:'confirmed',tags:[]};
- const ui=mountInventoryDetail(document,{mode:'domain',fetcher:async url=>({ok:true,json:async()=>url.includes('/domains?')?{data:[row],meta:{page:1,page_size:25,total:1,total_pages:1}}:{data:[],meta:{page:1,page_size:100,total:10001,total_pages:101}}})});await ui.ready;await ui.open(row);assert.match(document.getElementById('detail-status').textContent,/too many/);assert.equal(document.getElementById('detail-related').textContent,'');ui.destroy();
+test('Domain exact-owner detail handles large server totals without candidate scanning and clears not-found data',async()=>{
+ const{document}=parseHTML(html);const row={id:'10000000-0000-4000-8000-000000000012',fqdn:'safe.test',source:'cloudflare',first_seen_at:null,last_seen_at:null,confidence:'confirmed',tags:[]};const requests=[];let missing=false;
+ const record={id:'10000000-0000-4000-8000-000000000013',domain:'safe.test',type:'A',value:'192.0.2.5',proxied:false,ttl:300,source:'cloudflare',first_seen_at:null,last_seen_at:null,confidence:'confirmed',tags:[]};
+ const ui=mountInventoryDetail(document,{mode:'domain',fetcher:async url=>{requests.push(url);return missing&&!url.includes('/domains?')?{ok:false,status:404}:{ok:true,json:async()=>url.includes('/domains?')?{data:[row],meta:{page:1,page_size:25,total:1,total_pages:1}}:url.includes('/dns-records?')?{data:[record],meta:{page:1,page_size:25,total:10001,total_pages:401}}:{data:row}};}});
+ await ui.ready;await ui.open(row);assert.match(document.getElementById('detail-related').textContent,/10001 matching records/);assert.equal(requests.filter(x=>x.includes('/dns-records?')).length,1);assert.ok(!requests.at(-1).includes('search='));
+ missing=true;await ui.open(row);assert.match(document.getElementById('detail-status').textContent,/Domain not found/);assert.equal(document.getElementById('detail-related').textContent,'');assert.equal(document.getElementById('detail-info').textContent,'');ui.destroy();
 });
