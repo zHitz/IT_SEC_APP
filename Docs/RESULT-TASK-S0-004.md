@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: Domain/DNS inventory page
+# Result — TASK-S0-004: Domain provenance and DNS detail
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v5 |
+| Result version | v6 |
 | Status | DONE |
-| Spec version followed | SRS v1.0; TASK-S0-004; approved synthetic PoC; Lead02:52 on2026-10-25 frontend assignment; v4ACCEPT retained |
+| Spec version followed | SRS v1.0; TASK-S0-004; approved synthetic PoC; Lead03:23 on2026-10-25 Domain detail assignment; v5ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25 current execution after03:05 (+07:00) |
-| Source/evidence commit | 444df6e355736b329a40be1f1a99a32b93fd02b3 |
+| Submitted at | 2026-10-25T03:50:17.221702+07:00 |
+| Source/evidence commit | 6befc69f4047ee355590282780af69355b3cf382 |
 
 ## 1. Summary
 
-Completed all four v5frontend requirements: one opt-in Domain/DNS page consuming the accepted v4API, with provenance, literal domain search, exact stored-flag filter, pages/counts and existing Atlas dark/light visual concept. Actual browser checks and screenshots, DOM interaction tests and real synthetic HTTP/PostgreSQL integration pass. Final31/31tests, lint52modules/schema parity and build PASS. DONE is for approved synthetic/frontend scope; no live/native/production acceptance. V4ACCEPT02:52 retained. No schema/entity/osquery/Cloudflare collector changes.
+Completed the assigned local Domain detail page: Domain identity/provenance plus exact-owner DNS type/value/proxied/TTL/tags/outside-range status through accepted GET APIs. Back preserves search/filter/page/page-size and Atlas frame concept. Actual browser and DOM/HTTP/PostgreSQL tests;37/37tests,lint58modules/schema parity and buildPASS. DONE is approved synthetic scope, not live/production/native acceptance. V5ACCEPT03:23 retained. No schema/entity/backendAPI/osquery/Cloudflare collector changes in this package.
 
 ## 2. Acceptance criteria
 
@@ -33,67 +33,64 @@ Completed all four v5frontend requirements: one opt-in Domain/DNS page consuming
 | V5-3 | Local opt-in boundary, no production auth/schema/osquery/liveAPI | Pass: disabled page/module/API404; loopback backend/socket/startup restrictions; fixed GET-only allowlist; no collector/schema change. |
 | V5-4 | Frontend tests/docs and complete lint/test/build | Pass:31/31tests, lint52modules/schema22+2/114FK, build PASS; DOMAIN-INVENTORY-UI.md includes exact lab/local commands, behavior and limits. |
 
+| V6-1 | Click Domain -> detail with provenance and exact-domain DNS type/value/proxied/TTL/tags/flag via accepted APIs | Pass: domain-detail.test.mjs actual HTTP/PostgreSQL exact owner/overlap trap/31records proof; browser sample-12.test and detail-v6.png. |
+| V6-2 | Back preserves list search/flag/page and existing frame style | Pass: DOM tests and browser sample-search/page2 and separate flagtrue preserved; back-v6.png. Same Atlas shell/tokens. |
+| V6-3 | Local opt-in, no newAPI/schema/osquery/liveCloudflare/production | Pass: unchanged gated routes/proxy; existing GET search only; schema22+2/114FK and boundary regressions pass;0Cloudflare requests. |
+| V6-4 | Detail/render/back tests/docs and full checks | Pass:37/37tests,lint58modules,buildPASS; guide states exact-owner candidate bound and reload boundary. |
+
 ## 3. Work completed
 
-Read Lead02:52 ACCEPT/new frontend assignment live without reload, built page/controller/proxy/styles and posted [DEV][START]03:05 with actual implementation. Pinned dev-only DOM test dependency, resolved select clearing portability, added explicit synthetic UI lab and tests. Actual browser exercised real accepted API through frontend proxy, not hardcoded page data. Captured dark/light evidence, wrote guide, ran lint->test->build, scanned source and committed. No production credential/target/native binary accessed.
+Read live STATE/git/GitHub/Lead sources; Lead03:23 ACCEPTv5 and assigned Domain detail. Completed activeHostv6first, then reused shared detail UI for Domain without changing collector/backend. Implemented selectedAPI provenance and exact-owner related records despite substring-search API; child paging/flags/safeDOM/error/back retained. Posted [DEV][START]03:47 with actual tests. Verified browser detail/back/search/filter, wrote guide, ran full checks and saved proof/screenshots/source scan. No realCloudflare request/token/production access.
 
 ## 4. Files changed
 
-Files in source commit444df6e; canonical RESULT is an additional report-only commit.
+Source commit6befc69contains12files; canonical RESULT is an additional report-only update. Host detail/QA raw_ref fix were separately committed/submitted under S0-003v6, not silently changed here.
 
 | File | Specific change |
 |---|---|
-| .gitignore | Exact domains.html source exception; saved HTML artifacts remain ignored. |
-| Docs/DOMAIN-INVENTORY-UI.md | Local run/setup, UI/proxy contract, reproduction, limits and troubleshooting. |
-| Docs/evidence/S0-004/build-v5.txt | Actual ESM/database packaging output. |
-| Docs/evidence/S0-004/lint-v5.txt | Actual52module/schema parity output. |
-| Docs/evidence/S0-004/secret-scan-v5.json | Actual tracked text known-pattern credential scan; binary artifacts excluded. |
-| Docs/evidence/S0-004/test-v5.txt | Actual complete31-test output. |
-| Docs/evidence/S0-004/ui-v5-dark.png | Actual dark browser screenshot. |
-| Docs/evidence/S0-004/ui-v5-light.png | Actual light/search-filter screenshot. |
-| Docs/evidence/S0-004/ui-v5.json | Observed browser/HTTP/test proof and source/log hashes, failure history. |
-| frontend/server.mjs | Opt-in page/modules, fixed GET-only proxy, loopback restrictions, no auth/cookie forwarding; existing health/skeleton preserved. |
-| frontend/src/domain-inventory.mjs | Safe DOM rendering, response validation, search/flag/resource/pages/count state, abort/race/timeout/error/empty handling. |
-| frontend/src/domains.html | New semantic English inventory page within existing Atlas shell. |
-| frontend/src/index.html | Conditional navigation placeholder only, existing skeleton content preserved. |
-| frontend/src/inventory-page.mjs | Page bootstrap and existing theme preference behavior. |
-| frontend/src/style.css | Inventory table/forms/tags/states/responsive/focus styles using shared Atlas tokens. |
-| frontend/test/domain-inventory.test.mjs | Three DOM tests: render/search/filter/page/reset, unsafe text/errors/empty/retry, stale response suppression. |
-| frontend/test/domain-proxy.test.mjs | Actual synthetic HTTP/PostgreSQL proxy integration and disabled/fixed-target boundary test. |
-| package-lock.json | Exact resolved DOM test dependency graph. |
-| package.json | Pinned dev-only DOM testing dependency linkedom0.18.12. |
-| scripts/inventory-ui-lab.mjs | Explicit disposable loopback lab with accepted schema and25synthetic domains/records; no live API. |
-| Docs/RESULT-TASK-S0-004.md | Canonical v5report with original ACs/accepted v4scope, new frontend requirements and honest limits. |
+| Docs/DOMAIN-INVENTORY-UI.md | V6 detail contract, exact-owner implementation/limits, reproduction and session navigation boundary. |
+| Docs/evidence/S0-004/back-v6.png | Actual list Back with sample-search/page2 retained. |
+| Docs/evidence/S0-004/build-v6.txt | Actual backend/frontend/database packaging output. |
+| Docs/evidence/S0-004/detail-v6.json | Actual37test/browser/HTTPproof, limits and source/log hashes. |
+| Docs/evidence/S0-004/detail-v6.png | Actual selected Domain provenance/DNS fields/flag screenshot. |
+| Docs/evidence/S0-004/lint-v6.txt | Actual58module/schema parity output. |
+| Docs/evidence/S0-004/secret-scan-v6.json | Actual tracked-text credential-pattern scan; binary artifacts excluded. |
+| Docs/evidence/S0-004/test-v6.txt | Actual complete37test output including Domain detail proof and Host/QA regression. |
+| frontend/src/domains.html | Adds semantic separate detail region with Back/Retry; retains list DOM/state. |
+| frontend/src/inventory-detail.mjs | Domain metadata/provenance, bounded accepted-search candidate collection with full exact-owner filter, related DNS fields/flags/localpaging; Host mode retained. |
+| frontend/src/inventory-page.mjs | Boots Domain detail-aware controller instead of list-only wrapper. |
+| frontend/test/domain-detail.test.mjs | Actual DOM/HTTP/PostgreSQL test:31exact-owner records/2pages, overlapping-name trap, provenance/fields/flags and Backquery/filter/page; above-bound fail-closed test. |
+| Docs/RESULT-TASK-S0-004.md | Canonicalv6ten-section report, originalACs/acceptedV4/V5scope and current evidence/limits. |
 
 ## 5. Run and verify
 
-From IT_SEC_APP (Node24): `npm ci`; `node scripts/inventory-ui-lab.mjs`; open printed loopback /inventory/domains. This creates disposable PostgreSQL17.5WASM with25synthetic domains/records and6flagged, actual backend reader/proxy, no token. Ctrl+C stops it. Existing local DB mode requires both INVENTORY_READ_ENABLED=true and INVENTORY_UI_ENABLED=true plus explicit loopback hosts/localDATABASE_URL as documented in DOMAIN-INVENTORY-UI.md. Run `node --test frontend/test/domain-inventory.test.mjs frontend/test/domain-proxy.test.mjs`, `npm run lint`, `npm test`, `npm run build`. No production deployment or browser import of fixtures.
+Node24 inIT_SEC_APP: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts` (Domainpage also available at /inventory/domains). Use printed loopback origin; searchsample-,10rows,Next,clicksample-12.test. Verify Domainsource/timestamps/confidence/tags plus DNSA/198.51.100.25/proxiedfalse/TTL300/Flagged. Back keepssearchsample-/page2. ApplyFlagged, opensample-08.test, Back keepsflagtrue. `node --test frontend/test/domain-detail.test.mjs frontend/test/host-detail.test.mjs`; full `npm run lint`, `npm test`, `npm run build`. Same explicit localopt-in flags as guide, no standalone production deployment.
 
 ## 6. Tests and actual results
 
-Actual final commands all exit0: lint PASS52modules/schema22entities+2junctions/114FK; tests31/pass31/fail0/duration8773.3007ms; build PASSbackend/frontend ESM/database packaging. DOM tests cover visible provenance/search/filter/page/reset/XSS-shaped text/empty/error/retry/stale request. Actual HTTP test verifies disabled404, allowedGET proxies, fixed loopback upstream, CSP/source privacy and accepted SQL results. Browser observed25domains,10rows/page and Next->page2/10rows, DNSflag->6records, combined sample-08 search+flag->1record, dark/light toggles; screenshots retained. Native engine is PostgreSQL17.5WASM. Initial DOM test failed because linkedom select.value has getter only; clear now selects empty option and browser verification passed. Initial HTML generation failed default Windows encoding; corrected explicitUTF8. Initial gitadd rejected *.html; exact source exception added. Final tests all green; no failure concealed. Linkedom0.18.12 registry version verified and npm audit reported0vulnerabilities.
+Targeted4/4PASS including Hostregressions. Full sequence all exit0:tests37/pass37/fail0/duration8398.7041ms;lint58modules/schema22entities+2junctions/114FKPASS;buildbackend/frontendESM/database assetsPASS. Actual Domainproof creates31DNSrecords forselectedowner plus overlapping api.sample-12.testtrap; exactOwner filter excludestrap, rendersall31across2childpages, provenance/type/value/proxied/TTL/tags/flag and Backsearch/filter/page assertionspass. Above100candidatepages returnsclearerror/no partial data. Browserselectedsample-12.test showscloudflare/confirmed/timestamps/tags andA/198.51.100.25/proxiedfalse/TTL300/Flagged; Back retainedsample-/page2, secondflowflagtrue retained. No v6test failure. Actual engine isPostgreSQL17.5WASM/synthetic; no liveDNS/native claim. Existing collectors/QArawfile regression pass infullsuite.
 
 ## 7. Issues and implementation decisions
 
-Used existing vanilla ESM architecture and frame tokens, not a new framework/model. DOM tests use a pinned dev-only parser; browser checks separately prove actual UI behavior. Fixed-target GET proxy is explicitly opt-in and loopback-only, forwards no user cookies/auth and rejects redirects; it is not production RBAC. Source data goes through textContent with shape/page metadata checks. Domain flagged status follows existing associated-DNS API semantics; no recomputation/mutation. Date labels use UTC and tags retain literal values. Error state clears rows/counts; generation+abort prevents stale selection. Exact .html ignore exception preserves saved user artifact exclusion.
+Preserved accepted APIs rather than adding exact-owner endpoint. Searchcandidates use fullfqdn orfirst200chars forlongnames (existingquerybound), allcandidatepages up to100x100exhausted, then row.domain===selected.fqdn enforced and childcount/local25rowpaginationcomputed. No substringscope leakage, duplicateIDs deduplicated, no partial display on failure/cap. This bounded small-prototype method is documented, not unboundedscale claim. Selectedheader is listAPIobservation, not autorefetch; Backretention is in-session. Fullreload startslist, not standalone deep-link persistence. SharedHostmode remains covered byregressions. No schema/collector/businessmapping decision orproductionauthorization taken.
 
 ## 8. Not done, limitations and technical debt
 
-No nativeLinux/osquery/pgDocker/liveCloudflare/production/authRBAC, schema/entity change or collector changes. Actual browser viewport override unavailable, so exact390/1024/1440responsive and reduced-motion runtime emulation are not claimed; CSS rules exist and actual available viewport captured. No large-scale performance or assistive-reader certification. No screenshot is a claim of native DB/live permission. Accepted original PoC evidence remains; no repeat of ten-minute outage.
+No liveCloudflare/token/production/nativePG/Docker/remote-native acceptance or authRBAC. No schema/entity/backendAPI/osquery edits in this commit. Candidatequeries bounded100pages/8stimeout; hugecollections fail visibly without partialdata; cross-page concurrentmutation is not a snapshot guarantee. Standalone detaildeep-link/fullreload persistence notclaimed. Exactviewport/reducedMotion/assistive-reader/performance certification unavailable/notclaimed. ExistingapprovedsyntheticPoC evidence remains separate from live-readiness follow-ups.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v5. New frontend requirements complete within synthetic scope. Future live/native checks remain separate approved-input follow-ups, not an authorization to select targets or search credentials.
+No hardblocker forV6; allassigneddetailrequirements pass in approvedsynthetic scope. Future exact-owner API/performance orlivezone/nativeverification require separately assigned scope/approvedinputs; no assumptions expanded that authority.
 
 ## 10. Next step and self-check
 
-Upload canonical v5RESULT, guide, actual proof/logs/screenshots with exactly one [DEV][SUBMISSION] comment. Push reviewed source to existing QA branch/PR; do not merge or edit task status/dependencies.
+Commit/push to live recorded reviewbranch and update existingopenQA PR; nevermerge. Attach actual canonicalv6RESULT/guide/proof/logs/screenshots with one [DEV][SUBMISSION]DONEcomment, verifylinks and checkpointlatesthead/CI. AwaitconcreteLead/QA feedback, no status/dependency edits.
 
-- [x] Exact TASK/version/status/spec and10orderedsections.
-- [x] Original ACs plus V4accepted scope and each V5requirement mapped separately.
-- [x] Every changed file/config/dependency/evidence listed; real commands/results/failures disclosed.
-- [x] Synthetic/native/browser limits explicit; no secret or production data.
-- [x] One canonical RESULT retained; v2/v3/v4 ACCEPT history preserved.
+- [x] ExactTASK/version/status/spec and10orderedsections.
+- [x] OriginalACs/acceptedV4/V5 and eachV6requirement mapped separately.
+- [x] Allchangedfiles, actualcommands/output, assumptions/failures/limits disclosed.
+- [x] Synthetic/native/production boundaries preserved;0Cloudflarecalls.
+- [x] OnecanonicalRESULT andacceptedhistory retained.
 
-History: v1BLOCKEDclarification; v2DONEsyntheticPoC ACCEPT01:30; v3DONEreadiness ACCEPT02:03; v4DONEinventoryAPI ACCEPT02:52; v5DONEassigned local frontend. V5is new work, not v4REWORK. Earlier canonical files remain in Git and ClickUp attachments.
+History:v2syntheticPoCACCEPT01:30;v3readinessACCEPT02:03;v4APIsACCEPT02:52;v5frontendACCEPT03:23;v6Domainprovenance/DNSdetailDONEapprovedsynthetic. Earliercanonicalversions retained inGit/ClickUp.
 
