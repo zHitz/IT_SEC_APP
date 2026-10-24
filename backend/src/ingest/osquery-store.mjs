@@ -36,7 +36,8 @@ export function createOsqueryStore({ db, rawDirectory, environment = 'lab' }) {
             (id,name,version,normalized_version,ecosystem,source_host_or_image,source_kind,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment)
             VALUES($1,$2,$3,$3,$4,$5,'host','osquery',$6,$6,$6,'confirmed',$7,$8)
             ON CONFLICT(id) DO UPDATE SET last_seen_at=GREATEST(package.last_seen_at,EXCLUDED.last_seen_at),
-              observed_at=GREATEST(package.observed_at,EXCLUDED.observed_at),raw_ref=EXCLUDED.raw_ref`,
+              observed_at=GREATEST(package.observed_at,EXCLUDED.observed_at),
+              raw_ref=CASE WHEN EXCLUDED.observed_at>=package.observed_at THEN EXCLUDED.raw_ref ELSE package.raw_ref END`,
           [identity(`osquery:package:${actualId}:${p.ecosystem}:${p.name}:${p.version}`),p.name,p.version,p.ecosystem,actualId,at,raw,environment]);
         }
         for (const p of batch.listening_ports) {

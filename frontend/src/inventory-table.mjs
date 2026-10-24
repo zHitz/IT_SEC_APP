@@ -18,7 +18,7 @@ export function validateInventory(data, resource) {
  }
  return data;
 }
-export function mountInventoryTable(document,{fetcher=fetch,mode='domain'}={}) {
+export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect}={}) {
  const get=id=>document.getElementById(id);
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
  const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false};
@@ -39,6 +39,10 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain'}={}) {
      td.textContent=row[key]??'—';
      if(key.endsWith('_at')&&row[key]){const date=new Date(row[key]);if(!Number.isNaN(+date)){td.textContent=date.toISOString().replace('T',' ').replace('.000Z',' UTC');td.title=row[key];}}
      if(['domain','fqdn','value'].includes(key))td.className='mono';
+    }
+    if(onSelect && ((state.resource==='hosts'&&key==='hostname')||(state.resource==='domains'&&key==='fqdn'))){
+     const link=document.createElement('a');link.className='inventory-link';link.href='#detail='+encodeURIComponent(row.id);link.textContent=row[key];link.setAttribute('aria-label','Open '+row[key]);
+     link.addEventListener('click',event=>{event.preventDefault();onSelect(row,state.resource);});td.replaceChildren(link);
     }
     tr.append(td);
    }
