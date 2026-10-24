@@ -35,3 +35,7 @@ Collector writes only its queue/log/evidence paths and sends data to the configu
 Native Linux/osquery evidence remains missing; the simulator is disclosed on every evidence artifact. No auto-deploy, Windows/macOS discovery, Docker/Kubernetes discovery, CVE matching, UI or production enrollment. No multi-process locking/load test, hard-power-loss guarantee or resource profiling. The endpoint is a bounded PoC interface, not deployment-ready SSO/RBAC. Docker wiring is supplied but not executed here.
 
 Official references checked2026-10-25: [osquery configuration/views](https://osquery.readthedocs.io/en/5.12.1/deployment/configuration/), [deb_packages schema](https://github.com/osquery/osquery/blob/master/specs/linux/deb_packages.table), [rpm_packages schema](https://github.com/osquery/osquery/blob/master/specs/linux/rpm_packages.table).
+
+## Native readiness v3
+
+`npm run osquery:native-check` strictly validates both native osquery configuration views, then reports current platform/binary candidate status without executing a binary or reading a token. On Windows the intended outcome is exit2/NATIVE_NOT_AVAILABLE. See NATIVE-RUNBOOK.md and Docs/evidence/S0-003/followup-readiness.md for exact future approved-host commands and native AC checklists; candidate presence is not native acceptance.

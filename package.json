@@ -23,7 +23,8 @@
     "osquery:verify": "node scripts/verify-osquery.mjs",
     "start:osquery": "node --env-file=.env collectors/osquery/main.mjs",
     "cloudflare:dry-run": "node collectors/cloudflare/preflight.mjs --dry-run",
-    "cloudflare:check": "node collectors/cloudflare/preflight.mjs --check"
+    "cloudflare:check": "node collectors/cloudflare/preflight.mjs --check",
+    "osquery:native-check": "node collectors/osquery/native-readiness.mjs"
   },
   "dependencies": {
     "pg": "8.23.1"

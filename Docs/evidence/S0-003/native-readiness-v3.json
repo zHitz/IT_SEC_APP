@@ -1,0 +1,29 @@
+{
+  "source": "Actual current-platform native-check-v3.txt output",
+  "expectedExitCode": 2,
+  "report": {
+    "event": "osquery_native_readiness",
+    "platform": "win32",
+    "configs": [
+      {
+        "ecosystem": "deb",
+        "packagesView": "SELECT name, version FROM deb_packages",
+        "eventsDisabled": true,
+        "logicalTableCount": 5
+      },
+      {
+        "ecosystem": "rpm",
+        "packagesView": "SELECT name, version FROM rpm_packages",
+        "eventsDisabled": true,
+        "logicalTableCount": 5
+      }
+    ],
+    "nativeExecuted": false,
+    "binaryExecuted": false,
+    "networkRequests": 0,
+    "tokenRead": false,
+    "distributionInstalled": false,
+    "status": "NATIVE_NOT_AVAILABLE",
+    "reason": "PLATFORM_NOT_LINUX"
+  }
+}
