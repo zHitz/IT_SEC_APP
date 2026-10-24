@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Host inventory prototype
+# Result — TASK-S0-003: Host inventory page
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v4 |
+| Result version | v5 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; Lead 02:03 on 2026-10-25 inventory assignment; v3 ACCEPT retained |
+| Spec version followed | SRS v1.0; TASK-S0-003; Lead02:52 on2026-10-25 frontend assignment; v4 ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25, current execution after 02:36 start (+07:00) |
-| Source/evidence commit | 44675ad824eaa1fc957c7f3b77aa263297794233 |
+| Submitted at | 2026-10-25, current execution after03:14 start (+07:00) |
+| Source/evidence commit | 50e4e0c829f4de69b3f371aba0823bc18fed2327 |
 
 ## 1. Summary
 
-Completed the newly assigned v4 host inventory prototype: three GET endpoints for Host/OS/version, host Package/version and host ListeningPort/process/PID; literal case-insensitive search, optional host scope, stable bounded pagination and filtered counts. Added actual HTTP/PostgreSQL tests and endpoint documentation. Final 25/25 tests, lint 46 modules/schema parity, build pass. Overall PARTIAL preserves the original native AC-1/3/4 gaps; all newly assigned v4 requirements pass. V3 was ACCEPTED at 02:03, not reworked. No schema/entity, UI, collector or Cloudflare source change.
+Completed all newly assigned Host frontend requirements: one local page showing Host OS/version, Package version and ListeningPort process/PID via accepted v4GET APIs, hostname/package search, pages/totals and existing Atlas visual concept. Actual DOM tests, real synthetic HTTP/PostgreSQL integration and browser checks pass; full33/33tests,lint55modules/schema parity,build pass. Overall PARTIAL retains native AC1/3/4 gaps; new v5work itself is complete. V4 ACCEPT02:52 retained. No Cloudflare collector, schema/entity, native or production change.
 
 ## 2. Acceptance criteria
 
@@ -29,55 +29,72 @@ Completed the newly assigned v4 host inventory prototype: three GET endpoints fo
 | V4-3 | Tests and endpoint documentation | Pass: HOST-INVENTORY-API.md covers methods, paths, query bounds, examples, fields, response/count semantics, errors, enabling and security boundary. 25/25 complete suite. |
 | V4-4 | No schema/entity/Cloudflare/UI changes; synthetic only | Pass: scoped source commit lists only inventory reader, backend wiring, tests, guide and evidence; schema checker 22+2/114 FK. Actual integration queries execute inside BEGIN READ ONLY. |
 
+| V5-1 | One frontend page showing Host OS/version, Package version, ListeningPort process/PID from accepted v4API | Pass: hosts.html/shared inventory-table/controller and real HTTP/PostgreSQL/browser screenshots. |
+| V5-2 | Hostname/package search, pagination/counts, existing frame style | Pass: actual DOM tests, accepted API proxy tests and browser26hosts/10rows/page2/hostname1match/package1match/25listeners; Atlas tokens/shell/theme retained. |
+| V5-3 | Local opt-in, no native/production/auth/schema/Cloudflare expansion | Pass: default404, explicit loopback page/proxy; accepted schema22+2/114FK unchanged, no collector/backend schema changes. |
+| V5-4 | Frontend tests/docs and full checks | Pass:33/33tests,lint55modules,build pass; HOST-INVENTORY-UI.md exact commands/boundaries/behavior/limits. |
+
 ## 3. Work completed
 
-Read Lead's live 02:03 ACCEPT/new assignment, implemented query layer, posted start with actual code evidence at 02:36, then added routing/server integration/tests/docs. Inventory is opt-in; disabled routes return 404. Enabled local prototype refuses non-loopback bind, uses a separate pool with database read-only default and 5-second statement timeout. Count/page come from a single SQL statement to avoid mismatched snapshots. Query identifiers are whitelisted, caller data is parameterized, query size/page sizes are bounded and failures sanitized. No native experiment or accepted ten-minute run was repeated.
+Read Lead02:52 ACCEPT/v5assignment; completed/submitted active Domain v5first, then built Host frontend on the same shared table/controller and posted [DEV][START]03:14 with actual code/test evidence. Added opt-in fixed Host GET routes, extracted reusable renderer with compatibility wrapper preserving Domain tests, added declared host fixture lab, UI tests/guide and actual browser screenshots. Full lint->test->build pass, known-pattern scan and source commit. No ten-minute outage repeat, native binary/token/production access or Cloudflare call.
 
 ## 4. Files changed
 
+Source commit50e4e0c contains the following20files; canonical RESULT is additional report-only update.
+
 | File | Specific change |
 |---|---|
-| backend/src/inventory/reader.mjs | Fixed Host/host-Package/host-Port projections, parameter validation, literal search, optional host UUID filter, stable ordering, one-statement count/page response. |
-| backend/src/app.mjs | Optional GET inventory dispatch, 405/Allow for known routes, sanitized 400/503 errors and request IDs; existing health/ingest preserved. |
-| backend/src/server.mjs | Opt-in inventory enable flag, explicit loopback boundary, isolated read-only pg pool with timeout, cleanup and sanitized startup errors. |
-| backend/test/inventory.test.mjs | Three tests: actual HTTP/SQL synthetic read-only integration; invalid bounds/error sanitization; refused non-loopback startup. |
-| Docs/HOST-INVENTORY-API.md | Full local endpoint contract, examples, count semantics, boundary and reproduction guide. |
-| Docs/evidence/S0-003/inventory-v4.json | Actual proof summary and SHA256 of changed source/docs/logs. |
-| Docs/evidence/S0-003/test-v4.txt | Full real 25-test output, including inventory proof. |
-| Docs/evidence/S0-003/lint-v4.txt | Actual 46-module and schema parity output. |
-| Docs/evidence/S0-003/build-v4.txt | Actual ESM/backend/frontend/database packaging output. |
-| Docs/RESULT-TASK-S0-003.md | This canonical v4 report, preserving original AC limits and prior acceptance history. |
+| .gitignore | Exact hosts.html source exception only; saved HTML remains excluded. |
+| Docs/DOMAIN-INVENTORY-UI.md | Clarifies shared proxy now also allows separately assigned Host inventory routes. |
+| Docs/HOST-INVENTORY-UI.md | Host local setup/UI/proxy/reproduction guide, declared fixture and native limits. |
+| Docs/evidence/S0-003/build-v5.txt | Actual ESM/database packaging output. |
+| Docs/evidence/S0-003/lint-v5.txt | Actual55module/schema parity output. |
+| Docs/evidence/S0-003/secret-scan-v5.json | Actual tracked text known-pattern scan; binary files excluded. |
+| Docs/evidence/S0-003/test-v5.txt | Actual full33test output. |
+| Docs/evidence/S0-003/ui-v5-hosts.png | Actual Host page2 browser screenshot. |
+| Docs/evidence/S0-003/ui-v5-packages.png | Actual package search/version screenshot. |
+| Docs/evidence/S0-003/ui-v5-ports.png | Actual listener/process/PID screenshot. |
+| Docs/evidence/S0-003/ui-v5.json | Actual browser/HTTP/test proof, hashes and failure disclosure. |
+| frontend/server.mjs | Adds opt-in Host page/bootstrap/shared controller and fixed GET Host/Package/Port proxy routes; conditional navigation includes both pages. |
+| frontend/src/domain-inventory.mjs | Compatibility wrapper now delegates to extracted shared table; Domain behavior/tests preserved. |
+| frontend/src/domains.html | Adds working Host navigation alongside existing Domain navigation. |
+| frontend/src/host-page.mjs | Host mode bootstrap and shared theme preference. |
+| frontend/src/hosts.html | New semantic English Host page in existing Atlas shell, three resources, counts/search/pages. |
+| frontend/src/inventory-table.mjs | Shared safe table/controller; Host/Package/Port field projections, numeric PID/port validation, per-resource labels/search and page reset. |
+| frontend/test/domain-proxy.test.mjs | Unknown-route404 assertion now uses unapproved unknown path; Package GET became explicitly authorized in S0-003v5. |
+| frontend/test/host-inventory.test.mjs | Actual DOM and HTTP/PostgreSQL tests for Host/Package/Port fields/search/pages/totals and opt-in404. |
+| scripts/inventory-ui-lab.mjs | Optional--hosts fixture profile:26hosts/24host packages/25ports; accepted required normalized_version obeyed. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v5ten-section RESULT; original native gaps and accepted v2/v3/v4 history preserved. |
 
 ## 5. Run and verify
 
-From IT_SEC_APP: `node --test backend/test/inventory.test.mjs`; then `npm run lint`, `npm test`, `npm run build`. Tests create fresh synthetic PostgreSQL WASM state and ephemeral loopback HTTP; no DATABASE_URL/token/production host needed. Manual daemon configuration is documented in HOST-INVENTORY-API.md: approved local synthetic DATABASE_URL, BACKEND_HOST=127.0.0.1, BACKEND_PORT, INVENTORY_READ_ENABLED=true; `npm run start:backend`. Default is disabled; do not expose this unauthenticated prototype externally. No real service connection was made.
+From IT_SEC_APP with Node24: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts`; open printed loopback /inventory/hosts. Explicit lab creates disposable PostgreSQL17.5WASM fixtures, no Linux/osquery claim. Ctrl+C closes it. Existing approved synthetic DB mode requires backend INVENTORY_READ_ENABLED=true, frontend INVENTORY_UI_ENABLED=true and explicit loopback hosts/upstream as HOST-INVENTORY-UI.md describes. Run `node --test frontend/test/host-inventory.test.mjs`, `npm run lint`, `npm test`, `npm run build`. No production rollout or automatic fixture fallback.
 
 ## 6. Tests and actual results
 
-Actual commands: targeted inventory tests initially 2/2 passed; added startup-boundary test, then full `npm run lint` -> `npm test` -> `npm run build`, all exit0. Full output: tests25, pass25, fail0, duration8207.5861ms. Lint PASS46 modules; schema check PASS22 entities,2 junctions,114 native FKs. Build PASSbackend/src -> backend/dist; frontend/src -> frontend/dist; database assets packaged. No test failure in this v4 implementation.
-
-Actual inventory proof: 3 synthetic hosts,2 host packages (image seed package excluded),2 host listening ports;12 read SELECT/CTE statements completed inside PostgreSQL BEGIN READ ONLY. Assertions verify OS/version, package version, process/PID, literal/case-insensitive search, same-response totals, stable page boundaries, empty/beyond-end cases, input rejection, GET-only methods, no-store headers and sanitized 503. Snapshot host count unchanged. Startup subprocess rejects external bind before any inventory database connection. This proves the implemented query path; it is not native pg/real Linux deployment evidence.
+Targeted final2/2pass; full required sequence all exit0:33tests/pass33/fail0/duration8390.5721ms; lint55modules/schema22entities+2junctions/114FK; build backend/frontend ESM/database assets PASS. Actual DOM test covers OS/version, Host search/page reset, Package version/name search and listener process/PID. Actual HTTP/PostgreSQL proof:26hosts,24host packages,25host ports, stable pages/search/field values/counts/default404; Domain regressions remain green including safe text/error/empty/retry/race handling. Actual browser:10rows/page Next->page2of3,HOST-01=>1host,package-01=>1package version1.2.3,Listeningports=>25 with synthetic-listener and integerPID. Screenshots/ui-v5.json saved. Initial synthetic package fixture failed accepted normalized_version NOT NULL; fixture corrected, schema unchanged. No failed final test hidden. NativeLinux/osquery=false; no repeat of accepted600010ms experiment.
 
 ## 7. Issues and implementation decisions
 
-No scope/AC decision needed. Chose separate resource endpoints so package/port fanout cannot silently truncate a Host card. Host packages filter accepted source_kind=host; image packages and container-only ports belong to separate future scope. Counts mean filtered totals and are returned on every page, avoiding an unrequested dashboard. Use offset paging (bounded) with deterministic ID tie-breaker; rows can shift between different requests if ingestion changes inventory. Local-only enablement is a temporary unauthenticated prototype boundary, not production access control. No fields/schema changed. Current sandbox denied F: writes; scoped escalation succeeded, so work continued without changing approval policy.
+Extracted shared inventory-table.mjs rather than duplicate UI behavior; Domain module keeps compatibility wrapper and tests. Uses same Atlas design tokens/theme/CSS/layout and accepted API only. Resource switching clears search/page; listener search disabled because v4does not accept it. Typed port/PID values validated separately from strings/nulls. Host package/image and host/container listener boundaries follow accepted API, not new business logic. Shared proxy extends explicit resource whitelist; no arbitrary target/auth/cookie forwarding. Exact hosts.html gitignore exception preserves saved artifacts. Updated Domain proxy docs/test to reflect now-authorized Host routes. No product/scope/security decision needed.
 
 ## 8. Not done, limitations and technical debt
 
-Original native Linux/osquery AC-1/3/4 remain unverified. No UI/dashboard, real host/production access, authentication/RBAC product flow, indexes/schema migrations, native PostgreSQL daemon/Docker or remote CI run. Actual integration engine is PostgreSQL17.5 WASM. Server uses native pg pool but daemon success path is not claimed as tested. No concurrency/performance benchmark at production scale; no import/export or write endpoint. No native credential lookup or Cloudflare request was performed.
+Original nativeLinux/osquery AC1/3/4 remain unverified. Existing actual outage/queue experiment and simulator evidence retained, not rerun/relabelled. No real host/token/production/Cloudflare source change, schema/entity, authRBAC, nativePG/Docker or remote-native verification. Exact390/1024/1440viewport and reduced-motion runtime emulation unavailable; CSS responsive/focus/reduced-motion rules retained and actual viewport screenshots captured. No large-scale performance/assistive technology certification or live discovery claim. PostgreSQL17.5WASM fixture data is explicit.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for the v4 assignment; all its requested work is complete. Future native acceptance requires approved real Linux/osquery lab input under the retained runbook. That follow-up does not invalidate the accepted simulator PoC or completed inventory prototype.
+No hard blocker for assigned v5frontend; all new requirements pass. Future original native acceptance still requires approved real Linux/osquery inputs per runbook. That remains separate from completed local UI scope and accepted PoC.
 
 ## 10. Next step and self-check
 
-Submit this actual file and evidence to the same ClickUp task with one v4 PARTIAL comment (new assignment complete; original native gaps retained). Lead reviews; no self-ACCEPT/status/dependency changes. Execute concrete next assignment/rework when issued.
+Attach actual canonical v5RESULT, guide, proof/logs/screenshots and publish one [DEV][SUBMISSION]PARTIAL comment: v5frontend complete, original native gaps retained. Push to existing QA branch/PR without merge/status/dependency changes; act on concrete Lead/QA feedback.
 
-- [x] Ten sections in order; exact TASK/version/status and spec/Lead basis.
-- [x] Every original AC and each v4 requirement separately mapped to truthful evidence.
-- [x] Every changed file, actual commands/output, limitations and assumptions disclosed.
-- [x] Synthetic/WASM and native boundaries explicit; no secrets/production data included.
-- [x] Existing v2/v3 acceptance and completed real-duration outage preserved.
+- [x] Exact TASK/version/status/spec and10orderedsections.
+- [x] Original ACs, accepted V4 scope and every V5 requirement mapped separately.
+- [x] Every changed file and real output/failure/assumption/limit included.
+- [x] No secrets/production/native claims; original completed experiment preserved.
+- [x] One canonical RESULT, previous accepted versions retained in Git/ClickUp.
 
-Version history: v1 BLOCKED mapping; v2 PARTIAL simulator PoC, ACCEPT01:30; v3 PARTIAL overall/native-readiness complete, ACCEPT02:03; v4 PARTIAL overall/assigned host inventory complete, new assignment not rework. Earlier canonical versions remain in Git and previously attached ClickUp files.
+History: v1BLOCKEDmapping; v2PARTIALsimulatorPoC ACCEPT01:30; v3PARTIALreadinesscomplete ACCEPT02:03; v4PARTIALinventoryAPIcomplete ACCEPT02:52; v5PARTIALoverall/assignedHostfrontendcomplete. V5is new work, not v4REWORK.
+
