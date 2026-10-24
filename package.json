@@ -17,7 +17,9 @@
     "db:down": "node --env-file=.env backend/db/migrate.mjs down",
     "db:seed": "node --env-file=.env backend/db/migrate.mjs seed",
     "db:inspect": "node --env-file=.env backend/db/migrate.mjs inspect",
-    "db:verify": "node scripts/verify-db.mjs"
+    "db:verify": "node scripts/verify-db.mjs",
+    "cloudflare:verify": "node scripts/verify-cloudflare.mjs",
+    "start:cloudflare": "node --env-file=.env collectors/cloudflare/main.mjs"
   },
   "dependencies": {
     "pg": "8.23.1"

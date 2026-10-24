@@ -1,0 +1,34 @@
+
+> it-asset-security@0.1.0 test
+> node --test backend/test/*.test.mjs frontend/test/*.test.mjs
+
+CLOUDFLARE_SYNTHETIC {"tables":24,"intervalMs":25,"requests":34,"onlyGET":true,"assertions":["AC1 seven records, A/AAAA/CNAME/MX/TXT and complete provenance","AC2 7 -> 7, first_seen_at unchanged, last_seen_at advanced, 0 created/7 updated","AC3 real loopback HTTP mock received only GET","AC4 known IPv4/IPv6 unflagged, outside IPv4/IPv6 flagged; flag cleared after content update, user tag retained","AC5 actual interval scheduler completed two sequential runs with full logs","Late403 no inventory writes;503 isolates one zone;database failure rolls back zone transaction;24tables unchanged"]}
+✔ Cloudflare HTTP mock -> PostgreSQL: all ACs, idempotency, flag provenance, scheduling and rollback (2491.4758ms)
+✔ worker configuration and transport fail closed; scheduler aborts without overlap (1.7403ms)
+C-01: 5 mocked calls, all GET; 2 zone pages + 3 record pages; no live credentials/network
+✔ Cloudflare GET-only client reads paginated zones and A/AAAA/CNAME without mutations (50.6562ms)
+✔ late permission failure exposes no partial scope or token/error body (2.9051ms)
+✔ rate limit/network retry is bounded and honors capped delay (3.0345ms)
+✔ pagination drift, duplicate IDs and malformed envelopes fail closed (2.9076ms)
+✔ explicit test scope and zone path validation prevent accidental broad collection (0.7173ms)
+C-01 source audit PASS: one transport, fixed origin, GET only; no DNS mutation interface
+✔ C-01 source audit: all collector transport sites hardcode GET; no write client exists (10.5671ms)
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (93.7732ms)
+✔ configuration fails closed for missing or invalid ports (0.9153ms)
+POSTGRES PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit
+UP: 0 -> 24 tables (22 entities + 2 technical junctions), common and entity columns verified
+SEED {"hosts":2,"containers":1,"domains":1,"cve_findings":1}
+FK/validation: orphan owner, group, CVE and polymorphic finding rejected; confidence/port/projection rejected; soft state retains rows
+DOWN: 24 -> 0 tables
+REAPPLY: up -> down PASS
+✔ migration, seed, FK contracts and down on fresh embedded PostgreSQL (3114.0081ms)
+✔ frontend serves shell and proxies real backend health without exposing saved source (105.0348ms)
+✔ health UI rejects HTTP failures and malformed successful payloads (1.0383ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3355.7833

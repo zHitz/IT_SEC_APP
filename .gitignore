@@ -8,6 +8,7 @@ coverage/
 .DS_Store
 Thumbs.db
 .npm-cache/
+var/
 # User-owned saved artifacts are references, never executable source or fixtures.
 *.html
 *_files/

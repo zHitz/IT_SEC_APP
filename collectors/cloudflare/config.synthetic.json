@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "baseUrl": "http://127.0.0.1:4401/client/v4",
+  "zoneIds": ["00000000000000000000000000000001", "00000000000000000000000000000002"],
+  "knownCidrs": ["192.0.2.0/24", "2001:db8:1::/48"],
+  "cidrVersion": "synthetic-v1",
+  "intervalMs": 60000,
+  "rawDirectory": "var/cloudflare/raw",
+  "environment": "synthetic-test"
+}

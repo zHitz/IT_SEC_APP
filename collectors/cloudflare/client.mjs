@@ -10,15 +10,24 @@ const zoneId = value => typeof value === 'string' && /^[a-f0-9]{32}$/.test(value
 const integer = (value, min, max) => Number.isInteger(value) && value >= min && value <= max;
 
 export class CloudflareReader {
-  #token; #fetch; #wait; #timeout; #retries; #maxPages;
-  constructor({ token, fetchImpl = fetch, wait = sleep, timeoutMs = 15000, retries = 2, maxPages = 10000 } = {}) {
+  #token; #fetch; #wait; #timeout; #retries; #maxPages; #base;
+  constructor({ token, fetchImpl = fetch, wait = sleep, timeoutMs = 15000, retries = 2, maxPages = 10000,
+    baseUrl = 'https://api.cloudflare.com/client/v4', synthetic = false } = {}) {
     if (typeof token !== 'string' || !token.trim() || /[\r\n]/.test(token)) fail('TOKEN_REQUIRED');
     if (!integer(timeoutMs, 1, 120000) || !integer(retries, 0, 5) || !integer(maxPages, 1, 100000)) fail('INVALID_LIMITS');
     this.#token = token; this.#fetch = fetchImpl; this.#wait = wait;
     this.#timeout = timeoutMs; this.#retries = retries; this.#maxPages = maxPages;
+    let base;
+    try { base = new URL(baseUrl); } catch { fail('INVALID_API_BASE'); }
+    const official = base.href === 'https://api.cloudflare.com/client/v4';
+    const loopback = synthetic && base.protocol === 'http:' && ['127.0.0.1', '[::1]'].includes(base.hostname)
+      && base.pathname === '/client/v4' && !base.search && !base.hash && !base.username && !base.password;
+    if ((!official && !loopback) || (synthetic && !loopback)) fail('INVALID_API_BASE');
+    if (loopback && token !== 'synthetic-test-marker') fail('MOCK_REQUIRES_SYNTHETIC_TOKEN');
+    this.#base = base.href;
   }
   async #page(path, page, perPage) {
-    const url = new URL(`https://api.cloudflare.com/client/v4${path}`);
+    const url = new URL(`${this.#base}${path}`);
     url.searchParams.set('page', page); url.searchParams.set('per_page', perPage);
     for (let attempt = 0; attempt <= this.#retries; attempt++) {
       let response;

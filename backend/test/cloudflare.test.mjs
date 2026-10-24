@@ -82,8 +82,8 @@ test('explicit test scope and zone path validation prevent accidental broad coll
 test('C-01 source audit: all collector transport sites hardcode GET; no write client exists', async () => {
   const root = new URL('../../collectors/cloudflare/', import.meta.url);
   const files = (await readdir(root)).filter(name => name.endsWith('.mjs'));
-  assert.deepEqual(files, ['client.mjs']);
-  const source = await readFile(new URL('client.mjs', root), 'utf8');
+  assert.ok(files.includes('client.mjs') && files.includes('job.mjs') && files.includes('main.mjs'));
+  const source = (await Promise.all(files.map(file => readFile(new URL(file, root), 'utf8')))).join('\n');
   assert.equal((source.match(/this\.#fetch\(/g) ?? []).length, 1);
   assert.equal((source.match(/method:\s*'GET'/g) ?? []).length, 1);
   assert.doesNotMatch(source, /method:\s*['"](?:PUT|POST|PATCH|DELETE)['"]/i);

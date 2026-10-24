@@ -77,4 +77,4 @@ Chỉ khi chủ động muốn xóa dữ liệu database **local của project n
 
 ## Ranh giới mở rộng
 
-Lead đã mở riêng S0-002 và cho phép bảng nối kỹ thuật theo quyết định A ngày 2026-10-24 21:44. Không bắt đầu S0-003/004 trước chỉ thị mở tiếp. SSO/RBAC, ingest, matching CVE, search, scanner chưa triển khai; schema/seed là task dữ liệu, không xác nhận phát hiện rủi ro thật. API nghiệp vụ tương lai theo SRS §20 `/api/v1/` và lỗi có request_id; mọi thay đổi phạm vi qua Team Lead.
+S0-002 v2 was ACCEPTED by the Lead on 2026-10-24 at22:19; S0-003 and S0-004 were then opened separately. S0-004 now has a GET-only DNS ingestion worker with synthetic acceptance tests. Run `npm run cloudflare:verify`; see `collectors/cloudflare/README.md` for configuration, scope and evidence. This is a separate worker, with no DNS inventory UI or DNS mutation API. SSO/RBAC, CVE matching, search and discovery scanners remain outside this work. Future business APIs follow SRS §20 `/api/v1/`; do not change project scope implicitly.
