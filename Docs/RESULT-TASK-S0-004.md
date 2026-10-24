@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: Domain/DNS inventory prototype
+# Result — TASK-S0-004: Domain/DNS inventory page
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v4 |
+| Result version | v5 |
 | Status | DONE |
-| Spec version followed | SRS v1.0; TASK-S0-004; approved synthetic PoC; Lead02:03 on2026-10-25 Domain/DNS inventory assignment |
+| Spec version followed | SRS v1.0; TASK-S0-004; approved synthetic PoC; Lead02:52 on2026-10-25 frontend assignment; v4ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25 current execution after02:40 (+07:00) |
-| Source/evidence commit | a553821024e6c339d81e06233d2b6ea14fd21bc3 |
+| Submitted at | 2026-10-25 current execution after03:05 (+07:00) |
+| Source/evidence commit | 444df6e355736b329a40be1f1a99a32b93fd02b3 |
 
 ## 1. Summary
 
-Completed the assigned Domain/DNS inventory prototype: GET lists with source/first_seen_at/last_seen_at/confidence/tags, literal case-insensitive domain search, exact outside-known-range filtering, stable bounded pagination and same-statement counts. Added actual PostgreSQL/HTTP tests and endpoint documentation. Final27/27tests, lint47modules/schema parity and build pass. DONE applies to the approved synthetic PoC and assigned v4 inventory scope, not production/live Cloudflare/native deployment. V2 and v3 ACCEPT remain intact. No Cloudflare API call, osquery collector, schema/entity or UI change.
+Completed all four v5frontend requirements: one opt-in Domain/DNS page consuming the accepted v4API, with provenance, literal domain search, exact stored-flag filter, pages/counts and existing Atlas dark/light visual concept. Actual browser checks and screenshots, DOM interaction tests and real synthetic HTTP/PostgreSQL integration pass. Final31/31tests, lint52modules/schema parity and build PASS. DONE is for approved synthetic/frontend scope; no live/native/production acceptance. V4ACCEPT02:52 retained. No schema/entity/osquery/Cloudflare collector changes.
 
 ## 2. Acceptance criteria
 
@@ -28,56 +28,72 @@ Completed the assigned Domain/DNS inventory prototype: GET lists with source/fir
 | V4-3 | Tests and endpoint contract | Pass:27/27suite; DOMAIN-INVENTORY-API.md covers method/path/query/response/errors/limits/examples and reproduction; HOST-INVENTORY-API.md describes shared local startup. |
 | V4-4 | No schema/entity/osquery/UI change or real Cloudflare call | Pass: scoped commit changes shared inventory reader/router, domain tests/docs/evidence only; schema22+2/114FK unchanged. No collector modifications. |
 
+| V5-1 | One local Domain/DNS frontend page using accepted v4 API and frame style | Pass: domains.html/controller reuse Atlas tokens/shell; actual browser shows both resources/provenance/tags and dark/light themes. ui-v5-dark/light.png. |
+| V5-2 | Domain search, outside flag, pagination and total | Pass: DOM render/search/filter/page tests; actual HTTP proxy tests; browser25domains ->10rows/page ->page2, DNSflag6 ->searchsample-08 gives1. ui-v5.json. |
+| V5-3 | Local opt-in boundary, no production auth/schema/osquery/liveAPI | Pass: disabled page/module/API404; loopback backend/socket/startup restrictions; fixed GET-only allowlist; no collector/schema change. |
+| V5-4 | Frontend tests/docs and complete lint/test/build | Pass:31/31tests, lint52modules/schema22+2/114FK, build PASS; DOMAIN-INVENTORY-UI.md includes exact lab/local commands, behavior and limits. |
+
 ## 3. Work completed
 
-Read Lead02:03 v3ACCEPT and v4 assignment via live comments without reload, completed/submitted the already active host prototype, then extended its whitelisted reader/router with two Domain/DNS resources. Posted start with actual implemented code and targeted2/2passing tests. Added source/provenance projections and exact flag filters; domains use an EXISTS query over their associated DNS records so selecting flagged domains includes affected domain owners. Added tests/docs, ran full lint->test->build, recorded hashes and committed. No Cloudflare token, API, DNS resolution, native service or production data was used.
+Read Lead02:52 ACCEPT/new frontend assignment live without reload, built page/controller/proxy/styles and posted [DEV][START]03:05 with actual implementation. Pinned dev-only DOM test dependency, resolved select clearing portability, added explicit synthetic UI lab and tests. Actual browser exercised real accepted API through frontend proxy, not hardcoded page data. Captured dark/light evidence, wrote guide, ran lint->test->build, scanned source and committed. No production credential/target/native binary accessed.
 
 ## 4. Files changed
 
-| File | Specific change in this v4 source commit |
-|---|---|
-| backend/src/inventory/reader.mjs | Adds Domain/DNSRecord resource field whitelists, provenance projection and strict boolean outside_known_range predicate; domain correlated EXISTS uses accepted FK, DNS exact ANY(tags). |
-| backend/src/app.mjs | Extends existing GET inventory route whitelist to domains/dns-records; shared error/method behavior reused. |
-| backend/test/domain-inventory.test.mjs | Two tests: actual synthetic PostgreSQL/HTTP read-only integration for provenance/search/flags/page/counts/errors, plus strict boolean/resource input checks. |
-| Docs/DOMAIN-INVENTORY-API.md | Full endpoint contract, examples, exact domain-vs-record flag semantics, limits/errors/local run commands and proof boundary. |
-| Docs/evidence/S0-004/inventory-v4.json | Actual execution summary/proof and SHA256 for source/docs/logs. |
-| Docs/evidence/S0-004/test-v4.txt | Real complete27test output, including Domain and Host inventory proofs plus existing collectors. |
-| Docs/evidence/S0-004/lint-v4.txt | Actual47module syntax/unsafe-code and schema parity output. |
-| Docs/evidence/S0-004/build-v4.txt | Actual ESM/backend/frontend/database packaging output. |
-| Docs/RESULT-TASK-S0-004.md | Canonical v4ten-section report; prior versions retained in Git/ClickUp. |
+Files in source commit444df6e; canonical RESULT is an additional report-only commit.
 
-Existing shared backend/src/server.mjs and HOST-INVENTORY-API.md were added in the separately submitted S0-003 v4commit44675ad; they are dependencies, not silently changed under this task. No configuration, schema or Cloudflare/osquery source file changed here.
+| File | Specific change |
+|---|---|
+| .gitignore | Exact domains.html source exception; saved HTML artifacts remain ignored. |
+| Docs/DOMAIN-INVENTORY-UI.md | Local run/setup, UI/proxy contract, reproduction, limits and troubleshooting. |
+| Docs/evidence/S0-004/build-v5.txt | Actual ESM/database packaging output. |
+| Docs/evidence/S0-004/lint-v5.txt | Actual52module/schema parity output. |
+| Docs/evidence/S0-004/secret-scan-v5.json | Actual tracked text known-pattern credential scan; binary artifacts excluded. |
+| Docs/evidence/S0-004/test-v5.txt | Actual complete31-test output. |
+| Docs/evidence/S0-004/ui-v5-dark.png | Actual dark browser screenshot. |
+| Docs/evidence/S0-004/ui-v5-light.png | Actual light/search-filter screenshot. |
+| Docs/evidence/S0-004/ui-v5.json | Observed browser/HTTP/test proof and source/log hashes, failure history. |
+| frontend/server.mjs | Opt-in page/modules, fixed GET-only proxy, loopback restrictions, no auth/cookie forwarding; existing health/skeleton preserved. |
+| frontend/src/domain-inventory.mjs | Safe DOM rendering, response validation, search/flag/resource/pages/count state, abort/race/timeout/error/empty handling. |
+| frontend/src/domains.html | New semantic English inventory page within existing Atlas shell. |
+| frontend/src/index.html | Conditional navigation placeholder only, existing skeleton content preserved. |
+| frontend/src/inventory-page.mjs | Page bootstrap and existing theme preference behavior. |
+| frontend/src/style.css | Inventory table/forms/tags/states/responsive/focus styles using shared Atlas tokens. |
+| frontend/test/domain-inventory.test.mjs | Three DOM tests: render/search/filter/page/reset, unsafe text/errors/empty/retry, stale response suppression. |
+| frontend/test/domain-proxy.test.mjs | Actual synthetic HTTP/PostgreSQL proxy integration and disabled/fixed-target boundary test. |
+| package-lock.json | Exact resolved DOM test dependency graph. |
+| package.json | Pinned dev-only DOM testing dependency linkedom0.18.12. |
+| scripts/inventory-ui-lab.mjs | Explicit disposable loopback lab with accepted schema and25synthetic domains/records; no live API. |
+| Docs/RESULT-TASK-S0-004.md | Canonical v5report with original ACs/accepted v4scope, new frontend requirements and honest limits. |
 
 ## 5. Run and verify
 
-From IT_SEC_APP: `node --test backend/test/domain-inventory.test.mjs`, then `npm run lint`, `npm test`, `npm run build`. Tests create a fresh migrated/seeded PostgreSQL17.5WASM database and ephemeral HTTP server; no credentials/database daemon needed. For manual approved local synthetic database access, follow HOST-INVENTORY-API.md: BACKEND_HOST=127.0.0.1 or::1, BACKEND_PORT, local DATABASE_URL, INVENTORY_READ_ENABLED=true, then `npm run start:backend`. GET `/api/v1/inventory/domains?search=sample` and `/api/v1/inventory/dns-records?outside_known_range=true`. Endpoints disabled by default, no proxy/tunnel/external exposure. Manual daemon success is documented, not claimed as exercised.
+From IT_SEC_APP (Node24): `npm ci`; `node scripts/inventory-ui-lab.mjs`; open printed loopback /inventory/domains. This creates disposable PostgreSQL17.5WASM with25synthetic domains/records and6flagged, actual backend reader/proxy, no token. Ctrl+C stops it. Existing local DB mode requires both INVENTORY_READ_ENABLED=true and INVENTORY_UI_ENABLED=true plus explicit loopback hosts/localDATABASE_URL as documented in DOMAIN-INVENTORY-UI.md. Run `node --test frontend/test/domain-inventory.test.mjs frontend/test/domain-proxy.test.mjs`, `npm run lint`, `npm test`, `npm run build`. No production deployment or browser import of fixtures.
 
 ## 6. Tests and actual results
 
-Targeted command passed2/2. Full required sequence all exit0: lint PASS47modules; schema PASS22business entities,2junctions,114nativeFKs; test27/pass27/fail0/duration8384.8956ms; build PASSbackend/src->backend/dist,frontend/src->frontend/dist,database assets packaged. No v4test failure.
-
-Actual Domain proof: synthetic3domains/3DNS records,1flagged record and1associated domain,2unflagged; provenance/literal search/combined filters/stable page counts all pass. A lookalike tag ending-extra and user:review do not count as the exact outside-range flag. Reads succeed inside BEGIN READ ONLY; ordered DNS id/tags snapshot unchanged afterward. HTTP method/input rejection and existing sanitized unavailable-error tests pass. These endpoints use no Cloudflare network client;0Cloudflare requests from the inventory test. Full suite separately exercises the existing loopback mock Cloudflare GET-only transport; no live API request. Fixture inserts happen only during test setup before the read-only transaction.
+Actual final commands all exit0: lint PASS52modules/schema22entities+2junctions/114FK; tests31/pass31/fail0/duration8773.3007ms; build PASSbackend/frontend ESM/database packaging. DOM tests cover visible provenance/search/filter/page/reset/XSS-shaped text/empty/error/retry/stale request. Actual HTTP test verifies disabled404, allowedGET proxies, fixed loopback upstream, CSP/source privacy and accepted SQL results. Browser observed25domains,10rows/page and Next->page2/10rows, DNSflag->6records, combined sample-08 search+flag->1record, dark/light toggles; screenshots retained. Native engine is PostgreSQL17.5WASM. Initial DOM test failed because linkedom select.value has getter only; clear now selects empty option and browser verification passed. Initial HTML generation failed default Windows encoding; corrected explicitUTF8. Initial gitadd rejected *.html; exact source exception added. Final tests all green; no failure concealed. Linkedom0.18.12 registry version verified and npm audit reported0vulnerabilities.
 
 ## 7. Issues and implementation decisions
 
-No hard technical blocker or scope decision. Reused the existing resource reader and count/page envelope instead of creating another access path. Domain flag filter is derived from associated record flags using EXISTS, preventing duplicate domains when several records are flagged. Returned Domain.tags stay original and are not overwritten by DNS tags; semantics explicit in guide. Optional flag=false includes domains with no flagged children; no record means not flagged. Search is literal substring, not DNS resolution/IDNA or SQL pattern syntax. Counts are filtered totals in the same SQL snapshot as each page. Pagination can shift between requests when data changes; deterministic tie-breakers prevent ambiguity for a stable snapshot. Local-only unauthenticated prototype remains opt-in, not production authorization.
+Used existing vanilla ESM architecture and frame tokens, not a new framework/model. DOM tests use a pinned dev-only parser; browser checks separately prove actual UI behavior. Fixed-target GET proxy is explicitly opt-in and loopback-only, forwards no user cookies/auth and rejects redirects; it is not production RBAC. Source data goes through textContent with shape/page metadata checks. Domain flagged status follows existing associated-DNS API semantics; no recomputation/mutation. Date labels use UTC and tags retain literal values. Error state clears rows/counts; generation+abort prevents stale selection. Exact .html ignore exception preserves saved user artifact exclusion.
 
 ## 8. Not done, limitations and technical debt
 
-No real token/zone/CIDR verification, production DNS access, native PostgreSQL daemon/Docker or remote CI. Existing engine evidence is PostgreSQL17.5WASM and synthetic/mockHTTP. No UI/dashboard, auth/RBAC flow, write endpoint, schema/index migration, Cloudflare worker change or osquery change. No large-scale concurrency/performance benchmark. Actual live permission scope must be verified only after explicit approved credentials/targets are supplied; no token discovery is authorized by this RESULT.
+No nativeLinux/osquery/pgDocker/liveCloudflare/production/authRBAC, schema/entity change or collector changes. Actual browser viewport override unavailable, so exact390/1024/1440responsive and reduced-motion runtime emulation are not claimed; CSS rules exist and actual available viewport captured. No large-scale performance or assistive-reader certification. No screenshot is a claim of native DB/live permission. Accepted original PoC evidence remains; no repeat of ten-minute outage.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for this v4assignment. All assigned criteria pass in approved synthetic scope. Retained live/native/remote follow-ups do not change accepted v2/v3 scope and are not a claim that production is ready. No question Q-01..Q-05 was answered or policy changed.
+No hard blocker for v5. New frontend requirements complete within synthetic scope. Future live/native checks remain separate approved-input follow-ups, not an authorization to select targets or search credentials.
 
 ## 10. Next step and self-check
 
-Attach this RESULT, endpoint guide, inventory proof and actual logs on the same task; publish exactly one v4DONEsubmission comment and verify attachment links. Lead reviews; no self-ACCEPT/status/dependency edits. Continue only concrete assigned/rework scope, not an invented production rollout.
+Upload canonical v5RESULT, guide, actual proof/logs/screenshots with exactly one [DEV][SUBMISSION] comment. Push reviewed source to existing QA branch/PR; do not merge or edit task status/dependencies.
 
-- [x] Exact TASK/version/status/spec and ten ordered sections.
-- [x] Original ACs and each new v4requirement independently mapped to actual or previously accepted evidence.
-- [x] Every changed file listed; commands and real outputs included.
-- [x] Limits/assumptions/dependencies disclosed; no secrets or real infrastructure data.
-- [x] Read-only Cloudflare boundary, accepted schema and original evidence preserved.
+- [x] Exact TASK/version/status/spec and10orderedsections.
+- [x] Original ACs plus V4accepted scope and each V5requirement mapped separately.
+- [x] Every changed file/config/dependency/evidence listed; real commands/results/failures disclosed.
+- [x] Synthetic/native/browser limits explicit; no secret or production data.
+- [x] One canonical RESULT retained; v2/v3/v4 ACCEPT history preserved.
 
-Version history: v1BLOCKED scope clarification; v2DONEsyntheticPoC ACCEPT01:30; v3DONEreadiness ACCEPT02:03; v4DONEassigned synthetic Domain/DNS inventory. V4 is a new concrete assignment, not a v3REWORK. Earlier canonical versions remain in Git and published task attachments.
+History: v1BLOCKEDclarification; v2DONEsyntheticPoC ACCEPT01:30; v3DONEreadiness ACCEPT02:03; v4DONEinventoryAPI ACCEPT02:52; v5DONEassigned local frontend. V5is new work, not v4REWORK. Earlier canonical files remain in Git and ClickUp attachments.
+
