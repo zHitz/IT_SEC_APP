@@ -1,0 +1,48 @@
+{
+  "task": "S0-004",
+  "version": "v5",
+  "tests": 31,
+  "lintModules": 52,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "newDevDependency": "linkedom0.18.12, npm registry verified, audit0vulnerabilities",
+  "actualBrowser": {
+    "domains": 25,
+    "pageSize": 10,
+    "nextPage": "2 of3 /10rows",
+    "resource": "DNSrecords",
+    "flagged": 6,
+    "combinedSearch": "sample-08+flag =>1DNSrecord",
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "viewportOverride": "unavailable; no exact390/1024/1440check claimed"
+  },
+  "actualHttpProof": "DOMAIN_UI_V5_HTTP_PROOF {\"synthetic\":true,\"domains\":25,\"dnsRecords\":25,\"flagged\":6,\"proxySearch\":true,\"proxyPagination\":true,\"disabled404\":true,\"readOnlyGet\":true,\"cloudflareRequests\":0}",
+  "failureResolved": "Initial linkedom select.value has getter only; clear now selects empty option, portable in actual browser. Initial Python HTML read used Windows default encoding; corrected explicitUTF8. No failed final tests. Initial git add refused domains.html under saved-artifact *.html ignore; added an exact source-file exception, keeping saved HTML ignored.",
+  "limits": [
+    "No production/token/nativeLinux/nativePG/Docker/realCloudflare",
+    "No exact responsive viewport or reduced-motion emulation"
+  ],
+  "sha256": {
+    "frontend/src/index.html": "ddd02b89b9fa88cb6721f6709a232331a0e32ed9d170a4b19df2081403f8504f",
+    "frontend/src/domains.html": "f5cbcb5502d3499bd1d237c5a002fc3c519a9de094c98cb129c78502b098af2d",
+    "frontend/src/domain-inventory.mjs": "53d3a925f843bb996b1f09f1fa1e076e91fb5b14df9880331de41a9ef43049b1",
+    "frontend/src/inventory-page.mjs": "9279128e6d4cb69793b4eeee5152d2e37954cb6e64ac79d67c4732da67569c97",
+    "frontend/src/style.css": "4169ad934d504f8d485057f8454d1257c50d5f308b41be123e0985ff83515512",
+    "frontend/server.mjs": "715f9ae1a10747cfbe80eb5f4cb34f1c7dd6fc29c666bc4608714c476e368451",
+    "frontend/test/domain-inventory.test.mjs": "3ce21df16f039de0238733d75d0eefcc5cee77d05f3e13e5cba759c9cff7cb32",
+    "frontend/test/domain-proxy.test.mjs": "9b24d9cac7cfc893a569258557a8e112f81bb45df864db3859c237641c25a083",
+    "scripts/inventory-ui-lab.mjs": "11e0c58802565bd5614e00eafa125b92baec2dee63faac9a09447ac95884747b",
+    "package.json": "686bf529438aa2912e2a8ed66925a4bd256d6e1c34c63c24cc4f27259b419692",
+    "package-lock.json": "1d523457c0d9a959c1083a8919451692549f8764badfd9fd38b9c96faae0c90d",
+    "Docs/DOMAIN-INVENTORY-UI.md": "4f1466bd619b9e449d25e52672c769dbddcb30f564e44738a77fbd453f5de5d4",
+    "Docs/evidence/S0-004/ui-v5-dark.png": "c10f931ab7e8ade94d83b6be50873bb0697aa70dba49c52e515c59002e4de8af",
+    "Docs/evidence/S0-004/ui-v5-light.png": "7a2fd719a1c8d27fce2813a16b0321ddc8b7afc9a57e2be0f786feefc968dc15",
+    "Docs/evidence/S0-004/test-v5.txt": "877460cd5726475e6b57e9f22ae394ec081ff9b9b7cc3bea293fb4e620f9ae94",
+    "Docs/evidence/S0-004/lint-v5.txt": "7a4e5ff3e800dab16bf11f2ea77b11cbe79d3d3ce6bedc46cd72b1c35ebad0bb",
+    "Docs/evidence/S0-004/build-v5.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-004/secret-scan-v5.json": "0ce1bb926daa06cbeec1e138838bdc944c2cde1c4023fef24f956b00124d877e"
+  }
+}
