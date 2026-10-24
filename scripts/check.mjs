@@ -4,7 +4,7 @@ import { spawnSync } from 'node:child_process';
 
 // Dependency-free baseline: syntax lint plus unsafe-code rules, not a substitute for future type checking.
 let count = 0;
-for (const root of ['backend', 'frontend', 'scripts']) await walk(root);
+for (const root of ['backend', 'frontend', 'collectors', 'scripts']) await walk(root);
 async function walk(path) {
   for (const entry of await readdir(path, { withFileTypes: true })) {
     if (['dist', 'node_modules'].includes(entry.name)) continue;
