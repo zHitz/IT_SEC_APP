@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Host inventory page
+# Result — TASK-S0-003: Host detail and QA replay correction
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v5 |
+| Result version | v6 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; Lead02:52 on2026-10-25 frontend assignment; v4 ACCEPT retained |
+| Spec version followed | SRS v1.0; TASK-S0-003; Lead03:23 on2026-10-25 Host detail assignment; v5 ACCEPT retained; QA review4368355476 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25, current execution after03:14 start (+07:00) |
-| Source/evidence commit | 50e4e0c829f4de69b3f371aba0823bc18fed2327 |
+| Submitted at | 2026-10-25T03:43:53.232545+07:00 |
+| Source/evidence commit | ebcf41e640959d01076615346c5a6d119dbb355a |
 
 ## 1. Summary
 
-Completed all newly assigned Host frontend requirements: one local page showing Host OS/version, Package version and ListeningPort process/PID via accepted v4GET APIs, hostname/package search, pages/totals and existing Atlas visual concept. Actual DOM tests, real synthetic HTTP/PostgreSQL integration and browser checks pass; full33/33tests,lint55modules/schema parity,build pass. Overall PARTIAL retains native AC1/3/4 gaps; new v5work itself is complete. V4 ACCEPT02:52 retained. No Cloudflare collector, schema/entity, native or production change.
+Completed all newly assigned Host detail requirements plus the in-scope QA raw-evidence correction. Clicking a hostname opens OS/version and exact-host Package/version/ListeningPort/process/PID lists using accepted GET APIs. Back retains list search/page/page-size; existing Atlas style/opt-in boundary preserved. Actual browser and DOM/HTTP/PostgreSQL proofs; full35/35tests,lint57modules/schema parity,buildPASS. Overall PARTIAL retains original native AC1/3/4 gaps; v6newwork complete. V5ACCEPT03:23 retained. No schema/Cloudflare/production/native change.
 
 ## 2. Acceptance criteria
 
@@ -34,67 +34,70 @@ Completed all newly assigned Host frontend requirements: one local page showing 
 | V5-3 | Local opt-in, no native/production/auth/schema/Cloudflare expansion | Pass: default404, explicit loopback page/proxy; accepted schema22+2/114FK unchanged, no collector/backend schema changes. |
 | V5-4 | Frontend tests/docs and full checks | Pass:33/33tests,lint55modules,build pass; HOST-INVENTORY-UI.md exact commands/boundaries/behavior/limits. |
 
+| V6-1 | Click Host -> detail with OS/version, scoped Packages/version and ListeningPorts/process/PID through accepted APIs | Pass: host-detail.test.mjs actual HTTP/PostgreSQL and browser host-11.test/OS12.3/package1.2.3/port8011/PID111; detail-v6.json/png. |
+| V6-2 | Back returns to list preserving search/page and frame style | Pass: DOM and actual browser retain host- search, page2of3/10rows. back-v6.png. Shared Atlas tokens/shell remain. |
+| V6-3 | Opt-in/local/no schema/Cloudflare/native expansion | Pass: same gated frontend/proxy/API; no backend contract/schema change. Existing disabled404 tests retained. |
+| V6-4 | Frontend detail/render/back tests/docs and full checks | Pass:35/35tests,lint57modules/schema22+2/114FK,buildPASS; Host guide updated. |
+| QA-1 | PR comment4368355476: stale replay must preserve Package latest raw_ref | Pass: conditional incoming>=observed_at update; regression opens actual referenced Host/Package/Port rawJSON after latest/repeat/stale replay and confirms latest collected_at. |
+
 ## 3. Work completed
 
-Read Lead02:52 ACCEPT/v5assignment; completed/submitted active Domain v5first, then built Host frontend on the same shared table/controller and posted [DEV][START]03:14 with actual code/test evidence. Added opt-in fixed Host GET routes, extracted reusable renderer with compatibility wrapper preserving Domain tests, added declared host fixture lab, UI tests/guide and actual browser screenshots. Full lint->test->build pass, known-pattern scan and source commit. No ten-minute outage repeat, native binary/token/production access or Cloudflare call.
+Read STATE and live GitHub branch/PR/CI/QA review plus latest Lead comments before deciding work. Live branch remained dev/sprint0-inventory, PRopen/unmerged with green checks; QA comment identified stale Package raw_ref. Implemented Host identity links/detail controller, scoped child requests and list retention, fixed raw evidence condition and added real-file regression. Posted [DEV][START]03:41 with actual code/tests; verified browser detail/back, ran full checks and saved evidence. No accepted ten-minute experiment repeated.
 
 ## 4. Files changed
 
-Source commit50e4e0c contains the following20files; canonical RESULT is additional report-only update.
+Source commit ebcf41e contains17files; canonical RESULT is an additional report-only commit.
 
 | File | Specific change |
 |---|---|
-| .gitignore | Exact hosts.html source exception only; saved HTML remains excluded. |
-| Docs/DOMAIN-INVENTORY-UI.md | Clarifies shared proxy now also allows separately assigned Host inventory routes. |
-| Docs/HOST-INVENTORY-UI.md | Host local setup/UI/proxy/reproduction guide, declared fixture and native limits. |
-| Docs/evidence/S0-003/build-v5.txt | Actual ESM/database packaging output. |
-| Docs/evidence/S0-003/lint-v5.txt | Actual55module/schema parity output. |
-| Docs/evidence/S0-003/secret-scan-v5.json | Actual tracked text known-pattern scan; binary files excluded. |
-| Docs/evidence/S0-003/test-v5.txt | Actual full33test output. |
-| Docs/evidence/S0-003/ui-v5-hosts.png | Actual Host page2 browser screenshot. |
-| Docs/evidence/S0-003/ui-v5-packages.png | Actual package search/version screenshot. |
-| Docs/evidence/S0-003/ui-v5-ports.png | Actual listener/process/PID screenshot. |
-| Docs/evidence/S0-003/ui-v5.json | Actual browser/HTTP/test proof, hashes and failure disclosure. |
-| frontend/server.mjs | Adds opt-in Host page/bootstrap/shared controller and fixed GET Host/Package/Port proxy routes; conditional navigation includes both pages. |
-| frontend/src/domain-inventory.mjs | Compatibility wrapper now delegates to extracted shared table; Domain behavior/tests preserved. |
-| frontend/src/domains.html | Adds working Host navigation alongside existing Domain navigation. |
-| frontend/src/host-page.mjs | Host mode bootstrap and shared theme preference. |
-| frontend/src/hosts.html | New semantic English Host page in existing Atlas shell, three resources, counts/search/pages. |
-| frontend/src/inventory-table.mjs | Shared safe table/controller; Host/Package/Port field projections, numeric PID/port validation, per-resource labels/search and page reset. |
-| frontend/test/domain-proxy.test.mjs | Unknown-route404 assertion now uses unapproved unknown path; Package GET became explicitly authorized in S0-003v5. |
-| frontend/test/host-inventory.test.mjs | Actual DOM and HTTP/PostgreSQL tests for Host/Package/Port fields/search/pages/totals and opt-in404. |
-| scripts/inventory-ui-lab.mjs | Optional--hosts fixture profile:26hosts/24host packages/25ports; accepted required normalized_version obeyed. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v5ten-section RESULT; original native gaps and accepted v2/v3/v4 history preserved. |
+| Docs/HOST-INVENTORY-UI.md | V6 detail behavior, exact reproduction, session/deeplink boundary and QA fix documented. |
+| Docs/evidence/S0-003/back-v6.png | Actual returned list with host-search/page2 retained. |
+| Docs/evidence/S0-003/build-v6.txt | Actual backend/frontend/database packaging output. |
+| Docs/evidence/S0-003/detail-v6.json | Actual35test/browser/QAproof, limits and source/log hashes. |
+| Docs/evidence/S0-003/detail-v6.png | Actual selected Host metadata/package/listener screenshot. |
+| Docs/evidence/S0-003/lint-v6.txt | Actual57module/schema parity output. |
+| Docs/evidence/S0-003/secret-scan-v6.json | Actual tracked-text known-pattern scan; binary artifacts excluded. |
+| Docs/evidence/S0-003/test-v6.txt | Actual full35test output including latestRawEvidencePreserved and Host detail proof. |
+| backend/src/ingest/osquery-store.mjs | QA correction: package raw_ref only replaces for incoming observation>=stored observed_at; timestamps/schema unchanged. |
+| backend/test/osquery.test.mjs | Regression reads actual rawJSON for all3entity kinds after latest/repeat/stale batches, asserts latest observation; sanitizes logged row fields. |
+| frontend/server.mjs | Exact static allowlist entry for detail module; no new proxy API. |
+| frontend/src/host-page.mjs | Boots Host detail-aware page controller. |
+| frontend/src/hosts.html | Adds separate semantic detail region and Back/Retry controls, preserving list DOM. |
+| frontend/src/inventory-detail.mjs | New Host detail controller: API-row metadata, exacthost_id child GETs, independent child paging, strict scope validation, safe DOM, retry/back/history/focus and list retention. |
+| frontend/src/inventory-table.mjs | Optional safe identity links invoke selection callback; default list behavior retained. |
+| frontend/src/style.css | Detail metadata/table/link styles using existing tokens and responsive rules. |
+| frontend/test/host-detail.test.mjs | Actual DOM+syntheticHTTP/PostgreSQL detail/back retention test and cross-host response/error rejection. |
+| Docs/RESULT-TASK-S0-003.md | Canonicalv6report; all original/previousAC limits and acceptance history retained. |
 
 ## 5. Run and verify
 
-From IT_SEC_APP with Node24: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts`; open printed loopback /inventory/hosts. Explicit lab creates disposable PostgreSQL17.5WASM fixtures, no Linux/osquery claim. Ctrl+C closes it. Existing approved synthetic DB mode requires backend INVENTORY_READ_ENABLED=true, frontend INVENTORY_UI_ENABLED=true and explicit loopback hosts/upstream as HOST-INVENTORY-UI.md describes. Run `node --test frontend/test/host-inventory.test.mjs`, `npm run lint`, `npm test`, `npm run build`. No production rollout or automatic fixture fallback.
+Node24 fromIT_SEC_APP: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts`; open printed localHost URL. Search host-, choose10rows, Next, click host-11.test; confirm OS12.3, sample-package-11/version1.2.3, tcp8011/synthetic-listener/PID111. Back retains searchhost- and page2of3. `node --test frontend/test/host-detail.test.mjs backend/test/osquery.test.mjs`; full `npm run lint`, `npm test`, `npm run build`. Same opt-in flags/local DB setup as HOST-INVENTORY-UI.md; no token/livehost. Lab engine is declared PostgreSQL17.5WASM, not nativeLinux.
 
 ## 6. Tests and actual results
 
-Targeted final2/2pass; full required sequence all exit0:33tests/pass33/fail0/duration8390.5721ms; lint55modules/schema22entities+2junctions/114FK; build backend/frontend ESM/database assets PASS. Actual DOM test covers OS/version, Host search/page reset, Package version/name search and listener process/PID. Actual HTTP/PostgreSQL proof:26hosts,24host packages,25host ports, stable pages/search/field values/counts/default404; Domain regressions remain green including safe text/error/empty/retry/race handling. Actual browser:10rows/page Next->page2of3,HOST-01=>1host,package-01=>1package version1.2.3,Listeningports=>25 with synthetic-listener and integerPID. Screenshots/ui-v5.json saved. Initial synthetic package fixture failed accepted normalized_version NOT NULL; fixture corrected, schema unchanged. No failed final test hidden. NativeLinux/osquery=false; no repeat of accepted600010ms experiment.
+Targeted4/4PASS; full lint->test->build all exit0:35tests/pass35/fail0/duration8229.5441ms; lint57modules and schema22entities+2junctions/114FKPASS; build backend/frontendESM/database assetsPASS. Actual Host detail proof:2scopedGETs to selectedhost, OS/version/package/processPID and Back search/page retained; mismatchedhost child data rejected into Retry/Back state. QA regression opens actual rawJSON for Host/Package/Port after first/new/repeat/stale and confirms collected_at=latest; latestRawEvidencePreserved=true. Actual browser host-11.test shows OS12.3, version1.2.3, port8011/PID111; Back search input propertyhost- and page2of3 observed. No v6test failure; earlier v5fixture issue remains historical, not recreated. Remote checks for old head were verified live at run start; new head CI must be verified after push, never inferred.
 
 ## 7. Issues and implementation decisions
 
-Extracted shared inventory-table.mjs rather than duplicate UI behavior; Domain module keeps compatibility wrapper and tests. Uses same Atlas design tokens/theme/CSS/layout and accepted API only. Resource switching clears search/page; listener search disabled because v4does not accept it. Typed port/PID values validated separately from strings/nulls. Host package/image and host/container listener boundaries follow accepted API, not new business logic. Shared proxy extends explicit resource whitelist; no arbitrary target/auth/cookie forwarding. Exact hosts.html gitignore exception preserves saved artifacts. Updated Domain proxy docs/test to reflect now-authorized Host routes. No product/scope/security decision needed.
+Kept accepted APIs: selected Host header is its list observation; children use existing exacthost_id filters, independent25rowpaging/counts. No new Host-by-ID endpoint/schema invented. Detail is an in-page view with history fragment; Back guarantees within current page session and focus restoration. Full reload starts list; standalone deep-link/reload persistence not requested/claimed. API shape/childhost guards and safe textDOM prevent cross-host results. QA correction is in accepted osquery upsert scope, not a new assignment: raw_ref now tracks latest observed_at, equal observation allowed by review. Read-only SELECT source/privacy/schema unchanged; no conflict with LeadnoCloudflare instruction.
 
 ## 8. Not done, limitations and technical debt
 
-Original nativeLinux/osquery AC1/3/4 remain unverified. Existing actual outage/queue experiment and simulator evidence retained, not rerun/relabelled. No real host/token/production/Cloudflare source change, schema/entity, authRBAC, nativePG/Docker or remote-native verification. Exact390/1024/1440viewport and reduced-motion runtime emulation unavailable; CSS responsive/focus/reduced-motion rules retained and actual viewport screenshots captured. No large-scale performance/assistive technology certification or live discovery claim. PostgreSQL17.5WASM fixture data is explicit.
+NativeLinux/osquery AC1/3/4 remain unverified, original actual600010ms evidence retained without repetition. No production/token/Cloudflare/sourcequery/schema/nativeDB/Docker access. Header is selected list observation, not an auto-refresh claim. Full reload resets detail/list state; no standalone deep links. Exactresponsive viewport/reducedMotion emulation and assistive technology/performance certification not claimed; CSS/focus rules retained. Actual engine remains PostgreSQL17.5WASM/synthetic.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for assigned v5frontend; all new requirements pass. Future original native acceptance still requires approved real Linux/osquery inputs per runbook. That remains separate from completed local UI scope and accepted PoC.
+No hard blocker for assignedv6/QAfix; all new requirements complete. Future native acceptance still needs approved real Linux/osquery input per retained runbook. No scope/security/priority decision taken and no Q01..05answered.
 
 ## 10. Next step and self-check
 
-Attach actual canonical v5RESULT, guide, proof/logs/screenshots and publish one [DEV][SUBMISSION]PARTIAL comment: v5frontend complete, original native gaps retained. Push to existing QA branch/PR without merge/status/dependency changes; act on concrete Lead/QA feedback.
+Commit/push this package to live recorded feature branch and update existing QA PR, never merge. Attach canonicalv6RESULT, guide/proof/logs/screenshots with one [DEV][SUBMISSION]PARTIAL comment, verify links and checkpoint. Then continue separately assigned Domainv6, no taskstatus/dependency edits.
 
-- [x] Exact TASK/version/status/spec and10orderedsections.
-- [x] Original ACs, accepted V4 scope and every V5 requirement mapped separately.
-- [x] Every changed file and real output/failure/assumption/limit included.
-- [x] No secrets/production/native claims; original completed experiment preserved.
-- [x] One canonical RESULT, previous accepted versions retained in Git/ClickUp.
+- [x] Ten sections/exactTASK/version/status/spec.
+- [x] OriginalACs/nativegaps plus acceptedV4/V5 and each V6/QAitem separately mapped.
+- [x] All changed files, commands/output, assumptions/limits/failures disclosed.
+- [x] Synthetic/native distinction and actual completed outage preserved; no secrets.
+- [x] Canonical report/history preserved.
 
-History: v1BLOCKEDmapping; v2PARTIALsimulatorPoC ACCEPT01:30; v3PARTIALreadinesscomplete ACCEPT02:03; v4PARTIALinventoryAPIcomplete ACCEPT02:52; v5PARTIALoverall/assignedHostfrontendcomplete. V5is new work, not v4REWORK.
+History: v2PoC PARTIALACCEPT01:30;v3readinessACCEPT02:03;v4APIACCEPT02:52;v5frontendACCEPT03:23;v6Hostdetailcomplete/PARTIALoverall plus QAraw_ref fix. Earlier canonicalversions remain Git/ClickUp.
 
