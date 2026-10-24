@@ -1,0 +1,838 @@
+{
+  "schema": "asset_inventory",
+  "common": {
+    "id": "uuid PRIMARY KEY DEFAULT gen_random_uuid()",
+    "source": "text NOT NULL",
+    "first_seen_at": "timestamptz NOT NULL",
+    "last_seen_at": "timestamptz NOT NULL",
+    "observed_at": "timestamptz NOT NULL",
+    "confidence": "text NOT NULL CHECK (confidence IN ('confirmed','inferred','stale'))",
+    "raw_ref": "text NOT NULL",
+    "tags": "text[] NOT NULL DEFAULT '{}'",
+    "owner_id": "uuid",
+    "environment": "text NOT NULL",
+    "site_id": "uuid",
+    "record_status": "text NOT NULL DEFAULT 'active' CHECK (record_status IN ('active','missing','retired'))",
+    "collection_run_id": "uuid"
+  },
+  "entities": {
+    "host": {
+      "entity": "Host / Server",
+      "columns": {
+        "hostname": "text NOT NULL",
+        "host_uuid": "text UNIQUE",
+        "ip_addresses": "inet[] NOT NULL DEFAULT '{}'",
+        "mac": "macaddr",
+        "os": "text",
+        "os_version": "text",
+        "kernel": "text",
+        "cpu": "text",
+        "ram": "bigint CHECK (ram >= 0)",
+        "disk": "bigint CHECK (disk >= 0)",
+        "virtualization": "text",
+        "cloud_provider": "text",
+        "agent_status": "text",
+        "last_boot": "timestamptz"
+      }
+    },
+    "workstation": {
+      "entity": "Workstation",
+      "columns": {
+        "hostname": "text NOT NULL",
+        "os": "text",
+        "os_major_version": "text",
+        "assigned_user": "text",
+        "last_checkin_at": "timestamptz",
+        "status": "text NOT NULL DEFAULT 'online' CHECK (status IN ('online','offline','inactive','missing','retired'))"
+      }
+    },
+    "site": {
+      "entity": "Site",
+      "columns": {
+        "name": "text NOT NULL",
+        "address_summary": "text",
+        "contact": "text"
+      }
+    },
+    "service": {
+      "entity": "Service / Application",
+      "columns": {
+        "name": "text NOT NULL",
+        "display_name": "text",
+        "criticality": "text NOT NULL CHECK (criticality IN ('critical','high','medium','low'))",
+        "repo_url": "text",
+        "lifecycle": "text CHECK (lifecycle IN ('active','deprecated','planned'))",
+        "description": "text"
+      }
+    },
+    "deployment": {
+      "entity": "Deployment",
+      "columns": {
+        "service_id": "uuid NOT NULL",
+        "host_id": "uuid",
+        "cluster_id": "text",
+        "namespace": "text",
+        "replicas": "integer CHECK (replicas >= 0)",
+        "image_ref": "text",
+        "image_digest": "text",
+        "started_at": "timestamptz",
+        "version_label": "text"
+      }
+    },
+    "container": {
+      "entity": "Container",
+      "columns": {
+        "container_id": "text NOT NULL UNIQUE",
+        "image": "text NOT NULL",
+        "image_digest": "text NOT NULL",
+        "runtime": "text NOT NULL CHECK (runtime IN ('docker','k8s'))",
+        "host_id": "uuid NOT NULL",
+        "deployment_id": "uuid",
+        "ports": "integer[] NOT NULL DEFAULT '{}'",
+        "mounts": "jsonb NOT NULL DEFAULT '[]'",
+        "privileged": "boolean NOT NULL DEFAULT false",
+        "run_as_user": "text",
+        "restart_count": "integer NOT NULL DEFAULT 0 CHECK (restart_count >= 0)"
+      }
+    },
+    "image": {
+      "entity": "Image",
+      "columns": {
+        "repository": "text NOT NULL",
+        "tag": "text",
+        "digest": "text NOT NULL UNIQUE",
+        "os_base": "text",
+        "size": "bigint CHECK (size >= 0)",
+        "created_at": "timestamptz",
+        "known_vuln_summary": "jsonb",
+        "last_scanned_at": "timestamptz"
+      }
+    },
+    "package": {
+      "entity": "Package / Library",
+      "columns": {
+        "name": "text NOT NULL",
+        "version": "text NOT NULL",
+        "normalized_version": "text NOT NULL",
+        "ecosystem": "text NOT NULL CHECK (ecosystem IN ('deb','rpm','npm','pip','go','maven','other'))",
+        "source_host_or_image": "uuid NOT NULL",
+        "source_kind": "text NOT NULL CHECK (source_kind IN ('host','image'))",
+        "runtime_id": "uuid",
+        "license": "text",
+        "is_eol": "boolean NOT NULL DEFAULT false"
+      }
+    },
+    "runtime_stack": {
+      "entity": "Runtime / Stack",
+      "columns": {
+        "type": "text NOT NULL",
+        "name": "text NOT NULL",
+        "version": "text",
+        "eol_date": "date",
+        "support_status": "text",
+        "service_id": "uuid"
+      }
+    },
+    "network_interface": {
+      "entity": "Network Interface / IP",
+      "columns": {
+        "host_id": "uuid NOT NULL",
+        "interface": "text",
+        "ip": "inet NOT NULL",
+        "cidr": "cidr",
+        "is_public": "boolean NOT NULL DEFAULT false",
+        "mac": "macaddr"
+      }
+    },
+    "listening_port": {
+      "entity": "Listening Port",
+      "columns": {
+        "host_id": "uuid",
+        "container_id": "uuid",
+        "protocol": "text NOT NULL CHECK (protocol IN ('tcp','udp'))",
+        "port": "integer NOT NULL CHECK (port BETWEEN 1 AND 65535)",
+        "bind_address": "inet NOT NULL",
+        "process": "text",
+        "pid": "bigint CHECK (pid >= 0)",
+        "is_exposed": "boolean NOT NULL DEFAULT false"
+      }
+    },
+    "firewall_rule": {
+      "entity": "Firewall Rule",
+      "columns": {
+        "host_id": "uuid NOT NULL",
+        "source_system": "text NOT NULL",
+        "action": "text NOT NULL CHECK (action IN ('allow','deny','reject'))",
+        "src_cidr": "cidr",
+        "dst": "text",
+        "ports": "integer[] NOT NULL DEFAULT '{}'",
+        "direction": "text CHECK (direction IN ('ingress','egress'))"
+      }
+    },
+    "domain": {
+      "entity": "Domain",
+      "columns": {
+        "fqdn": "text NOT NULL UNIQUE",
+        "registrar_note": "text",
+        "is_internal": "boolean NOT NULL DEFAULT false",
+        "primary_service_id": "uuid"
+      }
+    },
+    "dns_record": {
+      "entity": "DNS Record",
+      "columns": {
+        "domain": "text NOT NULL",
+        "type": "text NOT NULL CHECK (type IN ('A','AAAA','CNAME','TXT','MX','NS','SOA','SRV','CAA','PTR','DS','DNSKEY','TLSA','HTTPS','SVCB','NAPTR','URI','CERT','SSHFP','SMIMEA','OPENPGPKEY','LOC','HINFO','RP'))",
+        "value": "text NOT NULL",
+        "proxied": "boolean NOT NULL DEFAULT false",
+        "ttl": "integer NOT NULL CHECK (ttl >= 0)",
+        "network_interface_id": "uuid"
+      }
+    },
+    "certificate": {
+      "entity": "Certificate",
+      "columns": {
+        "domain": "text NOT NULL",
+        "issuer": "text",
+        "subject": "text",
+        "san": "text[] NOT NULL DEFAULT '{}'",
+        "not_before": "timestamptz",
+        "not_after": "timestamptz",
+        "fingerprint": "text UNIQUE"
+      }
+    },
+    "route": {
+      "entity": "Route (Traefik)",
+      "columns": {
+        "host_id": "uuid NOT NULL",
+        "router_name": "text NOT NULL",
+        "rule_host": "text",
+        "rule_path": "text",
+        "service_target": "uuid NOT NULL",
+        "middlewares": "text[] NOT NULL DEFAULT '{}'",
+        "tls": "boolean NOT NULL DEFAULT false",
+        "entrypoint": "text",
+        "source_config": "text"
+      }
+    },
+    "access_policy": {
+      "entity": "Access Policy",
+      "columns": {
+        "system": "text NOT NULL CHECK (system IN ('Pomerium','Traefik','Keycloak'))",
+        "route_ref": "uuid NOT NULL",
+        "service_id": "uuid NOT NULL",
+        "allowed_groups": "uuid[] NOT NULL DEFAULT '{}'",
+        "allowed_domains": "text[] NOT NULL DEFAULT '{}'",
+        "mfa_required": "boolean NOT NULL DEFAULT false",
+        "public_allowed": "boolean NOT NULL DEFAULT false"
+      }
+    },
+    "identity_group_role": {
+      "entity": "Identity Group / Role",
+      "columns": {
+        "idp": "text NOT NULL",
+        "realm": "text NOT NULL",
+        "client_id": "text",
+        "groups": "text[] NOT NULL DEFAULT '{}'",
+        "roles": "text[] NOT NULL DEFAULT '{}'",
+        "user_count": "integer NOT NULL DEFAULT 0 CHECK (user_count >= 0)"
+      }
+    },
+    "vulnerability": {
+      "entity": "Vulnerability (CVE)",
+      "columns": {
+        "cve_id": "text NOT NULL UNIQUE",
+        "aliases": "text[] NOT NULL DEFAULT '{}'",
+        "cvss": "numeric CHECK (cvss BETWEEN 0 AND 10)",
+        "severity": "text CHECK (severity IN ('critical','high','medium','low','unknown'))",
+        "kev_listed": "boolean NOT NULL DEFAULT false",
+        "epss": "numeric CHECK (epss BETWEEN 0 AND 1)",
+        "published_at": "timestamptz",
+        "fixed_versions": "text[] NOT NULL DEFAULT '{}'",
+        "references": "text[] NOT NULL DEFAULT '{}'"
+      }
+    },
+    "finding": {
+      "entity": "Finding",
+      "columns": {
+        "type": "text NOT NULL CHECK (type IN ('cve','exposure','drift','eol','misconfig'))",
+        "entity_ref": "uuid NOT NULL",
+        "entity_type": "text NOT NULL",
+        "vulnerability_id": "uuid",
+        "severity": "text NOT NULL CHECK (severity IN ('critical','high','medium','low'))",
+        "risk_score": "integer CHECK (risk_score BETWEEN 0 AND 100)",
+        "status": "text NOT NULL CHECK (status IN ('new','triaged','in_progress','mitigated','resolved','accepted_risk','false_positive'))",
+        "first_found": "timestamptz NOT NULL",
+        "last_found": "timestamptz NOT NULL",
+        "evidence_ref": "text NOT NULL"
+      }
+    },
+    "owner_team": {
+      "entity": "Owner / Team",
+      "columns": {
+        "team_name": "text NOT NULL",
+        "members": "text[] NOT NULL DEFAULT '{}'",
+        "contact_channel": "text",
+        "escalation": "text"
+      }
+    },
+    "collection_run": {
+      "entity": "Scan / Collection Run",
+      "columns": {
+        "collector": "text NOT NULL",
+        "started_at": "timestamptz NOT NULL",
+        "finished_at": "timestamptz",
+        "status": "text NOT NULL CHECK (status IN ('running','success','partial','failed'))",
+        "records_seen": "integer NOT NULL DEFAULT 0 CHECK (records_seen >= 0)",
+        "errors": "text[] NOT NULL DEFAULT '{}'",
+        "scope": "jsonb"
+      }
+    }
+  },
+  "foreignKeys": [
+    [
+      "host",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "host",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "host",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "workstation",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "workstation",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "workstation",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "site",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "site",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "site",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "service",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "service",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "service",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "deployment",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "deployment",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "deployment",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "container",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "container",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "container",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "image",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "image",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "image",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "package",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "package",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "package",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "runtime_stack",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "runtime_stack",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "runtime_stack",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "network_interface",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "network_interface",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "network_interface",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "listening_port",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "listening_port",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "listening_port",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "firewall_rule",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "firewall_rule",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "firewall_rule",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "domain",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "domain",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "domain",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "dns_record",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "dns_record",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "dns_record",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "certificate",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "certificate",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "certificate",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "route",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "route",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "route",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "access_policy",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "access_policy",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "access_policy",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "identity_group_role",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "identity_group_role",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "identity_group_role",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "vulnerability",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "vulnerability",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "vulnerability",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "finding",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "finding",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "finding",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "owner_team",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "owner_team",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "owner_team",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "collection_run",
+      "owner_id",
+      "owner_team",
+      "id"
+    ],
+    [
+      "collection_run",
+      "site_id",
+      "site",
+      "id"
+    ],
+    [
+      "collection_run",
+      "collection_run_id",
+      "collection_run",
+      "id"
+    ],
+    [
+      "deployment",
+      "service_id",
+      "service",
+      "id"
+    ],
+    [
+      "deployment",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "deployment",
+      "image_digest",
+      "image",
+      "digest"
+    ],
+    [
+      "container",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "container",
+      "deployment_id",
+      "deployment",
+      "id"
+    ],
+    [
+      "container",
+      "image_digest",
+      "image",
+      "digest"
+    ],
+    [
+      "package",
+      "runtime_id",
+      "runtime_stack",
+      "id"
+    ],
+    [
+      "runtime_stack",
+      "service_id",
+      "service",
+      "id"
+    ],
+    [
+      "network_interface",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "listening_port",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "listening_port",
+      "container_id",
+      "container",
+      "id"
+    ],
+    [
+      "firewall_rule",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "domain",
+      "primary_service_id",
+      "service",
+      "id"
+    ],
+    [
+      "dns_record",
+      "domain",
+      "domain",
+      "fqdn"
+    ],
+    [
+      "dns_record",
+      "network_interface_id",
+      "network_interface",
+      "id"
+    ],
+    [
+      "certificate",
+      "domain",
+      "domain",
+      "fqdn"
+    ],
+    [
+      "route",
+      "host_id",
+      "host",
+      "id"
+    ],
+    [
+      "route",
+      "service_target",
+      "service",
+      "id"
+    ],
+    [
+      "access_policy",
+      "route_ref",
+      "route",
+      "id"
+    ],
+    [
+      "access_policy",
+      "service_id",
+      "service",
+      "id"
+    ],
+    [
+      "finding",
+      "vulnerability_id",
+      "vulnerability",
+      "id"
+    ]
+  ],
+  "junctions": {
+    "access_policy_identity_group": [
+      [
+        "policy_id",
+        "access_policy"
+      ],
+      [
+        "identity_group_id",
+        "identity_group_role"
+      ]
+    ],
+    "package_vulnerability": [
+      [
+        "package_id",
+        "package"
+      ],
+      [
+        "vulnerability_id",
+        "vulnerability"
+      ]
+    ]
+  }
+}

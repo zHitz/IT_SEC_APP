@@ -1,6 +1,6 @@
 # Atlas — IT Asset & Security
 
-Skeleton TASK-S0-001, chỉ chạy local. SRS v1.0 trong `Docs/it-asset-security-srs.pdf` là nguồn nghiệp vụ; `docs/adr/ADR-001-tech-stack.md` là đề xuất stack chờ Team Lead xác nhận. Không có inventory, collector hay dữ liệu hạ tầng thật. UI kế thừa màu sắc, typography, layout từ IT_ASSET_MAP; không copy model/store/logic cũ.
+Skeleton TASK-S0-001 và schema TASK-S0-002, chỉ chạy local. SRS v1.0 trong `Docs/it-asset-security-srs.pdf` là nguồn nghiệp vụ; `Docs/adr/ADR-001-tech-stack.md` là đề xuất stack được Lead cho dùng tạm cho S0-002. Không có API inventory, collector hay dữ liệu hạ tầng thật. UI kế thừa màu sắc, typography, layout từ IT_ASSET_MAP; không copy model/store/logic cũ.
 
 ## Repo và mapping tài liệu
 
@@ -35,9 +35,10 @@ Frontend hiển thị shell Atlas tiếng Việt; nút Kiểm tra kết nối ba
 
 ## Lint, unit-test và build
 
-Máy có Node.js 24 (không cần npm install, không có dependency npm):
+Máy có Node.js 24: từ S0-002, cài đúng lockfile trước khi kiểm tra. `pg` là client PostgreSQL; PGlite 0.3.16 là dev dependency PostgreSQL 17.5 WASM để test SQL local, không thay server đích.
 
 ```powershell
+npm ci
 npm run lint
 npm test
 npm run build
@@ -48,12 +49,17 @@ Thứ tự trên giống workflow `.github/workflows/ci.yml`. Lint hiện kiểm
 Nếu chỉ có Docker:
 
 ```powershell
+docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm ci
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm run lint
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm test
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm run build
 ```
 
 Chạy không Docker cho kiểm tra Dev: sao `.env.example` sang `.env`, đổi BACKEND_HOST/FRONTEND_HOST thành `127.0.0.1`, BACKEND_ORIGIN thành `http://127.0.0.1:4100`, build rồi mở hai terminal `npm run start:backend` và `npm run start:frontend`. Cách này không thay AC Compose.
+
+## Schema S0-002
+
+Xem `backend/db/README.md` và `Docs/DATA_MODEL.md`. `npm run db:verify` chạy migration up → seed → inspect → down trên database PostgreSQL 17.5 nhúng trống và ghi bằng chứng; không dùng DATABASE_URL. Server PostgreSQL 17: điền DATABASE_URL cho database test riêng trong `.env`, rồi `npm run db:up`, `npm run db:seed`, `npm run db:inspect`, `npm run db:down`. Down xóa schema do chính migration tạo, bao gồm seed; chỉ dùng database disposable của task. Không tự migrate khi khởi động web.
 
 ## Dừng và reset
 
@@ -71,4 +77,4 @@ Chỉ khi chủ động muốn xóa dữ liệu database **local của project n
 
 ## Ranh giới mở rộng
 
-Không bắt đầu S0-002/003/004 trước khi được Team Lead mở task. SSO/RBAC, model 22 entity, ingest, migrations, CVE, search, scanner chưa triển khai. API nghiệp vụ tương lai theo SRS §20 `/api/v1/` và lỗi có request_id; mọi thay đổi phạm vi qua Team Lead. Tham khảo `Docs/adr/ADR-001-tech-stack.md`, không coi đề xuất ADR là quyết định đã được duyệt.
+Lead đã mở riêng S0-002 và cho phép bảng nối kỹ thuật theo quyết định A ngày 2026-10-24 21:44. Không bắt đầu S0-003/004 trước chỉ thị mở tiếp. SSO/RBAC, ingest, matching CVE, search, scanner chưa triển khai; schema/seed là task dữ liệu, không xác nhận phát hiện rủi ro thật. API nghiệp vụ tương lai theo SRS §20 `/api/v1/` và lỗi có request_id; mọi thay đổi phạm vi qua Team Lead.

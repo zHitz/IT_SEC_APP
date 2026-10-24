@@ -5,3 +5,5 @@ for (const part of ['backend', 'frontend']) {
   await cp(`${part}/src`, `${part}/dist`, { recursive: true });
   console.log(`build PASS: ${part}/src -> ${part}/dist (native ESM, no transpilation)`);
 }
+await cp('backend/db', 'backend/dist/db', { recursive: true });
+console.log('build PASS: database migration assets packaged');

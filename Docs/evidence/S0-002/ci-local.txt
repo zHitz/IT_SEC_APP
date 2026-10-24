@@ -1,0 +1,73 @@
+START 2026-10-24T22:02:54.4789577+07:00
+
+> it-asset-security@0.1.0 lint
+> node scripts/check.mjs && node scripts/generate-schema.mjs --check
+
+lint PASS: 14 modules; syntax and unsafe-code rules
+schema check PASS: 22 entities, 2 junctions, 114 native FKs
+
+> it-asset-security@0.1.0 test
+> node --test backend/test/*.test.mjs frontend/test/*.test.mjs
+
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (88.6915ms)
+✔ configuration fails closed for missing or invalid ports (0.8911ms)
+POSTGRES PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit
+UP: 0 -> 24 tables (22 entities + 2 technical junctions), common and entity columns verified
+SEED {"hosts":2,"containers":1,"domains":1,"cve_findings":1}
+FK/validation: orphan owner, group, CVE and polymorphic finding rejected; confidence/port/projection rejected; soft state retains rows
+DOWN: 24 -> 0 tables
+REAPPLY: up -> down PASS
+✔ migration, seed, FK contracts and down on fresh embedded PostgreSQL (2957.033ms)
+✔ frontend serves shell and proxies real backend health without exposing saved source (114.1034ms)
+✔ health UI rejects HTTP failures and malformed successful payloads (1.0535ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3150.8763
+
+> it-asset-security@0.1.0 build
+> node scripts/build.mjs
+
+build PASS: backend/src -> backend/dist (native ESM, no transpilation)
+build PASS: frontend/src -> frontend/dist (native ESM, no transpilation)
+build PASS: database migration assets packaged
+
+> it-asset-security@0.1.0 db:verify
+> node scripts/verify-db.mjs
+
+{
+  "version": [
+    {
+      "version": "PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit"
+    }
+  ],
+  "before": [
+    {
+      "tables": 0
+    }
+  ],
+  "businessEntities": 22,
+  "technicalJunctions": 2,
+  "totalTables": 24,
+  "foreignKeys": 114,
+  "seedCounts": [
+    {
+      "hosts": 2,
+      "containers": 1,
+      "domains": 1,
+      "cve_findings": 1
+    }
+  ],
+  "pathRows": 1,
+  "after": [
+    {
+      "tables": 0
+    }
+  ],
+  "evidence": "Docs/evidence/S0-002/schema-inspect.json"
+}
+END 2026-10-24T22:03:04.3695724+07:00
