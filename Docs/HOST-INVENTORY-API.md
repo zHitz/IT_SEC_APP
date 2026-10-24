@@ -52,3 +52,10 @@ curl.exe "http://127.0.0.1:3001/api/v1/inventory/hosts?search=sample-host&page_s
 ```
 
 Replace 3001 with the configured local port; the manual curl example is not a claim of a running daemon. Automated tests start an actual ephemeral loopback HTTP server, migrate/seed a fresh PostgreSQL WASM database and add a synthetic host through the accepted osquery store. Assertions cover OS/version, host-only packages/version, listener process/PID, case-insensitive/literal/injection-shaped search, filtered/global counts, empty/out-of-range pages, stable pagination, limits/duplicate/unknown query rejection, GET-only methods, sanitized database failures, read-only transaction and refused non-loopback startup. Fixture writes occur only in test setup before BEGIN READ ONLY; no migration/schema edits belong to this assignment.
+
+
+## V7 Host identity lookup for reloadable details
+
+GET /api/v1/inventory/hosts/:id returns {data:{id,hostname,os,os_version,first_seen_at,last_seen_at}} for exact Host.id UUID equality. It accepts no query parameters. Missing UUID ->404HOST_NOT_FOUND; malformed UUID ->400INVALID_ID; any query ->400INVALID_QUERY; nonGET ->405Allow:GET; query failure ->503INVENTORY_UNAVAILABLE with sanitized error/request_id; disabled gate ->404NOT_FOUND. Unsupported child paths remain404. This uses the existing opt-in separate read-only pool, bound UUID, same loopback proxy and accepted Host table. No schema, discovery, write endpoint or production authorization is added. Packages/ListeningPorts still use accepted list routes with exact host_id.
+
+The lookup is the technical identity source for direct/reloaded Host details; it avoids guessing names, trusting history-stored data or scanning host pages. Actual test executes lookup/not-found/input/method checks inside PostgreSQL17.5WASM BEGIN READ ONLY.

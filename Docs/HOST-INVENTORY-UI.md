@@ -1,4 +1,6 @@
-# Host inventory page — S0-003 v5
+# Host inventory page — S0-003
+
+Current V7 supports direct links and reload. The V6 reload limitation below is historical and superseded.
 
 ## Explicit synthetic lab
 
@@ -30,3 +32,14 @@ Click a hostname link to open its detail view within the local page. Header uses
 Reproduce: explicit synthetic lab --hosts; choose10rows/page, search host-, go Next, click host-11.test, verify OS12.3, package version1.2.3 and listenerPID111, then Back and confirm list query/page2. Actual integration test repeats this over real HTTP/PostgreSQLWASM. No nativeLinux/osquery claim. Detail implementation is shared frontend/src/inventory-detail.mjs with Host mode; table onSelect is only wired for Host/Domain identity columns.
 
 QA PR comment4368355476 additionally identified package raw_ref stale replay mismatch. The accepted upsert still preserves observation timestamps, and now raw_ref changes only for an incoming observation at least as recent. Regression opens the actual referenced raw JSON for Host/Package/ListeningPort after new/repeat/stale batches and asserts it matches the latest collected_at. No schema/source query/privacy expansion and no repeat of the real ten-minute experiment.
+
+
+## V7 direct links, reload and browser history
+
+Canonical example: /inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10. UUID is the identity; hostname aliases are not needed for the assigned id-or-name alternative. Legacy #detail=:uuid links also resolve. The fragment carries only identity and validated list context, never credentials or copied Host metadata. A fresh GET /api/v1/inventory/hosts/:id resolves current Host details after direct navigation/reload, followed by accepted exact-host Package/Port requests. No full-list scan or fixture fallback.
+
+Opening a row records the list URL/context then pushes the detail entry. Native browser Back/Forward follows those entries; reload reconstructs selected Host and list search/page/page-size from the URL, not stale history rows. Back to list uses browser history for an app-created entry; a directly opened detail safely returns to the encoded list context instead of leaving the app. List data is retained when its context already matches, otherwise reloaded. URL page bounds1..100000; supported page sizes10/25/50/100; invalid list context falls back safely. Search trimmed/max200/no controls. Location/history logic is isolated in host-navigation.mjs; shared detail controller validates fresh parent and matching child IDs.
+
+Unknown UUID shows Host not found and clears metadata/related records; malformed identity shows Invalid host link. Retry/Back remain available; no other Host detail is rendered as a partial fallback. Synthetic unknown UUID can be tested with ffffffff-ffff-ffff-ffff-ffffffffffff. No global storage/state policy, auth/RBAC, schema or Cloudflare behavior changes.
+
+Verify with `node --test frontend/test/host-navigation.test.mjs backend/test/host-exact.test.mjs`; full lint/test/build. DOM+actual HTTP/PostgreSQL tests open a direct link, mount a fresh document to model reload, traverse Back/Forward, retain search/page and reject unknown/invalid IDs without partial data. Actual browser reload/Back/Forward/error checks are separately recorded in navigation-v7.json/screenshots. Native Linux/osquery and exact responsive viewport/reduced-motion runtime verification remain unclaimed.

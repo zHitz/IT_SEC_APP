@@ -1,0 +1,44 @@
+{
+  "task": "S0-003",
+  "version": "v7",
+  "tests": 42,
+  "lintModules": 63,
+  "build": "PASS",
+  "schema": "22+2/114FK unchanged",
+  "actualBrowser": {
+    "directId": "20000000-0000-4000-8000-000000000011",
+    "directAndReload": "host-11.test /package11/PID111 after actual browser reload",
+    "backList": "searchhost-/page2of3",
+    "browserBackForward": "host-12.test /PID112 after nativeback/forward",
+    "unknownUUID": "Hostnotfound; metadata/related empty",
+    "malformedId": "Invalidhostlink; no stale detail data"
+  },
+  "actualProof": [
+    "HOST_EXACT_V7_PROOF {\"synthetic\":true,\"readOnlyTransaction\":true,\"uuidLookup\":true,\"osVersion\":true,\"missing404\":true,\"invalid400\":true,\"noSchemaChange\":true}",
+    "HOST_NAVIGATION_V7_PROOF {\"synthetic\":true,\"actualHttpPostgres\":true,\"directLink\":true,\"reloadNewDocument\":true,\"exactLookup\":true,\"backForward\":true,\"searchPageRetained\":true,\"missing404NoPartial\":true,\"invalid400NoPartial\":true,\"nativeLinux\":false}"
+  ],
+  "limits": [
+    "Synthetic PostgreSQL17.5WASM; nativeLinux/osquery false",
+    "Host UUID canonical identity, no hostname alias promised",
+    "No production/token/Cloudflare or exactviewport/reducedMotion emulation"
+  ],
+  "sha256": {
+    "backend/src/inventory/exact-reader.mjs": "ce36ed0d43325d5229b931b86f679e3ce47e8e9bca82a84cd4000d829ba94ab3",
+    "backend/src/app.mjs": "a0ae37dfeddeb262b3f76d2e80ca2fbe92b3043cb31f523c13dd67df0355c731",
+    "backend/test/host-exact.test.mjs": "55abce88b3f6f676a1afaecc3f88dcb8beb62c87519e0456e0aae3eac01f5fb8",
+    "frontend/server.mjs": "2dc55adc48d6b39945fa41dee62e77851608eb1fe4990afc446823a707587283",
+    "frontend/src/inventory-table.mjs": "f8f9062dae42086c63d97afece75ad2d542048d66431a1778671ff4f6d750307",
+    "frontend/src/inventory-detail.mjs": "4df71a57322297ae050ea2984eead19622bcc366db7d01a6a17f78d8ad74f3d7",
+    "frontend/src/host-page.mjs": "7a20e0627a5989605c8d33520d7a55149380a8c8d7b0d5de3c1c421fa2c06750",
+    "frontend/src/host-navigation.mjs": "3d0083ca6cc1f7d4804ddef99e11b3f9694f480e60349aba28d5342dd93732e6",
+    "frontend/test/host-navigation.test.mjs": "a2c052546ba1f1c1a7d9a6af423e5270f8ffcccd32c0fe4a315eab8d993d7fb0",
+    "Docs/HOST-INVENTORY-API.md": "a262d8db7571795dcbdf072d85362aab974ef3b1afa14b23526c42ac2008a370",
+    "Docs/HOST-INVENTORY-UI.md": "903699bd6ddfac9ebe5799fc10c59e306b04b345d59067d2d5285269b672c6e9",
+    "Docs/evidence/S0-003/test-v7.txt": "c3aee7bd8966ba4310a373deb4101985d08990436108d1f830b6031c610d76d0",
+    "Docs/evidence/S0-003/lint-v7.txt": "a4e281d127c1775ac151cf66f4fefcca151e3396227b0cce032d0fe4bc170b1a",
+    "Docs/evidence/S0-003/build-v7.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-003/reload-v7.png": "daa8330a7ced0e69be867a331ed0afc29f45be1aa2c37f2ce882f5d5230795b9",
+    "Docs/evidence/S0-003/history-v7.png": "10655bbc3fb0a7a44c8ead8479b1e6255468676d1908b341f0c80919d02700f5",
+    "Docs/evidence/S0-003/missing-v7.png": "d0b43e5b3d27cb8131924979dd69d8c3e21d4d5d7c45803702c6c6ccaef9541c"
+  }
+}

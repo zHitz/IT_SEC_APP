@@ -1,0 +1,42 @@
+import {mountInventoryDetail} from './inventory-detail.mjs';
+export function parseHostRoute(location){
+ const params=new URLSearchParams((location?.hash??'').replace(/^#/,''));
+ const integer=(key,fallback,max)=>/^[1-9]\d*$/.test(params.get(key)??'')&&Number(params.get(key))<=max?Number(params.get(key)):fallback;
+ const raw=params.get('search')??'';const search=raw.length<=200&&!/[\u0000-\u001f\u007f]/.test(raw)?raw.trim():'';
+ const size=integer('page_size',25,100),pageSize=[10,25,50,100].includes(size)?size:25;
+ const id=params.has('host')?(params.get('host')??''):params.has('detail')?(params.get('detail')??''):null;
+ return{id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
+}
+export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
+ const view=document.defaultView;
+ const nav=navigation??{history:view.history,location:view.location,events:view};
+ const route=parseHostRoute(nav.location);let core,lastRoute=null,routePending=Promise.resolve();
+ const get=id=>document.getElementById(id);
+ const context=()=>({resource:'hosts',search:core.list.state.search,page:core.list.state.page,pageSize:core.list.state.pageSize});
+ function fragment(id,ctx){const p=new URLSearchParams(id===null?{list:'1'}:{host:id});if(ctx.search)p.set('search',ctx.search);p.set('page',String(ctx.page));p.set('page_size',String(ctx.pageSize));return'#'+p;}
+ function applyContext(ctx){
+  const changed=['resource','search','page','pageSize'].some(k=>core.list.state[k]!==ctx[k]);
+  Object.assign(core.list.state,ctx);get('domain-search').value=ctx.search;
+  for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(ctx.pageSize);
+  return changed?core.list.reload():Promise.resolve();
+ }
+ async function sync(){
+  const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
+  if(next.id===null)core.back();else await core.open({id:next.id,hostname:'Host details',os:null,os_version:null,first_seen_at:null,last_seen_at:null},{recordHistory:false});
+  await pending;
+ }
+ function navigate(id){
+  const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
+  nav.history?.pushState({atlasFromList:true,atlasList:ctx},'',nav.location.pathname+fragment(id,ctx));
+  lastRoute=null;routePending=sync();
+ }
+ function back(){
+  if(nav.history?.state?.atlasFromList){nav.history.back();return;}
+  const ctx=parseHostRoute(nav.location).context;nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));lastRoute=null;routePending=sync();
+ }
+ core=mountInventoryDetail(document,{mode:'host',fetcher,initialState:route.context,manageHistory:false,resolveHost:true,onSelection:row=>navigate(row.id),onBack:back});
+ get('domain-search').value=route.context.search;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
+ const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
+ const ready=Promise.all([core.ready,sync()]);
+ return{ready,core,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);core.destroy();}};
+}

@@ -18,10 +18,10 @@ export function validateInventory(data, resource) {
  }
  return data;
 }
-export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect}={}) {
+export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect,initialState={}}={}) {
  const get=id=>document.getElementById(id);
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
- const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false};
+ const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false,...initialState};
  let generation=0,active;
  function render(data){
   const head=document.createElement('tr');

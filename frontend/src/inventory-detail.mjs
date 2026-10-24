@@ -1,6 +1,6 @@
 import {mountInventoryTable,validateInventory} from './inventory-table.mjs';
 const childColumns={'dns-records':[['type','Type'],['value','Value'],['proxied','Proxied'],['ttl','TTL'],['tags','Tags'],['outside_flag','Outside known range']],packages:[['name','Package'],['version','Version'],['ecosystem','Ecosystem']],'listening-ports':[['protocol','Protocol'],['port','Port'],['bind_address','Bind address'],['process','Process'],['pid','PID']]};
-export function mountInventoryDetail(document,{mode='host',fetcher=fetch}={}){
+export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,manageHistory=true,resolveHost=false}={}){
  const get=id=>document.getElementById(id),history=document.defaultView?.history;
  let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let lastFocus;
  const textNode=(tag,text)=>{const el=document.createElement(tag);el.textContent=text??'—';return el;};
@@ -30,27 +30,28 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch}={}){
  }
  async function load(){
   active?.abort();const controller=new AbortController();active=controller;const current=++version,timeout=setTimeout(()=>controller.abort(),8000);
-  get('detail-related').replaceChildren();if(mode==='domain')get('detail-info').replaceChildren();get('detail-status').textContent='Loading details…';get('detail-retry').hidden=true;get('inventory-detail').setAttribute('aria-busy','true');
+  get('detail-related').replaceChildren();if(mode==='domain'||resolveHost)get('detail-info').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';get('detail-status').textContent='Loading details…';get('detail-retry').hidden=true;get('inventory-detail').setAttribute('aria-busy','true');
   try{
-   if(mode==='domain'){
-    const response=await fetcher(`/api/v1/inventory/domains/${encodeURIComponent(selected.id)}`,{signal:controller.signal,headers:{Accept:'application/json'}});
-    if(!response.ok)throw Error(response.status===404?'DOMAIN_NOT_FOUND':'DETAIL_UNAVAILABLE');
-    const payload=await response.json();validateInventory({data:[payload.data],meta:{page:1,page_size:25,total:1,total_pages:1}},'domains');
-    if(payload.data.id!==selected.id)throw Error('DETAIL_SCOPE_MISMATCH');if(current!==version)return;selected=payload.data;info(selected);
+   if(mode==='domain'||resolveHost){
+    const parentResource=mode==='host'?'hosts':'domains';
+    const response=await fetcher(`/api/v1/inventory/${parentResource}/${encodeURIComponent(selected.id)}`,{signal:controller.signal,headers:{Accept:'application/json'}});
+    if(!response.ok)throw Error(response.status===404?(mode==='host'?'HOST_NOT_FOUND':'DOMAIN_NOT_FOUND'):response.status===400?'INVALID_LINK':'DETAIL_UNAVAILABLE');
+    const payload=await response.json();validateInventory({data:[payload.data],meta:{page:1,page_size:25,total:1,total_pages:1}},parentResource);
+    if(payload.data.id!==selected.id)throw Error('DETAIL_SCOPE_MISMATCH');if(current!==version)return;selected=payload.data;get('detail-title').textContent=mode==='host'?selected.hostname:selected.fqdn;info(selected);
    }
    const resources=mode==='domain'?['dns-records']:['packages','listening-ports'];const payloads=await Promise.all(resources.map(resource=>read(resource,pages[resource],controller.signal)));if(current!==version)return;
    get('detail-related').replaceChildren(...resources.map((resource,i)=>renderChildren(resource,payloads[i])));get('detail-status').textContent='';
-  }catch(error){if(current!==version)return;get('detail-info').replaceChildren();get('detail-status').textContent=error.message==='DOMAIN_NOT_FOUND'?'Domain not found. Return to the list.':'Could not load the selected '+mode+' details. Retry or return to the list.';get('detail-retry').hidden=false;}
+  }catch(error){if(current!==version)return;get('detail-info').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';get('detail-status').textContent=error.message==='HOST_NOT_FOUND'?'Host not found. Return to the list.':error.message==='INVALID_LINK'?'Invalid '+mode+' link. Return to the list.':error.message==='DOMAIN_NOT_FOUND'?'Domain not found. Return to the list.':'Could not load the selected '+mode+' details. Retry or return to the list.';get('detail-retry').hidden=false;}
   finally{clearTimeout(timeout);if(current===version)get('inventory-detail').setAttribute('aria-busy','false');}
  }
  function showList(){version++;active?.abort();get('inventory-list').hidden=false;get('inventory-detail').hidden=true;try{lastFocus?.focus();}catch{} }
  async function open(row,{recordHistory=true}={}){
   validateInventory({data:[row],meta:{page:1,page_size:25,total:1,total_pages:1}},mode==='domain'?'domains':'hosts');selected=row;lastFocus=document.activeElement;pages.packages=1;pages['listening-ports']=1;pages['dns-records']=1;
   get('inventory-list').hidden=true;get('inventory-detail').hidden=false;get('detail-title').textContent=mode==='domain'?row.fqdn:row.hostname;info(row);get('detail-title').focus?.();
-  if(recordHistory)history?.pushState({atlasSelection:{mode,row}},'', '#detail='+encodeURIComponent(row.id));await load();
+  if(recordHistory&&manageHistory)history?.pushState({atlasSelection:{mode,row}},'', '#detail='+encodeURIComponent(row.id));await load();
  }
- const list=mountInventoryTable(document,{mode,fetcher,onSelect:row=>void open(row)});
- get('detail-back').addEventListener('click',()=>{showList();history?.replaceState(null,'',document.defaultView.location.pathname);});get('detail-retry').addEventListener('click',()=>void load());
- document.defaultView?.addEventListener('popstate',event=>{if(event.state?.atlasSelection?.mode===mode)void open(event.state.atlasSelection.row,{recordHistory:false});else showList();});
+ const list=mountInventoryTable(document,{mode,fetcher,initialState,onSelect:row=>onSelection?onSelection(row):void open(row)});
+ get('detail-back').addEventListener('click',()=>{if(onBack){onBack();return;}showList();history?.replaceState(null,'',document.defaultView.location.pathname);});get('detail-retry').addEventListener('click',()=>void load());
+ if(manageHistory)document.defaultView?.addEventListener('popstate',event=>{if(event.state?.atlasSelection?.mode===mode)void open(event.state.atlasSelection.row,{recordHistory:false});else showList();});
  return{ready:list.ready,list,open,back:showList,destroy(){version++;active?.abort();list.destroy();}};
 }

@@ -2,6 +2,14 @@ import {InventoryError,inventoryQuery} from './reader.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export function createExactInventoryReader({db}){
  return async(resource,id,relation,params)=>{
+  if(resource==='hosts'){
+   if(!uuid.test(id))throw new InventoryError('INVALID_ID');
+   if(relation)throw new InventoryError('NOT_FOUND',404);
+   if([...params.keys()].length)throw new InventoryError('INVALID_QUERY');
+   const {rows}=await db.query('SELECT id,hostname,os,os_version,first_seen_at,last_seen_at FROM asset_inventory.host WHERE id=$1::uuid',[id]);
+   if(!rows.length)throw new InventoryError('HOST_NOT_FOUND',404);
+   return{data:rows[0]};
+  }
   if(resource!=='domains'||(relation&&relation!=='dns-records'))throw new InventoryError('NOT_FOUND',404);
   if(!uuid.test(id))throw new InventoryError('INVALID_ID');
   const allowed=relation?new Set(['page','page_size']):new Set();
