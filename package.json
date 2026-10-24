@@ -1,0 +1,14 @@
+{
+  "name": "it-asset-security",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "lint": "node scripts/check.mjs",
+    "test": "node --test backend/test/*.test.mjs frontend/test/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "start:backend": "node --env-file=.env backend/src/server.mjs",
+    "start:frontend": "node --env-file=.env frontend/server.mjs"
+  }
+}

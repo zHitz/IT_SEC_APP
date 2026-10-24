@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+Docs
+docs
+*_files
+*.html
+!frontend/src/index.html
+*.docx
+*.png
+SEC_Atlas_*
+node_modules

@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+.npm-cache/
+# User-owned saved artifacts are references, never executable source or fixtures.
+*.html
+*_files/
+*.docx
+SEC_Atlas_*
+!frontend/src/index.html

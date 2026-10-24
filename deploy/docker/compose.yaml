@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/backend.Dockerfile
+    environment:
+      BACKEND_HOST: ${BACKEND_HOST:?Set BACKEND_HOST}
+      BACKEND_PORT: ${BACKEND_PORT:?Set BACKEND_PORT}
+    ports:
+      - "${BACKEND_PUBLISH_HOST:?Set BACKEND_PUBLISH_HOST}:${BACKEND_PUBLISH_PORT:?Set BACKEND_PUBLISH_PORT}:${BACKEND_PORT:?Set BACKEND_PORT}"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://' + process.env.BACKEND_HOST + ':' + process.env.BACKEND_PORT + '/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  frontend:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/frontend.Dockerfile
+    environment:
+      FRONTEND_HOST: ${FRONTEND_HOST:?Set FRONTEND_HOST}
+      FRONTEND_PORT: ${FRONTEND_PORT:?Set FRONTEND_PORT}
+      BACKEND_ORIGIN: ${BACKEND_ORIGIN:?Set BACKEND_ORIGIN}
+    ports:
+      - "${FRONTEND_PUBLISH_HOST:?Set FRONTEND_PUBLISH_HOST}:${FRONTEND_PUBLISH_PORT:?Set FRONTEND_PUBLISH_PORT}:${FRONTEND_PORT:?Set FRONTEND_PORT}"
+    depends_on:
+      backend:
+        condition: service_healthy
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      PGPORT: ${POSTGRES_PORT:?Set POSTGRES_PORT}
+    volumes:
+      - database-data:/var/lib/postgresql/data
+volumes:
+  database-data:

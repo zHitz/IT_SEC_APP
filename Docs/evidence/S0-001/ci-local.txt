@@ -1,0 +1,29 @@
+START 2026-10-24T19:24:14.3648002+07:00
+
+> it-asset-security@0.1.0 lint
+> node scripts/check.mjs
+
+lint PASS: 10 modules; syntax and unsafe-code rules
+
+> it-asset-security@0.1.0 test
+> node --test backend/test/*.test.mjs frontend/test/*.test.mjs
+
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (93.2427ms)
+✔ configuration fails closed for missing or invalid ports (0.9174ms)
+✔ frontend serves shell and proxies real backend health without exposing saved source (115.4378ms)
+✔ health UI rejects HTTP failures and malformed successful payloads (1.1029ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 361.4959
+
+> it-asset-security@0.1.0 build
+> node scripts/build.mjs
+
+build PASS: backend/src -> backend/dist (native ESM, no transpilation)
+build PASS: frontend/src -> frontend/dist (native ESM, no transpilation)
+END 2026-10-24T19:24:18.1080066+07:00
