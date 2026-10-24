@@ -1,115 +1,83 @@
-# Result — TASK-S0-004: Cloudflare DNS ingestion PoC (read-only)
+# Result — TASK-S0-004: Domain/DNS inventory prototype
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v3 |
+| Result version | v4 |
 | Status | DONE |
-| Spec version followed | SRS v1.0 FR-04/C-01; TASK-S0-004; accepted v2 synthetic PoC; Lead assignment01:36 on2026-10-25 (real-zone readiness pack) |
+| Spec version followed | SRS v1.0; TASK-S0-004; approved synthetic PoC; Lead02:03 on2026-10-25 Domain/DNS inventory assignment |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25 01:52 +07:00 |
-| Work period | This run after reading the01:36assignment; v2 ACCEPT remains intact |
-| Source/evidence commit | 5e5e466bf0ee4bf88c7009aec13b318f9f9ca563 |
+| Submitted at | 2026-10-25 current execution after02:40 (+07:00) |
+| Source/evidence commit | a553821024e6c339d81e06233d2b6ea14fd21bc3 |
 
 ## 1. Summary
 
-Completed the newly assigned real-zone readiness pack: deliberately empty real configuration template, fail-closed local validator, standalone preflight, integrated worker dry-run/check and exact future transition instructions. Actual child-process tests intercepted fetch/TCP/TLS and observed zero connection attempts for both dry-run entry points and missing-input checks. Missing token, zone IDs and CIDRs produce explicit error codes without searching credentials, choosing a zone or opening the database. Final20/20tests, lint42modules/schema parity and build pass; no schema or DNS mutation code was added. DONE applies to the assigned v3 readiness deliverable; accepted v2 synthetic results remain accepted, and no live Cloudflare/native deployment verification is claimed.
+Completed the assigned Domain/DNS inventory prototype: GET lists with source/first_seen_at/last_seen_at/confidence/tags, literal case-insensitive domain search, exact outside-known-range filtering, stable bounded pagination and same-statement counts. Added actual PostgreSQL/HTTP tests and endpoint documentation. Final27/27tests, lint47modules/schema parity and build pass. DONE applies to the approved synthetic PoC and assigned v4 inventory scope, not production/live Cloudflare/native deployment. V2 and v3 ACCEPT remain intact. No Cloudflare API call, osquery collector, schema/entity or UI change.
 
 ## 2. Acceptance criteria
 
-TASK §8AC-1..AC-5 remain mapped below; the Lead01:36comment added three concrete readiness requirements (R-1..R-3). V2AC evidence is retained in Git and Docs/evidence; v3 did not re-label it as production evidence.
-
-| ID | Criterion / assignment | Result | Evidence |
-|---|---|---|---|
-| AC-1 | Test-zone DNS records include A/AAAA/CNAME with source/time/confidence. | Pass at accepted synthetic basis | V2verification.json has7records/2synthetic zones; accepted at01:30. V3test-v3.txt reruns existing actual mockHTTP/PostgreSQL integration successfully. No real zone was selected. |
-| AC-2 | Repeated sync keeps record counts/first_seen and updates last_seen. | Pass at accepted synthetic basis | V2 7→7/0created/7updated proof retained; same regression test passes in v3. No live idempotency claim. |
-| AC-3 | Every Cloudflare call GET, no DNS mutation path. | Pass | Source audit includes new worker modules; full20test suite passes. Readiness-specific sentinel adds fetch/TCP/TLS blocking and records0attempts. Existing integration uses only34mockGETcalls. |
-| AC-4 | Outside-CIDR flags/reasons correct; inside addresses unflagged. | Pass at accepted synthetic basis | Existing v2IPv4/IPv6/flag-clear/user-tag-retention regression passes. New readiness rejects malformed/network-host-bit CIDRs before startup. |
-| AC-5 | Configurable scheduling and complete per-run/per-zone logs. | Pass at accepted synthetic basis | Existing sequential-scheduler/failure/log regression passes. Dry-run/check intentionally do not start a scheduler or DB. |
-| R-1 | Real zone/CIDR template plus fail-closed validation; missing token/zone/CIDR yields clear error with no API call or DNS mutation/token search/production-zone selection. | Pass | config.real.example.json has empty zoneIds/knownCidrs and placeholders, no token. readiness-v3.json/test-v3.txt show CLOUDFLARE_API_TOKEN_REQUIRED,ZONE_IDS_REQUIRED,KNOWN_CIDRS_REQUIRED with exit1 and networkAttempts0. Wrong origin/synthetic marker/unknown keys/host-bit CIDRs also rejected. |
-| R-2 | Dry-run parses config/CIDRs only and tests/logs prove no Cloudflare request. | Pass | Standalone preflight and actual main.mjs --dry-run child processes exit0; sentinel attempts0, networkRequests0,databaseWrites0. Token not required for dry-run. DB/job imports are deferred until validated live mode. |
-| R-3 | Exact follow-up-readiness.md instructions switch only config/credential and give verification commands. | Pass | Docs/evidence/S0-004/followup-readiness.md covers template/config/secret delivery, dry-run, local token presence check, later authorized one-shot worker and preciseAC-1..5query/log/test checks. |
+| ID | Criterion | Result / evidence |
+|---|---|---|
+| AC-1 | Complete paginated records with provenance | Previously accepted v2 mockHTTP/PostgreSQL evidence:7 records across2 synthetic zones. V4 lists stored Domain/DNS fields and provenance; full regression passes; no live claim. |
+| AC-2 | Idempotent sync preserves first_seen, advances last_seen | Previously accepted7->7/0created/7updated v2proof retained; existing full regression green. V4 read-only endpoints do not sync or alter rows. |
+| AC-3 | Strict read-only Cloudflare paths/tests | Pass: accepted34GET-only mock calls retained; existing transport/source audit regression green. V4 reader imports no Cloudflare client and calls none; database integration reads inside BEGIN READ ONLY. |
+| AC-4 | Correct known/outside IPv4/IPv6 flags | Existing accepted flag/clear/user-tag tests retained. V4 exact tag filtering passes, including rejecting lookalike tag; flagging algorithm unchanged. |
+| AC-5 | Scheduled sync/logs | Accepted v2two sequential scheduler runs and structured logs retained; full regression passes; no new scheduler/live run claimed. |
+| V4-1 | GET Domain/DNSRecord with provenance fields | Pass: actual loopback HTTP/PostgreSQL17.5WASM asserts source, first/last timestamps, confidence, tags and record identity/content. |
+| V4-2 | Search domain, outside-known-range filter, pagination/counts | Pass: both resources tested for case-insensitive/literal search, combined predicates, exact true/false filtering, stable separate pages, totals, no matches and out-of-range pages. |
+| V4-3 | Tests and endpoint contract | Pass:27/27suite; DOMAIN-INVENTORY-API.md covers method/path/query/response/errors/limits/examples and reproduction; HOST-INVENTORY-API.md describes shared local startup. |
+| V4-4 | No schema/entity/osquery/UI change or real Cloudflare call | Pass: scoped commit changes shared inventory reader/router, domain tests/docs/evidence only; schema22+2/114FK unchanged. No collector modifications. |
 
 ## 3. Work completed
 
-Read the concrete Lead v3assignment in the existing live ClickUp tab without refresh. Implemented readiness as a config-only module with no HTTP client/database/job import, then added a strict CLI and the same safe modes to the actual worker. Deferred native pg/job imports until after validation and rejected unknown/ambiguous CLI modes. Added empty real-template inputs, validation for approved-scope syntax/CIDRs/version/placeholders, and network-intercepting child tests. Documented exact future operator commands, then ran lint→fulltests→build, extracted actual readiness audit cases, scanned source and committed. No production token/zone/range or external service access was used.
+Read Lead02:03 v3ACCEPT and v4 assignment via live comments without reload, completed/submitted the already active host prototype, then extended its whitelisted reader/router with two Domain/DNS resources. Posted start with actual implemented code and targeted2/2passing tests. Added source/provenance projections and exact flag filters; domains use an EXISTS query over their associated DNS records so selecting flagged domains includes affected domain owners. Added tests/docs, ran full lint->test->build, recorded hashes and committed. No Cloudflare token, API, DNS resolution, native service or production data was used.
 
 ## 4. Files changed
 
-Relative to IT_SEC_APP; v3source commit5e5e466 contains the following14source/evidence files. This canonical RESULT is the additional report-only change; no TASK/SRS or migration changed.
+| File | Specific change in this v4 source commit |
+|---|---|
+| backend/src/inventory/reader.mjs | Adds Domain/DNSRecord resource field whitelists, provenance projection and strict boolean outside_known_range predicate; domain correlated EXISTS uses accepted FK, DNS exact ANY(tags). |
+| backend/src/app.mjs | Extends existing GET inventory route whitelist to domains/dns-records; shared error/method behavior reused. |
+| backend/test/domain-inventory.test.mjs | Two tests: actual synthetic PostgreSQL/HTTP read-only integration for provenance/search/flags/page/counts/errors, plus strict boolean/resource input checks. |
+| Docs/DOMAIN-INVENTORY-API.md | Full endpoint contract, examples, exact domain-vs-record flag semantics, limits/errors/local run commands and proof boundary. |
+| Docs/evidence/S0-004/inventory-v4.json | Actual execution summary/proof and SHA256 for source/docs/logs. |
+| Docs/evidence/S0-004/test-v4.txt | Real complete27test output, including Domain and Host inventory proofs plus existing collectors. |
+| Docs/evidence/S0-004/lint-v4.txt | Actual47module syntax/unsafe-code and schema parity output. |
+| Docs/evidence/S0-004/build-v4.txt | Actual ESM/backend/frontend/database packaging output. |
+| Docs/RESULT-TASK-S0-004.md | Canonical v4ten-section report; prior versions retained in Git/ClickUp. |
 
-| File | Change | Specific purpose |
-|---|---|---|
-| collectors/cloudflare/readiness.mjs | Added | Parse/validate explicit local config, known network CIDRs, required scope/token presence and sanitized error metadata; no networking/DB imports. |
-| collectors/cloudflare/preflight.mjs | Added | Standalone --dry-run/--check CLI with explicit success/error exit status and zero-network metadata. |
-| collectors/cloudflare/config.real.example.json | Added | Deliberately empty real zone/CIDR scope and replacement markers; no token, no guessed production scope. |
-| collectors/cloudflare/main.mjs | Updated | Actual worker dry-run/check modes, strict argument validation and validation before deferred job/pg startup. |
-| collectors/cloudflare/README.md | Updated | Links readiness commands, empty-template behavior and exact transition guide. |
-| package.json | Updated | Adds cloudflare:dry-run and cloudflare:check; dependencies/lockfile unchanged. |
-| backend/test/cloudflare-readiness.test.mjs | Added | Fail-closed cases and child-process tests for standalone/worker dry-run plus missing/fixture credential and scope inputs. |
-| backend/test/support/network-sentinel.mjs | Added | Intercepts fetch, TCP connect and TLS connect before any network operation; emits measured attempt count at child exit. Test-only, not production policy. |
-| Docs/evidence/S0-004/followup-readiness.md | Added | Requested future configuration-only switch guide, exact commands/error codes, per-AC queries/log checks and authorization boundaries. |
-| Docs/evidence/S0-004/readiness-v3.json | Added | Six actual audit cases extracted from test stdout, zero-attempt measurements and explicit no-real-token marker. |
-| Docs/evidence/S0-004/test-v3.txt | Added | Actual final20/20test output, zero-network child audits and existing Cloudflare/osquery/schema/shell regressions. |
-| Docs/evidence/S0-004/lint-v3.txt | Added | Actual lint42modules and accepted22entity+2junction/114FKparity output. |
-| Docs/evidence/S0-004/build-v3.txt | Added | Actual backend/frontend/migration packaging output. |
-| Docs/evidence/S0-004/secret-scan-v3.json | Added | Heuristic tracked-text scan138files,findings[], limits disclosed. |
-| Docs/RESULT-TASK-S0-004.md | Updated | Same canonical RESULT v3 with alloriginalACs plus readiness requirements, version history, evidence and truthful limits. |
+Existing shared backend/src/server.mjs and HOST-INVENTORY-API.md were added in the separately submitted S0-003 v4commit44675ad; they are dependencies, not silently changed under this task. No configuration, schema or Cloudflare/osquery source file changed here.
 
 ## 5. Run and verify
 
-From root IT_SEC_APP, Node24 and existing lockfile dependencies:
-
-```powershell
-node --test backend/test/cloudflare-readiness.test.mjs
-npm run lint
-npm test
-npm run build
-```
-
-The dedicated tests use public synthetic fixture inputs and a network sentinel, not real token validity checks. Their standalone/worker dry-runs produce actual audited0attempts. The committed empty real template must fail until explicit approved zone/CIDR inputs are supplied. With an operator-provided local config path set in CLOUDFLARE_CONFIG, `npm run cloudflare:dry-run` validates local config without token/network/DB; `npm run cloudflare:check` additionally requires CLOUDFLARE_API_TOKEN already in the process environment, still without networking.
-
-Read the exact guide at Docs/evidence/S0-004/followup-readiness.md. Only a later separately authorized `node collectors/cloudflare/main.mjs --once`/start:cloudflare execution can contact the official API using GET and write local inventory; it was NOT executed with real credentials in this task. Readiness scripts do not implicitly read.env or search another credential location. The guide offers an explicit project.env invocation only for an authorized operator. A clean npm install/native pg/Docker/remote CI was not repeated here.
+From IT_SEC_APP: `node --test backend/test/domain-inventory.test.mjs`, then `npm run lint`, `npm test`, `npm run build`. Tests create a fresh migrated/seeded PostgreSQL17.5WASM database and ephemeral HTTP server; no credentials/database daemon needed. For manual approved local synthetic database access, follow HOST-INVENTORY-API.md: BACKEND_HOST=127.0.0.1 or::1, BACKEND_PORT, local DATABASE_URL, INVENTORY_READ_ENABLED=true, then `npm run start:backend`. GET `/api/v1/inventory/domains?search=sample` and `/api/v1/inventory/dns-records?outside_known_range=true`. Endpoints disabled by default, no proxy/tunnel/external exposure. Manual daemon success is documented, not claimed as exercised.
 
 ## 6. Tests and actual results
 
-| Case | Command / method | Result | Actual evidence |
-|---|---|---|---|
-| Local fail-closed inputs | validateReadiness + spawned preflight --check | Pass | Missing token/zone/CIDR exit1 with explicit codes; network sentinel0attempts. Unknown/secret config keys, wrong origin, synthetic real-mode config and host-bit CIDRs rejected. |
-| Standalone dry-run | Child --import network-sentinel.mjs preflight.mjs --dry-run | Pass | exit0; mode=dry-run,status=pass,credentialPresenceChecked=false,networkRequests0,databaseWrites0; sentinel attempts0. |
-| Actual worker dry-run | Same child sentinel, main.mjs --dry-run, deliberately invalid DATABASE_URL | Pass | Same zero-attempt report, exit0 despite invalid DB URL; no DB startup in this branch. |
-| Credential presence only | preflight --check with missing/public fixture marker | Pass | Missing→exit1/CLOUDFLARE_API_TOKEN_REQUIRED; fixture→exit0; both0attempts and no token value in output. Does not verify API permissions. |
-| Full regression | npm test | Pass | test-v3.txt:tests20,pass20,fail0,duration_ms7610.3696. Existing GET-only source gate and synthetic ingestion/scheduler/rollback checks remain passing. |
-| Syntax/schema parity | npm run lint | Pass | lint42modules;22entities+2junctions/114nativeFKs unchanged. |
-| App packaging | npm run build | Pass | backend/frontend ESM and migration assets packaged. Native worker source is not a separately verified Docker build. |
-| Secret hygiene | node scripts/scan-secrets.mjs with bundled Git | Pass for heuristic scope | trackedFiles138,findings[]; manual review found only public synthetic fixtures. No real token supplied/read; images/PDFs excluded. |
+Targeted command passed2/2. Full required sequence all exit0: lint PASS47modules; schema PASS22business entities,2junctions,114nativeFKs; test27/pass27/fail0/duration8384.8956ms; build PASSbackend/src->backend/dist,frontend/src->frontend/dist,database assets packaged. No v4test failure.
 
-The first targeted child test failed because Windows absolute --import paths need fileURLs (ERR_UNSUPPORTED_ESM_URL_SCHEME). Fixed the test preload path via pathToFileURL, reran targeted tests and then final20/20regression. This was a test harness portability issue, not hidden as a pass. Actual regression performs localhost mock HTTP; zero-network claims apply specifically to readiness/dry-run child modes, not every test in the entire suite.
+Actual Domain proof: synthetic3domains/3DNS records,1flagged record and1associated domain,2unflagged; provenance/literal search/combined filters/stable page counts all pass. A lookalike tag ending-extra and user:review do not count as the exact outside-range flag. Reads succeed inside BEGIN READ ONLY; ordered DNS id/tags snapshot unchanged afterward. HTTP method/input rejection and existing sanitized unavailable-error tests pass. These endpoints use no Cloudflare network client;0Cloudflare requests from the inventory test. Full suite separately exercises the existing loopback mock Cloudflare GET-only transport; no live API request. Fixture inserts happen only during test setup before the read-only transaction.
 
 ## 7. Issues and implementation decisions
 
-History: v1PARTIAL reader-only→v2DONEsynthetic ingest/scheduler/flags, ACCEPTED at01:30→v3readiness extension explicitly assigned at01:36. The Lead retained v2ACCEPT and superseded only the old sentence saying no immediatev3. V3 is not a redo of accepted v2 or a live-zone acceptance claim.
-
-Dry-run checks only explicit local config/CIDRs and reports no credential-presence validation; --check additionally checks token presence/shape locally. Neither claims authentication/permissions were verified. Token is accepted only from process environment, never JSON config; unknown config keys are rejected. The real template is intentionally unusable until filled, not a default zone or sample token. CIDR host bits are rejected locally to avoid a later PostgreSQL cidr failure after network reads. Only the official real API origin is permitted by readiness; synthetic origin behavior remains separately constrained in the existing reader.
-
-Worker DB/job imports are deferred until the non-dry path, and readiness validation precedes API/database startup. Strict CLI modes prevent typo/ambiguous-mode fallback into a network job. The sentinel blocks a network attempt before it can execute, so count0 is observed rather than merely a hardcoded success claim. Success output includes only counts/version/mode/error metadata, not tokens or raw config. English translated report headings preserve the required10section order.
+No hard technical blocker or scope decision. Reused the existing resource reader and count/page envelope instead of creating another access path. Domain flag filter is derived from associated record flags using EXISTS, preventing duplicate domains when several records are flagged. Returned Domain.tags stay original and are not overwritten by DNS tags; semantics explicit in guide. Optional flag=false includes domains with no flagged children; no record means not flagged. Search is literal substring, not DNS resolution/IDNA or SQL pattern syntax. Counts are filtered totals in the same SQL snapshot as each page. Pagination can shift between requests when data changes; deterministic tie-breakers prevent ambiguity for a stable snapshot. Local-only unauthenticated prototype remains opt-in, not production authorization.
 
 ## 8. Not done, limitations and technical debt
 
-No real Cloudflare token/zone/CIDR, production selection, token search, live API call or DNS mutation occurred. Readiness cannot establish token validity/permissions, zone ownership/approval, API reachability or native DB connectivity without a later authorized real run. Such checks remain the already disclosed follow-ups and are not blockers to this local readiness assignment.
-
-No schema/entity, host/service mapping, remediation, CNAME resolver, SSO/RBAC or unrelated feature change. Native pg/Docker/remote CI and actual real-zone data comparison remain unverified. Existing single-worker/pagination/evidence-retention limitations from v2 remain; v3 does not claim to harden the whole application. No repeat of the completed osquery ten-minute experiment was needed for this unrelated extension.
+No real token/zone/CIDR verification, production DNS access, native PostgreSQL daemon/Docker or remote CI. Existing engine evidence is PostgreSQL17.5WASM and synthetic/mockHTTP. No UI/dashboard, auth/RBAC flow, write endpoint, schema/index migration, Cloudflare worker change or osquery change. No large-scale concurrency/performance benchmark. Actual live permission scope must be verified only after explicit approved credentials/targets are supplied; no token discovery is authorized by this RESULT.
 
 ## 9. Blockers and decisions required
 
-None for v3readiness requirements. Real inputs remain outside this execution and must be provided/authorized through the approved process before a live job; this is not a reason to delay or falsify the completed local readiness pack. Await specific review/next assigned action while preserving v2ACCEPT. Do not self-close tasks, alter status/dependencies or interpret an ACCEPT as permission for production access.
+No hard blocker for this v4assignment. All assigned criteria pass in approved synthetic scope. Retained live/native/remote follow-ups do not change accepted v2/v3 scope and are not a claim that production is ready. No question Q-01..Q-05 was answered or policy changed.
 
 ## 10. Next step and self-check
 
-Review the attached v3RESULT, readiness guide and actual zero-network test output. Future authorized operators can follow the exact guide with approved config/secret inputs and reuse the same worker without a code/schema change. Execute any concrete newly assigned follow-up in scope; do not substitute checkpoint chat for implementation.
+Attach this RESULT, endpoint guide, inventory proof and actual logs on the same task; publish exactly one v4DONEsubmission comment and verify attachment links. Lead reviews; no self-ACCEPT/status/dependency edits. Continue only concrete assigned/rework scope, not an invented production rollout.
 
-- [x] All5originalACs remain traced to accepted synthetic evidence/regression; all3new readiness requirements have actual evidence.
-- [x] Ten sections, one canonical RESULT, v1→v2→v3history, precise per-file descriptions and reproduction commands.
-- [x] Zero-network child audit proves dry-run behavior; explicit missing-input failures are recorded.
-- [x] No secret/real infrastructure data, DNS-write path, schema or task status/dependency edit.
-- [x] Attach actual RESULT and supporting files on the correct task with one version/status/requirement summary.
+- [x] Exact TASK/version/status/spec and ten ordered sections.
+- [x] Original ACs and each new v4requirement independently mapped to actual or previously accepted evidence.
+- [x] Every changed file listed; commands and real outputs included.
+- [x] Limits/assumptions/dependencies disclosed; no secrets or real infrastructure data.
+- [x] Read-only Cloudflare boundary, accepted schema and original evidence preserved.
+
+Version history: v1BLOCKED scope clarification; v2DONEsyntheticPoC ACCEPT01:30; v3DONEreadiness ACCEPT02:03; v4DONEassigned synthetic Domain/DNS inventory. V4 is a new concrete assignment, not a v3REWORK. Earlier canonical versions remain in Git and published task attachments.
