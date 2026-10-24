@@ -1,114 +1,83 @@
-# Result — TASK-S0-003: Osquery collector inventory PoC
+# Result — TASK-S0-003: Host inventory prototype
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v3 |
+| Result version | v4 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0 FR-01; TASK-S0-003; accepted v2PARTIALPoCbasis; Lead native-readiness assignment01:36 on2026-10-25 |
+| Spec version followed | SRS v1.0; TASK-S0-003; Lead 02:03 on 2026-10-25 inventory assignment; v3 ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25 01:58 +07:00 |
-| Work period | Current run after reading the concrete v3assignment; no repeat of accepted10minute experiment |
-| Source/evidence commit | 54776b778bc035417209c5ec78f004c6a7766f44 |
+| Submitted at | 2026-10-25, current execution after 02:36 start (+07:00) |
+| Source/evidence commit | 44675ad824eaa1fc957c7f3b77aa263297794233 |
 
 ## 1. Summary
 
-Completed all three newly assigned native-readiness deliverables: strict deb/rpm osquery config validation, fail-closed current-platform script, compact native operator runbook and detailed follow-up checklist/commands. Actual current-machine execution returns exit2/NATIVE_NOT_AVAILABLE/PLATFORM_NOT_LINUX with nativeExecuted=false,binaryExecuted=false,tokenRead=false,networkRequests0,distributionInstalled=false. Final22/22tests, lint44modules/schema parity and build pass, with no schema/entity change or native/production operation. Overall TASK status remainsPARTIAL because original native AC-1/3/4 evidence is still missing; the new readiness requirements themselves pass completely. V2ACCEPT at the disclosed simulator PoC basis remains intact; this is executed readiness work, not a renewed technicalBLOCKED request.
+Completed the newly assigned v4 host inventory prototype: three GET endpoints for Host/OS/version, host Package/version and host ListeningPort/process/PID; literal case-insensitive search, optional host scope, stable bounded pagination and filtered counts. Added actual HTTP/PostgreSQL tests and endpoint documentation. Final 25/25 tests, lint 46 modules/schema parity, build pass. Overall PARTIAL preserves the original native AC-1/3/4 gaps; all newly assigned v4 requirements pass. V3 was ACCEPTED at 02:03, not reworked. No schema/entity, UI, collector or Cloudflare source change.
 
 ## 2. Acceptance criteria
 
-Original TASK §8criteria retain their IDs and accepted v2evidence boundaries. R-1..R-3 are the explicit01:36native-readiness assignment, not invented native acceptance.
-
-| ID | Criterion / assignment | Result | Evidence |
-|---|---|---|---|
-| AC-1 | At least3Linux test hosts with real hostname/OS/package/version inventory. | Native portion not verified | Accepted v2verification.json has3distinct SQLite Linux-inventory simulations, not Linux kernels/osquery binaries. V3 explicitly detects current native unavailability; no fixture is relabelled. |
-| AC-2 | Actual10minute backend outage, persistent queue/restart recovery and correct last_seen update. | Pass for implemented queue/API | V2actual600010ms/60batches/69processruns/pending0proof retained, accepted01:30. V3runs only fast regression, not a replacement/duplicate ten-minute run. |
-| AC-3 | Native before/after checklist proves no host changes outside approved agent/collector setup. | Native portion not verified | V2simulator hashes retained; v3adds exact package/service/network/firewall checklist commands for approved native hosts, without fabricating completed native output. |
-| AC-4 | Fresh native installation in exactly5steps brings a host into inventory. | Native portion not verified | V2five-step fresh fourth-source simulator evidence retained. V3compact native runbook has5operator stages/commands, but no actual native install is claimed. |
-| AC-5 | Approved entity/provenance mapping, idempotent replay and preserved first_seen/advanced last_seen. | Pass under approved PoC mapping | Existing PostgreSQL/HTTP regression and all-entity timestamp/stale-replay tests pass in final22test suite. Schema remains22business+2junction/114FK. |
-| AC-6 | Fixed5logical SELECT datasets, excluded sensitive data and safe actual payload. | Pass for implemented source path; native compatibility unverified | Existing query/projection/auth/privacy tests pass; v3strictly validates packages views and event disablement. No native query execution claim. |
-| R-1 | Validate osquery.deb.conf/rpm.conf syntax/content; current machine must clearly report NATIVE_NOT_AVAILABLE, with no fake native run/install/host choice/token search. | Pass | native-check-v3.txt/native-readiness-v3.json:valid views/logicalTableCount5,exit2,NATIVE_NOT_AVAILABLE,PLATFORM_NOT_LINUX. Native/binary execution,token read,network,installation allfalse/0. Tests reject unsafe extra config keys/options/views/query content. |
-| R-2 | Compact native runbook with exact commands/expected outputs on3approved future Linux/osquery hosts and native AC-1/3/4checklist. | Pass for documentation deliverable | collectors/osquery/NATIVE-RUNBOOK.md:5stages covering explicit target/baseline, config/query checks, collection/delivery, native checklist/recovery and fresh verification. No future run described as performed. |
-| R-3 | Docs/evidence/S0-003/followup-readiness.md lists remaining native work and exact verification commands. | Pass | Requested path includes current exit codes, approved-target prerequisites, parameterized scope-specific SQL, filled-checklist requirements and distinctions from existing simulator evidence. |
+| ID | Criterion | Result / actual evidence |
+|---|---|---|
+| AC-1 | Three native Linux hosts with OS/packages | Native portion unverified; accepted v2 simulator evidence retained; v4 adds no native claim. |
+| AC-2 | Actual ten-minute outage/recovery without loss | Previously accepted actual 600010 ms/60 batches/69 executions/pending0 retained in verification.json; not rerun. Fast regression remains green. |
+| AC-3 | Native host changes limited to agent | Native portion unverified; v3 readiness/runbook retained, accepted. |
+| AC-4 | Five-step native install works | Native portion unverified; accepted fresh simulator evidence and future native runbook retained. |
+| AC-5 | Correct entity/upsert/timestamps | Accepted v2 evidence and full-suite regression pass; v4 reads existing schema only. |
+| AC-6 | SELECT-only source and safe payload | Accepted source/privacy regression passes; v4 fixed field projections exclude raw payload and sensitive fields. |
+| V4-1 | GET Host with OS/version, Package with version, ListeningPort with process/PID | Pass: actual ephemeral HTTP server and PostgreSQL17.5 WASM assertions in inventory.test.mjs; inventory-v4.json and test-v4.txt. |
+| V4-2 | Hostname/package search, pagination and counts | Pass: case-insensitive literal substring (including %/_ and injection-shaped text), filtered/global totals, empty results, out-of-range pages and non-overlapping ordered pages. |
+| V4-3 | Tests and endpoint documentation | Pass: HOST-INVENTORY-API.md covers methods, paths, query bounds, examples, fields, response/count semantics, errors, enabling and security boundary. 25/25 complete suite. |
+| V4-4 | No schema/entity/Cloudflare/UI changes; synthetic only | Pass: scoped source commit lists only inventory reader, backend wiring, tests, guide and evidence; schema checker 22+2/114 FK. Actual integration queries execute inside BEGIN READ ONLY. |
 
 ## 3. Work completed
 
-Read the concrete Lead01:36assignment without refreshing ClickUp, after submitting the separately assigned Cloudflare v3pack. Implemented local-only strict config/readiness inspection: no binary is spawned, no network client or credential reader exists. Added tests for both actual config files, unsafe content, unavailable platforms/missing executables and explicit candidate-only results; audited actual CLI under the existing network sentinel. Wrote the compact future runbook and detailed readiness/checklist guide. Ran actual current-platform check, lint→tests→build, extracted the observed native status, scanned source and committed. No distribution/host/token was chosen or installed and no v2PoC evidence was repeated as native.
+Read Lead's live 02:03 ACCEPT/new assignment, implemented query layer, posted start with actual code evidence at 02:36, then added routing/server integration/tests/docs. Inventory is opt-in; disabled routes return 404. Enabled local prototype refuses non-loopback bind, uses a separate pool with database read-only default and 5-second statement timeout. Count/page come from a single SQL statement to avoid mismatched snapshots. Query identifiers are whitelisted, caller data is parameterized, query size/page sizes are bounded and failures sanitized. No native experiment or accepted ten-minute run was repeated.
 
 ## 4. Files changed
 
-Relative to IT_SEC_APP. Source/evidence commit54776b7contains these12files; this canonical RESULT is the additional report update. Accepted schema/TASK/SRS and v2proof files remain unchanged.
-
-| File | Change | Specific purpose |
-|---|---|---|
-| collectors/osquery/native-readiness.mjs | Added | Validates exact deb/rpm config and five logical SELECT projections, checks actual platform/executable-file availability without execution, emits explicit fail-closed status. |
-| collectors/osquery/NATIVE-RUNBOOK.md | Added | Compact5stage future approved-host operator runbook with exact commands/expected outputs/native evidence boundaries. |
-| collectors/osquery/README.md | Updated | Links readiness command/runbooks and clarifies current Windows exit2 and candidate-only behavior. |
-| backend/test/osquery-native-readiness.test.mjs | Added | Strict config/unsafe-view tests, unavailable-platform/binary cases and actualCLI zero-network/binary/token audit. |
-| package.json | Updated | Adds osquery:native-check command; dependencies/lockfile unchanged. |
-| Docs/evidence/S0-003/followup-readiness.md | Added | Requested detailed native follow-up steps, per-ACSQL/commands/checklists, approval/privacy/fail-closed rules. |
-| Docs/evidence/S0-003/native-check-v3.txt | Added | Actual current-machineCLI JSON:win32,NATIVE_NOT_AVAILABLE,exit2expected,no native execution. |
-| Docs/evidence/S0-003/native-readiness-v3.json | Added | Structured copy of that actual output, expected exit code and source attribution. |
-| Docs/evidence/S0-003/test-v3.txt | Added | Actual final22/22test output including native readiness/current-platform sentinel and prior collector/Cloudflare regressions. |
-| Docs/evidence/S0-003/lint-v3.txt | Added | Actual lint44modules/schema22+2/114FKparity. |
-| Docs/evidence/S0-003/build-v3.txt | Added | Actual app/migration packaging output. |
-| Docs/evidence/S0-003/secret-scan-v3.json | Added | Heuristic148tracked-text scan,findings[], limitations stated. |
-| Docs/RESULT-TASK-S0-003.md | Updated | Same canonical v3report,6originalACs plus3readiness requirements, version history, actual evidence and native gaps. |
+| File | Specific change |
+|---|---|
+| backend/src/inventory/reader.mjs | Fixed Host/host-Package/host-Port projections, parameter validation, literal search, optional host UUID filter, stable ordering, one-statement count/page response. |
+| backend/src/app.mjs | Optional GET inventory dispatch, 405/Allow for known routes, sanitized 400/503 errors and request IDs; existing health/ingest preserved. |
+| backend/src/server.mjs | Opt-in inventory enable flag, explicit loopback boundary, isolated read-only pg pool with timeout, cleanup and sanitized startup errors. |
+| backend/test/inventory.test.mjs | Three tests: actual HTTP/SQL synthetic read-only integration; invalid bounds/error sanitization; refused non-loopback startup. |
+| Docs/HOST-INVENTORY-API.md | Full local endpoint contract, examples, count semantics, boundary and reproduction guide. |
+| Docs/evidence/S0-003/inventory-v4.json | Actual proof summary and SHA256 of changed source/docs/logs. |
+| Docs/evidence/S0-003/test-v4.txt | Full real 25-test output, including inventory proof. |
+| Docs/evidence/S0-003/lint-v4.txt | Actual 46-module and schema parity output. |
+| Docs/evidence/S0-003/build-v4.txt | Actual ESM/backend/frontend/database packaging output. |
+| Docs/RESULT-TASK-S0-003.md | This canonical v4 report, preserving original AC limits and prior acceptance history. |
 
 ## 5. Run and verify
 
-From root with Node24 and existing lockfile dependencies:
-
-```powershell
-node --test backend/test/osquery-native-readiness.test.mjs
-npm run osquery:native-check
-npm run lint
-npm test
-npm run build
-```
-
-On this Windows machine, native-check is expected to exit2 and emit NATIVE_NOT_AVAILABLE. Treating that as a native pass would be wrong; it is a successful fail-closed readiness behavior. Invalid config gives exit1/CONFIG_INVALID. On a future approved Linux host, `npm run osquery:native-check -- --binary /usr/bin/osqueryi` can only return NATIVE_CANDIDATE_PRESENT after an executable-file check; it still reports binaryExecuted=false and is not evidence of actual osquery queries/installation.
-
-The exact future native commands/checklists are in NATIVE-RUNBOOK.md and the requested followup-readiness.md. They require explicit approved lab targets/credentials already provisioned; no production choice, SSH, token lookup, distribution install or firewall write is automated. Later native collection uses the same existing collector/config/API without a schema change. Dependency clean install/native pg/Docker/remote CI were not run here.
+From IT_SEC_APP: `node --test backend/test/inventory.test.mjs`; then `npm run lint`, `npm test`, `npm run build`. Tests create fresh synthetic PostgreSQL WASM state and ephemeral loopback HTTP; no DATABASE_URL/token/production host needed. Manual daemon configuration is documented in HOST-INVENTORY-API.md: approved local synthetic DATABASE_URL, BACKEND_HOST=127.0.0.1, BACKEND_PORT, INVENTORY_READ_ENABLED=true; `npm run start:backend`. Default is disabled; do not expose this unauthenticated prototype externally. No real service connection was made.
 
 ## 6. Tests and actual results
 
-| Test | Command / approach | Result | Actual output |
-|---|---|---|---|
-| Current native availability | node collectors/osquery/native-readiness.mjs | Intended fail-closed result | exit2,NATIVE_NOT_AVAILABLE,reasonPLATFORM_NOT_LINUX; both config checks pass, nativeExecuted/binaryExecuted/tokenRead/distributionInstalled=false,networkRequests0. native-check-v3.txt. |
-| Strict config/content validation | Native readiness unit tests | Pass | Both actual deb/rpmconfigs parse; only SELECTname/version package views accepted; unexpected keys, enabled events, SELECT-star or injected statements rejected. |
-| ActualCLI audit | Child process with fetch/TCP/TLS sentinel | Pass | NATIVE_READINESS_ACTUAL in test-v3.txt shows current win32report plus sentinel attempts0 and no native/binary execution. Positive Linux candidate unit branch is mocked and explicitly not actual native proof. |
-| Full regression | npm test | Pass | tests22,pass22,fail0,duration_ms7643.0715. Includes collector source/auth/privacy/queue/timestamps, CloudflareGET/readiness and schema/shell tests. |
-| Lint/schema parity | npm run lint | Pass |44modules;22entities+2junctions/114nativeFKs unchanged. |
-| App packaging | npm run build | Pass | Backend/frontendESM and migration assets packaged. No Docker/native bootstrap claim. |
-| Secret hygiene | node scripts/scan-secrets.mjs using bundled Git | Pass for heuristic scope |148trackedfiles,findings[]. New code contains no token reader/native binary execution; images/PDFs excluded, not a security audit. |
+Actual commands: targeted inventory tests initially 2/2 passed; added startup-boundary test, then full `npm run lint` -> `npm test` -> `npm run build`, all exit0. Full output: tests25, pass25, fail0, duration8207.5861ms. Lint PASS46 modules; schema check PASS22 entities,2 junctions,114 native FKs. Build PASSbackend/src -> backend/dist; frontend/src -> frontend/dist; database assets packaged. No test failure in this v4 implementation.
 
-No new native-readiness test failure occurred. Exit2 is deliberate and preserved as evidence, not hidden or converted into a fictitious native run. Earlier v2harness failures/interrupted experiment remain recorded in Git/v2history and are not erased by this report. Full regression uses synthetic/localHTTP fixtures; zero-network claims apply specifically to native-readiness inspection/sentinel child, not every test. Existing ten-minute evidence remains600010ms and was not rerun.
+Actual inventory proof: 3 synthetic hosts,2 host packages (image seed package excluded),2 host listening ports;12 read SELECT/CTE statements completed inside PostgreSQL BEGIN READ ONLY. Assertions verify OS/version, package version, process/PID, literal/case-insensitive search, same-response totals, stable page boundaries, empty/beyond-end cases, input rejection, GET-only methods, no-store headers and sanitized 503. Snapshot host count unchanged. Startup subprocess rejects external bind before any inventory database connection. This proves the implemented query path; it is not native pg/real Linux deployment evidence.
 
 ## 7. Issues and implementation decisions
 
-History: v1BLOCKEDschema mismatch→v2PARTIALimplemented collector/queue/API with disclosed simulators, ACCEPTED01:30→v3native-readiness extension explicitly assigned01:36, superseding only the old no-immediate-v3 instruction. V2ACCEPT and native gaps remain. All three v3readiness requirements are complete; overall status staysPARTIAL rather than claiming originally missing native AC-1/3/4are now met.
-
-The readiness script is deliberately non-executing. It validates local config JSON/content before platform checks, rejects unavailable/relative/non-executable candidates, and never imports child_process/network clients or reads environment secrets. NATIVE_CANDIDATE_PRESENT means only file presence/executability, not binary authenticity, version, permissions, approved host status or osquery compatibility. Actual operator checks are explicit future steps. This avoids installing a distribution or silently using production merely to make a check green.
-
-The accepted packages logical view remains SELECTname/version over deb_packages/rpm_packages with events disabled; no new discovery data/table. Documentation distinguishes manual approved-host checklist read commands from collector discovery queries. English report headings keep10numbered sections and unchanged requirement/entity IDs.
+No scope/AC decision needed. Chose separate resource endpoints so package/port fanout cannot silently truncate a Host card. Host packages filter accepted source_kind=host; image packages and container-only ports belong to separate future scope. Counts mean filtered totals and are returned on every page, avoiding an unrequested dashboard. Use offset paging (bounded) with deterministic ID tie-breaker; rows can shift between different requests if ingestion changes inventory. Local-only enablement is a temporary unauthenticated prototype boundary, not production access control. No fields/schema changed. Current sandbox denied F: writes; scoped escalation succeeded, so work continued without changing approval policy.
 
 ## 8. Not done, limitations and technical debt
 
-Native Linux/osquery execution, real3host OS/package proof, actual native before/after checklists and fresh native install remain unverified. Readiness/runbooks are preparations, not their replacement. No existing simulation is renamed native or counted as a Linux kernel. Binary authenticity/real query success cannot be established by a file executable check.
-
-No production/token/host access, new schema/entity, installer/distribution, SSH, service/network/firewall write, SSO/RBAC, discovery extension or unrelated feature. Native pg/Docker/remote CI and prior queue/power-loss/multi-process/retention limits remain as disclosed in v2. The native operator procedure must retain sensitive full host output privately and review/redact before attachment.
+Original native Linux/osquery AC-1/3/4 remain unverified. No UI/dashboard, real host/production access, authentication/RBAC product flow, indexes/schema migrations, native PostgreSQL daemon/Docker or remote CI run. Actual integration engine is PostgreSQL17.5 WASM. Server uses native pg pool but daemon success path is not claimed as tested. No concurrency/performance benchmark at production scale; no import/export or write endpoint. No native credential lookup or Cloudflare request was performed.
 
 ## 9. Blockers and decisions required
 
-None for the newly assigned readiness deliverables; expected NATIVE_NOT_AVAILABLE is the explicitly requested truthful current-machine outcome. No renewed technicalBLOCKED/helpdesk question was sent. Original native acceptance evidence remains outstanding under the already accepted PARTIALPoCbasis. Future actual native/production/credential operations require the previously defined approved environment and authorization, not an inference from this readiness report. Do not self-close/change status/dependencies.
+No hard blocker for the v4 assignment; all its requested work is complete. Future native acceptance requires approved real Linux/osquery lab input under the retained runbook. That follow-up does not invalidate the accepted simulator PoC or completed inventory prototype.
 
 ## 10. Next step and self-check
 
-Review v3readiness code/output/runbooks and act on any concrete next assignment or specific review findings. When approved native targets exist, follow the exact documented procedure and record genuine outputs in the same RESULT history, with no schema/scope expansion. Do not rerun accepted simulator proof just for a checkpoint or post waiting-only task comments.
+Submit this actual file and evidence to the same ClickUp task with one v4 PARTIAL comment (new assignment complete; original native gaps retained). Lead reviews; no self-ACCEPT/status/dependency changes. Execute concrete next assignment/rework when issued.
 
-- [x]6originalACs retain honest native gaps;3newreadinessrequirements individuallypasswithcode/docs/output.
-- [x]10sections,onecanonicalRESULT,v1→v2→v3history and precise12filedelta plus report.
-- [x]ActualWindowsNATIVE_NOT_AVAILABLE/exit2andzero-attemptauditpreserved;22/22regressionpass.
-- [x]No token/native binary execution,distribution/production/system change,new schema or taskstatusedit.
-- [x]Attach actual RESULT and supporting readiness/evidence on the exact assigned task with one version/status summary.
+- [x] Ten sections in order; exact TASK/version/status and spec/Lead basis.
+- [x] Every original AC and each v4 requirement separately mapped to truthful evidence.
+- [x] Every changed file, actual commands/output, limitations and assumptions disclosed.
+- [x] Synthetic/WASM and native boundaries explicit; no secrets/production data included.
+- [x] Existing v2/v3 acceptance and completed real-duration outage preserved.
+
+Version history: v1 BLOCKED mapping; v2 PARTIAL simulator PoC, ACCEPT01:30; v3 PARTIAL overall/native-readiness complete, ACCEPT02:03; v4 PARTIAL overall/assigned host inventory complete, new assignment not rework. Earlier canonical versions remain in Git and previously attached ClickUp files.
