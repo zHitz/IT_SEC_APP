@@ -1,0 +1,41 @@
+{
+  "task": "S0-004",
+  "version": "v6",
+  "tests": 37,
+  "lintModules": 58,
+  "build": "PASS",
+  "schema": "22+2/114FK unchanged",
+  "actualBrowser": {
+    "selected": "sample-12.test",
+    "source": "cloudflare",
+    "confidence": "confirmed",
+    "type": "A",
+    "value": "198.51.100.25",
+    "proxied": false,
+    "ttl": 300,
+    "flag": "Flagged",
+    "backSearch": "sample-",
+    "backPage": "2of3",
+    "secondSelection": "sample-08.test",
+    "backFilter": "true"
+  },
+  "actualHttpProof": "DOMAIN_DETAIL_V6_PROOF {\"synthetic\":true,\"actualHttpPostgres\":true,\"exactDomain\":true,\"substringTrapExcluded\":true,\"records\":31,\"childPages\":2,\"provenance\":true,\"typeValueProxiedTtlTagsFlag\":true,\"backSearchFilterPage\":true,\"cloudflareRequests\":0}",
+  "limits": [
+    "Synthetic/PostgreSQL17.5WASM; no realCloudflare/production/native",
+    "Exact-domain collection capped100candidatepages; failures show no partial data",
+    "In-page detail context; full reload starts list",
+    "No exactresponsive viewport/reducedMotion emulation"
+  ],
+  "sha256": {
+    "frontend/src/domains.html": "29c1cc084555397ccbbab420930f5b8f1a787a3ad7bbb3636bc2577374199a8f",
+    "frontend/src/inventory-page.mjs": "f988b2a983ee73001caba6676e42f41477f0f0d3bc3a106589fe81d4eea99adf",
+    "frontend/src/inventory-detail.mjs": "8171f436ca385178bd9dea7468d4ac46505926bfee2857324366823f58926cfb",
+    "frontend/test/domain-detail.test.mjs": "b9d2a24b4581c16caba5e093b5e9c47149c0d9da4b77ed6ef39893f835bcf880",
+    "Docs/DOMAIN-INVENTORY-UI.md": "a6a641caa37f73f3246c80449c44980e000b226bb0ec26fa0af171e50e983a37",
+    "Docs/evidence/S0-004/test-v6.txt": "e924e3c902de452879e3d62cf4f8ec3a040016be547acc05ab0d1bf334cef6a9",
+    "Docs/evidence/S0-004/lint-v6.txt": "81c9f45e404e6d4ab95d0b1918a3f134daa031f5db220f13d33a5832ebb55341",
+    "Docs/evidence/S0-004/build-v6.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-004/detail-v6.png": "6c3b5b796715a75b22ff0361d5b784fbe5307b47105e84f5debe25d229c77731",
+    "Docs/evidence/S0-004/back-v6.png": "c9ee76b84a20606f85f557d36a8b5e88ebaa3dd07bb426d29f05d980137a90d4"
+  }
+}
