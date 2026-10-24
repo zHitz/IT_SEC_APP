@@ -1,0 +1,54 @@
+# Host inventory API — S0-003 v4 local prototype
+
+This is a read-only, opt-in local development API over the accepted Host/Package/ListeningPort schema. Use only the existing synthetic seed/collector lab. It has no user authorization layer: do not expose it through a proxy, tunnel or production deployment. Native Linux AC-1/3/4 remain unverified; these endpoints do not change that evidence boundary.
+
+## Start and database boundary
+
+From the repository root, configure the existing local `.env` with BACKEND_HOST=127.0.0.1 (or ::1), BACKEND_PORT, and DATABASE_URL for your approved local synthetic database. Run the existing `npm run db:up` and `npm run db:seed` only when creating that local lab. Then set INVENTORY_READ_ENABLED=true and run `npm run start:backend`. No new credentials are created or discovered. The default is disabled (404); any other nonempty enable flag fails startup. External bind addresses are rejected before inventory connects. No changes to frontend are needed.
+
+The inventory connection is a separate pool (max 2), with default_transaction_read_only=on and statement_timeout=5000. Every inventory query is one parameterized SELECT/CTE statement, with an explicit field whitelist. It does not use the ingest transaction connection. Health/ingest behavior remains separate. Actual integration tests use PostgreSQL17.5 WASM in a read-only transaction; native pg Pool/server startup against a daemon has not been exercised here.
+
+## Endpoints
+
+| Method | Path | Query | Returned row fields |
+|---|---|---|---|
+| GET | /api/v1/inventory/hosts | page, page_size, search | id, hostname, os, os_version, first_seen_at, last_seen_at |
+| GET | /api/v1/inventory/packages | page, page_size, search, host_id | id, name, version, ecosystem, host_id, first_seen_at, last_seen_at |
+| GET | /api/v1/inventory/listening-ports | page, page_size, host_id | id, host_id, protocol, port, bind_address, process, pid, first_seen_at, last_seen_at |
+
+`search` is a case-insensitive **literal substring** of hostname or package name, trimmed, 1–200 characters, no control characters. Percent/underscore are literal, not SQL wildcards. `host_id` is an optional UUID equality filter. Packages are deliberately limited to source_kind=host (image packages remain outside this host prototype); ports require host_id, excluding container-only ports. A valid unmatched host UUID returns empty data, not 404. No raw_ref, process command line, environment, secret or raw source payload is exposed. Null schema fields remain null.
+
+`page`: default 1, maximum 100000. `page_size`: default 25, maximum 100. Both accept positive decimal integers only (no sign, decimal, exponent or leading zeros). Unknown or duplicate query parameters are rejected. URL limit 2048 characters. Results have stable ordering by hostname/id, name/version/id or port/protocol/id. Concurrent changes between requests can still shift offset pages; count and rows within one response use the same SQL statement/snapshot.
+
+## Response and counts
+
+Example GET `/api/v1/inventory/hosts?search=sample-host&page_size=1` on the existing seed:
+
+```json
+{"data":[{"id":"00000000-0000-4000-8000-000000000003","hostname":"sample-host-a","os":"Sample Linux","os_version":"1.0","first_seen_at":"2026-10-24T00:00:00+00:00","last_seen_at":"2026-10-24T00:00:00+00:00"}],"meta":{"page":1,"page_size":1,"total":2,"total_pages":2}}
+```
+
+Timestamp formatting can vary by PostgreSQL JSON serialization; values represent ISO timestamps. `total` counts **all filtered matching rows**, not just the page. `total_pages=ceil(total/page_size)`; zero matches -> 0 pages. Beyond the last page: data=[], preserved total. For global host/package/port counts, call the corresponding endpoint without filters; no separate dashboard/count endpoint is invented.
+
+## Errors and headers
+
+| Status | Code | Meaning |
+|---|---|---|
+| 400 | INVALID_QUERY | Malformed, repeated, unknown, oversized or unsupported query input |
+| 404 | NOT_FOUND | Disabled inventory feature or nonexistent route (including trailing slash) |
+| 405 | METHOD_NOT_ALLOWED | Known enabled route requested with anything except GET; Allow: GET |
+| 503 | INVENTORY_UNAVAILABLE | Database/query unavailable; raw database exception suppressed |
+
+Errors: `{"error":{"code":"INVALID_QUERY","message":"Invalid inventory query","request_id":"generated UUID"}}`. HEAD follows HTTP semantics with no response body. Responses use JSON, Cache-Control:no-store, X-Content-Type-Options:nosniff and X-Request-Id. No CORS/public API policy is introduced.
+
+## Reproduce and verify
+
+```powershell
+node --test backend/test/inventory.test.mjs
+npm run lint
+npm test
+npm run build
+curl.exe "http://127.0.0.1:3001/api/v1/inventory/hosts?search=sample-host&page_size=1"
+```
+
+Replace 3001 with the configured local port; the manual curl example is not a claim of a running daemon. Automated tests start an actual ephemeral loopback HTTP server, migrate/seed a fresh PostgreSQL WASM database and add a synthetic host through the accepted osquery store. Assertions cover OS/version, host-only packages/version, listener process/PID, case-insensitive/literal/injection-shaped search, filtered/global counts, empty/out-of-range pages, stable pagination, limits/duplicate/unknown query rejection, GET-only methods, sanitized database failures, read-only transaction and refused non-loopback startup. Fixture writes occur only in test setup before BEGIN READ ONLY; no migration/schema edits belong to this assignment.

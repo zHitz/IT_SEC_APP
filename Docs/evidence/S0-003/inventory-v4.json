@@ -1,0 +1,29 @@
+{
+  "task": "S0-003",
+  "version": "v4",
+  "actualTests": 25,
+  "failures": 0,
+  "lintModules": 46,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "engine": "PostgreSQL17.5 WASM",
+  "synthetic": true,
+  "nativeLinux": false,
+  "readOnlyTransaction": true,
+  "inventoryProof": "INVENTORY_V4_PROOF {\"engine\":\"PostgreSQL17.5 WASM\",\"synthetic\":true,\"readOnlyTransaction\":true,\"hosts\":3,\"hostPackages\":2,\"hostPorts\":2,\"searchLiteral\":true,\"stablePages\":true,\"pageCountsConsistent\":true,\"getOnly\":true,\"sqlStatements\":12,\"schemaChanged\":false,\"nativeLinux\":false}",
+  "sha256": {
+    "backend/src/inventory/reader.mjs": "5bec8bffce3b39e9cdd51d548046b94708e3240e38a08aa0b6f52718c44c0aeb",
+    "backend/src/app.mjs": "a4e8574d04d8c88bee5ef0cdb86a640d6affbe189e78ac1b44cbfa56dfae01d1",
+    "backend/src/server.mjs": "e808273e4431faa0a50f94eb628fd255d6b60ae901158922635b90b9b52f378f",
+    "backend/test/inventory.test.mjs": "1a13c3b59dc3bec3e47bc4c38776c83bebefe18a888360391eec649f24c401b9",
+    "Docs/HOST-INVENTORY-API.md": "a17d943073ec51be261bcf14c78932b70eee754a71def5eee92678461f0e9d56",
+    "Docs/evidence/S0-003/test-v4.txt": "64881773a7e3ef53a2e4efec87b7df006df8b3142a9cf72d46d8424c2f97d15b",
+    "Docs/evidence/S0-003/lint-v4.txt": "c9bd41c9e9458a0d4a34f1a85647b76b9b2fb8cd806e4bdb3fcc9535d5048be4",
+    "Docs/evidence/S0-003/build-v4.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298"
+  }
+}

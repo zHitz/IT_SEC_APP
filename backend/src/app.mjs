@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 
 // Liveness only. No claim about database, collectors or production readiness.
-export function createApp({ ingestOsquery } = {}) {
+export function createApp({ ingestOsquery, readInventory } = {}) {
   const app = createServer(async (request, response) => {
     const requestId = randomUUID();
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -21,8 +21,27 @@ export function createApp({ ingestOsquery } = {}) {
       }
       return;
     }
+    const inventoryMatch = /^\/api\/v1\/inventory\/(hosts|packages|listening-ports)(?:\?|$)/.exec(request.url);
+    if (inventoryMatch && readInventory) {
+      if (request.method !== 'GET') {
+        response.setHeader('Allow', 'GET');
+        response.writeHead(405).end(JSON.stringify({ error: { code: 'METHOD_NOT_ALLOWED', message: 'Use GET', request_id: requestId } }));
+        return;
+      }
+      try {
+        if (request.url.length > 2048) throw Object.assign(Error(), { status: 400, code: 'INVALID_QUERY' });
+        const url = new URL(request.url, 'http://localhost');
+        const result = await readInventory(inventoryMatch[1], url.searchParams);
+        response.writeHead(200).end(JSON.stringify(result));
+      } catch (error) {
+        const invalid = error.status === 400 && error.code === 'INVALID_QUERY';
+        response.writeHead(invalid ? 400 : 503).end(JSON.stringify({ error: { code: invalid ? 'INVALID_QUERY' : 'INVENTORY_UNAVAILABLE', message: invalid ? 'Invalid inventory query' : 'Inventory unavailable', request_id: requestId } }));
+      }
+      return;
+    }
     response.writeHead(404).end(JSON.stringify({ error: { code: 'NOT_FOUND', message: 'Endpoint not found', request_id: requestId } }));
   });
   app.requestTimeout = 30000; app.headersTimeout = 10000;
   return app;
 }
+

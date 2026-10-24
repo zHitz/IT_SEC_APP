@@ -1,0 +1,58 @@
+
+> it-asset-security@0.1.0 test
+> node --test backend/test/*.test.mjs frontend/test/*.test.mjs
+
+CLOUDFLARE_SYNTHETIC {"tables":24,"intervalMs":25,"requests":34,"onlyGET":true,"assertions":["AC1 seven records, A/AAAA/CNAME/MX/TXT and complete provenance","AC2 7 -> 7, first_seen_at unchanged, last_seen_at advanced, 0 created/7 updated","AC3 real loopback HTTP mock received only GET","AC4 known IPv4/IPv6 unflagged, outside IPv4/IPv6 flagged; flag cleared after content update, user tag retained","AC5 actual interval scheduler completed two sequential runs with full logs","Late403 no inventory writes;503 isolates one zone;database failure rolls back zone transaction;24tables unchanged"]}
+✔ Cloudflare HTTP mock -> PostgreSQL: all ACs, idempotency, flag provenance, scheduling and rollback (2479.4502ms)
+✔ worker configuration and transport fail closed; scheduler aborts without overlap (1.6018ms)
+✔ readiness fails closed for missing token/zone/CIDR and invalid real configuration (10.2726ms)
+READINESS_NO_NETWORK {"entry":"collectors/cloudflare/preflight.mjs","mode":"--dry-run","status":0,"audit":[{"event":"cloudflare_readiness","mode":"dry-run","status":"pass","synthetic":false,"zoneCount":1,"cidrCount":2,"cidrVersion":"synthetic-readiness-v3","credentialPresenceChecked":false,"networkRequests":0,"databaseWrites":0,"limitation":"Local validation only; does not verify token permissions, zone authorization or live API reachability"},{"event":"network_sentinel","attempts":0}]}
+READINESS_NO_NETWORK {"entry":"collectors/cloudflare/main.mjs","mode":"--dry-run","status":0,"audit":[{"event":"cloudflare_readiness","mode":"dry-run","status":"pass","synthetic":false,"zoneCount":1,"cidrCount":2,"cidrVersion":"synthetic-readiness-v3","credentialPresenceChecked":false,"networkRequests":0,"databaseWrites":0,"limitation":"Local validation only; does not verify token permissions, zone authorization or live API reachability"},{"event":"network_sentinel","attempts":0}]}
+READINESS_CREDENTIAL_CHECK {"hasToken":false,"status":1,"networkAttempts":0,"error":"CLOUDFLARE_API_TOKEN_REQUIRED"}
+READINESS_CREDENTIAL_CHECK {"hasToken":true,"status":0,"networkAttempts":0,"error":null}
+READINESS_INPUT_REJECTED {"code":"ZONE_IDS_REQUIRED","status":1,"networkAttempts":0}
+READINESS_INPUT_REJECTED {"code":"KNOWN_CIDRS_REQUIRED","status":1,"networkAttempts":0}
+✔ standalone preflight and actual worker dry-run/check never attempt network or DB (797.1533ms)
+C-01: 5 mocked calls, all GET; 2 zone pages + 3 record pages; no live credentials/network
+✔ Cloudflare GET-only client reads paginated zones and A/AAAA/CNAME without mutations (31.9756ms)
+✔ late permission failure exposes no partial scope or token/error body (1.8533ms)
+✔ rate limit/network retry is bounded and honors capped delay (2.6782ms)
+✔ pagination drift, duplicate IDs and malformed envelopes fail closed (2.7578ms)
+✔ explicit test scope and zone path validation prevent accidental broad collection (0.7165ms)
+C-01 source audit PASS: one transport, fixed origin, GET only; no DNS mutation interface
+✔ C-01 source audit: all collector transport sites hardcode GET; no write client exists (7.7629ms)
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (93.767ms)
+✔ configuration fails closed for missing or invalid ports (0.9617ms)
+INVENTORY_V4_PROOF {"engine":"PostgreSQL17.5 WASM","synthetic":true,"readOnlyTransaction":true,"hosts":3,"hostPackages":2,"hostPorts":2,"searchLiteral":true,"stablePages":true,"pageCountsConsistent":true,"getOnly":true,"sqlStatements":12,"schemaChanged":false,"nativeLinux":false}
+✔ inventory GET prototype: real PostgreSQL synthetic host/package/port search, pages, counts, safe errors and no writes (2391.9703ms)
+✔ inventory query bounds and sanitized unavailable errors (10.7608ms)
+✔ inventory startup refuses non-loopback binding before opening a database (133.6243ms)
+POSTGRES PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit
+UP: 0 -> 24 tables (22 entities + 2 technical junctions), common and entity columns verified
+SEED {"hosts":2,"containers":1,"domains":1,"cve_findings":1}
+FK/validation: orphan owner, group, CVE and polymorphic finding rejected; confidence/port/projection rejected; soft state retains rows
+DOWN: 24 -> 0 tables
+REAPPLY: up -> down PASS
+✔ migration, seed, FK contracts and down on fresh embedded PostgreSQL (2965.1491ms)
+✔ both native osquery configs validate strictly; unsafe view/options/content fail closed (8.2398ms)
+NATIVE_READINESS_ACTUAL {"exitCode":2,"report":{"event":"osquery_native_readiness","platform":"win32","configs":[{"ecosystem":"deb","packagesView":"SELECT name, version FROM deb_packages","eventsDisabled":true,"logicalTableCount":5},{"ecosystem":"rpm","packagesView":"SELECT name, version FROM rpm_packages","eventsDisabled":true,"logicalTableCount":5}],"nativeExecuted":false,"binaryExecuted":false,"networkRequests":0,"tokenRead":false,"distributionInstalled":false,"status":"NATIVE_NOT_AVAILABLE","reason":"PLATFORM_NOT_LINUX"},"audit":{"event":"network_sentinel","attempts":0}}
+✔ native availability never pretends execution and current-platform CLI is network-free (116.8322ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (13.4683ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (19.115ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (1.2503ms)
+(node:31652) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+OSQUERY_LAB_FAST {"synthetic":true,"nativeLinux":false,"nativeOsquery":false,"hosts":3,"offlineMs":1078,"queued":6,"allDelivered":true}
+✔ three isolated lab sources -> authenticated HTTP ingest; disk retry/restart, idempotency, safe five-table projection (6136.3235ms)
+OSQUERY_ALL_ENTITY_TIMESTAMPS {"syntheticObservationTimes":true,"repeatedAndStaleBatches":4,"rows":[{"entity":"Host","first_seen_at":"2026-10-24T19:37:10.941Z","last_seen_at":"2026-10-24T19:38:10.941Z"},{"entity":"ListeningPort","first_seen_at":"2026-10-24T19:37:10.941Z","last_seen_at":"2026-10-24T19:38:10.941Z"},{"entity":"Package","first_seen_at":"2026-10-24T19:37:10.941Z","last_seen_at":"2026-10-24T19:38:10.941Z"}]}
+✔ Host, Package and ListeningPort preserve first_seen and monotonic last_seen across repeats and stale replay (1689.1316ms)
+✔ frontend serves shell and proxies real backend health without exposing saved source (117.1113ms)
+✔ health UI rejects HTTP failures and malformed successful payloads (1.1263ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8207.5861

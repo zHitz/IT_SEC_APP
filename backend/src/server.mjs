@@ -2,18 +2,33 @@ import { createApp } from './app.mjs';
 import { backendConfig } from './config.mjs';
 import { createOsqueryStore } from './ingest/osquery-store.mjs';
 import { createOsqueryRoute } from './ingest/osquery-route.mjs';
+import { createInventoryReader } from './inventory/reader.mjs';
 
 const config = backendConfig(process.env);
-let db, ingestOsquery;
-if (process.env.OSQUERY_AGENT_TOKENS) {
-  try {
+let db, inventoryDb, ingestOsquery, readInventory;
+try {
+  if (process.env.OSQUERY_AGENT_TOKENS) {
     if (!process.env.DATABASE_URL || !process.env.OSQUERY_RAW_DIRECTORY) throw Error('INGEST_CONFIG');
     const { default: pg } = await import('pg');
     db = new pg.Client({ connectionString: process.env.DATABASE_URL }); await db.connect();
     ingestOsquery = createOsqueryRoute({ store: createOsqueryStore({ db, rawDirectory: process.env.OSQUERY_RAW_DIRECTORY,
       environment: process.env.OSQUERY_ENVIRONMENT || 'lab' }), tokens: JSON.parse(process.env.OSQUERY_AGENT_TOKENS) });
-  } catch { console.error('Osquery ingest configuration/connection failed; no credentials logged.'); if (db) await db.end(); process.exit(1); }
+  }
+  if (process.env.INVENTORY_READ_ENABLED && process.env.INVENTORY_READ_ENABLED !== 'true') throw Error('INVENTORY_CONFIG');
+  if (process.env.INVENTORY_READ_ENABLED === 'true') {
+    // This unauthenticated prototype is local-only; it is not a production authorization boundary.
+    if (!['127.0.0.1', '::1'].includes(config.host) || !process.env.DATABASE_URL) throw Error('INVENTORY_CONFIG');
+    const { default: pg } = await import('pg');
+    // Separate pool avoids interleaving reads with ingest's client transaction.
+    inventoryDb = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 2,
+      options: '-c default_transaction_read_only=on -c statement_timeout=5000' });
+    await inventoryDb.query('SELECT 1');
+    readInventory = createInventoryReader({ db: inventoryDb });
+  }
+} catch {
+  console.error('Backend database/configuration failed; no credentials logged.');
+  if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); process.exit(1);
 }
-const app = createApp({ ingestOsquery });
+const app = createApp({ ingestOsquery, readInventory });
 app.listen(config.port, config.host, () => console.log(`Backend listening on configured port ${config.port}`));
-for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => app.close(async () => { if (db) await db.end(); }));
+for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => app.close(async () => { if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); }));
