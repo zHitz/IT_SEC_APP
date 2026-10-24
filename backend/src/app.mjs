@@ -21,7 +21,7 @@ export function createApp({ ingestOsquery, readInventory } = {}) {
       }
       return;
     }
-    const inventoryMatch = /^\/api\/v1\/inventory\/(hosts|packages|listening-ports)(?:\?|$)/.exec(request.url);
+    const inventoryMatch = /^\/api\/v1\/inventory\/(hosts|packages|listening-ports|domains|dns-records)(?:\?|$)/.exec(request.url);
     if (inventoryMatch && readInventory) {
       if (request.method !== 'GET') {
         response.setHeader('Allow', 'GET');

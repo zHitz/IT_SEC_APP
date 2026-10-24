@@ -1,4 +1,9 @@
+const provenance = 'source, first_seen_at, last_seen_at, confidence, tags';
 const resources = Object.freeze({
+  domains: { table: 'domain', columns: `id, fqdn, is_internal, ${provenance}`, search: 'fqdn', order: 'fqdn, id',
+    flagPredicate: "EXISTS (SELECT 1 FROM asset_inventory.dns_record r WHERE r.domain = asset_inventory.domain.fqdn AND 'cloudflare:outside-known-range' = ANY(r.tags))" },
+  'dns-records': { table: 'dns_record', columns: `id, domain, type, value, proxied, ttl, ${provenance}`, search: 'domain', order: 'domain, type, id',
+    flagPredicate: "'cloudflare:outside-known-range' = ANY(tags)" },
   hosts: { table: 'host', columns: 'id, hostname, os, os_version, first_seen_at, last_seen_at', search: 'hostname', order: 'hostname, id', hostScope: false },
   packages: { table: 'package', columns: 'id, name, version, ecosystem, source_host_or_image AS host_id, first_seen_at, last_seen_at', search: 'name', order: 'name, version, id', hostScope: true, predicate: "source_kind = 'host'" },
   'listening-ports': { table: 'listening_port', columns: 'id, host_id, protocol, port, bind_address, process, pid, first_seen_at, last_seen_at', order: 'port, protocol, id', hostScope: true, predicate: 'host_id IS NOT NULL' }
@@ -7,7 +12,7 @@ export class InventoryError extends Error { constructor(code, status = 400) { su
 export function inventoryQuery(resource, params) {
   const spec = resources[resource];
   if (!spec) throw new InventoryError('NOT_FOUND', 404);
-  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(spec.hostScope ? ['host_id'] : [])]);
+  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
   for (const key of params.keys()) if (!allowed.has(key) || params.getAll(key).length !== 1) throw new InventoryError('INVALID_QUERY');
   function integer(key, fallback, max) {
     const raw = params.get(key); if (raw === null) return fallback;
@@ -20,6 +25,11 @@ export function inventoryQuery(resource, params) {
   if (search !== null) {
     if (!search.trim() || search.length > 200 || /[\u0000-\u001f\u007f]/.test(search)) throw new InventoryError('INVALID_QUERY');
     values.push(search.trim()); where.push(`strpos(lower(${spec.search}), lower($${values.length}::text)) > 0`);
+  }
+  const flagged = params.get('outside_known_range');
+  if (flagged !== null) {
+    if (!['true', 'false'].includes(flagged)) throw new InventoryError('INVALID_QUERY');
+    where.push(`${flagged === 'false' ? 'NOT ' : ''}(${spec.flagPredicate})`);
   }
   const hostId = params.get('host_id');
   if (hostId !== null) {
