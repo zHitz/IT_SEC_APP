@@ -21,7 +21,9 @@
     "cloudflare:verify": "node scripts/verify-cloudflare.mjs",
     "start:cloudflare": "node --env-file=.env collectors/cloudflare/main.mjs",
     "osquery:verify": "node scripts/verify-osquery.mjs",
-    "start:osquery": "node --env-file=.env collectors/osquery/main.mjs"
+    "start:osquery": "node --env-file=.env collectors/osquery/main.mjs",
+    "cloudflare:dry-run": "node collectors/cloudflare/preflight.mjs --dry-run",
+    "cloudflare:check": "node collectors/cloudflare/preflight.mjs --check"
   },
   "dependencies": {
     "pg": "8.23.1"

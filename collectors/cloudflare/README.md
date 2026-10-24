@@ -52,3 +52,7 @@ JSONL logs contain sync_started / zone_finished / sync_finished, runID, syntheti
 The source audit scans every Cloudflare worker module; the only HTTP transport is hardcoded GET with no mutation method/interface. Tests exercise pagination, late auth failure, finite retries, destination guards, actual HTTP mock ingestion, flags, idempotency, logs and rollback. New transport or worker modules must remain covered by that audit.
 
 Official references checked on2026-10-25: [List Zones](https://developers.cloudflare.com/api/resources/zones/methods/list/), [List DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/list/).
+
+## Real-zone readiness (v3)
+
+Use config.real.example.json and `npm run cloudflare:dry-run` / `npm run cloudflare:check` before any authorized real run. Both are local-only with zero API/database calls; the token is required only for the presence-check mode. The worker also supports --dry-run/--check and rejects ambiguous/unknown flags. Exact future switch/verification commands are in `Docs/evidence/S0-004/followup-readiness.md`. Empty template scope/CIDRs intentionally fail closed. V3 does not use real credentials or select a production zone.
