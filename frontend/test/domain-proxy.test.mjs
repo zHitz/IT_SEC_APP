@@ -11,7 +11,7 @@ test('opt-in frontend page/proxy uses accepted API over real HTTP/PostgreSQL; di
   const response=await fetch(lab.origin+'/api/v1/inventory/dns-records?outside_known_range=true&page_size=10');assert.equal(response.status,200);const data=await response.json();assert.equal(data.meta.total,6);assert.equal(data.data.length,6);
   const search=await(await fetch(lab.origin+'/api/v1/inventory/domains?search=SAMPLE-01')).json();assert.equal(search.meta.total,1);
   const next=await(await fetch(lab.origin+'/api/v1/inventory/domains?page=2&page_size=10')).json();assert.equal(next.meta.page,2);assert.equal(next.meta.total,25);assert.equal(next.data.length,10);
-  assert.equal((await fetch(lab.origin+'/api/v1/inventory/packages')).status,404);assert.equal((await fetch(lab.origin+'/api/v1/ingest/osquery',{method:'POST'})).status,405);assert.equal((await fetch(lab.origin+'/.env')).status,404);
+  assert.equal((await fetch(lab.origin+'/api/v1/inventory/unknown')).status,404);assert.equal((await fetch(lab.origin+'/api/v1/ingest/osquery',{method:'POST'})).status,405);assert.equal((await fetch(lab.origin+'/.env')).status,404);
   assert.throws(()=>createFrontend({root:'.',backendOrigin:'https://example.com',inventoryEnabled:true}),/loopback/);
   console.log('DOMAIN_UI_V5_HTTP_PROOF',JSON.stringify({synthetic:true,domains:25,dnsRecords:25,flagged:6,proxySearch:true,proxyPagination:true,disabled404:true,readOnlyGet:true,cloudflareRequests:0}));
  }finally{await new Promise(resolve=>disabled.close(resolve));await lab.close();}

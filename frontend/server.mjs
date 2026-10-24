@@ -9,6 +9,9 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
   if (!['http:', 'https:'].includes(upstream.protocol)) throw new Error('Invalid BACKEND_ORIGIN');
   if (inventoryEnabled && !['127.0.0.1', '[::1]'].includes(upstream.hostname)) throw Error('Inventory requires loopback backend');
   const inventoryFiles = new Map([
+    ['/inventory/hosts', ['hosts.html', 'text/html; charset=utf-8']],
+    ['/host-page.mjs', ['host-page.mjs', 'text/javascript; charset=utf-8']],
+    ['/inventory-table.mjs', ['inventory-table.mjs', 'text/javascript; charset=utf-8']],
     ['/inventory/domains', ['domains.html', 'text/html; charset=utf-8']],
     ['/inventory-page.mjs', ['inventory-page.mjs', 'text/javascript; charset=utf-8']],
     ['/domain-inventory.mjs', ['domain-inventory.mjs', 'text/javascript; charset=utf-8']]
@@ -24,7 +27,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     if (request.method !== 'GET') { response.writeHead(405).end(); return; }
-    const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records)(?:\?|$)/.test(request.url);
+    const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records|hosts|packages|listening-ports)(?:\?|$)/.test(request.url);
     if (inventoryEnabled && (inventoryRoute || inventoryFiles.has(request.url)) && !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.localAddress)) { response.writeHead(403).end(); return; }
     if (inventoryEnabled && inventoryRoute) {
       if (request.url.length > 2048) { response.writeHead(400).end(); return; }
@@ -51,7 +54,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     if (!file) { response.writeHead(404).end(); return; }
     try {
       let body = await readFile(resolve(root, file[0]));
-      if (file[0] === 'index.html') body = Buffer.from(body.toString('utf8').replace('<!-- inventory-nav -->', inventoryEnabled ? '<a href="/inventory/domains"><span aria-hidden="true">◎</span><span>Domain inventory</span></a>' : ''));
+      if (file[0] === 'index.html') body = Buffer.from(body.toString('utf8').replace('<!-- inventory-nav -->', inventoryEnabled ? '<a href="/inventory/domains"><span aria-hidden="true">◎</span><span>Domain inventory</span></a><a href="/inventory/hosts"><span aria-hidden="true">▣</span><span>Host inventory</span></a>' : ''));
       response.writeHead(200, { 'Content-Type': file[1] }).end(body);
     } catch { response.writeHead(503).end('Frontend build unavailable'); }
   });

@@ -16,3 +16,5 @@ var/
 SEC_Atlas_*
 !frontend/src/index.html
 !frontend/src/domains.html
+
+!frontend/src/hosts.html

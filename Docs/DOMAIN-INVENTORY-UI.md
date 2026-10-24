@@ -20,7 +20,7 @@ Loading status disables paging; latest-request-wins and abort prevent stale resu
 
 ## Proxy boundary
 
-Only GET /api/v1/inventory/domains and /dns-records (with query) forward to the fixed numeric loopback backend. No user-supplied origin or cookie/auth forwarding, redirect following, write method, arbitrary path or host-package proxy. Responses are JSON with no-store/CSP/nosniff. Unexpected/network/oversized upstream response becomes502. The known static page and two JS modules are an explicit route allowlist; source/env/docs are not served. No Cloudflare client or credentials imported.
+Only GET /api/v1/inventory/domains and /dns-records (with query) forward to the fixed numeric loopback backend. No user-supplied origin or cookie/auth forwarding, redirect following, write method or arbitrary path. Host/Package/ListeningPort GET routes were subsequently added under S0-003 v5, using the same opt-in boundary. Responses are JSON with no-store/CSP/nosniff. Unexpected/network/oversized upstream response becomes502. The known static page and two JS modules are an explicit route allowlist; source/env/docs are not served. No Cloudflare client or credentials imported.
 
 ## Verification
 
