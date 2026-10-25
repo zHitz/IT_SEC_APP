@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Package-to-hosts inventory view
+# Result — TASK-S0-003: Listening port/process Host search
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v8 |
+| Result version | v9 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; latest Lead07:54 v8assignment; v7ACCEPT retained |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead08:24 ACCEPT v8 and v9 assignment |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T08:11:37.082584+07:00 |
-| Source/evidence commit | See v8 commit on existing QA feature branch; logs/screenshots included |
+| Submitted at | 2026-10-25T08:39:16.525255+07:00 |
+| Source/evidence commit | 2bcc0bfb7ced1b8bb98ad4aa149a13ff973c1be3 |
 
 ## 1. Summary
 
-PARTIAL overall because original native Linux/osquery AC1/3/4 remain unverified. All newly assigned v8 package-to-hosts requirements are complete in approved synthetic scope. Host packages open exact name/ecosystem host/version inventory, searchable and paginated, with safe return to original Host/list. No schema, Cloudflare or production change.
+PARTIAL overall retains original nativeLinux/osquery AC1/3/4 gaps. All assigned v9 listening port/process search requirements complete: exact port and literal case-insensitive process filters, matching Host/port/process/PID records, count/paging and return list/detail context. Existing local read-only GET extended without schema/Cloudflare/CVE/production change.48/48tests,lint72/schema22+2/114FK and buildPASS.
 
 ## 2. Acceptance criteria
 
@@ -51,60 +51,66 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V8-3 | Return to originating Host and Host list with context | PASS: test restores Host11; actual browser restores Host11/PID111 and list host-/page2/3/size10. |
 | V8-4 | Atlas style/local opt-in/no schema or CVE inference; docs/full checks | PASS: existing tokens/frame and fixed loopback GET proxy;45/45tests,lint67/schema22+2/114FK,buildPASS. |
 
+| V9-1 | Search listening port or process and show matching Host/port/process/PID | PASS: exact8011 ->Host11/PID111; case-insensitive process24matches; real read-only SQL and browser proof. |
+| V9-2 | Pagination and total | PASS:24listening records/3pages,10/page; actual second page Host11–20; both filters AND and empty matches tested. |
+| V9-3 | Return list/detail and existing style/context | PASS: actual browser Host11 and list host-/page2/3/size10 retained; existing frame/tokens. |
+| V9-4 | Docs/tests/local opt-in/schema unchanged/no CVE/Cloudflare | PASS:48tests,lint72/schema22+2/114FK,buildPASS; no schema/collector/Cloudflare changes. |
+| R8-1 | Record exact v8 commit and exact v9 header | PASS: v8 hash914f875363559acb1dc870bfb60f78a3592f83ce recorded in section7; exact v9 implementation hash above. |
+
 ## 3. Work completed
 
-Added one read-only package UUID-to-hosts endpoint and selected-package panel. Uses accepted package source_host_or_image mapping, only host source_kind, exact package name+ecosystem across all stored versions. Search remains scoped to selected identity. No arbitrary SQL identifiers or upstream target. The panel uses text nodes, bounded fetch timeout, explicit empty/error states and clears stale rows. Host v7 and Domain v8 regressions pass.
+Extended accepted listening-ports GET with bounded exact port/process_search parameters and a read-only Host join supplying hostname. One bound read statement returns count/page. Host list/detail launch a temporary search panel; safe text rendering, timeout, invalid/empty/error clearing,10-row pages and return to entry context. Existing endpoint fields and host_id scope retained.
 
 ## 4. Files changed
 
 | File | Purpose |
 |---|---|
-| backend/src/app.mjs | Dispatch whitelisted package UUID/hosts GET relation through existing gates/errors. |
-| backend/src/inventory/exact-reader.mjs | Single bound read statement for package identity, host/version page/count and existence. |
-| frontend/server.mjs | Fixed package-host route proxy and static module whitelist. |
-| frontend/src/package-hosts.mjs | Package panel, name/version search,10-row paging/count, safe rendering/error/return controls. |
-| frontend/src/host-navigation.mjs | Connect package selection to panel, preserve Host/list context and teardown. |
-| frontend/src/inventory-detail.mjs | Optional package-name selection hook; Domain behavior unchanged. |
-| frontend/test/package-hosts.test.mjs | Actual synthetic HTTP/PostgreSQL READ ONLY flow, search/pages/count/return and query errors. |
-| scripts/inventory-ui-lab.mjs | Optional --packages synthetic24host/two-version fixture; default fixtures unchanged. |
-| Docs/HOST-INVENTORY-API.md | Package endpoint response, identity, query and count semantics. |
-| Docs/HOST-INVENTORY-UI.md | Package navigation and honest reload limits/reproduction. |
-| Docs/evidence/S0-003/package-v8.json | Actual observed proof and limitations. |
-| Docs/evidence/S0-003/test-v8.txt | Complete45test output. |
-| Docs/evidence/S0-003/lint-v8.txt | Actual67module/schema check. |
-| Docs/evidence/S0-003/build-v8.txt | Actual successful build. |
-| Docs/evidence/S0-003/package-page-v8.png | Real browser page2of3,24host/version records. |
-| Docs/evidence/S0-003/package-search-v8.png | Real version2.0 search12records/2pages. |
-| Docs/evidence/S0-003/package-back-v8.png | Returned Host list retaining host-/page2/size10. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v8 report retaining original/historical AC rows above. |
+| backend/src/inventory/reader.mjs | Exact port/literal process query validation/predicates and Host name join. |
+| frontend/server.mjs | Whitelist port-search module under existing opt-in gate. |
+| frontend/src/host-navigation.mjs | Mount/teardown port panel and hide during route changes. |
+| frontend/src/port-search.mjs | Port/process inputs, results/count/paging/errors and origin return. |
+| frontend/test/port-search.test.mjs | Actual read-only HTTP/PostgreSQL filters/identity/pages/return/invalid tests. |
+| Docs/HOST-INVENTORY-API.md | Filters, validation, AND/count/response semantics. |
+| Docs/HOST-INVENTORY-UI.md | Search flow, local reproduction and limits. |
+| Docs/evidence/S0-003/port-search-v9.json | Observed proof and honest limits. |
+| Docs/evidence/S0-003/test-v9.txt | Actual48test output. |
+| Docs/evidence/S0-003/lint-v9.txt | Actual72module/schema check. |
+| Docs/evidence/S0-003/build-v9.txt | Actual buildPASS. |
+| Docs/evidence/S0-003/port-v9.png | Actual exact8011/Host11/PID111. |
+| Docs/evidence/S0-003/process-page-v9.png | Actual24process matches/page2of3. |
+| Docs/evidence/S0-003/port-back-v9.png | Actual returned list host-/page2/size10. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v9 with exact current hash and v8 provenance note. |
 
 ## 5. Run and verify
 
-From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. For browser proof run `node scripts/inventory-ui-lab.mjs --packages`, use emitted origin and `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Select shared-runtime, inspect24rows/3pages, Next, search2.0, return Host11, reopen and Back to host list. Synthetic local loopback lab only; no production token.
+Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node scripts/inventory-ui-lab.mjs --hosts`; use emitted origin `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Search port or process ->8011 ->Host11/PID111. Clear port, process synthetic-listener ->24records/3pages; Next. Return detail, then list retains search/page. API `/api/v1/inventory/listening-ports?port=8011&process_search=synthetic&page=1&page_size=10`. Local synthetic only.
 
 ## 6. Tests and actual results
 
-45/45tests pass, lint67modules, schema22entities+2junctions/114nativeFK unchanged, buildPASS. Package flow executes actual HTTP and PostgreSQL17.5WASM in BEGIN READ ONLY: exact selected identity,24host rows,2versions, pagination/count/search, empty state, Host return, missing404/invalid400/nonGET405. Real browser independently verifies select/page/search/both return paths. All earlier Host, Domain and collector regressions pass. Actual accepted600010ms outage remains retained and was not rerun. No native Linux/osquery claim.
+48/48tests pass; lint72modules; schema22businessentities+2junctions/114nativeFK unchanged; buildPASS. New integration uses actual HTTP/PostgreSQL17.5WASM inside BEGIN READ ONLY. Proves exactport, case-insensitive process, AND filters,24records/pages, invalid0/65536/decimal/duplicate/control400, literal injection no matches, no stale data and return context. Actual browser verifies8011/Host11/PID111, process page2/3 and both returns. Previous Domain/Host/package/collector regressions pass. Accepted600010ms outage not rerun.
 
 ## 7. Issues and implementation decisions
 
-Package identity is exact name plus ecosystem, not selected version; otherwise cross-host version comparison would be lost. Counts are host/version observation rows; multiple stored versions can produce multiple rows for a Host. Search is within that package identity and matches name OR version literally; no SQL wildcard interpretation. Existing UUID provides a stable selected package reference; missing/non-host package404. Package subview is temporary within originating Host route; reload returns Host details, no new package deep-link scope assumed. No task-specific failed tests in v8; targeted3checks and final45checks passed. Prior Domain test-fix history is separate and disclosed in its RESULT.
+Lead requested explicit v8 provenance: actual accepted package-view v8 commit from Git is914f875363559acb1dc870bfb60f78a3592f83ce. Its old generic header is historical; current v9 header has exact current implementation/evidence hash.
+
+Port is exact integer1–65535; process_search is a1–200character literal case-insensitive substring. Both combine with AND, including existing host_id scope. Counts are listening records, not unique hosts. Search is global stored listening inventory independent of origin list search, retained on return. Hostname comes from existing FK join, no schema migration. Temporary panel reload returns origin; no new deep-link search scope assumed. No task-specific failed tests; targeted1 and final48passed.
 
 ## 8. Not done, limitations and technical debt
 
-Original native AC1/3/4 remain unverified (Windows SQLite Linux-inventory simulators, actual HTTP/PostgreSQLWASM, not native Linux/osquery). No real credentials/production/Cloudflare changes/CVE conclusions. No new RBAC or schema/entity. No package deep-link reload persistence or scale benchmark;24synthetic hosts prove functional pagination only. Exact viewport/reduced-motion emulation not claimed. Accepted600010ms experiment preserved, not reconstructed.
+Original nativeLinux/osquery AC1/3/4 remain unverified; accepted source lab is Windows SQLite Linux-inventory simulators plus real HTTP/PostgreSQLWASM. No native deployment/production/token/Cloudflare/CVE claim. No new auth/RBAC/schema/entity/scan. No search-panel reload persistence or scale benchmark;24synthetic matches prove function only. Exact viewport/reduced-motion runtime claim absent. Existing mandatory native follow-ups and accepted600010ms evidence preserved.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for assigned package scope; all v8 requirements pass. Native follow-ups remain separately required before production; no new PO decision/Q01–05 answer.
+No hard blocker for v9; original native follow-ups remain separate before production. No new PO/security/spec decision or Q01–05 answer.
 
 ## 10. Next step and self-check
 
-Attach this actual RESULT and proof to assigned task, update existing QA PR, await specific review/new assignment. Do not merge, self-ACCEPT or change task status/dependencies.
+Submit actual v9 RESULT/guides/proof/logs/screenshots and update existing QA PR without merge. Await specific Lead/QA feedback/new assignment; no self-ACCEPT/task edits.
 
-- [x] Ten sections in order; original and new criteria individually mapped.
-- [x] Actual commands/outputs, all changed files, limits and assumptions listed.
-- [x] PARTIAL preserves native gaps; no production/native/scale claim.
-- [x] Canonical version incremented; actual attachments prepared.
+- [x] Ten ordered sections and individual original/historical/new criteria.
+- [x] Exact current source/time/Summary and historical v8 hash checked.
+- [x] Every changed file, commands/outputs/limits/assumptions listed.
+- [x] PARTIAL retains native gaps; no native/scale/production overclaim.
+- [x] Local/read-only/no-secret boundaries retained; actual attachments prepared.
 
-History: v2–v6 accepted in recorded PoC scopes; v7 Host navigation accepted Lead07:54; v8 package-to-hosts complete. Previous versions retained in Git/ClickUp.
+History: v2–v7 accepted in recorded scopes; v8 package view accepted Lead08:24; v9 port/process search complete. Previous reports retained in Git/ClickUp.
