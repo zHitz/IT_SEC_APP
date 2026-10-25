@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: v26 Combined Host list and detail journey
+# Result — TASK-S0-003: v27 Combined Site picker, Host list and Host detail journey
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v26 |
+| Result version | v27 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; live Lead16:12 ACCEPTv25 and assignv26 |
+| Spec version followed | SRS v1.0; TASK-S0-003; live Lead16:31 ACCEPTv26 and assignv27 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T16:21:23.494117+07:00 |
-| Source/evidence commit | 7b3b404226f99d2905d00fc269b2a6e4e83443b1 |
+| Prepared at | 2026-10-25T16:47:53.415052+07:00 |
+| Source/evidence commit | 431b26205e26b3874a6869229a2ba1d3886d1fb6 |
 
 ## 1. Summary
 
-PARTIAL in declared scope. Host list search/sort/page plus independent package and port search/sort/page coexist in one fragment. Host11 has31 packages/31 ports; filtered page2 has6 rows each. Detail return/reopen, direct/reload/nativehistory retain both levels. Six invalid list/package/port cases clear only affected rows. NativeAC1/3/4remainunverified;accepted600010msoutage retained/notrerun. Final81/81tests,0fail;lint93;schema22+2/114FK unchanged;buildPASS.
+Site picker name-desc/search Site/page2, Site-filtered Hosts hostname-desc/search host-/page2, Host11 package version-desc/search package/page2 and ports pid-desc/search synthetic/page2 coexist in one fragment. Detail returns to Site Hosts; picker return and same-Site reopen retain Host page2. Package and port page2 each contain6 rows. Native AC-1/3/4 remain unverified; accepted actual600010ms outage retained, not rerun. Final83tests pass,0fail;lint94;schema unchanged;buildPASS. No production, collector, API contract or schema change. QA approval remains required before merge.
 
 ## 2. Acceptance criteria
 
@@ -152,64 +152,64 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V26-3 | Invalid state independence | PASS:six invalid cases per task;affected list/detail cleared,healthy context retained. |
 | V26-4 | Full checks/evidence | PASS:81tests/0fail;lint93;schema22+2/114FK unchanged;build;three screenshots. |
 
+
+| ID | v27 criterion | Result / actual evidence |
+|---|---|---|
+| V27-1 | Combined fragment with all assigned levels | PASS: Site picker name-desc/search Site/page2, Site-filtered Hosts hostname-desc/search host-/page2, Host11 package version-desc/search package/page2 and ports pid-desc/search synthetic/page2 coexist in one fragment. Detail returns to Site Hosts; picker return and same-Site reopen retain Host page2. Package and port page2 each contain6 rows. Native AC-1/3/4 remain unverified; accepted actual600010ms outage retained, not rerun. |
+| V27-2 | Direct/reload/native history and origin return/reopen | PASS: actual HTTP/PostgreSQL fresh DOM/history tests and built-in browser reload, Back/Forward and origin-specific return. Site picker search/sort/page and Site Host page2 survive reopen. |
+| V27-3 | At least six independently invalid levels | PASS: picker sort/direction, Site Host sort/direction, package sort and port sort; only affected rows clear, healthy lists retain state. |
+| V27-4 | Full suite, lint/build/schema, verification/logs and three screenshots | PASS:83/83 tests,0fail;lint94modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. verification-v27.json, test/lint/build-v27.txt and three actual v27 screenshots. |
+
 ## 3. Work completed
 
-Implemented live Lead16:12 v26 assignment. Host list search/sort/page plus independent package and port search/sort/page coexist in one fragment. Host11 has31 packages/31 ports; filtered page2 has6 rows each. Detail return/reopen, direct/reload/nativehistory retain both levels. Six invalid list/package/port cases clear only affected rows. NativeAC1/3/4remainunverified;accepted600010msoutage retained/notrerun.
+Site picker name-desc/search Site/page2, Site-filtered Hosts hostname-desc/search host-/page2, Host11 package version-desc/search package/page2 and ports pid-desc/search synthetic/page2 coexist in one fragment. Detail returns to Site Hosts; picker return and same-Site reopen retain Host page2. Package and port page2 each contain6 rows. Native AC-1/3/4 remain unverified; accepted actual600010ms outage retained, not rerun. Reused accepted GET inventory endpoints and existing Atlas UI controls/styles. Implemented explicit origin bookmarks so nested return does not fall into a different list. Verified actual built-in browser direct/reload/Back/Forward and invalid-state screenshots. Published [DEV][START] on the exact assigned task; no status change.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| Docs/DOMAIN-INVENTORY-UI.md | Document exact v26 combined route, scoped search and return semantics. |
-| Docs/HOST-INVENTORY-UI.md | Document exact v26 combined route, scoped search and return semantics. |
-| Docs/evidence/S0-003/build-v26.txt | Actual ESM build output. |
-| Docs/evidence/S0-003/host-journey-history-v26.png | Actual viewport screenshot host-journey-history-v26. |
-| Docs/evidence/S0-003/host-journey-invalid-v26.png | Actual viewport screenshot host-journey-invalid-v26. |
-| Docs/evidence/S0-003/host-journey-reload-v26.png | Actual viewport screenshot host-journey-reload-v26. |
-| Docs/evidence/S0-003/lint-v26.txt | Actual lint/schema parity output. |
-| Docs/evidence/S0-003/test-v26.txt | Actual complete81test passing output. |
-| Docs/evidence/S0-003/verification-v26.json | Actual structured v26 observations, regression fix and limitations. |
-| Docs/evidence/S0-004/build-v26.txt | Actual ESM build output. |
-| Docs/evidence/S0-004/domain-journey-history-v26.png | Actual viewport screenshot domain-journey-history-v26. |
-| Docs/evidence/S0-004/domain-journey-invalid-v26.png | Actual viewport screenshot domain-journey-invalid-v26. |
-| Docs/evidence/S0-004/domain-journey-reload-v26.png | Actual viewport screenshot domain-journey-reload-v26. |
-| Docs/evidence/S0-004/lint-v26.txt | Actual lint/schema parity output. |
-| Docs/evidence/S0-004/test-v26.txt | Actual complete81test passing output. |
-| Docs/evidence/S0-004/verification-v26.json | Actual structured v26 observations, regression fix and limitations. |
-| frontend/src/domain-navigation.mjs | Carry list/detail/record context, save Domain detail page on list return, preserve Domain DNS on invalid record, omit default page1 from unrelated routes. |
-| frontend/src/host-navigation.mjs | Carry list plus both scoped search/sort/page states; save inactive Host detail bookmark on return and restore on reopen; avoid activating unrelated views. |
-| frontend/src/inventory-detail.mjs | Add scoped Host package-name/process searches and restore their controls; retain existing isolated sort validation. |
-| frontend/test/detail-dns-navigation.test.mjs | Add actual Domain list/flag/detail/record journey regression with reload/return/reopen/history and six independently invalid cases. |
-| frontend/test/host-scoped-navigation.test.mjs | Add actual combined list/package/port regression:reload/history,return/reopen,six invalid list/package/port cases. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v26 report;original/historicalAC retained,current criteria separate. |
+| frontend/src/host-navigation.mjs | Serialize explicit Site origin and inactive Site bookmark; restore selected Site Host list on detail Back; site_resume retains Host page through picker reopen. |
+| frontend/src/site-hosts.mjs | Make Host names open exact Host detail; add Back to Site picker; preserve same-Site Host search/sort/page. |
+| frontend/src/domain-navigation.mjs | Serialize Flagged origin and saved Flagged list alongside Domain/detail context; route detail Back to correct origin. |
+| frontend/src/flagged-domains.mjs | Add explicit Open Domain detail buttons on existing stored-flag owner cards. |
+| frontend/test/combined-origin-navigation.test.mjs | Two actual HTTP/PostgreSQL READ ONLY integration regressions cover combined journeys, fresh DOM, native-history fixture, all returns/reopens and six invalid cases per task. |
+| scripts/inventory-ui-lab.mjs | Add isolated siteJourneyFixtures / --site-journey option assigning24 synthetic hosts to Sample Site so Host11 occurs on descending page2; old fixtures unchanged. |
+| Docs/HOST-INVENTORY-UI.md | Document Site origin, return/reopen behavior, fixture option and reproduction command. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document dual-origin parameters and Domain/Flagged return semantics. |
+| Docs/evidence/S0-003/verification-v27.json | Record actual check results, fixture rows, browser checks, failures and limits. |
+| Docs/evidence/S0-003/{test,lint,build}-v27.txt | Actual final full-suite83pass,lint94/schema22+2/114FK and build output. |
+| Docs/evidence/S0-003/host-combined-{reload,history,invalid}-v27.png | Three actual built-in browser screenshots; synthetic data only. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v27 report; preserve original and previous version AC evidence, add separate V27-1..4 rows. |
 
 ## 5. Run and verify
 
-Repository root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/host-scoped-navigation.test.mjs frontend/test/detail-dns-navigation.test.mjs`. Browserlabs:`node scripts/inventory-ui-lab.mjs --host-detail` (Hostpath) and `node scripts/inventory-ui-lab.mjs --detail-dns` (Domainpath);append exactv26fragment in corresponding UIguide.
+From repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`.
+Focused: `node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs`.
+Host lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey`; Domain lab: `node scripts/inventory-ui-lab.mjs --detail-dns --flagged`. For combined browser verification both sets of flags can be used in one lab. Open the returned loopback origin at /inventory/hosts or /inventory/domains and use the full fragment in combined-origin-navigation.test.mjs. Setup writes synthetic fixtures before the regression begins READ ONLY; runtime API calls are GET/SELECT only.
 
 ## 6. Tests and actual results
 
-Final81tests passed,0failed;lint93modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Actual local HTTP/PostgreSQL regressions run inside READ ONLY after syntheticsetup. Tests cover list/detail search/sort/page,record directload,return/reopen,reload/history and six independent invalidcases per task. Actual built-in browser reload/nativehistory/return andinvalid screenshots captured after settled-state checks. Evidence:`Docs/evidence/S0-003/verification-v26.json`,test-v26.txt,lint-v26.txt,build-v26.txt andjourney reload/history/invalid screenshots.
+Final full suite83/83 passed,0failed;lint94modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Both targeted tests use actual local HTTP and PostgreSQL17.5 WASM with BEGIN READ ONLY after setup. Output markers HOST_JOURNEY_V27_PROOF and DOMAIN_JOURNEY_V27_PROOF each record six invalid cases and successful reload/history/return/reopen. Actual built-in browser verified Host11 six package/six port rows, Site Host page2/3 and picker page2/2; Sample04 DNS page2/2 five rows, record192.0.2.99, Flagged page2/2 and main Domain page2/2. Screenshots were captured after settled visible state and inspected. Evidence in Docs/evidence/S0-003; Cloudflare requests0.
 
 ## 7. Issues and implementation decisions
 
-Self-resolution: detail state is serialized in inactive list bookmarks (host_saved/domain_saved) so returning to list retains state without reopening detail. Saved detail pagination validates only active details. Host package search uses existing bound name search;port search uses existing bound process_search. First fullrun80/81:default Domain detailpage1 leaked into flagged-recordroute validation. Omit defaultpage1 and rerun allchecks;final81/81passes. Invalid record reveals retained Domain detail instead of clearing it. No schema/entity/API/tagalgorithm/collector changes. Known ClickUp MCPquota boundary honored;browser upload outcome and immutablefallback recorded honestly in taskcomment/checkpoint.
+Initial targeted Host assertion used an old Site fixture count, then showed Host11 was absent from that descending second page. Added a separate synthetic Site-journey fixture; did not alter existing fixtures or schema. Strengthened the test for picker return and same-Site reopen; fixed page reset using site_resume. Explicit origin survives nested detail changes while a main-list selection keeps its main origin. Browser hash-only navigation initially retained an older loaded module; reloaded the local page and verified final behavior. A broad exact-text selector matched hidden rows; scoped it to the actual DNS record panel. Python cp1258 console could not print the test checkmark after tests exited0; logs were intact, lint/build then completed. Final full checks rerun after the last source change. All these are resolved technical/lab details, not blockers.
 
 ## 8. Not done, limitations and technical debt
 
-Syntheticlocal only;no productionauth/RBAC/scale/CVE/nativeLinux/liveCloudflare/credentialevidence. Viewport screenshots. Text versions sort lexically. OriginalnativeAC1/3/4unverified;acceptedactual600010msoutage retained,notrerun;overallPARTIAL.
+Synthetic/local only; no production authentication/RBAC/scale/native Linux/live Cloudflare/CVE evidence. Versions sort lexically. Existing bounded Site identity lookup and stored-flag owner guard limits remain; no scale claim. Native AC-1/3/4 unverified; accepted actual600010ms outage retained, not rerun; overall PARTIAL. ClickUp quota boundary honored; if browser file upload fails, use the Lead-authorized immutable GitHub report-commit fallback, report zero new attachments honestly.
 
 ## 9. Blockers and decisions required
 
-No new missinginput/spec/security/productiondecision orhardblocker. Q01..Q05untouched. ClickUp MCPquota retryboundary honored;authorized browser/immutablefallbackavailable. QAapprovalrequired beforemerge;Devdoesnotmerge.
+No new missing-input/spec/security/production decision or hard blocker. Q-01..Q-05 untouched. Separate QA approval is required before merge; Dev does not merge. ClickUp upload outcome and submission fingerprints are recorded in the final task comment and checkpoint.
 
 ## 10. Next step and self-check
 
-Push existing featurePR;verify live current-headCI;try browserupload;publish exactlyone submission pertask using authorizedexactcommit fallback ifuploadfails. UIverify/checkpoint;awaitLead/QA.
+Push the existing feature branch and update existing PR1. Verify current-head CI live, attempt actual RESULT upload, and publish exactly one [DEV][SUBMISSION] per assigned task using exact immutable fallback if needed. Verify UI and checkpoint; continue valid Lead/QA work without duplicate submission.
 
-- [x] Exacttensections;historical/currentACseparate.
-- [x] Exactsource/time,files,commands,actualoutputs,three screenshots.
-- [x] Regression/fix,limits,read-only/nativeboundariesexplicit.
-- [x] No schema/entity/productionchange.
+- [x] Exact ten numbered sections and separate original/historical/current AC rows.
+- [x] Exact source/time, specific files, reproduction commands and actual output.
+- [x] Six invalid cases per task, three actual screenshots, failures/fixes and limits stated.
+- [x] Schema/collector/API/production boundaries retained; no self-ACCEPT/status change/merge.
 
-History:v25accepted Lead16:12;pendingv25submissionloop closedthisrun;v26started andimplementedimmediately.
+History: v26 accepted in live Lead16:31 comment at prior report head af12f0eeaafc7392918ac364e60cd6dda4c010a2. v27 started16:40 and executed in this cycle. Initial v27 source b1b5b81284d0084965cf6ff8f72cc1a1655cff07; final source above includes the same-Site reopen correction and final evidence.
