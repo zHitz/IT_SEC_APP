@@ -86,3 +86,8 @@ Require unique package UUID, unique package_page integer1..100000 and package_se
 
 ### v15 port/process search route
 `node scripts/inventory-ui-lab.mjs --hosts`; open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&port_search=1&process_search=synthetic-listener&port_page=2`. Reload restores24matches/page2. Port8011 plus process ->host11/PID111; native Back/Forward replay. Return restores origin list/detail. Unique port_search=1, optional exact port1..65535, process_search<=200/no controls, port_page1..100000. At least one search required; invalid/duplicate/conflicting/out-of-range state clears all rows. Existing GET AND filters only, no scans/CVE. `node --test frontend/test/port-navigation.test.mjs frontend/test/port-search.test.mjs`.
+
+
+### v16 combined main-list filters
+`node scripts/inventory-ui-lab.mjs --hosts --sites`; open `/inventory/hosts#list=1&site_id=00000000-0000-4000-8000-000000000002&search=host-&page=2&page_size=10`. Main-list Site ID filter uses accepted Site UUID alongside hostname. Reload restores Site/search/page together; search/page/clear push history; detail return retains filters. SampleSite16matches/page2;host-11 ->1. UUID can be obtained from existing Site picker/accepted Sites GET; no new selector data source.
+site_id/search/page/page_size must be unique when Site filtering is present; UUID format, hostname<=200/no controls, positive page<=100000 and allowed size10/25/50/100 required. Invalid combined state clears rows with error. Existing well-formed missing Site UUID returns valid empty result, as accepted API semantics; no existence claim. No Site mutation. `node --test frontend/test/combined-host-navigation.test.mjs`.

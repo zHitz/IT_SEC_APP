@@ -1,6 +1,6 @@
 import {mountInventoryTable,validateInventory} from './inventory-table.mjs';
 const childColumns={'dns-records':[['type','Type'],['value','Value'],['proxied','Proxied'],['ttl','TTL'],['tags','Tags'],['outside_flag','Outside known range']],packages:[['name','Package'],['version','Version'],['ecosystem','Ecosystem']],'listening-ports':[['protocol','Protocol'],['port','Port'],['bind_address','Bind address'],['process','Process'],['pid','PID']]};
-export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onDnsPage,manageHistory=true,resolveHost=false}={}){
+export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onDnsPage,onListChange,manageHistory=true,resolveHost=false}={}){
  const get=id=>document.getElementById(id),history=document.defaultView?.history;
  let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let lastFocus;
  const textNode=(tag,text)=>{const el=document.createElement(tag);el.textContent=text??'—';return el;};
@@ -50,7 +50,7 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
   get('inventory-list').hidden=true;get('inventory-detail').hidden=false;get('detail-title').textContent=mode==='domain'?row.fqdn:row.hostname;info(row);get('detail-title').focus?.();
   if(invalidDns){version++;active?.abort();get('detail-info').replaceChildren();get('detail-related').replaceChildren();get('detail-status').textContent='Invalid DNS page link. Return to the list.';get('detail-retry').hidden=true;return;}if(recordHistory&&manageHistory)history?.pushState({atlasSelection:{mode,row}},'', '#detail='+encodeURIComponent(row.id));await load();
  }
- const list=mountInventoryTable(document,{mode,fetcher,initialState,onSelect:row=>onSelection?onSelection(row):void open(row)});
+ const list=mountInventoryTable(document,{mode,fetcher,initialState,onStateChange:onListChange,onSelect:row=>onSelection?onSelection(row):void open(row)});
  get('detail-back').addEventListener('click',()=>{if(onBack){onBack();return;}showList();history?.replaceState(null,'',document.defaultView.location.pathname);});get('detail-retry').addEventListener('click',()=>void load());
  if(manageHistory)document.defaultView?.addEventListener('popstate',event=>{if(event.state?.atlasSelection?.mode===mode)void open(event.state.atlasSelection.row,{recordHistory:false});else showList();});
  return{ready:list.ready,list,open,back:showList,destroy(){version++;active?.abort();list.destroy();}};

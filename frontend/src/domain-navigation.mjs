@@ -12,7 +12,8 @@ export function parseDomainRoute(location){
  const flaggedSearch=params.get('flagged_search')??'';const flaggedPage=params.has('flagged_page')?integer('flagged_page',0,100000):1;
  const flaggedInvalid=flagged&&(childInvalid||params.getAll('flagged').length!==1||params.get('flagged')!=='1'||params.getAll('flagged_search').length>1||params.getAll('flagged_page').length>1||!flaggedPage||flaggedSearch.length>200||/[\u0000-\u001f\u007f]/.test(flaggedSearch)||params.has('value_search'));
  const detailDnsPage=params.has('detail_dns_page')?integer('detail_dns_page',0,100000):1,invalidDetailDns=params.getAll('detail_dns_page').length>1||!detailDnsPage||(params.has('detail_dns_page')&&(!id||flagged||params.has('value_search')));
- return{detailDnsPage,invalidDetailDns,childOwner,childPage,flagged,flaggedSearch,flaggedPage,flaggedInvalid,valueSearch:params.has('value_search')?(params.getAll('value_search').length===1?params.get('value_search'):'\u0000'):null,dnsPage:integer('dns_page',1,100000),id:id===null?null:id.toLowerCase(),context:{resource:'domains',search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
+ const recordRoute=['flagged_records','record_search','record_page'].some(k=>params.has(k)),recordSearch=params.get('record_search')??'',recordPage=params.has('record_page')?integer('record_page',0,100000):1,recordInvalid=recordRoute&&(params.get('flagged_records')!=='1'||['flagged_records','record_search','record_page'].some(k=>params.getAll(k).length>1)||!recordPage||recordSearch.length>200||/[\u0000-\u001f\u007f]/.test(recordSearch)||flagged||params.has('value_search')||params.has('detail_dns_page'));
+ return{recordRoute,recordSearch,recordPage,recordInvalid,detailDnsPage,invalidDetailDns,childOwner,childPage,flagged,flaggedSearch,flaggedPage,flaggedInvalid,valueSearch:params.has('value_search')?(params.getAll('value_search').length===1?params.get('value_search'):'\u0000'):null,dnsPage:integer('dns_page',1,100000),id:id===null?null:id.toLowerCase(),context:{resource:'domains',search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
 }
 export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
@@ -30,7 +31,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  async function sync(){
   const key=nav.location?.hash??'';if(lastRoute===key)return;recordView?.hide();flaggedView?.hide();valueView?.hide();lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null&&!next.invalidDetailDns)core.back();else await core.open({id:next.id??'00000000-0000-4000-8000-000000000000',fqdn:'Domain details',source:null,confidence:null,tags:[],first_seen_at:null,last_seen_at:null},{recordHistory:false,dnsPage:next.detailDnsPage,invalidDns:next.invalidDetailDns});
-  await pending;if(next.flagged){await flaggedView.restore(next.flaggedSearch,next.flaggedPage,next.flaggedInvalid,next.childOwner,next.childPage);return;}if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
+  await pending;if(next.recordRoute){await recordView.restore(next.recordSearch,next.recordPage,next.recordInvalid);return;}if(next.flagged){await flaggedView.restore(next.flaggedSearch,next.flaggedPage,next.flaggedInvalid,next.childOwner,next.childPage);return;}if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
  }
  function navigate(id){
   const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
@@ -52,7 +53,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  valueView=mountDnsValueSearch(document,{onNavigate:valueNavigate,onBack:valueBack});valueView.setFetcher(fetcher);
  function flaggedNavigate(search,page,owner=null,childPage=1){const parsed=parseDomainRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('flagged','1');params.set('flagged_search',search);params.set('flagged_page',String(page));if(owner){params.set('flagged_owner',owner);params.set('child_page',String(childPage));}nav.history?.pushState(null,'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();}
  flaggedView=mountFlaggedDomains(document,{fetcher,onNavigate:flaggedNavigate,onBack:valueBack});
- recordView=mountDnsValueSearch(document,{flaggedRecords:true});recordView.setFetcher(fetcher);
+ recordView=mountDnsValueSearch(document,{flaggedRecords:true,onBack:valueBack,onNavigate:(search,page)=>{const parsed=parseDomainRoute(nav.location),p=new URLSearchParams(fragment(parsed.id,context()).slice(1));p.set('flagged_records','1');p.set('record_search',search);p.set('record_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+p);lastRoute=null;return routePending=sync();}});recordView.setFetcher(fetcher);
  const ready=Promise.all([core.ready,sync()]);
  return{ready,core,valueView,flaggedView,recordView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);recordView.destroy();flaggedView.destroy();valueView.destroy();core.destroy();}};
 }

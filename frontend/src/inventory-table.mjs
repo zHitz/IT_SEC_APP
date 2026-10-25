@@ -18,11 +18,11 @@ export function validateInventory(data, resource) {
  }
  return data;
 }
-export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect,initialState={}}={}) {
+export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect,onStateChange,initialState={}}={}) {
  const get=id=>document.getElementById(id);
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
  const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false,...initialState};
- let generation=0,active;
+ let generation=0,active;let siteInput;if(mode==='host'){const label=document.createElement('label');label.textContent='Site ID filter';siteInput=document.createElement('input');siteInput.setAttribute('aria-label','Site ID filter');siteInput.placeholder='All Sites or Site UUID';siteInput.value=state.siteId??'';label.append(siteInput);get('inventory-search').append(label);}
  function render(data){
   const head=document.createElement('tr');
   for(const [,label]of columns[state.resource]){const th=document.createElement('th');th.scope='col';th.textContent=label;head.append(th);}
@@ -65,26 +65,27 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
   state.busy=true;controls();get('inventory-retry').hidden=true;get('inventory-status').textContent='Loading inventory…';
   get('inventory-rows').replaceChildren();get('inventory-total').textContent='Loading inventory…';
   const query=new URLSearchParams({page:String(state.page),page_size:String(state.pageSize)});
-  if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
+  if(state.resource==='hosts'&&state.siteId)query.set('site_id',state.siteId);if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
   const timeout=setTimeout(()=>controller.abort(),8000);
   try{
-   const response=await fetcher(`/api/v1/inventory/${state.resource}?${query}`,{signal,headers:{Accept:'application/json'}});
+   if(state.invalidCombined)throw Error('INVALID_COMBINED');const response=await fetcher(`/api/v1/inventory/${state.resource}?${query}`,{signal,headers:{Accept:'application/json'}});
    if(!response.ok)throw Error('UNAVAILABLE');
    const data=validateInventory(await response.json(),state.resource);
-   if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize)throw Error('INVALID_RESPONSE');render(data);
-  }catch{
+   if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize||(state.siteId&&(state.page>Math.max(1,data.meta.total_pages)||data.data.some(r=>r.site_id!==state.siteId))))throw Error('INVALID_RESPONSE');render(data);
+  }catch(error){
    if(version!==generation)return;
    state.totalPages=0;get('inventory-page').textContent='Page unavailable';get('inventory-total').textContent='Inventory unavailable';
-   get('inventory-status').textContent='Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
+   get('inventory-status').textContent=error.message==='INVALID_COMBINED'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
   }finally{clearTimeout(timeout);if(version===generation){state.busy=false;controls();}}
  }
- get('inventory-search').addEventListener('submit',event=>{event.preventDefault();state.search=get('domain-search').value.trim();state.flag=get('range-filter').value;state.page=1;void load();});
- get('range-filter').addEventListener('change',()=>{state.flag=get('range-filter').value;state.search=get('domain-search').value.trim();state.page=1;void load();});
- get('clear-filters').addEventListener('click',()=>{get('domain-search').value='';get('range-filter').querySelector('option[value=""]').selected=true;state.search='';state.flag='';state.page=1;void load();});
- get('page-size').addEventListener('change',()=>{state.pageSize=Number(get('page-size').value);state.page=1;void load();});
- for(const [id,resource]of resourceButtons)get(id).addEventListener('click',()=>{state.resource=resource;state.page=1;if(mode==='host'){state.search='';get('domain-search').value='';}void load();});
- get('inventory-prev').addEventListener('click',()=>{if(!get('inventory-prev').disabled){state.page--;void load();}});
- get('inventory-next').addEventListener('click',()=>{if(!get('inventory-next').disabled){state.page++;void load();}});
+ const userLoad=()=>onStateChange&&state.resource==='hosts'?onStateChange({...state,siteId:siteInput?.value??''}):load();
+ get('inventory-search').addEventListener('submit',event=>{event.preventDefault();state.search=get('domain-search').value.trim();state.flag=get('range-filter').value;state.page=1;void userLoad();});
+ get('range-filter').addEventListener('change',()=>{state.flag=get('range-filter').value;state.search=get('domain-search').value.trim();state.page=1;void userLoad();});
+ get('clear-filters').addEventListener('click',()=>{if(siteInput)siteInput.value='';get('domain-search').value='';get('range-filter').querySelector('option[value=""]').selected=true;state.search='';state.flag='';state.page=1;void userLoad();});
+ get('page-size').addEventListener('change',()=>{state.pageSize=Number(get('page-size').value);state.page=1;void userLoad();});
+ for(const [id,resource]of resourceButtons)get(id).addEventListener('click',()=>{state.resource=resource;state.page=1;if(mode==='host'){state.search='';get('domain-search').value='';}void userLoad();});
+ get('inventory-prev').addEventListener('click',()=>{if(!get('inventory-prev').disabled){state.page--;void userLoad();}});
+ get('inventory-next').addEventListener('click',()=>{if(!get('inventory-next').disabled){state.page++;void userLoad();}});
  get('inventory-retry').addEventListener('click',()=>void load());
- return {ready:load(),state,reload:load,destroy(){generation++;active?.abort();}};
+ return {ready:load(),state,reload:load,setSiteInput(value){if(siteInput)siteInput.value=value;},destroy(){generation++;active?.abort();}};
 }

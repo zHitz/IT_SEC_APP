@@ -92,3 +92,8 @@ Unique detail_dns_page integer1..100000 requires Domain identity, cannot combine
 
 ### v15 flagged DNS records (record level)
 `node scripts/inventory-ui-lab.mjs --flagged`; open Domain list/detail, choose View flagged DNS records. Shows only records whose own tags include exact cloudflare:outside-known-range via accepted GET outside_known_range=true. Owner/type/value/proxied/TTL/tags shown; value_search combines with exact flag;10records/page and filtered total.12fixture records/2pages;page2sample44/48. Search198.51.100.25 ->12;192.0.2.25 ->0 despite unflagged stored matches. Empty/failed results clear table;8second abort timeout. Back restores origin list/detail. Temporary panel state resets on reload; flagged-owner view remains separate. No tag recalculation/API/schema/Cloudflare change. `node --test frontend/test/flagged-records.test.mjs`.
+
+
+### v16 flagged-record route persistence
+Supersedes v15 temporary-view reload limit. `node scripts/inventory-ui-lab.mjs --flagged`; open `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged_records=1&record_search=198.51.100.25&record_page=2`. Reload/Back/Forward restores flagged record search/page; existing owner/type/value/proxied/TTL/tags/count retained. Return restores parent list/detail.
+Unique flagged_records=1, optional record_search<=200/no controls and record_page1..100000 required; duplicate/invalid/conflicting flagged-owner/value/detailDNS state fails closed. Out-of-range real record page clears rows. Parent search/page separate. `node --test frontend/test/flagged-record-navigation.test.mjs frontend/test/flagged-records.test.mjs`. No API/schema/tag changes.
