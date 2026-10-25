@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Listening port/process Host search
+# Result — TASK-S0-003: Hosts by existing Site
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v9 |
+| Result version | v10 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead08:24 ACCEPT v8 and v9 assignment |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead08:45 ACCEPT v9 and assignment v10 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T08:39:16.525255+07:00 |
-| Source/evidence commit | 2bcc0bfb7ced1b8bb98ad4aa149a13ff973c1be3 |
+| Submitted at | 2026-10-25T08:55:34.034437+07:00 |
+| Source/evidence commit | 1f8d292e6222db90cceacfcc9dfc98dd354d4b30 |
 
 ## 1. Summary
 
-PARTIAL overall retains original nativeLinux/osquery AC1/3/4 gaps. All assigned v9 listening port/process search requirements complete: exact port and literal case-insensitive process filters, matching Host/port/process/PID records, count/paging and return list/detail context. Existing local read-only GET extended without schema/Cloudflare/CVE/production change.48/48tests,lint72/schema22+2/114FK and buildPASS.
+PARTIAL overall retains original nativeLinux/osquery AC1/3/4 gaps. All v10 Site filter requirements complete: paged existing-Site picker, exact Host.site_id filter, hostname search, OS/version/count/pages and return full list/detail context.50/50tests,lint76/schema22+2/114FK,buildPASS. No schema/entity/Cloudflare/CVE/production change.
 
 ## 2. Acceptance criteria
 
@@ -57,60 +57,65 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V9-4 | Docs/tests/local opt-in/schema unchanged/no CVE/Cloudflare | PASS:48tests,lint72/schema22+2/114FK,buildPASS; no schema/collector/Cloudflare changes. |
 | R8-1 | Record exact v8 commit and exact v9 header | PASS: v8 hash914f875363559acb1dc870bfb60f78a3592f83ce recorded in section7; exact v9 implementation hash above. |
 
+| V10-1 | Filter Hosts by existing Site with OS/version | PASS: exact accepted FK site_id; Sample16hosts/Secondary10; Host15 excluded from Sample; OS12.3 shown. |
+| V10-2 | Hostname search/count/pages | PASS:16hosts/2pages, hostname11 ->1; Site picker13Sites/2pages in integration; valid unknown UUID0rows, invalid400. |
+| V10-3 | Return full list/detail, existing style/context | PASS: browser Host11detail and full list host-/page2/3/size10 retained; Atlas tokens/frame. |
+| V10-4 | Docs/full tests/local read-only/schema unchanged/current hash | PASS:50tests,lint76/schema22+2/114FK,buildPASS; exact source above; no forbidden expansion. |
+
 ## 3. Work completed
 
-Extended accepted listening-ports GET with bounded exact port/process_search parameters and a read-only Host join supplying hostname. One bound read statement returns count/page. Host list/detail launch a temporary search panel; safe text rendering, timeout, invalid/empty/error clearing,10-row pages and return to entry context. Existing endpoint fields and host_id scope retained.
+Added read-only Site inventory GET and exact site_id filter to existing Host GET; includes site_id in Host rows. New local panel exposes paged Site buttons and independent Host pages, hostname search/OS/version/count and return. No silent truncation of Site choices. Synthetic optional --sites fixture assigns14testHosts to existing SampleSite plus2seedHosts,10to a second syntheticSite. No migration or entity change.
 
 ## 4. Files changed
 
 | File | Purpose |
 |---|---|
-| backend/src/inventory/reader.mjs | Exact port/literal process query validation/predicates and Host name join. |
-| frontend/server.mjs | Whitelist port-search module under existing opt-in gate. |
-| frontend/src/host-navigation.mjs | Mount/teardown port panel and hide during route changes. |
-| frontend/src/port-search.mjs | Port/process inputs, results/count/paging/errors and origin return. |
-| frontend/test/port-search.test.mjs | Actual read-only HTTP/PostgreSQL filters/identity/pages/return/invalid tests. |
-| Docs/HOST-INVENTORY-API.md | Filters, validation, AND/count/response semantics. |
-| Docs/HOST-INVENTORY-UI.md | Search flow, local reproduction and limits. |
-| Docs/evidence/S0-003/port-search-v9.json | Observed proof and honest limits. |
-| Docs/evidence/S0-003/test-v9.txt | Actual48test output. |
-| Docs/evidence/S0-003/lint-v9.txt | Actual72module/schema check. |
-| Docs/evidence/S0-003/build-v9.txt | Actual buildPASS. |
-| Docs/evidence/S0-003/port-v9.png | Actual exact8011/Host11/PID111. |
-| Docs/evidence/S0-003/process-page-v9.png | Actual24process matches/page2of3. |
-| Docs/evidence/S0-003/port-back-v9.png | Actual returned list host-/page2/size10. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v9 with exact current hash and v8 provenance note. |
+| backend/src/app.mjs | Whitelist sites resource under existing inventory GET dispatcher. |
+| backend/src/inventory/reader.mjs | Fixed Site columns, existing Host.site_id output/filter, strict bound UUID validation. |
+| frontend/server.mjs | Fixed sites proxy/module whitelist under existing loopback gate. |
+| frontend/src/host-navigation.mjs | Mount/hide/teardown Site panel with route changes. |
+| frontend/src/site-hosts.mjs | Paged Site choices, scoped Host search/count/pages/OS/version/errors/return. |
+| frontend/test/site-hosts.test.mjs | Actual READ ONLY HTTP/PostgreSQL Site/Host pages/membership/search/failure/return. |
+| scripts/inventory-ui-lab.mjs | Optional synthetic Site assignments; default fixtures unchanged. |
+| Docs/HOST-INVENTORY-API.md | Site GET and site_id filter semantics/validation. |
+| Docs/HOST-INVENTORY-UI.md | Site workflow, page controls, null membership and reproduction. |
+| Docs/evidence/S0-003/site-v10.json | Actual proof and limits. |
+| Docs/evidence/S0-003/test-v10.txt | Complete50test output. |
+| Docs/evidence/S0-003/lint-v10.txt | Actual76module/schema check. |
+| Docs/evidence/S0-003/build-v10.txt | Actual buildPASS. |
+| Docs/evidence/S0-003/site-page-v10.png | SampleSite16Hosts/page2/OS versions. |
+| Docs/evidence/S0-003/site-search-v10.png | Host11 single scoped result. |
+| Docs/evidence/S0-003/site-back-v10.png | Full list return retaining host-/page2/size10. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v10 with exact current source/time/Summary. |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node scripts/inventory-ui-lab.mjs --hosts`; use emitted origin `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Search port or process ->8011 ->Host11/PID111. Clear port, process synthetic-listener ->24records/3pages; Next. Return detail, then list retains search/page. API `/api/v1/inventory/listening-ports?port=8011&process_search=synthetic&page=1&page_size=10`. Local synthetic only.
+Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs --sites` emits local origin; open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Filter hosts by Site ->SampleSite ->16hosts/2pages with OS/version; search host-11 ->1. SecondarySite ->10hosts. Return detail/full list retains context. API `/api/v1/inventory/sites?page=1&page_size=10`; `/api/v1/inventory/hosts?site_id=00000000-0000-4000-8000-000000000002&page=1&page_size=10`. Synthetic local only.
 
 ## 6. Tests and actual results
 
-48/48tests pass; lint72modules; schema22businessentities+2junctions/114nativeFK unchanged; buildPASS. New integration uses actual HTTP/PostgreSQL17.5WASM inside BEGIN READ ONLY. Proves exactport, case-insensitive process, AND filters,24records/pages, invalid0/65536/decimal/duplicate/control400, literal injection no matches, no stale data and return context. Actual browser verifies8011/Host11/PID111, process page2/3 and both returns. Previous Domain/Host/package/collector regressions pass. Accepted600010ms outage not rerun.
+50/50tests pass; lint76modules; unchanged22entities+2junctions/114nativeFK; buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY checks13Sites/2pickerpages (11extra emptySites fixture),16SampleHosts/2pages and10SecondaryHosts, OS/version/search, strict membership, unknownempty/invalid400,503clears rows and both returns. Browser independently verifies16/page2, Host11search, Secondary10, originHost11 and full list context. Existing Domain/port/package/collector regressions pass;600010ms outage not rerun.
 
 ## 7. Issues and implementation decisions
 
-Lead requested explicit v8 provenance: actual accepted package-view v8 commit from Git is914f875363559acb1dc870bfb60f78a3592f83ce. Its old generic header is historical; current v9 header has exact current implementation/evidence hash.
-
-Port is exact integer1–65535; process_search is a1–200character literal case-insensitive substring. Both combine with AND, including existing host_id scope. Counts are listening records, not unique hosts. Search is global stored listening inventory independent of origin list search, retained on return. Hostname comes from existing FK join, no schema migration. Temporary panel reload returns origin; no new deep-link search scope assumed. No task-specific failed tests; targeted1 and final48passed.
+Site means accepted Host.site_id FK; never inferred from IP/tags. Site selection is explicit/paged; Host search ANDs with chosen UUID. Valid nonexistent Site produces empty filter, not lookup404; nullSiteHosts remain on full list. Count is Hosts in chosen Site. Picker and Host pages are independent; selected Site persists across picker paging. Temporary view reload returns origin; no new deep-link scope assumed. Errors clear Host rows. No task-specific failed tests. Prior accepted v8 source914f875363559acb1dc870bfb60f78a3592f83ce retained; exact current source above.
 
 ## 8. Not done, limitations and technical debt
 
-Original nativeLinux/osquery AC1/3/4 remain unverified; accepted source lab is Windows SQLite Linux-inventory simulators plus real HTTP/PostgreSQLWASM. No native deployment/production/token/Cloudflare/CVE claim. No new auth/RBAC/schema/entity/scan. No search-panel reload persistence or scale benchmark;24synthetic matches prove function only. Exact viewport/reduced-motion runtime claim absent. Existing mandatory native follow-ups and accepted600010ms evidence preserved.
+Original nativeLinux/osquery AC1/3/4 remain unverified; lab source is Windows SQLite Linux-inventory simulators with actual HTTP/PostgreSQLWASM, not native deployment. No production/token/Cloudflare/CVE/RBAC/schema/entity change. No Site CRUD, unassigned-Site special view, panel reload persistence or scale benchmark. Existing mandatory native follow-ups/600010ms proof preserved. No exact viewport/reduced-motion claim.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v9; original native follow-ups remain separate before production. No new PO/security/spec decision or Q01–05 answer.
+No hard blocker for v10; no new PO/security/spec decision or Q01–05 answer. Native follow-ups remain separate before production.
 
 ## 10. Next step and self-check
 
-Submit actual v9 RESULT/guides/proof/logs/screenshots and update existing QA PR without merge. Await specific Lead/QA feedback/new assignment; no self-ACCEPT/task edits.
+Attach actual RESULT/guides/proof/logs/screenshots; update existing QA PR without merge. Await specific Lead/QA feedback/new assignment. No self-ACCEPT/status/dependency edits.
 
 - [x] Ten ordered sections and individual original/historical/new criteria.
-- [x] Exact current source/time/Summary and historical v8 hash checked.
-- [x] Every changed file, commands/outputs/limits/assumptions listed.
-- [x] PARTIAL retains native gaps; no native/scale/production overclaim.
-- [x] Local/read-only/no-secret boundaries retained; actual attachments prepared.
+- [x] Exact current source/time/Summary checked.
+- [x] Every file, command/output, assumption/limit listed.
+- [x] PARTIAL retains native gaps; local/read-only/no-secret boundaries.
+- [x] Canonical version incremented; actual attachments prepared.
 
-History: v2–v7 accepted in recorded scopes; v8 package view accepted Lead08:24; v9 port/process search complete. Previous reports retained in Git/ClickUp.
+History: v8package andv9port/process accepted; v10existing-Site filter complete under Lead08:45. Prior versions remain in Git/ClickUp.
