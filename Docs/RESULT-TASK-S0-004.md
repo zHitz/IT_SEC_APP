@@ -1,20 +1,21 @@
-# Result — TASK-S0-004: Domain detail DNS navigation
+# Result — TASK-S0-004: Flagged DNS records
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v14 |
+| Result version | v15 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; Lead10:06 ACCEPTv13 and assignv14 |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead10:38 ACCEPTv14 and assignv15 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T10:20:50.842997+07:00 |
-| Source/evidence commit | 89c9c536c9a04908be9bfaa18c931659a233bb82 |
+| Submitted at | 2026-10-25T10:52:01.550581+07:00 |
+| Source/evidence commit | 47ec7773b9582183c993885d95d4157ee5f54864 |
 
 ## 1. Summary
 
-DONE in approved synthetic v14 scope. Domain identity/DNS page direct links restore after reload/Back/Forward; malformed/duplicate/out-of-range page errors clear DNS/provenance. Existing fields and list context retained. Full57/57tests,lint84/schema22+2/114FK unchanged,buildPASS.
+DONE in approved synthetic v15 scope. Individual flagged DNS records with owner/value search/count/pages and origin returns. Exact accepted stored tag predicate; separate from flagged owner view. Full59/59tests,lint86/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -87,56 +88,61 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V14-3 | Invalid state/no partial | PASS: 4detailDNS invalid cases; zero cells; real browser error screenshot. |
 | V14-4 | Fields/style/docs/full checks/boundaries | PASS:57tests,84modules,22+2/114FK unchanged,build; exact source header. |
 
+
+| V15-1 | Record-level exact flag | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: 12records/2pages;unflagged records excluded, exact stored tag unchanged. |
+| V15-2 | Value search/count/pages | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: 198.51.100.25 ->12;unflagged192.0.2.25 ->0;page2sample44/48. |
+| V15-3 | Owner/fields/returns/failures | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: Owner/type/value/proxied/TTL/tags;503clear;bothreturns pass. |
+| V15-4 | Docs/full checks/exact source/boundaries | PASS:59tests,86modules,22+2/114FK unchanged,build; exact source above. |
+
 ## 3. Work completed
 
-DONE in approved synthetic v14 scope. Domain identity/DNS page direct links restore after reload/Back/Forward; malformed/duplicate/out-of-range page errors clear DNS/provenance. Existing fields and list context retained. Existing read-only exact endpoints reused; no backend/schema changes.
+DONE in approved synthetic v15 scope. Individual flagged DNS records with owner/value search/count/pages and origin returns. Exact accepted stored tag predicate; separate from flagged owner view. Accepted read-only endpoints reused; no backend/schema changes.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/domain-navigation.mjs | Parse detail_dns_page, validation and history callbacks |
-| frontend/src/inventory-detail.mjs | Restore DNS page, callback paging, out-of-range validation/error clearing |
-| frontend/test/detail-dns-navigation.test.mjs | Actual READ ONLY direct/reload/history,provenance and4invalidcases |
-| scripts/inventory-ui-lab.mjs | Optional30extra syntheticDNS for31records/2detailpages |
-| Docs/DOMAIN-INVENTORY-UI.md | v14 contract/reproduction/limits |
-| Docs/evidence/S0-004/detail-v14.json | Proof and honest limits |
-| Docs/evidence/S0-004/test-v14.txt | Full57test output |
-| Docs/evidence/S0-004/lint-v14.txt | 84module/schema parity |
-| Docs/evidence/S0-004/build-v14.txt | Successful build |
-| Docs/evidence/S0-004/detail-reload-v14.png | Real browser reload evidence |
-| Docs/evidence/S0-004/detail-history-v14.png | Real browser history evidence |
-| Docs/evidence/S0-004/detail-invalid-v14.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-004.md | Canonical v14 tensection report |
+| frontend/src/dns-value-search.mjs | Reuse safe table component with flagged-record option, exact GET flag/value filter, labels/count/pages/error clearing |
+| frontend/src/domain-navigation.mjs | Mount/hide/teardown independent flagged-record panel |
+| frontend/test/flagged-records.test.mjs | Actual READ ONLY exact tag/search/pages/count/503clearing/both returns |
+| Docs/DOMAIN-INVENTORY-UI.md | v15 contract/reproduction/limits |
+| Docs/evidence/S0-004/records-v15.json | Measured proof/errors/limits |
+| Docs/evidence/S0-004/test-v15.txt | Final59test output |
+| Docs/evidence/S0-004/lint-v15.txt | 86module/schema parity |
+| Docs/evidence/S0-004/build-v15.txt | Successful build |
+| Docs/evidence/S0-004/records-page-v15.png | Real browser page evidence |
+| Docs/evidence/S0-004/records-search-v15.png | Real browser search evidence |
+| Docs/evidence/S0-004/records-back-v15.png | Real browser back evidence |
+| Docs/RESULT-TASK-S0-004.md | Canonical v15 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --detail-dns`; exact direct fragment in `Docs/DOMAIN-INVENTORY-UI.md` v14. Focused `node --test frontend/test/detail-dns-navigation.test.mjs`. Synthetic loopback only.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --flagged`; exact steps/fragment in `Docs/DOMAIN-INVENTORY-UI.md` v15. Focused `node --test frontend/test/flagged-records.test.mjs`. Synthetic loopback only.
 
 ## 6. Tests and actual results
 
-57/57tests,0failures final suite; lint84modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY, freshDOM reload/history and real browser verify identity/search/page/reload/Back/Forward/errors. Domain31DNS/page2has6rows;provenance cloudflare/confirmed/timestamps, DNS fields preserved;4invalidcases. No failed Domain task tests. Existing owner-scoping/return/collector regressions green.0Cloudflare requests.
+59/59tests,0failures final suite;lint86modules;schema22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY and browser evidence proves new criteria above. Existing inventory/collector/returns green;0Cloudflare requests. Initial focused failures corrected as documented below, full suite rerun.
 
 ## 7. Issues and implementation decisions
 
-detail_dns_page is distinct from value-search dns_page and flagged child_page. Positive unique page requires Domain identity; conflicting search/flagged routes rejected. Actual record page bounds verified after exact-owner GET. Optional fixture30extraDNS only, default fixture unchanged.
+Initial focused test found shared count still said matching DNS records; corrected explicit flagged DNS records label and reran focused/full checks. Existing safe DNS-value component reused with flag option to avoid new module/server whitelist. No algorithm changes.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/liveCloudflare/native/scale/RBAC claim. Separate parent/child snapshots may change under updates. No schema/entity/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+Temporary record view resets on reload to origin; no new persistence assignment. No production/token/liveCloudflare/native/scale/RBAC claim. Exact record tag, not owner-level implication; separate snapshots may change under updates. No schema/entity/flagalgorithm/osquery/Cloudflare changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for synthetic v14; no new PO/security/credential/spec decision. Q01–05 untouched.
+No hard blocker for synthetic v15; no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push to existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review and execute next valid assignment. Never self-accept/merge.
+Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once; await concrete review/next valid Lead assignment. Never self-accept/merge.
 
-- [x] Exact10sections; original/historical/newAC separately mapped.
-- [x] Exact current source/time/Summary; all changed files and reproduction commands.
-- [x] Actual logs/browser proof, failures/decisions/limits disclosed.
-- [x] Local/read-only/no-secret/native boundaries preserved.
-- [x] Canonical increment; prior reports/history retained in Git/ClickUp.
+- [x] Exact10sections; original/historical/newAC mapped separately.
+- [x] Exact current source/time/Summary; all files and commands.
+- [x] Actual outputs/browser evidence/errors/decisions/limits.
+- [x] Read-only/local/no-secret/native boundaries retained.
+- [x] Canonical increment; accepted history retained in Git/ClickUp.
 
-History: v13 ACCEPT live10:06;v14assigned same comment and completed this cycle.
+History: v14ACCEPT10:38;v15assigned same comment and completed this cycle.

@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: Package-to-hosts navigation
+# Result — TASK-S0-003: Port/process navigation
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v14 |
+| Result version | v15 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead10:06 ACCEPTv13 and assignv14 |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead10:38 ACCEPTv14 and assignv15 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T10:20:50.842997+07:00 |
-| Source/evidence commit | 89c9c536c9a04908be9bfaa18c931659a233bb82 |
+| Submitted at | 2026-10-25T10:52:01.550581+07:00 |
+| Source/evidence commit | 47ec7773b9582183c993885d95d4157ee5f54864 |
 
 ## 1. Summary
 
-PARTIAL overall; nativeAC1/3/4 unverified. Assigned v14 package identity/search/page routes, reload/history/error handling complete. Host/version fields and origin returns retained. Full57/57tests,lint84/schema22+2/114FK unchanged,buildPASS.
+PARTIAL overall; nativeAC1/3/4 remain unverified. Assigned v15 direct port/process/page links, reload/history and invalid-state clearing complete. Host/port/process/PID and origin returns retained. Full59/59tests,lint86/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -89,56 +90,62 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V14-3 | Invalid state/no partial | PASS: 6package invalid cases; zero cells; real browser error screenshot. |
 | V14-4 | Fields/style/docs/full checks/boundaries | PASS:57tests,84modules,22+2/114FK unchanged,build; exact source header. |
 
+
+| V15-1 | Direct/reload/history | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: 24processmatches/page2of3;port8011/host11/PID111;real browser reload/Back/Forward. |
+| V15-2 | Invalid state | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: 6malformed/duplicate/control/out-of-range routes clear rows. |
+| V15-3 | Fields/returns | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: Host/port/process/PID, detail and full-list search/page returns retained. |
+| V15-4 | Docs/full checks/exact source/boundaries | PASS:59tests,86modules,22+2/114FK unchanged,build; exact source above. |
+
 ## 3. Work completed
 
-PARTIAL overall; nativeAC1/3/4 unverified. Assigned v14 package identity/search/page routes, reload/history/error handling complete. Host/version fields and origin returns retained. Existing read-only exact endpoints reused; no backend/schema changes.
+PARTIAL overall; nativeAC1/3/4 remain unverified. Assigned v15 direct port/process/page links, reload/history and invalid-state clearing complete. Host/port/process/PID and origin returns retained. Accepted read-only endpoints reused; no backend/schema changes.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Package fragment parse/validation/history/return |
-| frontend/src/package-hosts.mjs | Identity resolution, restore/search/page callbacks, strict response scope and out-of-range clearing |
-| frontend/test/package-hosts.test.mjs | Adapt existing package/return regression to real history |
-| frontend/test/package-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalidcases |
-| Docs/HOST-INVENTORY-UI.md | v14 contract/reproduction/limits |
-| Docs/evidence/S0-003/package-v14.json | Proof and honest limits |
-| Docs/evidence/S0-003/test-v14.txt | Full57test output |
-| Docs/evidence/S0-003/lint-v14.txt | 84module/schema parity |
-| Docs/evidence/S0-003/build-v14.txt | Successful build |
-| Docs/evidence/S0-003/package-reload-v14.png | Real browser reload evidence |
-| Docs/evidence/S0-003/package-history-v14.png | Real browser history evidence |
-| Docs/evidence/S0-003/package-invalid-v14.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-003.md | Canonical v14 tensection report |
+| frontend/src/host-navigation.mjs | Port/process route parse/validation/history/restore |
+| frontend/src/port-search.mjs | Restore/search/page callbacks and out-of-range clearing |
+| frontend/test/port-search.test.mjs | Existing regression uses actual history; updated explicit invalid-route assertion |
+| frontend/test/port-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalid routes |
+| Docs/HOST-INVENTORY-UI.md | v15 contract/reproduction/limits |
+| Docs/evidence/S0-003/port-v15.json | Measured proof/errors/limits |
+| Docs/evidence/S0-003/test-v15.txt | Final59test output |
+| Docs/evidence/S0-003/lint-v15.txt | 86module/schema parity |
+| Docs/evidence/S0-003/build-v15.txt | Successful build |
+| Docs/evidence/S0-003/port-reload-v15.png | Real browser reload evidence |
+| Docs/evidence/S0-003/port-history-v15.png | Real browser history evidence |
+| Docs/evidence/S0-003/port-invalid-v15.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-003.md | Canonical v15 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --packages --hosts`; exact direct fragment in `Docs/HOST-INVENTORY-UI.md` v14. Focused `node --test frontend/test/package-navigation.test.mjs frontend/test/package-hosts.test.mjs`. Synthetic loopback only.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts`; exact steps/fragment in `Docs/HOST-INVENTORY-UI.md` v15. Focused `node --test frontend/test/port-navigation.test.mjs frontend/test/port-search.test.mjs`. Synthetic loopback only.
 
 ## 6. Tests and actual results
 
-57/57tests,0failures final suite; lint84modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY, freshDOM reload/history and real browser verify identity/search/page/reload/Back/Forward/errors. Package2versions/24unfiltered/12search2.0/page2has2rows;6invalidcases. Initial test expectation corrected as below. Existing owner-scoping/return/collector regressions green.0Cloudflare requests.
+59/59tests,0failures final suite;lint86modules;schema22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY and browser evidence proves new criteria above. Existing inventory/collector/returns green;0Cloudflare requests. Initial focused failures corrected as documented below, full suite rerun.
 
 ## 7. Issues and implementation decisions
 
-Initial invalid test used unfiltered page3, which is valid for24records. Corrected to page4, reran focused/full checks. UUID identifies package row; accepted endpoint resolves exact name/ecosystem across host versions. Search keeps existing package-name/version semantics. No backend change.
+Initial legacy test expected Enter port; routed invalid input now explicitly says Invalid port/process route. Updated assertion to new contract; focused/full checks reran. No technical blocker. Exact port and case-insensitive literal process filters combine AND; distinct port_page avoids origin list page collision.
 
 ## 8. Not done, limitations and technical debt
 
-NativeLinux/osqueryAC1/3/4 remain unverified; accepted600010ms evidence retained/not rerun. No production/RBAC/CVE/scale claim. Optional origin Host may be omitted in direct link; explicit list return remains available. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+NativeLinux/osqueryAC1/3/4 unverified;600010ms accepted evidence retained/not rerun. No production/RBAC/CVE/scale/live scan claim. No schema/entity/flagalgorithm/osquery/Cloudflare changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for synthetic v14; no new PO/security/credential/spec decision. Q01–05 untouched.
+No hard blocker for synthetic v15; no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push to existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review and execute next valid assignment. Never self-accept/merge.
+Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once; await concrete review/next valid Lead assignment. Never self-accept/merge.
 
-- [x] Exact10sections; original/historical/newAC separately mapped.
-- [x] Exact current source/time/Summary; all changed files and reproduction commands.
-- [x] Actual logs/browser proof, failures/decisions/limits disclosed.
-- [x] Local/read-only/no-secret/native boundaries preserved.
-- [x] Canonical increment; prior reports/history retained in Git/ClickUp.
+- [x] Exact10sections; original/historical/newAC mapped separately.
+- [x] Exact current source/time/Summary; all files and commands.
+- [x] Actual outputs/browser evidence/errors/decisions/limits.
+- [x] Read-only/local/no-secret/native boundaries retained.
+- [x] Canonical increment; accepted history retained in Git/ClickUp.
 
-History: v13 ACCEPT live10:06;v14assigned same comment and completed this cycle.
+History: v14ACCEPT10:38;v15assigned same comment and completed this cycle.
