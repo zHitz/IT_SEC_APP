@@ -1,0 +1,64 @@
+{
+  "task": "TASK-S0-004",
+  "version": 28,
+  "verifiedAt": "2026-10-25T16:59:03.433967+07:00",
+  "tests": {
+    "total": 86,
+    "passed": 86,
+    "failed": 0,
+    "targeted": 3,
+    "actualHttpPostgres": true,
+    "readOnlyTransactions": true,
+    "invalidCasesPerView": 6,
+    "proofMarker": "VIEW_SWITCH_V28_PROOF"
+  },
+  "lint": {
+    "modules": 96,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "viewSwitchBothDirections": true,
+    "fullFragmentsPreserved": true,
+    "reload": true,
+    "nativeBackForward": true,
+    "originReturns": true,
+    "hostReopenSitePage2": true,
+    "domainBothOrigins": true,
+    "invalidStatesAcrossSwitch": true,
+    "screenshots": [
+      "domain-switch-reload-v28.png",
+      "domain-switch-history-v28.png",
+      "domain-switch-invalid-v28.png"
+    ]
+  },
+  "implementation": {
+    "storage": "sessionStorage; per-tab keys with exact inventory pathname",
+    "content": "fragment only; no data rows, credentials or server writes",
+    "explicitDirectFragment": "takes precedence; never overwritten by stored value",
+    "sidebarLinks": "fixed same-origin paths plus safe saved fragment",
+    "history": "standard browser navigation, pageshow/popstate/hashchange refresh, current pushState fragment read on click"
+  },
+  "failuresResolved": [
+    "Initial shell edit hit default cp1258 decoding on server source; retried explicit UTF-8 before tests",
+    "Initial error screenshot was captured during loading; replaced after exact visible error and healthy rows settled"
+  ],
+  "limits": [
+    "If sessionStorage is denied or cleared, explicit URLs continue to work but cross-view restoration is unavailable",
+    "Same browser tab only; separate tabs have independent session storage",
+    "Fragments longer than16384 or with control characters are not persisted",
+    "Synthetic/local only; no scale/native/CVE/production claim",
+    "QA approval required before merge"
+  ],
+  "overall": "DONE in assigned synthetic scope"
+}

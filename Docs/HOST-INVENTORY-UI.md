@@ -147,3 +147,12 @@ Site-filtered Host names now open exact Host detail. `host_origin=site` and save
 Reproduce the Host11 page-2 journey with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey`. The separate synthetic Site-journey option assigns all 24 synthetic hosts to Sample Site; this intentionally extends the older 14-host fixture so hostname-desc page2 contains Host11. No persisted schema or API change.
 
 `node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs` runs actual HTTP/PostgreSQL READ ONLY regression for reload, history, origin return/reopen and six independently invalid levels per task. Existing Atlas layout/style and native-evidence limits remain. See verification-v27.json and three v27 screenshots in the task evidence directory.
+
+
+### v28 switching inventory views
+
+The Host and Domain sidebar links restore separate complete fragments from this tab's session storage. Switching away saves the current fragment, including changes made with pushState; switching back restores the exact nested list/detail/record context. Explicit direct URL fragments always win. Native Back/Forward and reload use their own URL; pageshow refreshes sidebar bookmarks after browser history restoration. No inventory rows or credentials are stored, and no server mutation is made.
+
+Reproduce with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`. Open the complete Host and Domain fragments from `frontend/test/view-bookmarks.test.mjs` once in the same tab, then switch using the sidebar. Host11 restores Site Host page2 and package/port page2; Sample04 restores DNS page2 and record or correct Domain/Flagged return origin.
+
+Focused proof: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs`. Both integration tests use actual HTTP/PostgreSQL READ ONLY and six invalid-level round trips per view; the third test checks unsafe saved values and storage denial. If sessionStorage is unavailable, cleared or the fragment exceeds16384 characters, explicit URLs still work but persistence is unavailable. Separate tabs are independent. See verification-v28.json and three actual v28 screenshots.
