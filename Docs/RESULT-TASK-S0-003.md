@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Hosts by existing Site
+# Result — TASK-S0-003: Unassigned Hosts
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v10 |
+| Result version | v11 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead08:45 ACCEPT v9 and assignment v10 |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead09:06 ACCEPT v10 and v11 assignment |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T08:55:34.034437+07:00 |
-| Source/evidence commit | 1f8d292e6222db90cceacfcc9dfc98dd354d4b30 |
+| Submitted at | 2026-10-25T09:20:02.533229+07:00 |
+| Source/evidence commit | dc45a7314989ee0d58fb1500921ddf42738f9bc0 |
 
 ## 1. Summary
 
-PARTIAL overall retains original nativeLinux/osquery AC1/3/4 gaps. All v10 Site filter requirements complete: paged existing-Site picker, exact Host.site_id filter, hostname search, OS/version/count/pages and return full list/detail context.50/50tests,lint76/schema22+2/114FK,buildPASS. No schema/entity/Cloudflare/CVE/production change.
+PARTIAL overall retains original nativeLinux/osquery AC1/3/4 gaps. All assigned v11 unassigned-Host requirements complete: exact nullSite filter, OS/version, hostname search/count/pages and full list/detail return.51/51tests,lint77/schema22+2/114FK,buildPASS. No Site/schema/entity/Cloudflare/CVE/production mutation or expansion.
 
 ## 2. Acceptance criteria
 
@@ -62,60 +62,60 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V10-3 | Return full list/detail, existing style/context | PASS: browser Host11detail and full list host-/page2/3/size10 retained; Atlas tokens/frame. |
 | V10-4 | Docs/full tests/local read-only/schema unchanged/current hash | PASS:50tests,lint76/schema22+2/114FK,buildPASS; exact source above; no forbidden expansion. |
 
+| V11-1 | Only Hosts with site_id null, OS/version | PASS: exact IS NULL predicate;24nullSite Hosts,2assigned excluded; OS12.3 rendered. |
+| V11-2 | Hostname search/count/pagination | PASS:24hosts/3pages, host11 ->1; assigned sample-host searchempty; invalid/conflicting query400. |
+| V11-3 | Return full list/detail and existing style/context | PASS: browser Host11detail and full list host-/page2/3/size10 retained; dedicated unassigned controls. |
+| V11-4 | Docs/full checks/read-only/schema unchanged/current hash | PASS:51tests,lint77/schema22+2/114FK,buildPASS; no Site writes, exact current source above. |
+
 ## 3. Work completed
 
-Added read-only Site inventory GET and exact site_id filter to existing Host GET; includes site_id in Host rows. New local panel exposes paged Site buttons and independent Host pages, hostname search/OS/version/count and return. No silent truncation of Site choices. Synthetic optional --sites fixture assigns14testHosts to existing SampleSite plus2seedHosts,10to a second syntheticSite. No migration or entity change.
+Extended existing Host GET with explicit site_assigned=false ->IS NULL and true ->IS NOT NULL. Conflicting site_id is rejected. Existing Site panel gains dedicated unassigned mode with hidden picker, accurate accessible labels, scoped search/count/pages and origin return; no new component architecture or backend mutation.
 
 ## 4. Files changed
 
 | File | Purpose |
 |---|---|
-| backend/src/app.mjs | Whitelist sites resource under existing inventory GET dispatcher. |
-| backend/src/inventory/reader.mjs | Fixed Site columns, existing Host.site_id output/filter, strict bound UUID validation. |
-| frontend/server.mjs | Fixed sites proxy/module whitelist under existing loopback gate. |
-| frontend/src/host-navigation.mjs | Mount/hide/teardown Site panel with route changes. |
-| frontend/src/site-hosts.mjs | Paged Site choices, scoped Host search/count/pages/OS/version/errors/return. |
-| frontend/test/site-hosts.test.mjs | Actual READ ONLY HTTP/PostgreSQL Site/Host pages/membership/search/failure/return. |
-| scripts/inventory-ui-lab.mjs | Optional synthetic Site assignments; default fixtures unchanged. |
-| Docs/HOST-INVENTORY-API.md | Site GET and site_id filter semantics/validation. |
-| Docs/HOST-INVENTORY-UI.md | Site workflow, page controls, null membership and reproduction. |
-| Docs/evidence/S0-003/site-v10.json | Actual proof and limits. |
-| Docs/evidence/S0-003/test-v10.txt | Complete50test output. |
-| Docs/evidence/S0-003/lint-v10.txt | Actual76module/schema check. |
-| Docs/evidence/S0-003/build-v10.txt | Actual buildPASS. |
-| Docs/evidence/S0-003/site-page-v10.png | SampleSite16Hosts/page2/OS versions. |
-| Docs/evidence/S0-003/site-search-v10.png | Host11 single scoped result. |
-| Docs/evidence/S0-003/site-back-v10.png | Full list return retaining host-/page2/size10. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v10 with exact current source/time/Summary. |
+| backend/src/inventory/reader.mjs | Strict unique site_assigned validation and null/non-null predicate. |
+| frontend/src/site-hosts.mjs | Unassigned entry/mode/labels/query/count/errors/return; Site picker hidden. |
+| frontend/test/unassigned-hosts.test.mjs | Actual read-only HTTP/PostgreSQL nullmembership/search/pages/errors/return/noMutation. |
+| Docs/HOST-INVENTORY-API.md | Boolean filter/conflict contract. |
+| Docs/HOST-INVENTORY-UI.md | Unassigned flow/reproduction/limits. |
+| Docs/evidence/S0-003/unassigned-v11.json | Observed proof and limits. |
+| Docs/evidence/S0-003/test-v11.txt | Complete51test output. |
+| Docs/evidence/S0-003/lint-v11.txt | Actual77module/schema check. |
+| Docs/evidence/S0-003/build-v11.txt | Actual buildPASS. |
+| Docs/evidence/S0-003/unassigned-page-v11.png | Browser24nullSite Hosts/page2/OS versions. |
+| Docs/evidence/S0-003/unassigned-search-v11.png | Host11single unassigned result. |
+| Docs/evidence/S0-003/unassigned-back-v11.png | Full-list return retains context. |
+| Docs/RESULT-TASK-S0-003.md | Current-source canonical v11 report. |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs --sites` emits local origin; open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Filter hosts by Site ->SampleSite ->16hosts/2pages with OS/version; search host-11 ->1. SecondarySite ->10hosts. Return detail/full list retains context. API `/api/v1/inventory/sites?page=1&page_size=10`; `/api/v1/inventory/hosts?site_id=00000000-0000-4000-8000-000000000002&page=1&page_size=10`. Synthetic local only.
+Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts` emits local origin. Open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`; View unassigned hosts ->24/3pages, Next, search host-11 ->1. Return detail/full list retains context. API `/api/v1/inventory/hosts?site_assigned=false&page=1&page_size=10`. Synthetic only.
 
 ## 6. Tests and actual results
 
-50/50tests pass; lint76modules; unchanged22entities+2junctions/114nativeFK; buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY checks13Sites/2pickerpages (11extra emptySites fixture),16SampleHosts/2pages and10SecondaryHosts, OS/version/search, strict membership, unknownempty/invalid400,503clears rows and both returns. Browser independently verifies16/page2, Host11search, Secondary10, originHost11 and full list context. Existing Domain/port/package/collector regressions pass;600010ms outage not rerun.
+51/51tests pass, lint77modules, unchanged22entities+2junctions/114FK, buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY proves24nullSite versus2assigned, OS/version/search/pages, no stale503/empty rows, strict invalid/duplicate/conflicting filter400, both returns and no Site mutation. Real browser independently verifies24/page2, Host11search and returns. Prior Site/Domain/collector tests pass;600010ms experiment not rerun.
 
 ## 7. Issues and implementation decisions
 
-Site means accepted Host.site_id FK; never inferred from IP/tags. Site selection is explicit/paged; Host search ANDs with chosen UUID. Valid nonexistent Site produces empty filter, not lookup404; nullSiteHosts remain on full list. Count is Hosts in chosen Site. Picker and Host pages are independent; selected Site persists across picker paging. Temporary view reload returns origin; no new deep-link scope assumed. Errors clear Host rows. No task-specific failed tests. Prior accepted v8 source914f875363559acb1dc870bfb60f78a3592f83ce retained; exact current source above.
+Unassigned means literal SQL NULL Site membership, not missing names/tags/inferred locations. Boolean true filter also supported symmetrically; no Site lookup or write. Combining site_assigned with site_id rejects400. Site panel reuse hides picker and changes accessible search/paging labels; initial/updated final51test suite passed, no failed task tests. Temporary view reload returns origin. Exact current hash/time/Summary above; historical v8 source914f875363559acb1dc870bfb60f78a3592f83ce retained.
 
 ## 8. Not done, limitations and technical debt
 
-Original nativeLinux/osquery AC1/3/4 remain unverified; lab source is Windows SQLite Linux-inventory simulators with actual HTTP/PostgreSQLWASM, not native deployment. No production/token/Cloudflare/CVE/RBAC/schema/entity change. No Site CRUD, unassigned-Site special view, panel reload persistence or scale benchmark. Existing mandatory native follow-ups/600010ms proof preserved. No exact viewport/reduced-motion claim.
+Original nativeAC1/3/4 remain unverified; prior Windows SQLite Linux-inventory simulation plus real HTTP/PostgreSQLWASM is not native deployment. No Site create/edit/delete, schema/entity, Cloudflare/CVE/production/RBAC change. No panel reload persistence or scale benchmark. Prior mandatory native follow-ups/600010ms evidence preserved. No viewport/reduced-motion runtime claim.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v10; no new PO/security/spec decision or Q01–05 answer. Native follow-ups remain separate before production.
+No hard blocker for v11; no new PO/security/spec decision or Q01–05 answer. Native follow-ups remain separate.
 
 ## 10. Next step and self-check
 
-Attach actual RESULT/guides/proof/logs/screenshots; update existing QA PR without merge. Await specific Lead/QA feedback/new assignment. No self-ACCEPT/status/dependency edits.
+Attach actual RESULT/guides/proof/logs/screenshots; update existing QA PR without merge. Continue separately assigned flagged-Domain route persistence after this handoff.
 
-- [x] Ten ordered sections and individual original/historical/new criteria.
-- [x] Exact current source/time/Summary checked.
-- [x] Every file, command/output, assumption/limit listed.
-- [x] PARTIAL retains native gaps; local/read-only/no-secret boundaries.
-- [x] Canonical version incremented; actual attachments prepared.
+- [x] Ten sections and individual original/historical/new ACs.
+- [x] Exact current source/time/Summary, every file and actual command/output.
+- [x] Limits/assumptions retained; PARTIAL honest about native gaps.
+- [x] Local/read-only/no-secret/no-Site-write boundaries; actual attachments prepared.
 
-History: v8package andv9port/process accepted; v10existing-Site filter complete under Lead08:45. Prior versions remain in Git/ClickUp.
+History: v10Site filter accepted Lead09:06; v11unassigned complete. Prior versions retained in Git/ClickUp.
