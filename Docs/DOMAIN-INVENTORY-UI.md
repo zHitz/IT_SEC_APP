@@ -119,3 +119,8 @@ Flagged records sort owner/value/type with independent direction;fragment flagge
 ## v21 scoped view sorting
 
 Run `node scripts/inventory-ui-lab.mjs --flagged`; append `#list=1&flagged=1&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.
+
+
+## v22 Domain detail DNS sorting
+
+Run `node scripts/inventory-ui-lab.mjs --detail-dns`, then append `#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_search=192.0.2&search=sample-&page=2&page_size=10` to the Domain inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Detail search matches type or value, case-insensitively and literally. Exact Domain UUID-to-fqdn owner join is retained. Parameters: search, sort=type|value, direction=asc|desc, page and page_size. SQL identifiers are whitelisted, user search is bound, NULLS LAST and id ascending ties apply.

@@ -113,3 +113,8 @@ Package hosts controls retain package_hosts_sort/package_hosts_direction with pa
 ## v21 scoped view sorting
 
 Run `node scripts/inventory-ui-lab.mjs --hosts`; append `#list=1&unassigned=1&unassigned_search=host-&unassigned_page=2&unassigned_sort=hostname&unassigned_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.
+
+
+## v22 Site-filtered Hosts sorting
+
+Run `node scripts/inventory-ui-lab.mjs --sites`, then append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Site filters retain exact site_id and existing API sort parameters. Parent return saves an inactive Site bookmark for explicit reopen.

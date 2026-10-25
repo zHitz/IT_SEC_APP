@@ -72,3 +72,8 @@ GET domains accepts sort=hostname (maps fqdn),direction=asc|desc;defaults hostna
 ## v20 sorted related views
 
 GET /api/v1/inventory/dns-records accepts sort=owner|value|type,direction=asc|desc. owner maps domain. Flagged view always outside_known_range=true;sort does not change stored flag algorithm. Invalid/duplicate400;existing bounded value_search/page filtering. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v22 exact Domain DNS sort/search
+
+`GET /api/v1/inventory/domains/:uuid/dns-records?sort=value&direction=desc&search=192.0.2&page=2&page_size=25` preserves the exact owner FK join. Sort accepts type or value only; direction asc/desc; defaults type/asc. Search is a bound, case-insensitive literal substring of type or value (max 200, no controls). Duplicate or unsupported parameters return 400. Stable id ascending ties and NULLS LAST apply in both page selection and JSON aggregation. Existing GET-only and owner existence behavior is unchanged.
