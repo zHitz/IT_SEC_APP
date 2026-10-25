@@ -1,0 +1,67 @@
+{
+  "task": "TASK-S0-004",
+  "version": 32,
+  "verifiedAt": "2026-10-25T21:50:15.196482+07:00",
+  "tests": {
+    "total": 98,
+    "passed": 98,
+    "failed": 0,
+    "newTargeted": 3,
+    "sameFile": "frontend/test/view-bookmarks.test.mjs",
+    "actualHttpPostgres": true,
+    "readOnly": true,
+    "proofMarkers": [
+      "V32_FILTERED_SWITCH",
+      "V32_ORIGIN_HISTORY",
+      "V32_INVALID_DESTINATION"
+    ]
+  },
+  "lint": {
+    "modules": 96,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "criteria": {
+    "V32-1": "All4filteredjourneys survive2opposite-view roundtrips with exact fragments/no crossclear",
+    "V32-2": "Direct/reload/history/originreturn/reopen exact;Host11and20 each6package+6portrows;recordBack5childDNSrows;bothDomainorigins verified",
+    "V32-3": "All4invalid filtered destinations0affectedrows,healthyMainretained,sourceexact,explicitrepair,newtabdefault",
+    "V32-4": "98/98;lint96;schema22+2/114FK;buildPASS;three actual screenshots"
+  },
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "twoFilteredTabPairs": true,
+    "twoExactCrossViewTripsEach": true,
+    "reloadNativeBackForward": true,
+    "originReturnReopen": true,
+    "recordBackChildDNSPage2Rows": 5,
+    "hostScopedPage2RowsEach": 6,
+    "allFourInvalidDestinations": true,
+    "explicitRepairSourceExact": true,
+    "newTabDefault": true,
+    "screenshots": [
+      "domain-filter-switch-reload-v32.png",
+      "domain-filter-switch-history-v32.png",
+      "domain-filter-switch-invalid-v32.png"
+    ]
+  },
+  "runtimeChanged": false,
+  "fixtureChange": "Only when filteredTabsFixtures and hostDetailFixtures are both enabled,add30syntheticpackages/ports toHost20 for31total/page2sixrows;existingdefaultfixtures unchanged",
+  "failures": [],
+  "limits": [
+    "Synthetic/local only",
+    "Integration tab/history model plus separate actual browser proof",
+    "Healthy main sibling rows retained but hidden while filtered view active",
+    "Independent tabs without opener;existing sessionstorage limits retained",
+    "QAapproval required beforemerge"
+  ],
+  "overall": "DONE assignedsynthetic/local"
+}

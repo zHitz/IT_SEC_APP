@@ -181,3 +181,12 @@ Site-filtered and Unassigned Host rows open detail with distinct explicit origin
 Run `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. The isolated --filtered-tabs fixture makes synthetic Host13..24 unassigned while preserving assigned Host11. Site uses searchhost-/hostname-desc/page1,pickername-desc/searchSite/page2;Unassigned uses searchhost-/hostname-desc/page1 andHost20. Domain uses Flagged searchsample-/hostname-desc/page2 plusSample04 DNSsearch192.0.2/value-desc/page2;record-level uses search198.51.100/value-desc/page2. Full fragments and canonical saved routes are exercised in view-bookmarks.test.mjs.
 
 Exactly3newtests cover paired-tab isolation, fresh0entry saved URLs with2exact list/detail roundtrips and4invalid-filter/repair paths;full95/95,lint96. Actual browser separately checks all four routes and captures3screenshots per task. Existing synthetic/native/storage/opener limitations remain.
+
+
+### v32 filtered journeys across inventory views
+
+Site Host11 and Unassigned Host20 details, Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record now have dedicated cross-view regression evidence. Save each full canonical detail URL, switch to the opposite inventory sidebar view and return twice: the fragment is exact and the other view retains its state. Detail/record Back and reopen preserve the original filtered list and child page; Domain main-list origin also stays distinct.
+
+Run the v31 combined lab command with --filtered-tabs. When combined with --host-detail, this synthetic-only option now adds30packages/ports toHost20 (31total) so searchpackage/version-desc/page2 and searchsynthetic/pid-desc/page2 each show6rows likeHost11. Existing default fixtures and runtime code are unchanged. filtered32 routes in view-bookmarks.test.mjs reproduce all contexts.
+
+Exactly3newtests cover4filteredcross-view journeys,post-switch origins/reload/history and4invaliddestination repairs with source preservation/newtabdefault. Full98/98;lint96;schema unchanged. Actual browser verifies both tabs,2exactcross-viewtrips,6rows/scopedHostlist,5childDNSrows and all4invaliddestinations. Evidence:verification-v32.json,test/lint/build-v32.txt,3actualscreenshots per task. Existing native/synthetic/storage/model limitations remain.
