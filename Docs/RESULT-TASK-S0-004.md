@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: Reloadable DNS value search
+# Result — TASK-S0-004: Flagged domains with DNS records
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v10 |
+| Result version | v11 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; Lead08:24 ACCEPT v8 correction/v9 and assignment v10 |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead08:45 ACCEPT v10 and assignment v11 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T08:35:05.988724+07:00 |
-| Source/evidence commit | d5f6efa0044edbb99f75bdd51f9c4b97ddf74fb9 |
+| Submitted at | 2026-10-25T08:51:03.834256+07:00 |
+| Source/evidence commit | 6f2b808a8e55d7fc77fd3a8909e92fa663a04cf4 |
 
 ## 1. Summary
 
-DONE in approved synthetic v10 scope: direct value_search fragments restore fresh DNS matches and result page after reload. Native Back/Forward restores prior queries/pages; invalid values clear rows and show explicit errors. Existing Domain/record fields, local gates and return context retained.47/47tests,lint70/schema22+2/114FK and buildPASS. No backend/schema/osquery/collector/liveCloudflare change.
+DONE in approved synthetic v11 scope. Flagged Domains view uses accepted exact outside-known-range tag/API, lists each owner with exact DNS records and independent parent/child paging, Domain search/count and origin return. No schema/flag algorithm/osquery/liveCloudflare change.49/49tests,lint74/schema22+2/114FK,buildPASS.
 
 ## 2. Acceptance criteria
 
@@ -60,57 +60,62 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V10-3 | Invalid values without partial data | PASS: control/duplicate/empty values error and zero rows; actual browser control-value error screenshot. |
 | V10-4 | Docs/full checks/current header/no forbidden expansion | PASS:47tests,lint70/schema22+2/114FK,buildPASS; source hash above is exact v10 implementation/evidence commit. |
 
+| V11-1 | Only flagged Domains, with DNS records | PASS: accepted outside_known_range=true Domain API plus exact-owner DNS;12flagged owners; nonflagged sample05 excluded; no algorithm change. |
+| V11-2 | Domain search/count/pagination and DNS completeness | PASS:12owners/2pages; selected owner12DNS/2childpages; exact owner validation and search tested. |
+| V11-3 | Return full list/detail with existing style/context | PASS: browser sample12 detail and full list sample-/page2/size10 retained; existing tokens/frame reused. |
+| V11-4 | Docs/full tests/local-only/no forbidden expansion/current header | PASS:49tests,lint74/schema22+2/114FK,buildPASS; exact v11 source above; all external calls0. |
+
 ## 3. Work completed
 
-Added DNS query/page parsing to Domain route controller. Search submit and paging push native history entries containing identity/context only. Reload resolves original Domain/list then fresh search results. Explicit return removes search route while preserving origin. Search page is dns_page, independent of list page. Old search test now uses a real URL/history model rather than a no-op stub.
+Added a local panel launched from Domain list/detail. Parent page uses accepted exact tag predicate; child requests use exact DomainUUID ownership,10DNS/page. Both flagged and unflagged DNS belonging to flagged owners are shown. One parent plus at most10concurrent child requests/load;8second timeout and fail-closed cards. Domain count is independent from each child's DNS count. Optional48Domain lab fixture makes12flagged owners; startup reports actual DB counts.
 
 ## 4. Files changed
 
 | File | Purpose |
 |---|---|
-| frontend/src/domain-navigation.mjs | Parse/serialize value_search/dns_page; sync reload/history/return. |
-| frontend/src/dns-value-search.mjs | Routed submit/paging/return hooks and fresh restoration/invalid clearing. |
-| frontend/test/dns-value-navigation.test.mjs | Actual HTTP/PostgreSQL direct/page2/reload/history/control/duplicate tests. |
-| frontend/test/dns-value-search.test.mjs | Existing search/return regression adapted to real routed history. |
-| Docs/DOMAIN-INVENTORY-UI.md | v10 URL contract and superseded v9 limitation. |
-| Docs/evidence/S0-004/value-navigation-v10.json | Proof/failure resolution/limits. |
-| Docs/evidence/S0-004/test-v10.txt | Actual47test output. |
-| Docs/evidence/S0-004/lint-v10.txt | Actual70module/schema check. |
-| Docs/evidence/S0-004/build-v10.txt | Actual buildPASS. |
-| Docs/evidence/S0-004/value-reload-v10.png | Real reload preserves18records/page2. |
-| Docs/evidence/S0-004/value-history-v10.png | Real Forward restores198value/6records. |
-| Docs/evidence/S0-004/value-invalid-v10.png | Real control-value error with no rows. |
-| Docs/RESULT-TASK-S0-004.md | Current-source canonical v10 report. |
+| frontend/src/flagged-domains.mjs | Tag-scoped owners, name search/count, child DNS tables/pages, error clearing and return. |
+| frontend/src/domain-navigation.mjs | Mount/hide/teardown panel on route transitions. |
+| frontend/server.mjs | Whitelist fixed local module. |
+| frontend/test/flagged-domains.test.mjs | Actual READ ONLY HTTP/PostgreSQL parent/child pages/search/exclusion/failure/return. |
+| scripts/inventory-ui-lab.mjs | Optional48Domain fixture and actual startup counts; default fixture unchanged. |
+| Docs/DOMAIN-INVENTORY-UI.md | Flagged semantics, API reuse, bounded child pages and reproduction. |
+| Docs/evidence/S0-004/flagged-v11.json | Proof and limits/metadata correction. |
+| Docs/evidence/S0-004/test-v11.txt | Complete49test output. |
+| Docs/evidence/S0-004/lint-v11.txt | Actual74module/schema check. |
+| Docs/evidence/S0-004/build-v11.txt | Actual successful build. |
+| Docs/evidence/S0-004/flagged-page-v11.png | Browser12owners/page2/sample44+48 and DNS. |
+| Docs/evidence/S0-004/flagged-search-v11.png | Browser sample12 name search with DNS fields. |
+| Docs/evidence/S0-004/flagged-back-v11.png | Returned full list retaining sample-/page2/size10. |
+| Docs/RESULT-TASK-S0-004.md | Current-source canonical v11 report. |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs` emits local origin. Open `/inventory/domains#domain=10000000-0000-4000-8000-000000000012&value_search=192.0.2.25&dns_page=2&search=sample-&outside_known_range=true&page=1&page_size=10`. Reload:18matches/page2. Search198.51.100.25; native Back/Forward restores18/6queries. Return restores original Domain. `#value_search=%00` displays explicit input error, no rows. Local synthetic only.
+Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs --flagged` emits local origin. Open `/inventory/domains#domain=10000000-0000-4000-8000-000000000012&search=sample-&page=2&page_size=10`; View flagged domains ->12owners/2pages, Next ->sample44/48 and matching DNS. Search sample-12 ->1owner. Return restores detail; from full list open/return retains list context. Integration adds12DNS to sample04 solely to verify child pagination. No production inputs.
 
 ## 6. Tests and actual results
 
-47/47tests pass, lint70modules, unchanged22businessentities+2junctions/114FK, buildPASS. New integration uses actual synthetic HTTP/PostgreSQL and fresh DOM for reload/history model. Actual browser independently verifies reload, native Back/Forward and invalid clearing. Existing return list/detail/search/Host/package/collector tests pass. No new externalCloudflare call or scale/native claim.
+49/49tests pass; lint74modules; unchanged22businessentities+2junctions/114FK; buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY verifies12flaggedowners/2parentpages and12ownedDNS/2childpages, search, unflagged exclusion, cleared503error and both return paths. Real browser verifies page2/sample44+48, exact DNS fields, sample12search and origin detail/full list return. Existing Host/DNS navigation/collector regressions pass.0externalCloudflare calls; no algorithm change.
 
 ## 7. Issues and implementation decisions
 
-value_search and dns_page live in fragment alongside optional DomainUUID and list context. Duplicate value_search is invalid; values1–200characters/no controls. dns_page defaults1 with100000bound. Literal matching unchanged. Submit/page creates history entry; explicit return creates origin-route entry, so native Back can revisit search. Initial existing search test failed because its history methods did nothing; upgraded fixture to real URL stack/events and awaited asynchronous return. Targeted2 and full47tests then passed; no hidden failing run counted.
-
-Record discipline: exact source hash/time/Summary refreshed above. Lead08:24 accepted corrected v8 and v9; prior metadata issue resolved and preserved in history, not copied into current header.
+Flagged owner semantics come from accepted Domain API predicate on exact stored DNS tag. Child panel displays all owner DNS, not only flagged records; independent explicit pagination prevents silent truncation. Count labels distinguish Domains and DNS records. Temporary view reload returns origin; not a new route persistence scope. No backend/schema change. Lab startup initially displayed hardcoded default-fixture counts even with48fixture; changed to actual DB SELECT counts and final49test suite reran. Browser/SQL proof uses actual12owner results, not the old startup label. No failed task tests.
 
 ## 8. Not done, limitations and technical debt
 
-No production/realCloudflare/token/auth/RBAC/schema/osquery changes, native infrastructure or scale benchmark. Results are fresh declared inventory, not an immutable cross-request snapshot. Search history retains query/context, not returned data. Invalid page syntax defaults1; invalid values show error. No exact viewport/reduced-motion runtime claim.
+No production/token/liveCloudflare/native/scale/RBAC changes. No flag recomputation, schema/entity or osquery changes. Parent and child requests are separate snapshots; concurrent inventory updates can change pages. At most10children/page bounds fan-out; no thousands-of-assets benchmark. Temporary panel query not reload-persisted. No exact viewport/reduced-motion claim. Prior approved PoC/native follow-ups remain.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v10; no new scope/security/PO decision or Q01–05 answer.
+No hard blocker for v11; no new PO/security/spec decision or Q01–05 answer.
 
 ## 10. Next step and self-check
 
-Submit actual v10 RESULT/evidence and update existing QA PR without merge. Continue the separately assigned Host port/process work after this handoff. Act on specific review.
+Attach actual v11 RESULT/proof/guides/logs/screenshots, update existing QA PR without merge, then implement separately assigned Host Site filter. Act on concrete review.
 
-- [x] Ten ordered sections; original/historical/new criteria mapped.
-- [x] Header exact source/time/Summary checked for current work.
-- [x] Actual output/files/commands/failures/limits listed; no fake native/scale claims.
-- [x] Local/read-only/no-secret boundaries retained; actual attachments prepared.
+- [x] Ten sections; original/historical/new criteria separately mapped.
+- [x] Exact current source/time/Summary refreshed.
+- [x] All files, commands, real outputs, limits and decisions listed.
+- [x] Local/read-only/no-secret boundaries; no scale/native/production overclaim.
+- [x] Canonical version incremented; actual attachments prepared.
 
-History: v2–v7 accepted; corrected v8 and v9 accepted Lead08:24; v10 reloadable DNS query complete. Prior versions remain in Git/ClickUp.
+History: correctedv8/v9 andv10 accepted; v11flagged view complete under Lead08:45. Prior reports remain in Git/ClickUp.
