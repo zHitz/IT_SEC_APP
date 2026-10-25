@@ -1,0 +1,77 @@
+{
+  "task": "TASK-S0-004",
+  "version": 29,
+  "verifiedAt": "2026-10-25T17:28:05.644722+07:00",
+  "tests": {
+    "total": 89,
+    "passed": 89,
+    "failed": 0,
+    "newTargeted": 3,
+    "sameFile": "frontend/test/view-bookmarks.test.mjs",
+    "actualHttpPostgres": true,
+    "readOnly": true,
+    "proofMarkers": [
+      "V29_ROUND_TRIPS",
+      "V29_INVALID_REPAIR",
+      "V29_CLEAN_TAB"
+    ]
+  },
+  "lint": {
+    "modules": 96,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "criteria": {
+    "V29-1": {
+      "roundTripsPerStartingView": 3,
+      "bothDirections": true,
+      "exactFragmentsEveryTime": true
+    },
+    "V29-2": {
+      "savedInvalidDestination": true,
+      "affectedRows": 0,
+      "healthySiblingRetained": true,
+      "sourceExact": true,
+      "explicitRepair": true
+    },
+    "V29-3": {
+      "cleanDefaultBothDirections": true,
+      "noFabricatedBookmark": true,
+      "newSourceJourneySurvives": true,
+      "explicitDefaultClearsOnlyOwnBookmark": true
+    },
+    "V29-4": "89/89;lint96;schema22+2/114FK;buildPASS;three actual screenshots"
+  },
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "roundTripsPerStartingView": 3,
+    "hrefFragmentsComparedExactly": true,
+    "reloadNativeHistory": true,
+    "invalidDestinationAndExplicitRepairBothDirections": true,
+    "defaultSidebarLinksHaveNoFragment": true,
+    "screenshots": [
+      "domain-roundtrip-reload-v29.png",
+      "domain-roundtrip-history-v29.png",
+      "domain-roundtrip-invalid-v29.png"
+    ]
+  },
+  "failures": [],
+  "implementationDecision": "Remove fabricated #list=1 fallback. No-fragment default removes only own session bookmark; explicit nonempty fragments remain authoritative. Fragment-only tab storage, no rows/credentials/server writes.",
+  "limits": [
+    "Synthetic/local only",
+    "Session storage denied/cleared or fragment>16384 disables persistence while explicit URL works",
+    "Separate tabs/sessions independent",
+    "No schema/entity/API/collector/production/CVE change",
+    "QA approval required before merge"
+  ],
+  "overall": "DONE in assigned synthetic/local scope"
+}

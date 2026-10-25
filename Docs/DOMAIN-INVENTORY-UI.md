@@ -162,3 +162,10 @@ The Host and Domain sidebar links restore separate complete fragments from this 
 Reproduce with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`. Open the complete Host and Domain fragments from `frontend/test/view-bookmarks.test.mjs` once in the same tab, then switch using the sidebar. Host11 restores Site Host page2 and package/port page2; Sample04 restores DNS page2 and record or correct Domain/Flagged return origin.
 
 Focused proof: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs`. Both integration tests use actual HTTP/PostgreSQL READ ONLY and six invalid-level round trips per view; the third test checks unsafe saved values and storage denial. If sessionStorage is unavailable, cleared or the fragment exceeds16384 characters, explicit URLs still work but persistence is unavailable. Separate tabs are independent. See verification-v28.json and three actual v28 screenshots.
+
+
+### v29 repeated switching, invalid destination and clean tabs
+
+No-fragment defaults now remove only the current view bookmark; they do not invent #list=1 or copy the other view fragment. A journey created afterward persists normally. Existing invalid saved fragments are restored verbatim into the destination route parser, which shows its own clear error and no affected partial rows; the source bookmark stays exact. An explicit valid destination URL replaces that invalid destination bookmark and restores its journey without changing the source.
+
+The same view-bookmarks.test.mjs now adds exactly three tests: three consecutive round trips from each starting view with exact fragment equality, saved-invalid destination plus explicit repair in both directions, and clean default tabs/new journey creation in both directions. Full suite89/89, lint96modules. V29_ROUND_TRIPS, V29_INVALID_REPAIR and V29_CLEAN_TAB markers are in test-v29.txt. Reuse the combined v28 lab command and full hostRoute/domainRoute in that test. Three real v29 screenshots cover multi-round-trip reload/history/invalid states. Storage and native-evidence limits remain unchanged.
