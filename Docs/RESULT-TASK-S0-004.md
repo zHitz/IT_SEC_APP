@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: DNS value search
+# Result — TASK-S0-004: Reloadable DNS value search
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v9 |
+| Result version | v10 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; latest Lead08:14 documentation correction plus v9 assignment |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead08:24 ACCEPT v8 correction/v9 and assignment v10 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T08:20:38.236160+07:00 |
-| Source/evidence commit | 9636e197bbe084546900a9ebbd384aac8252bce6 |
+| Submitted at | 2026-10-25T08:35:05.988724+07:00 |
+| Source/evidence commit | d5f6efa0044edbb99f75bdd51f9c4b97ddf74fb9 |
 
 ## 1. Summary
 
-DONE in approved synthetic v9 scope. DNS value search from Domain/DNS list or detail shows matching stored Domain/record fields, count and pagination, with return to original view/context. Extends existing local read-only GET with bound literal value substring search; no schema/osquery/collector/live Cloudflare change.46/46tests,lint69/schema22+2/114FK and buildPASS. The requested documentation-only v8 correction was submitted first as a distinct actual attachment; no code/test changes were included in that correction.
+DONE in approved synthetic v10 scope: direct value_search fragments restore fresh DNS matches and result page after reload. Native Back/Forward restores prior queries/pages; invalid values clear rows and show explicit errors. Existing Domain/record fields, local gates and return context retained.47/47tests,lint70/schema22+2/114FK and buildPASS. No backend/schema/osquery/collector/liveCloudflare change.
 
 ## 2. Acceptance criteria
 
@@ -55,59 +55,62 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V9-4 | Docs/tests/local opt-in/no forbidden scope | PASS:46/46tests,lint69/schema22+2/114FK,buildPASS; no osquery/schema/Cloudflare client changes, zero external calls. |
 | R8-1 | Correct v8 report only before v9 | PASS: source e6ae95f, correction timestamp and v8 Summary fixed; section7/history record correction; committed637e7aa and attached1430e2e8-5356-4370-b362-dadbc1b08d55 before v9 work. |
 
+| V10-1 | Direct value_search link and reload persistence | PASS: direct192value/page2 and fresh DOM plus real browser reload restore18records/page2/8rows through accepted GET. |
+| V10-2 | Native Back/Forward and return context | PASS: real browser and history-model integration restore192/page2 and198/page1/6rows; existing list/detail return tests pass. |
+| V10-3 | Invalid values without partial data | PASS: control/duplicate/empty values error and zero rows; actual browser control-value error screenshot. |
+| V10-4 | Docs/full checks/current header/no forbidden expansion | PASS:47tests,lint70/schema22+2/114FK,buildPASS; source hash above is exact v10 implementation/evidence commit. |
+
 ## 3. Work completed
 
-Added value_search to existing DNS-record GET with strict query validation, bound SQL and consistent count/page in one read statement. Added a dedicated local panel launched from Domain/DNS list or Domain detail. It shows matching owner and stored record fields, fixed10-row pages, count, guidance/empty/error states, safe text rendering and8second timeout. Return restores entry view; normal route navigation closes panel. Existing name search and filters retain their semantics.
+Added DNS query/page parsing to Domain route controller. Search submit and paging push native history entries containing identity/context only. Reload resolves original Domain/list then fresh search results. Explicit return removes search route while preserving origin. Search page is dns_page, independent of list page. Old search test now uses a real URL/history model rather than a no-op stub.
 
 ## 4. Files changed
 
 | File | Purpose |
 |---|---|
-| backend/src/inventory/reader.mjs | DNS-only value_search validation and bound literal substring predicate. |
-| frontend/server.mjs | Whitelist new local module; existing proxy/gates retained. |
-| frontend/src/domain-navigation.mjs | Mount/teardown panel and hide on route transitions. |
-| frontend/src/dns-value-search.mjs | Entry buttons, value input, safe results/count/paging and return handling. |
-| frontend/test/dns-value-search.test.mjs | Actual READ ONLY HTTP/PostgreSQL UI/search/pages/return/invalid/injection checks. |
-| Docs/DOMAIN-INVENTORY-API.md | Query validation, response and matching semantics. |
-| Docs/DOMAIN-INVENTORY-UI.md | Entry/search/return behavior, scope and reproduction. |
-| Docs/evidence/S0-004/value-v9.json | Observed proof and limits. |
-| Docs/evidence/S0-004/test-v9.txt | Full46test output. |
-| Docs/evidence/S0-004/lint-v9.txt | Actual69module/schema parity output. |
-| Docs/evidence/S0-004/build-v9.txt | Actual successful build output. |
-| Docs/evidence/S0-004/value-page-v9.png | Actual browser18matches/page2of2. |
-| Docs/evidence/S0-004/value-back-v9.png | Actual returned flagged list with context. |
-| Docs/RESULT-TASK-S0-004.md | Canonical v9; prior correction committed separately first. |
+| frontend/src/domain-navigation.mjs | Parse/serialize value_search/dns_page; sync reload/history/return. |
+| frontend/src/dns-value-search.mjs | Routed submit/paging/return hooks and fresh restoration/invalid clearing. |
+| frontend/test/dns-value-navigation.test.mjs | Actual HTTP/PostgreSQL direct/page2/reload/history/control/duplicate tests. |
+| frontend/test/dns-value-search.test.mjs | Existing search/return regression adapted to real routed history. |
+| Docs/DOMAIN-INVENTORY-UI.md | v10 URL contract and superseded v9 limitation. |
+| Docs/evidence/S0-004/value-navigation-v10.json | Proof/failure resolution/limits. |
+| Docs/evidence/S0-004/test-v10.txt | Actual47test output. |
+| Docs/evidence/S0-004/lint-v10.txt | Actual70module/schema check. |
+| Docs/evidence/S0-004/build-v10.txt | Actual buildPASS. |
+| Docs/evidence/S0-004/value-reload-v10.png | Real reload preserves18records/page2. |
+| Docs/evidence/S0-004/value-history-v10.png | Real Forward restores198value/6records. |
+| Docs/evidence/S0-004/value-invalid-v10.png | Real control-value error with no rows. |
+| Docs/RESULT-TASK-S0-004.md | Current-source canonical v10 report. |
 
 ## 5. Run and verify
 
-From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node scripts/inventory-ui-lab.mjs`; use emitted origin `/inventory/domains#domain=10000000-0000-4000-8000-000000000012&search=sample-&outside_known_range=true&page=1&page_size=10`. Select Search DNS values, enter192.0.2.25, Find DNS records, Next:18matches/page2of2. Back restores sample12 detail. Back to list, enter search again with198.51.100.25:6records. Back preserves flagged list. Endpoint `/api/v1/inventory/dns-records?value_search=192.0.2.25&page=2&page_size=10`. All local synthetic only.
+Repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. `node scripts/inventory-ui-lab.mjs` emits local origin. Open `/inventory/domains#domain=10000000-0000-4000-8000-000000000012&value_search=192.0.2.25&dns_page=2&search=sample-&outside_known_range=true&page=1&page_size=10`. Reload:18matches/page2. Search198.51.100.25; native Back/Forward restores18/6queries. Return restores original Domain. `#value_search=%00` displays explicit input error, no rows. Local synthetic only.
 
 ## 6. Tests and actual results
 
-46/46tests pass; lint69modules; schema22business entities+2junctions/114nativeFK unchanged; buildPASS. Actual SQL/HTTP executes inside BEGIN READ ONLY. Tests prove18/6counts, second page, literal injection string no matches, empty/control/duplicate/page0/unrelated-resource400, list/detail return without stale rows. Real browser proves second page and both return paths. Existing Host/package/Domain/collector regressions pass. No new live Cloudflare, scale or native claim.
+47/47tests pass, lint70modules, unchanged22businessentities+2junctions/114FK, buildPASS. New integration uses actual synthetic HTTP/PostgreSQL and fresh DOM for reload/history model. Actual browser independently verifies reload, native Back/Forward and invalid clearing. Existing return list/detail/search/Host/package/collector tests pass. No new externalCloudflare call or scale/native claim.
 
 ## 7. Issues and implementation decisions
 
-v8 record correction per Lead08:14 was submitted first: header real timestamp/source and v8 Summary fixed, with history note, no code/test change or rerun. That corrected attachment remains on task; v9 supersedes canonical local file only after correction submission. V9 source hash and current preparation timestamp are explicitly refreshed above.
+value_search and dns_page live in fragment alongside optional DomainUUID and list context. Duplicate value_search is invalid; values1–200characters/no controls. dns_page defaults1 with100000bound. Literal matching unchanged. Submit/page creates history entry; explicit return creates origin-route entry, so native Back can revisit search. Initial existing search test failed because its history methods did nothing; upgraded fixture to real URL stack/events and awaited asynchronous return. Targeted2 and full47tests then passed; no hidden failing run counted.
 
-value_search is literal substring, not CIDR/range/wildcard. It searches all stored records independently of the originating list filter; list filter is preserved on return. Existing API can combine parameters with AND. Temporary panel is not deep-linked; reload restores original route. Count is matching DNS records, not unique domains. No task-specific failed v9 tests; targeted3 and final46checks passed. No schema or policy decision introduced.
+Record discipline: exact source hash/time/Summary refreshed above. Lead08:24 accepted corrected v8 and v9; prior metadata issue resolved and preserved in history, not copied into current header.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/liveCloudflare, schema/entities, osquery changes, native PostgreSQL/Docker/auth/RBAC or scale benchmark. Existing synthetic PoC limitations remain. Search panel state is not persisted across reload. Bound substring query may need indexing/search strategy for future large datasets; not claimed performant at scale. Cross-request pagination is not a frozen DB snapshot. No exact viewport/reduced-motion emulation claim.
+No production/realCloudflare/token/auth/RBAC/schema/osquery changes, native infrastructure or scale benchmark. Results are fresh declared inventory, not an immutable cross-request snapshot. Search history retains query/context, not returned data. Invalid page syntax defaults1; invalid values show error. No exact viewport/reduced-motion runtime claim.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v9. No new security/priority/PO question; no Q01–05 answers. Corrected v8 record and v9 are ready for joint Lead review as instructed.
+No hard blocker for v10; no new scope/security/PO decision or Q01–05 answer.
 
 ## 10. Next step and self-check
 
-Attach actual RESULT/guides/proof/logs/screenshots to assigned task; update existing QA PR without merge. Act on specific Lead/QA feedback or concrete new assignment.
+Submit actual v10 RESULT/evidence and update existing QA PR without merge. Continue the separately assigned Host port/process work after this handoff. Act on specific review.
 
-- [x] Exact ten sections and individual original/historical/new AC rows.
-- [x] Header timestamp/source/summary refreshed for current package and checked.
-- [x] Every file, commands/actual outputs, limits and assumptions listed.
-- [x] No secrets/production data/native or scale overclaim; local read-only boundaries retained.
-- [x] Separate v8 documentation correction submitted first; v9 actual attachments prepared.
+- [x] Ten ordered sections; original/historical/new criteria mapped.
+- [x] Header exact source/time/Summary checked for current work.
+- [x] Actual output/files/commands/failures/limits listed; no fake native/scale claims.
+- [x] Local/read-only/no-secret boundaries retained; actual attachments prepared.
 
-History: v2–v7 accepted in recorded scopes; v8 code passed with documentation-only REWORK08:14; corrected v8 record submitted before v9 under637e7aa; v9 DNS value search complete. Prior canonical versions remain in Git/ClickUp.
+History: v2–v7 accepted; corrected v8 and v9 accepted Lead08:24; v10 reloadable DNS query complete. Prior versions remain in Git/ClickUp.
