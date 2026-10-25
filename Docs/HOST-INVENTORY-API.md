@@ -83,3 +83,7 @@ Existing `GET /api/v1/inventory/listening-ports?port=8011&process_search=synthet
 ## v18 Host ordering
 
 GET `/api/v1/inventory/hosts?sort=os_version&direction=desc&search=host-&page=2&page_size=10`. `sort` accepts hostname (default), os, os_version; direction asc (default) or desc. Unknown/duplicate parameters return400. Ordering uses stored PostgreSQL text, NULLS LAST, then id ascending to make ties stable. OS version ordering is lexical, not semantic version comparison. Search/Site predicates and count/page consistency remain unchanged. No schema writes.
+
+## v19 sorting contract
+
+GET packages accepts sort=name|version; listening-ports accepts sort=port|pid; both direction=asc|desc (defaultasc). Whitelist identifiers only;values bound,stable id ascending ties,NULLS LAST. Host scope remains host_id UUID;invalid/duplicatequery400. Stored version ordering lexical. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.

@@ -64,3 +64,7 @@ Same opt-in backend reader pool/default_transaction_read_only/statement_timeout 
 ## v18 exact DNS record
 
 GET `/api/v1/inventory/dns-records/<UUID>` returns `{data:{id,domain,type,value,proxied,ttl,source,first_seen_at,last_seen_at,confidence,tags}}` from the exact stored UUID. UUID bound to SQL; no query parameters or relation accepted (400); invalid UUID400, missing404, POST405; disabled inventory retains404. Flag is displayed from exact stored cloudflare:outside-known-range tag; no flag algorithm change. No raw_ref or payload returned. Loopback opt-in proxy allowlist includes this GET only.
+
+## v19 sorting contract
+
+GET domains accepts sort=hostname (maps fqdn),direction=asc|desc;defaults hostname/asc. Stable id ascending tie,NULLS LAST;combined search and outside_known_range predicates unchanged,one-statement count/page. Invalid/duplicate sort/direction400. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.

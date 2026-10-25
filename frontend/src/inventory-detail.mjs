@@ -1,8 +1,8 @@
 import {mountInventoryTable,validateInventory} from './inventory-table.mjs';
 const childColumns={'dns-records':[['type','Type'],['value','Value'],['proxied','Proxied'],['ttl','TTL'],['tags','Tags'],['outside_flag','Outside known range']],packages:[['name','Package'],['version','Version'],['ecosystem','Ecosystem']],'listening-ports':[['protocol','Protocol'],['port','Port'],['bind_address','Bind address'],['process','Process'],['pid','PID']]};
-export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onRecord,onHostPage,onDnsPage,onListChange,manageHistory=true,resolveHost=false}={}){
+export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onRecord,onHostPage,onHostSort,onDnsPage,onListChange,manageHistory=true,resolveHost=false}={}){
  const get=id=>document.getElementById(id),history=document.defaultView?.history;
- let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let lastFocus;
+ let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let lastFocus;let scopedSort={packages:{sort:'name',direction:'asc'},'listening-ports':{sort:'port',direction:'asc'}};
  const textNode=(tag,text)=>{const el=document.createElement(tag);el.textContent=text??'—';return el;};
  function info(row){get('detail-info').replaceChildren();for(const [key,label]of(mode==='domain'?[['fqdn','Domain'],['id','Domain ID'],['source','Source'],['first_seen_at','First seen'],['last_seen_at','Last seen'],['confidence','Confidence'],['tags','Tags']]:[['hostname','Hostname'],['os','OS'],['os_version','OS version'],['id','Host ID']])){get('detail-info').append(textNode('dt',label),textNode('dd',Array.isArray(row[key])?row[key].join(', '):row[key]));}}
  async function read(resource,page,signal){
@@ -13,13 +13,15 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
    if(payload.meta.page!==page||payload.meta.page_size!==25||page>Math.max(1,payload.meta.total_pages)||payload.data.some(row=>row.domain!==selected.fqdn||!(row.proxied===null||typeof row.proxied==='boolean')||!(row.ttl===null||Number.isSafeInteger(row.ttl))))throw Error('DETAIL_SCOPE_MISMATCH');
    return{...payload,data:payload.data.map(row=>({...row,outside_flag:row.tags.includes('cloudflare:outside-known-range')?'Flagged':'Not flagged'}))};
   }
-  const query=new URLSearchParams({host_id:selected.id,page:String(page),page_size:'25'});
+  const sortState=scopedSort[resource];if(sortState.invalid)return{invalidSort:true};const query=new URLSearchParams({sort:sortState.sort,direction:sortState.direction,host_id:selected.id,page:String(page),page_size:'25'});
   const response=await fetcher(`/api/v1/inventory/${resource}?${query}`,{signal,headers:{Accept:'application/json'}});
   if(!response.ok)throw Error('DETAIL_UNAVAILABLE');const payload=validateInventory(await response.json(),resource);
   if(payload.meta.page!==page||payload.meta.page_size!==25||page>Math.max(1,payload.meta.total_pages)||payload.data.some(row=>row.host_id!==selected.id))throw Error('DETAIL_SCOPE_MISMATCH');return payload;
  }
  function renderChildren(resource,payload){
-  const section=document.createElement('section');section.className='detail-section';section.append(textNode('h3',resource==='dns-records'?'DNS records':resource==='packages'?'Packages':'Listening ports'),textNode('p',`${payload.meta.total} matching records`));
+  const section=document.createElement('section');section.className='detail-section';section.append(textNode('h3',resource==='dns-records'?'DNS records':resource==='packages'?'Packages':'Listening ports'),textNode('p',payload.invalidSort?'List unavailable':`${payload.meta.total} matching records`));
+  if(mode==='host'){section.dataset.resource=resource;for(const [key,values]of [['sort',resource==='packages'?['name','version']:['port','pid']],['direction',['asc','desc']]]){const label=textNode('label',key==='sort'?'Sort '+resource:'Direction '+resource),select=document.createElement('select');select.setAttribute('aria-label',label.textContent);for(const value of values){const option=textNode('option',value);option.value=value;select.append(option);}const options=[...select.querySelectorAll('option')];(options.find(o=>o.value===scopedSort[resource][key])??options[0]).selected=true;select.addEventListener('change',()=>onHostSort?.(selected.id,resource,key,select.value));label.append(select);section.append(label);}}
+  if(payload.invalidSort){section.append(textNode('p','Invalid '+resource+' sort. Choose a valid sort and direction.'));return section;}
   const scroll=document.createElement('div');scroll.className='table-scroll';scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label',resource+' for selected '+mode);
   const table=document.createElement('table'),caption=textNode('caption',resource+' for selected '+mode);caption.className='sr-only';table.append(caption);
   const head=document.createElement('thead'),tr=document.createElement('tr');for(const [,label]of childColumns[resource]){const th=textNode('th',label);th.scope='col';tr.append(th);}head.append(tr);table.append(head);
@@ -45,8 +47,8 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
   finally{clearTimeout(timeout);if(current===version)get('inventory-detail').setAttribute('aria-busy','false');}
  }
  function showList(){version++;active?.abort();get('inventory-list').hidden=false;get('inventory-detail').hidden=true;try{lastFocus?.focus();}catch{} }
- async function open(row,{recordHistory=true,dnsPage=1,invalidDns=false,packagePage=1,portPage=1,invalidHostPages=false}={}){
-  validateInventory({data:[row],meta:{page:1,page_size:25,total:1,total_pages:1}},mode==='domain'?'domains':'hosts');selected=row;lastFocus=document.activeElement;pages.packages=packagePage;pages['listening-ports']=portPage;pages['dns-records']=dnsPage;
+ async function open(row,{recordHistory=true,dnsPage=1,invalidDns=false,packagePage=1,portPage=1,invalidHostPages=false,packageSort='name',packageDirection='asc',portSort='port',portDirection='asc',invalidPackageSort=false,invalidPortSort=false}={}){
+  validateInventory({data:[row],meta:{page:1,page_size:25,total:1,total_pages:1}},mode==='domain'?'domains':'hosts');selected=row;lastFocus=document.activeElement;scopedSort={packages:{sort:packageSort,direction:packageDirection,invalid:invalidPackageSort},'listening-ports':{sort:portSort,direction:portDirection,invalid:invalidPortSort}};pages.packages=packagePage;pages['listening-ports']=portPage;pages['dns-records']=dnsPage;
   get('inventory-list').hidden=true;get('inventory-detail').hidden=false;get('detail-title').textContent=mode==='domain'?row.fqdn:row.hostname;info(row);get('detail-title').focus?.();
   if(invalidDns||invalidHostPages){version++;active?.abort();get('detail-info').replaceChildren();get('detail-related').replaceChildren();get('detail-status').textContent=invalidHostPages?'Invalid Host detail pages. Return to the list.':'Invalid DNS page link. Return to the list.';get('detail-retry').hidden=true;return;}if(recordHistory&&manageHistory)history?.pushState({atlasSelection:{mode,row}},'', '#detail='+encodeURIComponent(row.id));await load();
  }
