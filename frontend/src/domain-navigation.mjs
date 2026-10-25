@@ -17,7 +17,7 @@ export function parseDomainRoute(location){
 export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
  const nav=navigation??{history:view.history,location:view.location,events:view};
- const route=parseDomainRoute(nav.location);let flaggedView,valueView,core,lastRoute=null,routePending=Promise.resolve();
+ const route=parseDomainRoute(nav.location);let recordView,flaggedView,valueView,core,lastRoute=null,routePending=Promise.resolve();
  const get=id=>document.getElementById(id);
  const context=()=>({resource:'domains',search:core.list.state.search,flag:core.list.state.flag,page:core.list.state.page,pageSize:core.list.state.pageSize});
  function fragment(id,ctx){const p=new URLSearchParams(id===null?{list:'1'}:{domain:id});if(ctx.search)p.set('search',ctx.search);if(ctx.flag)p.set('outside_known_range',ctx.flag);p.set('page',String(ctx.page));p.set('page_size',String(ctx.pageSize));return'#'+p;}
@@ -28,7 +28,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
   return changed?core.list.reload():Promise.resolve();
  }
  async function sync(){
-  const key=nav.location?.hash??'';if(lastRoute===key)return;flaggedView?.hide();valueView?.hide();lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
+  const key=nav.location?.hash??'';if(lastRoute===key)return;recordView?.hide();flaggedView?.hide();valueView?.hide();lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null&&!next.invalidDetailDns)core.back();else await core.open({id:next.id??'00000000-0000-4000-8000-000000000000',fqdn:'Domain details',source:null,confidence:null,tags:[],first_seen_at:null,last_seen_at:null},{recordHistory:false,dnsPage:next.detailDnsPage,invalidDns:next.invalidDetailDns});
   await pending;if(next.flagged){await flaggedView.restore(next.flaggedSearch,next.flaggedPage,next.flaggedInvalid,next.childOwner,next.childPage);return;}if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
  }
@@ -52,6 +52,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  valueView=mountDnsValueSearch(document,{onNavigate:valueNavigate,onBack:valueBack});valueView.setFetcher(fetcher);
  function flaggedNavigate(search,page,owner=null,childPage=1){const parsed=parseDomainRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('flagged','1');params.set('flagged_search',search);params.set('flagged_page',String(page));if(owner){params.set('flagged_owner',owner);params.set('child_page',String(childPage));}nav.history?.pushState(null,'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();}
  flaggedView=mountFlaggedDomains(document,{fetcher,onNavigate:flaggedNavigate,onBack:valueBack});
+ recordView=mountDnsValueSearch(document,{flaggedRecords:true});recordView.setFetcher(fetcher);
  const ready=Promise.all([core.ready,sync()]);
- return{ready,core,valueView,flaggedView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);flaggedView.destroy();valueView.destroy();core.destroy();}};
+ return{ready,core,valueView,flaggedView,recordView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);recordView.destroy();flaggedView.destroy();valueView.destroy();core.destroy();}};
 }

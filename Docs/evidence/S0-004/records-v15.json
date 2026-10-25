@@ -1,0 +1,22 @@
+{
+  "scope": "synthetic local v15",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "59/59",
+  "lintModules": 86,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "exactTag": "cloudflare:outside-known-range",
+  "recordCount": 12,
+  "pages": 2,
+  "page2Owners": [
+    "sample44",
+    "sample48"
+  ],
+  "valueSearch": true,
+  "unflaggedValueExcluded": true,
+  "failure503ZeroPartial": true,
+  "bothOriginReturns": true,
+  "initialFailure": "shared count retained matching label; corrected to flagged DNS records, reran full suite",
+  "limit": "temporary record view; reload returns origin"
+}
