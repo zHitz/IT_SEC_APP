@@ -1,0 +1,118 @@
+{
+  "task": "TASK-S0-003",
+  "version": 33,
+  "browser": {
+    "origin": "http://127.0.0.1:61959",
+    "urls": {
+      "site": "http://127.0.0.1:61959/inventory/hosts#host=20000000-0000-4000-8000-000000000011&package_detail_page=2&port_detail_page=2&package_detail_search=package&port_detail_search=synthetic&package_sort=version&package_direction=desc&port_sort=pid&port_direction=desc&sort=hostname&direction=asc&page=1&page_size=25&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=1&site_sort=hostname&site_direction=desc&picker_search=Site&picker_sort=name&picker_direction=desc&site_saved=1&host_origin=site",
+      "unassigned": "http://127.0.0.1:61959/inventory/hosts#host=20000000-0000-4000-8000-000000000020&package_detail_page=2&port_detail_page=2&package_detail_search=package&port_detail_search=synthetic&package_sort=version&package_direction=desc&port_sort=pid&port_direction=desc&sort=hostname&direction=asc&page=1&page_size=25&unassigned_search=host-&unassigned_page=1&unassigned_sort=hostname&unassigned_direction=desc&unassigned_saved=1&host_origin=unassigned",
+      "flagged": "http://127.0.0.1:61959/inventory/domains#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_search=192.0.2&sort=hostname&direction=asc&page=1&page_size=25&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc&flagged_saved=1&domain_origin=flagged",
+      "records": "http://127.0.0.1:61959/inventory/domains#flagged_records=1&record_search=198.51.100&record_sort=value&record_direction=desc&record_page=2&record_flag=true&record=10000000-0000-4000-8000-000000000144"
+    },
+    "checks": [
+      {
+        "tab": "A",
+        "round": 1,
+        "hostRows": [
+          6,
+          6
+        ],
+        "exact": true
+      },
+      {
+        "tab": "B",
+        "round": 1,
+        "hostRows": [
+          6,
+          6
+        ],
+        "exact": true
+      },
+      {
+        "tab": "A",
+        "round": 2,
+        "hostRows": [
+          6,
+          6
+        ],
+        "exact": true
+      },
+      {
+        "tab": "B",
+        "round": 2,
+        "hostRows": [
+          6,
+          6
+        ],
+        "exact": true
+      },
+      {
+        "freshJourney": "site",
+        "exact": true,
+        "roundTrips": 2
+      },
+      {
+        "freshJourney": "unassigned",
+        "exact": true,
+        "roundTrips": 2
+      },
+      {
+        "freshJourney": "flagged",
+        "exact": true,
+        "roundTrips": 2
+      },
+      {
+        "freshJourney": "records",
+        "exact": true,
+        "roundTrips": 2
+      },
+      {
+        "invalidJourney": "site",
+        "affectedRows": 0,
+        "healthyCells": 125,
+        "sourceExact": true,
+        "explicitRepair": true
+      },
+      {
+        "invalidJourney": "unassigned",
+        "affectedRows": 0,
+        "healthyCells": 125,
+        "sourceExact": true,
+        "explicitRepair": true
+      },
+      {
+        "invalidJourney": "flagged",
+        "affectedRows": 0,
+        "healthyCells": 150,
+        "sourceExact": true,
+        "explicitRepair": true
+      },
+      {
+        "invalidJourney": "records",
+        "affectedRows": 0,
+        "healthyCells": 150,
+        "sourceExact": true,
+        "explicitRepair": true
+      },
+      {
+        "afterCloseNewIndependentTab": true,
+        "defaultBothViews": true
+      }
+    ],
+    "storageLimit": "Initial zero entries asserted in fresh Map-backed test stores; browser evidence uses independent tabs without opener and visible URL/DOM checks, not direct browser storage enumeration.",
+    "observedAt": "2026-10-25T15:19:38.028Z"
+  },
+  "automatedEvidence": "test-v33.txt: V33_TAB_ISOLATION, V33_FRESH_URL, V33_INVALID_FRESH, V33_CLOSED_DEFAULT",
+  "limits": "Synthetic local only. Zero-entry storage assertions apply to Map-backed model stores; browser evidence uses fresh independent tabs, visible URL and DOM. Native Host AC1/3/4 unverified. No production requests.",
+  "tests": {
+    "total": 101,
+    "passed": 101,
+    "failed": 0,
+    "newTests": 3,
+    "testFile": "frontend/test/view-bookmarks.test.mjs"
+  },
+  "lintModules": 96,
+  "schema": "22 entities + 2 junctions / 114 native foreign keys; unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0
+}
