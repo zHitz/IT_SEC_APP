@@ -169,3 +169,12 @@ Focused proof: `node --test --test-concurrency=1 frontend/test/view-bookmarks.te
 No-fragment defaults now remove only the current view bookmark; they do not invent #list=1 or copy the other view fragment. A journey created afterward persists normally. Existing invalid saved fragments are restored verbatim into the destination route parser, which shows its own clear error and no affected partial rows; the source bookmark stays exact. An explicit valid destination URL replaces that invalid destination bookmark and restores its journey without changing the source.
 
 The same view-bookmarks.test.mjs now adds exactly three tests: three consecutive round trips from each starting view with exact fragment equality, saved-invalid destination plus explicit repair in both directions, and clean default tabs/new journey creation in both directions. Full suite89/89, lint96modules. V29_ROUND_TRIPS, V29_INVALID_REPAIR and V29_CLEAN_TAB markers are in test-v29.txt. Reuse the combined v28 lab command and full hostRoute/domainRoute in that test. Three real v29 screenshots cover multi-round-trip reload/history/invalid states. Storage and native-evidence limits remain unchanged.
+
+
+### v30 independent tabs and saved URLs
+
+Independent new tabs have separate sessionStorage. Open complete saved Host/Domain fragments from view-bookmarks.test.mjs in a fresh independent tab: explicit URL restores all nested state before any prior bookmark exists. After establishing both views, two sidebar round trips retain exact fragments. Different tabs can hold different Host page and Domain DNS/record journeys without overwriting one another.
+
+Three new tests in the existing file cover two independent stores with distinct journeys, explicit saved URLs in fresh stores plus two round trips, and fresh invalid URL/explicit repair followed by a new clean session. The test harness models independent stores; actual browser tabs separately verify isolation, reload/history, fresh-invalid errors and clean defaults after close. No runtime change was needed. Full suite92/92;lint96.
+
+A fresh independent tab is not a duplicated/opener-created tab: browsers may clone initial sessionStorage for those cases. This evidence claims only independently created tabs without an opener. Existing storage-denial, fragment bound and synthetic/native limits remain.

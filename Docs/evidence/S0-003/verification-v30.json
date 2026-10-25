@@ -1,0 +1,83 @@
+{
+  "task": "TASK-S0-003",
+  "version": 30,
+  "verifiedAt": "2026-10-25T17:58:21.546413+07:00",
+  "tests": {
+    "total": 92,
+    "passed": 92,
+    "failed": 0,
+    "newTargeted": 3,
+    "sameFile": "frontend/test/view-bookmarks.test.mjs",
+    "actualHttpPostgres": true,
+    "readOnly": true,
+    "proofMarkers": [
+      "V30_TAB_ISOLATION",
+      "V30_FRESH_URL",
+      "V30_INVALID_FRESH"
+    ]
+  },
+  "lint": {
+    "modules": 96,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "criteria": {
+    "V30-1": {
+      "independentTabStores": 2,
+      "differentHostAndDomainJourneys": true,
+      "noCrossTabCopy": true
+    },
+    "V30-2": {
+      "freshEmptySession": true,
+      "explicitFullFragmentsRestore": true,
+      "roundTripsPerTab": 2,
+      "exactFragments": true
+    },
+    "V30-3": {
+      "freshInvalidURL": true,
+      "affectedPartialRows": 0,
+      "healthySiblingRetained": true,
+      "explicitRepair": true,
+      "newTabAfterCloseDefault": true
+    },
+    "V30-4": "92/92;lint96;schema22+2/114FK;buildPASS;three actual screenshots"
+  },
+  "browser": {
+    "actualIndependentTabs": 2,
+    "tabA": "Host page2/packages2/ports2;DomainDNS2/record30",
+    "tabB": "Host packages1/ports1;DomainDNS1/record29",
+    "freshOtherSidebarDefault": true,
+    "twoExactRoundTripsEach": true,
+    "reloadHistory": true,
+    "freshInvalidHostAndDomainRepair": true,
+    "closeAndNewTabHasNoFragment": true,
+    "screenshots": [
+      "host-tabs-reload-v30.png",
+      "host-tabs-history-v30.png",
+      "host-tabs-invalid-v30.png"
+    ]
+  },
+  "runtimeChanged": false,
+  "failures": [],
+  "limits": [
+    "Synthetic/local only",
+    "Integration tab stores model independent sessions;actual browser tabs separately verify observed behavior",
+    "Fresh tabs are created independently with no opener, not duplicated tabs",
+    "Browser may clone sessionStorage for opener/duplicated tabs; not claimed as fresh empty sessions",
+    "Session storage denial/clearing or fragment>16384 disables persistence;explicit URLs remain usable",
+    "QAapproval required before merge"
+  ],
+  "overall": "PARTIAL",
+  "nativeAC1_3_4": "unverified",
+  "acceptedOutageMs": 600010,
+  "outageRerun": false
+}
