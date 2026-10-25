@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: Combined main Host filters
+# Result — TASK-S0-003: v17 inventory navigation
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v16 |
+| Result version | v17 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead11:06 ACCEPTv15 and assignv16 |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead11:39 ACCEPTv16 and assignv17 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T11:20:57.258480+07:00 |
-| Source/evidence commit | 6c2e0a17a1a78737540bceb3c931d9a38271b168 |
+| Submitted at | 2026-10-25T11:50:52.687063+07:00 |
+| Source/evidence commit | ec6da2d4e3c3eeeba885fa85cb22c2e87e05f460 |
 
 ## 1. Summary
 
-PARTIAL overall; nativeAC1/3/4 unverified. Assigned v16 combined Site/hostname/page direct links, reload/history, invalid clearing and detail return complete. Full61/61tests,lint88/schema22+2/114FK unchanged,buildPASS.
+PARTIAL overall; nativeAC1/3/4 unverified. v17 Host detail package/port pages persist together via fragments/reload/history;31each/page2/6rowseach,OS12.3/process/PID and list return retained. Full63/63tests,lint90/schema22+2/114FK,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -103,56 +104,62 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V16-3 | Invalid/no partial | PASS: actual HTTP/PostgreSQL/browser evidence: 5malformed/duplicate/control states0rows. |
 | V16-4 | Checks/boundaries | PASS: actual HTTP/PostgreSQL/browser evidence: 61tests,88modules,22+2/114FK unchanged,build;exact source. |
 
+
+| V17-1 | Direct/reload | PASS: PARTIAL overall; nativeAC1/3/4 unverified. v17 Host detail package/port pages persist together via fragments/reload/history;31each/page2/6rowseach,OS12.3/process/PID and list return retained. |
+| V17-2 | History/returns | PASS: Actual history fixture and browser Back/Forward; parent context retained |
+| V17-3 | Invalid/no partial | PASS: 4Hostchildinvalid cases,0cells |
+| V17-4 | Fullchecks/boundaries | PASS: 63tests,90modules,22+2/114FK unchanged,build;exact source above |
+
 ## 3. Work completed
 
-PARTIAL overall; nativeAC1/3/4 unverified. Assigned v16 combined Site/hostname/page direct links, reload/history, invalid clearing and detail return complete. Accepted read-only endpoints reused; no backend/schema changes.
+PARTIAL overall; nativeAC1/3/4 unverified. v17 Host detail package/port pages persist together via fragments/reload/history;31each/page2/6rowseach,OS12.3/process/PID and list return retained. Accepted read-only GET reused;no backend/schema changes.
 
 ## 4. Files changed
 
-| File | Specific change |
+| File | Change |
 |---|---|
-| frontend/src/host-navigation.mjs | Combined route parse/history/context preservation |
-| frontend/src/inventory-table.mjs | Main Site UUID input, accepted site_id query, invalid state/scope validation and user-state callback |
-| frontend/src/inventory-detail.mjs | Forward list-state callback |
-| frontend/test/combined-host-navigation.test.mjs | Actual READ ONLY reload/history/detail return/5invalid cases |
-| Docs/HOST-INVENTORY-UI.md | v16 contract/reproduction/limits |
-| Docs/evidence/S0-003/combined-v16.json | Measured proof and limits |
-| Docs/evidence/S0-003/test-v16.txt | Full61test output |
-| Docs/evidence/S0-003/lint-v16.txt | 88module/schema parity |
-| Docs/evidence/S0-003/build-v16.txt | Successful build |
-| Docs/evidence/S0-003/combined-reload-v16.png | Real browser reload evidence |
-| Docs/evidence/S0-003/combined-history-v16.png | Real browser history evidence |
-| Docs/evidence/S0-003/combined-invalid-v16.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-003.md | Canonical v16 tensection report |
+| frontend/src/host-navigation.mjs | Parse both child pages and preserve independent history/context |
+| frontend/src/inventory-detail.mjs | Restore both scoped pages, route callbacks and fail-closed bounds |
+| scripts/inventory-ui-lab.mjs | Optional30packages+30ports forHost11 only |
+| frontend/test/host-scoped-navigation.test.mjs | Actual READ ONLY reload/history/4invalidcases |
+| Docs/HOST-INVENTORY-UI.md | v17 contract/reproduction/limits |
+| Docs/evidence/S0-003/scoped-v17.json | Actual proof/errors/limits |
+| Docs/evidence/S0-003/test-v17.txt | Final63test output |
+| Docs/evidence/S0-003/lint-v17.txt | 90module/schema parity |
+| Docs/evidence/S0-003/build-v17.txt | BuildPASS |
+| Docs/evidence/S0-003/scoped-reload-v17.png | Browser reload viewport evidence |
+| Docs/evidence/S0-003/scoped-history-v17.png | Browser history viewport evidence |
+| Docs/evidence/S0-003/scoped-invalid-v17.png | Browser invalid viewport evidence |
+| Docs/RESULT-TASK-S0-003.md | Canonical v17report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts --sites`; exact fragments/steps in `Docs/HOST-INVENTORY-UI.md` v16. Focused `node --test frontend/test/combined-host-navigation.test.mjs`. Synthetic loopback only.
+Repo root:`npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts --host-detail`;exact fragment in Docs/HOST-INVENTORY-UI.md v17. Focused `node --test frontend/test/host-scoped-navigation.test.mjs`.
 
 ## 6. Tests and actual results
 
-61/61tests,0failures final suite;lint88modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM/history and real browser reload/Back/Forward/error evidence proves new rows above. Existing collector/inventory/return regressions green;0Cloudflare requests. No failed new Host test.
+63/63tests,0failures finalsuite;lint90modules;22entities+2junctions/114FK unchanged;buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY,freshDOM reload/history and real browser evidence prove criteria above. Existing collector/inventory/return regressions green;0Cloudflare requests.
 
 ## 7. Issues and implementation decisions
 
-Site ID text filter uses accepted UUID semantics with hostname and page, preserving existing Site picker separately. Unique valid site/search/page/page_size checks prevent silently defaulting malformed combined state. Well-formed missing Site UUID returns valid empty API result; no invented existence validation or new endpoint. No failed Host-task tests.
+No failed Host test. Full-page browser capture failed once;viewport evidence succeeded. Invalid either child clears all detail/provenance/children, never mixed partial result. Optional fixture only;nativeAC1/3/4 remain unverified;600010ms accepted evidence retained/not rerun.
 
 ## 8. Not done, limitations and technical debt
 
-NativeAC1/3/4 remain unverified;600010ms accepted evidence retained/not rerun. Site UUID input, not new Site-name selector; UUID discoverable via existing picker/GET. Missing well-formed UUID can produce empty results. No production/RBAC/CVE/scale claim. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+No production/token/RBAC/native/scale/CVE/liveCloudflare claim. Separate snapshots may change under updates;bounded GET/8second abort retained. No schema/entity/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for synthetic v16; no new PO/security/credential/spec decision. Q01–05 untouched.
+No hard blocker for syntheticv17;no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review/nextvalidLeadassignment. No self-accept/merge.
+Push existing QA PR;attach canonical RESULT/guide/proof/logs/screenshots once;await concrete review/nextvalidLeadassignment. No self-accept/merge.
 
-- [x] Exact10sections; original/historical/newAC mapped separately.
-- [x] Exact source/time/Summary; all files and commands.
-- [x] Actual logs/browser evidence/errors/decisions/limits.
-- [x] Local/read-only/no-secret/native boundaries.
-- [x] Canonical increment; prior reports/history in Git/ClickUp.
+- [x] Exact10sections;original/historical/newAC separately mapped.
+- [x] Exactsource/time/Summary,allfiles/commands.
+- [x] Actualoutputs/browser evidence/errors/decisions/limits.
+- [x] Read-only/local/no-secret/native boundaries retained.
+- [x] Canonical increment;priorreports/history retained.
 
-History: v15ACCEPT11:06;v16assigned same comment, completed this cycle.
+History:v16ACCEPT11:39;v17assigned samecomment,completed thiscycle.

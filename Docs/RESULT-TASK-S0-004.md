@@ -1,20 +1,21 @@
-# Result — TASK-S0-004: Flagged-record route persistence
+# Result — TASK-S0-004: v17 inventory navigation
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v16 |
+| Result version | v17 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; Lead11:06 ACCEPTv15 and assignv16 |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead11:39 ACCEPTv16 and assignv17 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T11:20:57.258480+07:00 |
-| Source/evidence commit | 6c2e0a17a1a78737540bceb3c931d9a38271b168 |
+| Submitted at | 2026-10-25T11:50:52.687063+07:00 |
+| Source/evidence commit | ec6da2d4e3c3eeeba885fa85cb22c2e87e05f460 |
 
 ## 1. Summary
 
-DONE in approved synthetic v16 scope. Flagged record search/page direct links, reload/Back/Forward restore; invalid state clears all rows; owner/DNS fields and origin returns retained. Full61/61tests,lint88/schema22+2/114FK unchanged,buildPASS.
+DONE synthetic v17. Combined Domain search/flag/page direct/reload/history and detail return complete;12matches/page2/sample44+48,search12=1;invalid states clear rows. Full63/63tests,lint90/schema22+2/114FK,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -101,56 +102,61 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V16-3 | Invalid/no partial | PASS: actual HTTP/PostgreSQL/browser evidence: 6malformed/duplicate/control/out-of-range states0rows. |
 | V16-4 | Checks/boundaries | PASS: actual HTTP/PostgreSQL/browser evidence: 61tests,88modules,22+2/114FK unchanged,build;exact source. |
 
+
+| V17-1 | Direct/reload | PASS: DONE synthetic v17. Combined Domain search/flag/page direct/reload/history and detail return complete;12matches/page2/sample44+48,search12=1;invalid states clear rows. |
+| V17-2 | History/returns | PASS: Actual history fixture and browser Back/Forward; parent context retained |
+| V17-3 | Invalid/no partial | PASS: 5Domaincombinedinvalid cases,0cells |
+| V17-4 | Fullchecks/boundaries | PASS: 63tests,90modules,22+2/114FK unchanged,build;exact source above |
+
 ## 3. Work completed
 
-DONE in approved synthetic v16 scope. Flagged record search/page direct links, reload/Back/Forward restore; invalid state clears all rows; owner/DNS fields and origin returns retained. Accepted read-only endpoints reused; no backend/schema changes.
+DONE synthetic v17. Combined Domain search/flag/page direct/reload/history and detail return complete;12matches/page2/sample44+48,search12=1;invalid states clear rows. Accepted read-only GET reused;no backend/schema changes.
 
 ## 4. Files changed
 
-| File | Specific change |
+| File | Change |
 |---|---|
-| frontend/src/domain-navigation.mjs | Flagged-record route parse/validation/history/origin return |
-| frontend/src/dns-value-search.mjs | History callback open and nonrecursive restore/error handling |
-| frontend/test/flagged-record-navigation.test.mjs | Actual READ ONLY direct/reload/history/6invalid cases |
-| frontend/test/flagged-records.test.mjs | Await asynchronous route return while retaining existing exact-tag/search/503/bothreturns regression |
-| Docs/DOMAIN-INVENTORY-UI.md | v16 contract/reproduction/limits |
-| Docs/evidence/S0-004/records-v16.json | Measured proof and limits |
-| Docs/evidence/S0-004/test-v16.txt | Full61test output |
-| Docs/evidence/S0-004/lint-v16.txt | 88module/schema parity |
-| Docs/evidence/S0-004/build-v16.txt | Successful build |
-| Docs/evidence/S0-004/records-reload-v16.png | Real browser reload evidence |
-| Docs/evidence/S0-004/records-history-v16.png | Real browser history evidence |
-| Docs/evidence/S0-004/records-invalid-v16.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-004.md | Canonical v16 tensection report |
+| frontend/src/domain-navigation.mjs | Strict combined state/history and selected flag restoration |
+| frontend/src/inventory-table.mjs | Domain list state callbacks and generic combined-error label/bounds |
+| frontend/test/combined-domain-navigation.test.mjs | Actual READ ONLY reload/history/detailreturn/5invalidcases |
+| Docs/DOMAIN-INVENTORY-UI.md | v17 contract/reproduction/limits |
+| Docs/evidence/S0-004/combined-v17.json | Actual proof/errors/limits |
+| Docs/evidence/S0-004/test-v17.txt | Final63test output |
+| Docs/evidence/S0-004/lint-v17.txt | 90module/schema parity |
+| Docs/evidence/S0-004/build-v17.txt | BuildPASS |
+| Docs/evidence/S0-004/combined-reload-v17.png | Browser reload viewport evidence |
+| Docs/evidence/S0-004/combined-history-v17.png | Browser history viewport evidence |
+| Docs/evidence/S0-004/combined-invalid-v17.png | Browser invalid viewport evidence |
+| Docs/RESULT-TASK-S0-004.md | Canonical v17report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --flagged`; exact fragments/steps in `Docs/DOMAIN-INVENTORY-UI.md` v16. Focused `node --test frontend/test/flagged-record-navigation.test.mjs frontend/test/flagged-records.test.mjs`. Synthetic loopback only.
+Repo root:`npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --flagged`;exact fragment in Docs/DOMAIN-INVENTORY-UI.md v17. Focused `node --test frontend/test/combined-domain-navigation.test.mjs`.
 
 ## 6. Tests and actual results
 
-61/61tests,0failures final suite;lint88modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM/history and real browser reload/Back/Forward/error evidence proves new rows above. Existing collector/inventory/return regressions green;0Cloudflare requests. Initial asynchronous return assertion corrected as described below; full suite rerun.
+63/63tests,0failures finalsuite;lint90modules;22entities+2junctions/114FK unchanged;buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY,freshDOM reload/history and real browser evidence prove criteria above. Existing collector/inventory/return regressions green;0Cloudflare requests.
 
 ## 7. Issues and implementation decisions
 
-Initial existing regression checked detail title synchronously after routed return and observed loading title. Updated to await recordView.settled; actual returned detail remains correct; focused/full checks reran. record_search/page distinct from origin search/page and owner/value/detailDNS routes. Restore avoids open->navigate recursion.
+Initial integration found selected flag lost during select-option initialization. Explicitly selecting desired option last fixes search preserving flag;focused/full rerun. Existing Domain tags unchanged;flag predicate accepted, no algorithm changes.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/liveCloudflare/native/scale/RBAC claim. Separate snapshots may change under updates; existing bounded GET/8second abort remains. No schema/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+No production/token/RBAC/native/scale/CVE/liveCloudflare claim. Separate snapshots may change under updates;bounded GET/8second abort retained. No schema/entity/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for synthetic v16; no new PO/security/credential/spec decision. Q01–05 untouched.
+No hard blocker for syntheticv17;no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review/nextvalidLeadassignment. No self-accept/merge.
+Push existing QA PR;attach canonical RESULT/guide/proof/logs/screenshots once;await concrete review/nextvalidLeadassignment. No self-accept/merge.
 
-- [x] Exact10sections; original/historical/newAC mapped separately.
-- [x] Exact source/time/Summary; all files and commands.
-- [x] Actual logs/browser evidence/errors/decisions/limits.
-- [x] Local/read-only/no-secret/native boundaries.
-- [x] Canonical increment; prior reports/history in Git/ClickUp.
+- [x] Exact10sections;original/historical/newAC separately mapped.
+- [x] Exactsource/time/Summary,allfiles/commands.
+- [x] Actualoutputs/browser evidence/errors/decisions/limits.
+- [x] Read-only/local/no-secret/native boundaries retained.
+- [x] Canonical increment;priorreports/history retained.
 
-History: v15ACCEPT11:06;v16assigned same comment, completed this cycle.
+History:v16ACCEPT11:39;v17assigned samecomment,completed thiscycle.
