@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-25T13:55:01.209374+07:00",
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "engine": "PostgreSQL17.5WASM",
+  "actualBuiltInBrowser": true,
+  "tests": 69,
+  "lintModules": 93,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "proof": {
+    "fields": [
+      "owner",
+      "value",
+      "type"
+    ],
+    "directions": [
+      "asc",
+      "desc"
+    ],
+    "records": 12,
+    "search": "198.51.100.25",
+    "storedFlag": true,
+    "descPage": 2,
+    "descRows": [
+      "sample08",
+      "sample04"
+    ],
+    "reloadHistory": true,
+    "returnDomainDetailAndListRetainState": true,
+    "invalidCases": 4,
+    "zeroPartial": true
+  },
+  "screenshots": [
+    "flagged-sort-reload-v20.png",
+    "flagged-sort-history-v20.png",
+    "flagged-sort-invalid-v20.png"
+  ],
+  "decisions": [
+    "Whitelist identifiers,NULLS LAST,stable id ascending ties",
+    "Active route and saved parent bookmark separated;no server/user policy state",
+    "Stored version order lexical,notsemver"
+  ],
+  "limits": [
+    "Local synthetic only,no production/RBAC/scale/CVE claim",
+    "No schema/entity/collector/tagalgorithm change"
+  ]
+}

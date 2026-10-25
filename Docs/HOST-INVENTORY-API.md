@@ -87,3 +87,7 @@ GET `/api/v1/inventory/hosts?sort=os_version&direction=desc&search=host-&page=2&
 ## v19 sorting contract
 
 GET packages accepts sort=name|version; listening-ports accepts sort=port|pid; both direction=asc|desc (defaultasc). Whitelist identifiers only;values bound,stable id ascending ties,NULLS LAST. Host scope remains host_id UUID;invalid/duplicatequery400. Stored version ordering lexical. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.
+
+## v20 sorted related views
+
+Exact GET /api/v1/inventory/packages/<UUID>/hosts accepts sort=hostname|version and direction=asc|desc (defaults hostname/asc),existing search/page/page_size. SQL whitelist, NULLS LAST,id ascending ties. Invalid/duplicate400;GETonly;scope exact package name/ecosystem unchanged. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.

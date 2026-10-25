@@ -68,3 +68,7 @@ GET `/api/v1/inventory/dns-records/<UUID>` returns `{data:{id,domain,type,value,
 ## v19 sorting contract
 
 GET domains accepts sort=hostname (maps fqdn),direction=asc|desc;defaults hostname/asc. Stable id ascending tie,NULLS LAST;combined search and outside_known_range predicates unchanged,one-statement count/page. Invalid/duplicate sort/direction400. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.
+
+## v20 sorted related views
+
+GET /api/v1/inventory/dns-records accepts sort=owner|value|type,direction=asc|desc. owner maps domain. Flagged view always outside_known_range=true;sort does not change stored flag algorithm. Invalid/duplicate400;existing bounded value_search/page filtering. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.

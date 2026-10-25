@@ -5,16 +5,17 @@ export function createExactInventoryReader({db}){
   if(resource==='packages'){
    if(!uuid.test(id))throw new InventoryError('INVALID_ID');
    if(relation!=='hosts')throw new InventoryError('NOT_FOUND',404);
-   for(const key of params.keys())if(!['page','page_size','search'].includes(key))throw new InventoryError('INVALID_QUERY');
-   const {page,pageSize}=inventoryQuery('packages',params),search=(params.get('search')??'').trim();
+   for(const key of params.keys())if(!['page','page_size','search','sort','direction'].includes(key))throw new InventoryError('INVALID_QUERY');
+   const sort=params.get('sort')??'hostname',direction=params.get('direction')??'asc';if(!['hostname','version'].includes(sort)||!['asc','desc'].includes(direction)||['sort','direction'].some(k=>params.getAll(k).length>1))throw new InventoryError('INVALID_QUERY');const order=sort+' '+direction+' NULLS LAST,id asc',bounds=new URLSearchParams(params);bounds.delete('sort');bounds.delete('direction');
+   const {page,pageSize}=inventoryQuery('packages',bounds),search=(params.get('search')??'').trim();
    const {rows}=await db.query(`WITH owner AS (SELECT name,ecosystem FROM asset_inventory.package WHERE id=$1::uuid AND source_kind='host'),
     filtered AS (SELECT p.id,p.name,p.version,p.ecosystem,h.id AS host_id,h.hostname
      FROM asset_inventory.package p JOIN owner o ON p.name=o.name AND p.ecosystem IS NOT DISTINCT FROM o.ecosystem
      JOIN asset_inventory.host h ON h.id=p.source_host_or_image WHERE p.source_kind='host'
       AND ($2::text='' OR strpos(lower(p.name),lower($2::text))>0 OR strpos(lower(p.version),lower($2::text))>0)),
-    page_rows AS (SELECT * FROM filtered ORDER BY hostname,version,id LIMIT $3 OFFSET $4)
+    page_rows AS (SELECT * FROM filtered ORDER BY ${order} LIMIT $3 OFFSET $4)
     SELECT EXISTS(SELECT 1 FROM owner) AS owner_exists,(SELECT row_to_json(owner) FROM owner) AS package,
-      (SELECT count(*)::int FROM filtered) AS total,COALESCE((SELECT json_agg(page_rows ORDER BY hostname,version,id) FROM page_rows),'[]'::json) AS data`,[id,search,pageSize,(page-1)*pageSize]);
+      (SELECT count(*)::int FROM filtered) AS total,COALESCE((SELECT json_agg(page_rows ORDER BY ${order}) FROM page_rows),'[]'::json) AS data`,[id,search,pageSize,(page-1)*pageSize]);
    if(!rows[0].owner_exists)throw new InventoryError('PACKAGE_NOT_FOUND',404);
    return{package:rows[0].package,data:rows[0].data,meta:{page,page_size:pageSize,total:rows[0].total,total_pages:Math.ceil(rows[0].total/pageSize)}};
   }

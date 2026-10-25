@@ -110,3 +110,7 @@ Browser follow-up 2026-10-25T13:05:33.092425+07:00: after app restart, actual bu
 ## v19 sorting contract
 
 Sort Domains hostname/direction controls combine sort/direction with search,outside_known_range,page,page_size;sort change resets page1. Example --flagged: /inventory/domains#list=1&sort=hostname&direction=desc&search=sample-&outside_known_range=true&page=2&page_size=10 ->sample08/sample04 of12flagged. Reload/native history/detail return preserve context;invalid sort clears all rows. Test frontend/test/combined-domain-navigation.test.mjs. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.
+
+## v20 sorted related views
+
+Flagged records sort owner/value/type with independent direction;fragment flagged_records=1,record_flag=true,record_search,record_sort,record_direction,record_page. Example --flagged: /inventory/domains#flagged_records=1&record_flag=true&record_search=198.51.100.25&record_sort=owner&record_direction=desc&record_page=2 ->sample08/sample04 of12flagged. Sort resets page1;records_saved bookmark preserves search/flag/sort/page through parent list/detail and reopening. Invalidsort/flag clears rows. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
