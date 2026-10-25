@@ -204,7 +204,7 @@ Full89/89passed,0failed;lint96modules;schema22entities+2junctions/114nativeFK un
 
 ## 7. Issues and implementation decisions
 
-Observed prior implementation invented #list=1 for empty routes; changed it to remove only the current view key. This makes explicit default authoritative while preserving the other view; if session storage is denied, explicit URL remains usable under existing fallback. Exactly3new tests stay in view-bookmarks.test.mjs, so lint remains96 rather than97. Reused existing full v28 fragments and fixtures without relaxing any acceptance criterion. No targeted/full test failures. Invalid states are produced only with synthetic URLs; no storage secrets/rows or infrastructure data inspected.
+Observed prior implementation invented #list=1 for empty routes; changed it to remove only the current view key. This makes explicit default authoritative while preserving the other view; if session storage is denied, explicit URL remains usable under existing fallback. Exactly3new tests stay in view-bookmarks.test.mjs, so lint remains96 rather than97. Reused existing full v28 fragments and fixtures without relaxing any acceptance criterion. No targeted/full test failures. ClickUp initially omitted the actual17:25 START from the rendered comment window; I misread that as a failed send and posted a redundant17:30 START correction. The original START later became visible, so the correction claim that it had not published was mistaken. Initial START did publish before implementation; no duplicate SUBMISSION is made. Invalid states are produced only with synthetic URLs; no storage secrets/rows or infrastructure data inspected.
 
 ## 8. Not done, limitations and technical debt
 
