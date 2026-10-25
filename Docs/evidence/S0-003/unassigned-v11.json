@@ -1,0 +1,28 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "nullSiteHosts": 24,
+  "assignedExcluded": 2,
+  "pages": 3,
+  "searchHost11": 1,
+  "browser": [
+    "24unassigned/page2/OS12.3",
+    "hostname11single result",
+    "Host11 detail and full list host-/page2/size10 return"
+  ],
+  "checks": {
+    "tests": 51,
+    "pass": 51,
+    "lintModules": 77,
+    "schema": "22+2/114FK",
+    "build": "PASS"
+  },
+  "failures": [],
+  "noSiteMutation": true,
+  "limits": [
+    "Original nativeAC1/3/4 unverified",
+    "Temporary panel reload returns origin",
+    "No production/CVE/Cloudflare/scale claim"
+  ]
+}

@@ -58,3 +58,8 @@ From Host inventory or detail choose Search port or process. Enter an exact port
 ## v10 Hosts by Site
 
 Filter hosts by Site from full list/detail. Paged Site buttons avoid silently truncating choices; select Site, search hostname, use Host page controls and read OS/version and total. Site page controls are independent of Host result pages. Return restores original full list/detail and search/page. Site choices come from existing Site inventory; no Site creation/editing. Unknown Site membership filter returns0rows; errors clear Hosts. Search panel is temporary; reload restores origin. Null Site Hosts remain available in full list but no assigned-Site filter. `node scripts/inventory-ui-lab.mjs --sites` gives Sample Site16Hosts and Secondary Test Site10Hosts; integration adds11emptySites to verify picker pages. Local synthetic only; no Cloudflare/CVE/native claim.
+
+
+## v11 Unassigned Hosts
+
+View unassigned hosts from Host list/detail reuses Site panel in null-membership mode: hides Site picker, shows exact null-Site Hosts with OS/version, hostname search/count and10-row paging. Assigned Hosts excluded. Return restores original full list/detail and context. Empty/error clears rows. No Site mutation. Temporary panel reload returns original route. `node scripts/inventory-ui-lab.mjs --hosts` has24null-Site Hosts/3pages and2assigned seed Hosts; hostname host-11 yields1. No nativeLinux/CVE/production claim.

@@ -74,3 +74,8 @@ Existing `GET /api/v1/inventory/listening-ports?port=8011&process_search=synthet
 ## v10 Site Host filter
 
 `GET /api/v1/inventory/sites?page=1&page_size=10` lists existing Site id/name/address_summary, optional literal name search, standard count/page. `GET /api/v1/inventory/hosts?site_id=<UUID>&search=host-&page=1&page_size=10` filters exact accepted Host.site_id FK and existing literal hostname search with AND, adds site_id to returned Host fields. Invalid/duplicate UUID400; valid nonexistent Site yields empty Host filter (not a lookup404). Other resources reject site_id. Existing loopback opt-in GET/read-only pool and bounded query validation retained. No schema/entity/collector change.
+
+
+## v11 Unassigned Hosts
+
+`GET /api/v1/inventory/hosts?site_assigned=false&search=host-&page=1&page_size=10` applies exact site_id IS NULL with existing literal hostname search. true means IS NOT NULL. Only explicit true/false, unique key; combining with site_id rejects400 to avoid contradictory scope. No Site rows are created/updated/deleted. Existing response site_id field and read-only loopback gates retained.
