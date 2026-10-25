@@ -128,3 +128,8 @@ Run `node scripts/inventory-ui-lab.mjs --hosts` and append `#list=1&port_search=
 ## v24 Site picker sorting
 
 Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host /inventory/hosts URL on its printed origin. Picker uses picker_search (literal name substring), picker_sort=name, picker_direction=asc|desc and picker_page, separately from Site host search/sort/page. Invalid picker sorting clears picker options only. Parent list/detail return saves and reopens picker context and selected Site. No schema/entity/production changes.
+
+
+## v25 Combined picker/host state
+
+Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Picker changes retain selectedSite and host search/sort/page; host changes retain picker search/sort/page. Each changed list resets only its own page. Both parent return paths retain the full bookmark. Invalid picker sort clears picker only; invalid host sort clears host rows only. Direct/reload/native history retain the complete fragment. No schema/entity/production changes.
