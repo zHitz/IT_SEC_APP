@@ -1,0 +1,18 @@
+{
+  "scope": "synthetic local v14",
+  "actualHttpPostgreSQL": "17.5WASM BEGIN READ ONLY",
+  "realBrowser": "direct/reload/Back/Forward/error",
+  "tests": "57/57",
+  "lintModules": 84,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "package": "shared-runtime/deb",
+  "versionSearch": "2.0",
+  "matchingRecords": 12,
+  "page": 2,
+  "rows": 2,
+  "invalidCases": 6,
+  "correctedTest": "unfiltered3validpages;invalidfixturecorrectedpage3to4",
+  "nativeAC134": "unverified"
+}

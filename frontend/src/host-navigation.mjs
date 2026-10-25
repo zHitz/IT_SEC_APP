@@ -12,7 +12,8 @@ export function parseHostRoute(location){
  const unassignedInvalid=unassigned&&(params.getAll('unassigned').length!==1||params.get('unassigned')!=='1'||params.getAll('unassigned_search').length>1||params.getAll('unassigned_page').length>1||!unassignedPage||unassignedSearch.length>200||/[\u0000-\u001f\u007f]/.test(unassignedSearch));
  const sitePicker=['site_picker','selected_site','picker_page','site_search','site_host_page'].some(k=>params.has(k)),selectedSite=params.get('selected_site')??'',pickerPage=params.has('picker_page')?integer('picker_page',0,100000):1,siteHostPage=params.has('site_host_page')?integer('site_host_page',0,100000):1,siteSearch=params.get('site_search')??'';
  const siteInvalid=sitePicker&&(unassigned||params.get('site_picker')!=='1'||['site_picker','selected_site','picker_page','site_search','site_host_page'].some(k=>params.getAll(k).length>1)||!pickerPage||!siteHostPage||siteSearch.length>200||/[\u0000-\u001f\u007f]/.test(siteSearch)||(selectedSite&&!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(selectedSite)));
- return{sitePicker,selectedSite,pickerPage,siteHostPage,siteSearch,siteInvalid,unassigned,unassignedSearch,unassignedPage,unassignedInvalid,id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
+ const packageId=params.get('package')??null,packageSearch=params.get('package_search')??'',packagePage=params.has('package_page')?integer('package_page',0,100000):1,packageRoute=['package','package_search','package_page'].some(k=>params.has(k)),packageInvalid=packageRoute&&(!packageId||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(packageId)||['package','package_search','package_page'].some(k=>params.getAll(k).length>1)||!packagePage||packageSearch.length>200||/[\u0000-\u001f\u007f]/.test(packageSearch)||unassigned||sitePicker);
+ return{packageId,packageSearch,packagePage,packageRoute,packageInvalid,sitePicker,selectedSite,pickerPage,siteHostPage,siteSearch,siteInvalid,unassigned,unassignedSearch,unassignedPage,unassignedInvalid,id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
 }
 export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
@@ -30,7 +31,7 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  async function sync(){
   const key=nav.location?.hash??'';if(lastRoute===key)return;siteView?.hide();portView?.hide();packageView?.hide();lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,hostname:'Host details',os:null,os_version:null,first_seen_at:null,last_seen_at:null},{recordHistory:false});
-  await pending;if(next.sitePicker){await siteView.restoreSite(next.selectedSite,next.pickerPage,next.siteSearch,next.siteHostPage,next.siteInvalid);return;}if(next.unassigned)await siteView.restoreUnassigned(next.unassignedSearch,next.unassignedPage,next.unassignedInvalid);
+  await pending;if(next.packageRoute){await packageView.restore({id:next.packageId??''},next.id?{id:next.id}:null,next.packageSearch,next.packagePage,next.packageInvalid);return;}if(next.sitePicker){await siteView.restoreSite(next.selectedSite,next.pickerPage,next.siteSearch,next.siteHostPage,next.siteInvalid);return;}if(next.unassigned)await siteView.restoreUnassigned(next.unassignedSearch,next.unassignedPage,next.unassignedInvalid);
  }
  function navigate(id){
   const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
@@ -42,7 +43,8 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
   const ctx=parseHostRoute(nav.location).context;nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));lastRoute=null;routePending=sync();
  }
  core=mountInventoryDetail(document,{mode:'host',fetcher,initialState:route.context,manageHistory:false,resolveHost:true,onSelection:row=>navigate(row.id),onBack:back,onPackage:(row,host)=>packageView.open(row,host)});
- packageView=mountPackageHosts(document,{fetcher,onHost:host=>{packageView.hide();return core.open(host,{recordHistory:false});},onList:()=>{packageView.hide();back();}});
+ function packageBack(toList=false){const parsed=parseHostRoute(nav.location);nav.history?.pushState(null,'',nav.location.pathname+fragment(toList?null:parsed.id,context()));lastRoute=null;return routePending=sync();}
+ packageView=mountPackageHosts(document,{fetcher,onHost:()=>packageBack(),onList:()=>packageBack(true),onNavigate:(row,host,search,page)=>{const p=new URLSearchParams(fragment(host?.id??null,context()).slice(1));p.set('package',row.id);p.set('package_search',search);p.set('package_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+p);lastRoute=null;return routePending=sync();}});
  get('domain-search').value=route.context.search;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
  const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
  portView=mountPortSearch(document,{fetcher});

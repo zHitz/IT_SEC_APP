@@ -1,0 +1,17 @@
+{
+  "scope": "synthetic local v14",
+  "actualHttpPostgreSQL": "17.5WASM BEGIN READ ONLY",
+  "realBrowser": "direct/reload/Back/Forward/error",
+  "tests": "57/57",
+  "lintModules": 84,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "domain": "sample-04.test",
+  "DNSRecords": 31,
+  "page": 2,
+  "rows": 6,
+  "invalidCases": 4,
+  "provenance": true,
+  "fixture": "optional30syntheticDNS"
+}
