@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: v19 Host scoped-list sorting
+# Result — TASK-S0-003: v20 Package-to-host sorting
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v19 |
+| Result version | v20 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; live Lead13:11 ACCEPTv18 and assignv19 |
+| Spec version followed | SRSv1.0; TASK-S0-003; live Lead13:41 ACCEPTv19 and assignv20 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T13:31:12.477501+07:00 |
-| Source/evidence commit | 8f5f0c9b4f97ad43a10c7d9cac8d5647cc012031 |
+| Prepared at | 2026-10-25T13:56:11.156722+07:00 |
+| Source/evidence commit | 425417ea3790880c3a96b8ae413430de10bfd02c |
 
 ## 1. Summary
 
-PARTIAL in declared scope. Package name/version and port/PID asc/desc,stable id ties/NULLS LAST;31packages/31ports;direct bothpage2 yields6rows each;native reload/history;return retains scoped sorts;4invalid sort cases clear only affected list and preserve HostOS/healthy list. Full67/67tests,lint93modules,schema22+2/114FK unchanged,buildPASS. Actual loopback READ ONLY PostgreSQL17.5WASM/DOM tests and native built-in browser screenshots. Original native Linux/osquery AC1/3/4 remain unverified;accepted600010msoutage retained,notrerun.
+PARTIAL in declared scope. Package hostname/version asc/desc,stable id ties/NULLS LAST;24hosts,search2.0 gives12,page2desc host03+host01;package/search/sort/page direct/reload/nativehistory;both parentdetail/list return retainstate;3invalidsort routes clearonlyview. Full69/69tests,0fail;lint93modules,schema22+2/114FK unchanged,buildPASS. Actual loopback READ ONLY PostgreSQL17.5WASM/DOM plus built-in browser verification/screenshots. Original nativeAC1/3/4unverified;accepted600010msoutageretained,notrerun.
 
 ## 2. Acceptance criteria
 
@@ -120,70 +120,76 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V19-2 | Full validation and unchanged boundaries | PASS:67tests/0fail,lint93,schema22+2/114FK,build. Actual proof/logs/screenshots in evidence folder. |
 | V19-3 | Browser evidence | PASS:3actual screenshots reload/history/invalid;scope and errors above verified in native built-in browser. |
 
+
+| V20-1 | Assigned sort/combined routes/returns | PASS: Package hostname/version asc/desc,stable id ties/NULLS LAST;24hosts,search2.0 gives12,page2desc host03+host01;package/search/sort/page direct/reload/nativehistory;both parentdetail/list return retainstate;3invalidsort routes clearonlyview. |
+| V20-2 | Tests and boundaries | PASS:69tests/0fail,lint93,schema22+2/114FK unchanged,build;actualproof in verification-v20.json. |
+| V20-3 | Actual browser screenshots | PASS:3screens reload/history/invalid;nativeBack/Forward and bothparentreturnsverified. |
+
 ## 3. Work completed
 
-Package name/version and port/PID asc/desc,stable id ties/NULLS LAST;31packages/31ports;direct bothpage2 yields6rows each;native reload/history;return retains scoped sorts;4invalid sort cases clear only affected list and preserve HostOS/healthy list. No schema or collector changes. Existing Atlas frame/tokens reused; local opt-in GET only.
+Package hostname/version asc/desc,stable id ties/NULLS LAST;24hosts,search2.0 gives12,page2desc host03+host01;package/search/sort/page direct/reload/nativehistory;both parentdetail/list return retainstate;3invalidsort routes clearonlyview. Existing accepted schema and Atlas frame reused;bounded opt-in GET only.
 
 ## 4. Files changed
 
-Shared work package source/evidence files:
+Shared package files listed explicitly:
 
 | File | Specific change |
 |---|---|
-| Docs/DOMAIN-INVENTORY-API.md | v19 API/UI contract, exact route and reproduction/limits |
-| Docs/DOMAIN-INVENTORY-UI.md | v19 API/UI contract, exact route and reproduction/limits |
-| Docs/HOST-INVENTORY-API.md | v19 API/UI contract, exact route and reproduction/limits |
-| Docs/HOST-INVENTORY-UI.md | v19 API/UI contract, exact route and reproduction/limits |
-| Docs/evidence/S0-003/build-v19.txt | Actual ESM build output |
-| Docs/evidence/S0-003/host-scoped-sort-history-v19.png | Actual built-in browser history viewport evidence |
-| Docs/evidence/S0-003/host-scoped-sort-invalid-v19.png | Actual built-in browser invalid/error viewport evidence |
-| Docs/evidence/S0-003/host-scoped-sort-reload-v19.png | Actual built-in browser reload viewport evidence |
-| Docs/evidence/S0-003/lint-v19.txt | 93module/schema parity output |
-| Docs/evidence/S0-003/test-v19.txt | Actual final full67test output |
-| Docs/evidence/S0-003/verification-v19.json | Actual proof,errors,limits and test/browser scope |
-| Docs/evidence/S0-004/build-v19.txt | Actual ESM build output |
-| Docs/evidence/S0-004/domain-sort-history-v19.png | Actual built-in browser history viewport evidence |
-| Docs/evidence/S0-004/domain-sort-invalid-v19.png | Actual built-in browser invalid/error viewport evidence |
-| Docs/evidence/S0-004/domain-sort-reload-v19.png | Actual built-in browser reload viewport evidence |
-| Docs/evidence/S0-004/lint-v19.txt | 93module/schema parity output |
-| Docs/evidence/S0-004/test-v19.txt | Actual final full67test output |
-| Docs/evidence/S0-004/verification-v19.json | Actual proof,errors,limits and test/browser scope |
-| backend/src/inventory/reader.mjs | Resource-specific strict sort/direction whitelists; hostname to fqdn mapping;NULLS LAST/id ties;safe bound filters |
-| frontend/src/domain-navigation.mjs | Strict combined Domain sort/search/flag/page route restoration and detail return |
-| frontend/src/host-navigation.mjs | Independent package/port sort route fields, callbacks and round-trip context |
-| frontend/src/inventory-detail.mjs | Scoped sort controls/queries and isolated invalid-sort list error with parent/healthy list retained |
-| frontend/src/inventory-table.mjs | Domain sort controls and server query state shared with existing Host controls |
-| frontend/test/combined-domain-navigation.test.mjs | Added READ ONLY v19 ordering/combined route/reload/history/detail/invalid assertions |
-| frontend/test/host-scoped-navigation.test.mjs | Added READ ONLY four-field/two-direction ordering, ties, independent errors and return regression |
-| Docs/RESULT-TASK-S0-003.md | Canonical v19report;original/historicalAC retained,current separate mapping |
+| Docs/DOMAIN-INVENTORY-API.md | API/UI v20contract,exactroutes,reproduction/limits |
+| Docs/DOMAIN-INVENTORY-UI.md | API/UI v20contract,exactroutes,reproduction/limits |
+| Docs/HOST-INVENTORY-API.md | API/UI v20contract,exactroutes,reproduction/limits |
+| Docs/HOST-INVENTORY-UI.md | API/UI v20contract,exactroutes,reproduction/limits |
+| Docs/evidence/S0-003/build-v20.txt | Actual ESM build output |
+| Docs/evidence/S0-003/lint-v20.txt | Actual93module/schema parity output |
+| Docs/evidence/S0-003/package-sort-history-v20.png | Actual built-in browser history viewport screenshot |
+| Docs/evidence/S0-003/package-sort-invalid-v20.png | Actual built-in browser invalid viewport screenshot |
+| Docs/evidence/S0-003/package-sort-reload-v20.png | Actual built-in browser reload viewport screenshot |
+| Docs/evidence/S0-003/test-v20.txt | Actual69test finaloutput |
+| Docs/evidence/S0-003/verification-v20.json | Actualverification scope/counts/decisions/limits |
+| Docs/evidence/S0-004/build-v20.txt | Actual ESM build output |
+| Docs/evidence/S0-004/flagged-sort-history-v20.png | Actual built-in browser history viewport screenshot |
+| Docs/evidence/S0-004/flagged-sort-invalid-v20.png | Actual built-in browser invalid viewport screenshot |
+| Docs/evidence/S0-004/flagged-sort-reload-v20.png | Actual built-in browser reload viewport screenshot |
+| Docs/evidence/S0-004/lint-v20.txt | Actual93module/schema parity output |
+| Docs/evidence/S0-004/test-v20.txt | Actual69test finaloutput |
+| Docs/evidence/S0-004/verification-v20.json | Actualverification scope/counts/decisions/limits |
+| backend/src/inventory/exact-reader.mjs | Exact package-hosts hostname/version sort validation and ordered count/page query |
+| backend/src/inventory/reader.mjs | Strict DNS owner/value/type sort whitelist and stable NULLS LAST/id ordering |
+| frontend/src/dns-value-search.mjs | Flagged record sort controls,GET state,restoration and record-level flag retention |
+| frontend/src/domain-navigation.mjs | Flagged record sort/flag/search/page routes and saved parent-return bookmarks |
+| frontend/src/host-navigation.mjs | Package active/saved route state through search/sort/page and host detail/list return |
+| frontend/src/package-hosts.mjs | Accessible sort/direction controls,queries and strict invalid view clearing |
+| frontend/test/flagged-record-navigation.test.mjs | READ ONLY three-field/two-direction sort,combined flag/search,history/return/4invalid regressions |
+| frontend/test/package-navigation.test.mjs | READ ONLY two-field/two-direction sort,stableties,reload/history/parent return/3invalid regressions |
+| Docs/RESULT-TASK-S0-003.md | Canonical v20report;historicalACretained,newACseparate |
 
 ## 5. Run and verify
 
-Repo root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/host-scoped-navigation.test.mjs frontend/test/combined-domain-navigation.test.mjs`. Browser labs:`node scripts/inventory-ui-lab.mjs --hosts --host-detail` and `node scripts/inventory-ui-lab.mjs --flagged`;exact route examples in respective UI guide v19section.
+Repo root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/package-navigation.test.mjs frontend/test/flagged-record-navigation.test.mjs`. Browserlabs:`node scripts/inventory-ui-lab.mjs --packages` and `node scripts/inventory-ui-lab.mjs --flagged`;use respective UIguidev20 exactfragments.
 
 ## 6. Tests and actual results
 
-67/67tests,0failed;lint93modules;22entities+2junctions/114FK unchanged;buildPASS. Both actual integration tests hold BEGIN READ ONLY after synthetic fixture setup. Host four sortfields/twodirections with varying stored version values and id ties;Domain bothdirections/combined filters;freshDOM/history and actual browser checks distinct. Three browser screenshots per task plus verification-v19.json/test-v19.txt/lint-v19.txt/build-v19.txt. No nativeLinux/liveCloudflare/production test claim.
+69/69tests,0failed;lint93modules;schema22entities+2junctions/114FK unchanged;buildPASS. Tests use real loopback HTTP/PostgreSQL17.5WASM inside BEGIN READ ONLY after syntheticfixtures,whitelisted sort SQL and existing owner/flag predicates. FreshDOM reload/history checks plus actual built-in browser nativeBack/Forward/parentreturns;3screenshots each. Proof/counts and limits in verification-v20.json;full outputs test/lint/build-v20.txt.
 
 ## 7. Issues and implementation decisions
 
-Actual browser found scoped Host sort lost on detail/list/detail return. Added scoped sort properties to route context;new regression checks packageversion/desc and portPID return;full67tests/lint/build rerunPASS and browser reverified. Invalid child sort is isolated before its GET and renders a clear error with controls;healthy child and parent remain. Historical invalid-page behavior unchanged. SQL identifier whitelist only;sort values never interpolated unrestricted. Versions lexical,notsemver. Module count remains93 by extending existing test modules. Lead-authorized immutable GitHub fallback permitted if attachment retry fails;record actual delivery outcome in task comment/state.
+No failed v20 focused/full tests. Active related-view identity is separated from saved parent bookmark in fragment:package_saved/records_saved prevent parent return reopening child immediately;explicit user reopen restores search/sort/page. Saved package state applies only to samepackageUUID. Controls reset page1 on sortchange,retainingsearch andstoredflag. Prefix package_hosts_sort avoids collision with accepted scoped package_sort. Identifier whitelists only,NULLS LAST,id ascending ties;version/text sorting lexical,notsemver. Flags use exact storedtag;no recalculation. Filechooser failures in priorrounds have explicitLead13:41 immutablecommitfallback;attemptuploadthisround then recordactualoutcome incomment/state.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic loopback only;no productionauth/RBAC/scale/CVE/realcredential/liveCloudflare claim. No schema/entity/tagalgorithm/osquery change. Independent page snapshots may change across inventoryupdates. SQLNULLS LAST explicit;not a claim of real infrastructure behavior. Original nativeAC1/3/4remainunverified;600010msacceptedproofretained.
+Local syntheticinventory only;no productionauth/RBAC/scale/CVE/nativeLinux/liveCloudflare/credential evidence. No schema/entity/collector/tagalgorithmchanges. Snapshots can change under inventoryupdates;versions lexical. NativeAC1/3/4remainunverified;600010msacceptedexperimentnotrerun.
 
 ## 9. Blockers and decisions required
 
-No content blocker for assignedv19;no new PO/security/production/spec decision. Q01–05untouched. Filechooser limit has explicitly authorized fixed-commit fallback;do not falsely claim an attachment upload.
+No new contentblocker or PO/security/spec/production decision. Q01–05untouched. Actualupload retry/fallback outcome must remainhonest;fallbackalreadyexplicitlyauthorized byLead.
 
 ## 10. Next step and self-check
 
-Push existing featurePR;verifycurrentheadCI;retry task upload and post exactlyone v19submission with canonicalreport/evidence or authorized exactcommitfallback. UIverify publication/checkpoint;await specificLead/QAreview. No selfaccept/merge.
+Push existingfeaturePR;verifylivecurrentCI;retryClickUpupload then exactlyonev20submissionperassignedtaskwithreport/evidence or authorizedimmutablecommitfallback;UIverify/checkpoint. AwaitspecificLead/QAreview;no selfaccept/merge.
 
-- [x] Exact10sections;original/historical/v19criteria separately mapped.
-- [x] Exactsource/time,allchangedfiles,commands,actualoutputs and3screenshots.
-- [x] Errors,assumptions,limits and native boundaries honest.
-- [x] No schema/entity/collector/production change;canonical versionincrement.
+- [x] Exact10sections;original/historical/currentACmappedseparately.
+- [x] Exactsource/time,files,commands,actualoutputs and3screenshots.
+- [x] Limits/errors/decisions/read-only/nativeboundariesclear.
+- [x] Canonicalversionincrement;no schema/entity/productionchange.
 
-History:v17accepted12:02;v18submitted13:07Domain/13:08Host thenaccepted13:11;v19assignedsameLeadcomment,STARTpublished andexecutedthiscycle.
+History:v18accepted13:11;v19submitted13:32Domain/13:33Host,accepted13:41;v20assignedsameLeadcomment,STARTpublished,implementedandverifiedthiscycle.
