@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: v17 inventory navigation
+# Result — TASK-S0-004: v18 DNS record details
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v17 |
-| Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; Lead11:39 ACCEPTv16 and assignv17 |
+| Result version | v18 |
+| Status | PARTIAL |
+| Spec version followed | SRSv1.0; TASK-S0-004; live Lead12:02 ACCEPTv17 and assignv18 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T11:50:52.687063+07:00 |
-| Source/evidence commit | ec6da2d4e3c3eeeba885fa85cb22c2e87e05f460 |
+| Prepared at (not submitted) | 2026-10-25T12:26:59.114149+07:00 |
+| Source/evidence commit | 3ced829e35445734dba2e3476a3e1cb0534394f1 |
 
 ## 1. Summary
 
-DONE synthetic v17. Combined Domain search/flag/page direct/reload/history and detail return complete;12matches/page2/sample44+48,search12=1;invalid states clear rows. Full63/63tests,lint90/schema22+2/114FK,buildPASS.
+PARTIAL delivery: v18 DNS record details implemented and local verification passes. Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. Full65/65 tests, lint93modules/schema22+2/114FK and build PASS. Native browser validation/screenshots and ClickUp attachment/submission remain pending: browser tool reports local browser use disabled in Work settings; connector quota retry window not reached. No live Cloudflare calls or tag algorithm changes.
 
 ## 2. Acceptance criteria
 
@@ -108,55 +108,74 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V17-3 | Invalid/no partial | PASS: 5Domaincombinedinvalid cases,0cells |
 | V17-4 | Fullchecks/boundaries | PASS: 63tests,90modules,22+2/114FK unchanged,build;exact source above |
 
+
+| V18-1 | Assigned DNS record details behavior | PASS in actual local HTTP/PostgreSQL and DOM: Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. |
+| V18-2 | Full regression and boundaries | PASS:65tests,93modules,22+2/114FK unchanged,build;source above. |
+| V18-3 | Fresh native browser validation and delivery | PENDING: Work browser disabled; no screenshots/upload/submission claimed. |
+
 ## 3. Work completed
 
-DONE synthetic v17. Combined Domain search/flag/page direct/reload/history and detail return complete;12matches/page2/sample44+48,search12=1;invalid states clear rows. Accepted read-only GET reused;no backend/schema changes.
+Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. Same Atlas shell/style retained. Code and evidence committed; no schema, collector, real infrastructure or credential access.
 
 ## 4. Files changed
 
+Shared work package files are listed explicitly; each task retains its own evidence and canonical RESULT.
+
 | File | Change |
 |---|---|
-| frontend/src/domain-navigation.mjs | Strict combined state/history and selected flag restoration |
-| frontend/src/inventory-table.mjs | Domain list state callbacks and generic combined-error label/bounds |
-| frontend/test/combined-domain-navigation.test.mjs | Actual READ ONLY reload/history/detailreturn/5invalidcases |
-| Docs/DOMAIN-INVENTORY-UI.md | v17 contract/reproduction/limits |
-| Docs/evidence/S0-004/combined-v17.json | Actual proof/errors/limits |
-| Docs/evidence/S0-004/test-v17.txt | Final63test output |
-| Docs/evidence/S0-004/lint-v17.txt | 90module/schema parity |
-| Docs/evidence/S0-004/build-v17.txt | BuildPASS |
-| Docs/evidence/S0-004/combined-reload-v17.png | Browser reload viewport evidence |
-| Docs/evidence/S0-004/combined-history-v17.png | Browser history viewport evidence |
-| Docs/evidence/S0-004/combined-invalid-v17.png | Browser invalid viewport evidence |
-| Docs/RESULT-TASK-S0-004.md | Canonical v17report |
+| frontend/src/inventory-table.mjs | Host sort controls, safe selection and record value selection callbacks |
+| frontend/src/inventory-detail.mjs | DNS child record selection callback |
+| backend/src/app.mjs | Allow exact DNS record GET routing |
+| backend/src/inventory/exact-reader.mjs | UUID-bound DNS record SELECT, strict query/errors and safe provenance projection |
+| backend/src/inventory/reader.mjs | Whitelisted Host sort/direction, NULLS LAST with stable id tie order |
+| frontend/server.mjs | Opt-in loopback GET proxy for exact DNS UUID and new module |
+| frontend/src/dns-value-search.mjs | Record selection from value and flagged-record results |
+| frontend/src/domain-navigation.mjs | Record identity routes/history and origin fragment restoration |
+| frontend/src/host-navigation.mjs | Host sort/search/page fragment restoration and strict invalid state handling |
+| frontend/src/dns-record-detail.mjs | Exact record view, safe text, timeout/stale suppression and zero-field failures |
+| frontend/test/dns-record-detail.test.mjs | Actual READ ONLY HTTP/PostgreSQL and fresh DOM/history/detail/error verification |
+| frontend/test/host-sort-navigation.test.mjs | Actual varied-text ordering across 3 fields/2 directions, stable ties/pages, reload/history/invalid verification |
+| Docs/HOST-INVENTORY-API.md | v18 contract, reproduction commands and observed limits for respective feature |
+| Docs/HOST-INVENTORY-UI.md | v18 contract, reproduction commands and observed limits for respective feature |
+| Docs/DOMAIN-INVENTORY-API.md | v18 contract, reproduction commands and observed limits for respective feature |
+| Docs/DOMAIN-INVENTORY-UI.md | v18 contract, reproduction commands and observed limits for respective feature |
+| Docs/evidence/S0-003/verification-v18.json | Actual feature proof summary and explicit browser/delivery limits |
+| Docs/evidence/S0-003/test-v18.txt | Final65test output, including READ ONLY integration proofs |
+| Docs/evidence/S0-003/lint-v18.txt | 93module and accepted schema parity output |
+| Docs/evidence/S0-003/build-v18.txt | Actual native ESM build output |
+| Docs/evidence/S0-004/verification-v18.json | Actual feature proof summary and explicit browser/delivery limits |
+| Docs/evidence/S0-004/test-v18.txt | Final65test output, including READ ONLY integration proofs |
+| Docs/evidence/S0-004/lint-v18.txt | 93module and accepted schema parity output |
+| Docs/evidence/S0-004/build-v18.txt | Actual native ESM build output |
+| Docs/RESULT-TASK-S0-004.md | Canonical v18 prepared RESULT, original and historical AC evidence retained |
 
 ## 5. Run and verify
 
-Repo root:`npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --flagged`;exact fragment in Docs/DOMAIN-INVENTORY-UI.md v17. Focused `node --test frontend/test/combined-domain-navigation.test.mjs`.
+At repo root: `npm ci`; `node --test frontend/test/dns-record-detail.test.mjs`; `npm test`; `npm run lint`; `npm run build`. Lab and exact fragments in the respective UI guide v18 section. All data synthetic.
 
 ## 6. Tests and actual results
 
-63/63tests,0failures finalsuite;lint90modules;22entities+2junctions/114FK unchanged;buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY,freshDOM reload/history and real browser evidence prove criteria above. Existing collector/inventory/return regressions green;0Cloudflare requests.
+Final65/65tests,0failed;lint93modules;schema22entities+2junctions/114FK unchanged;buildPASS. Saved outputs and verification-v18.json in Docs/evidence/S0-004. Actual loopback HTTP/PostgreSQL17.5WASM tests execute within BEGIN READ ONLY after fixture setup. Reload uses fresh Linkedom document and history uses the navigation fixture; these are not native browser evidence. No v18 browser screenshots.
 
 ## 7. Issues and implementation decisions
 
-Initial integration found selected flag lost during select-option initialization. Explicitly selecting desired option last fixes search preserving flag;focused/full rerun. Existing Domain tags unchanged;flag predicate accepted, no algorithm changes.
+Initial Host test found Linkedom select value assignment and invalid sort selection errors; explicit safe option selection fixes both. Stronger final tests use varied OS/version text and verify ordering/ties and invalid page size. Version ordering follows stored text, not semantic versions. DNS detail normalizes UUID case and removes only record identity on return to preserve origin fragment. Browser creation and existing ClickUp tab access both returned `Local browser use is disabled in Work settings`; no settings changed or API quota retry attempted.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/RBAC/native/scale/CVE/liveCloudflare claim. Separate snapshots may change under updates;bounded GET/8second abort retained. No schema/entity/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+Native browser validation/screenshots and ClickUp submission/attachment retry pending. No production authentication/RBAC/scale/live Cloudflare/native Linux claim. Separate snapshots may change during inventory updates. Stored flags unchanged; no silent schema, osquery or tag algorithm changes. Historical rows retain their accepted evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for syntheticv17;no new PO/security/credential/spec decision. Q01–05 untouched.
+Delivery requires restored Work browser access or connector quota recovery (recorded next retry2026-10-25T07:00:31.401Z). No new technical/spec/security decision or production access requested. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push existing QA PR;attach canonical RESULT/guide/proof/logs/screenshots once;await concrete review/nextvalidLeadassignment. No self-accept/merge.
+Push/update existing PR1; verify liveCI; retain prepared submission without posting duplicates. Once access returns, read live task comments/attachments first, finish browser verification, retry attachment and send one submission per task. QA approval required; Dev does not merge.
 
-- [x] Exact10sections;original/historical/newAC separately mapped.
-- [x] Exactsource/time/Summary,allfiles/commands.
-- [x] Actualoutputs/browser evidence/errors/decisions/limits.
-- [x] Read-only/local/no-secret/native boundaries retained.
-- [x] Canonical increment;priorreports/history retained.
+- [x] Exact10sections;original/historical/v18AC mapped separately.
+- [x] Exactsource/time,files,commands and actual test outputs.
+- [x] Limits and failures explicit;no false browser/upload/native claims.
+- [ ] Native browser verification and ClickUp delivery.
 
-History:v16ACCEPT11:39;v17assigned samecomment,completed thiscycle.
+History:v16 ACCEPT11:39;v17 submitted via verified immutable links and accepted by latest Lead12:02 comment;v18 assigned same comment, START published, implemented/tested, delivery pending.
