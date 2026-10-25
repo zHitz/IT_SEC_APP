@@ -4,7 +4,8 @@ const resources = Object.freeze({
     flagPredicate: "EXISTS (SELECT 1 FROM asset_inventory.dns_record r WHERE r.domain = asset_inventory.domain.fqdn AND 'cloudflare:outside-known-range' = ANY(r.tags))" },
   'dns-records': { table: 'dns_record', columns: `id, domain, type, value, proxied, ttl, ${provenance}`, search: 'domain', order: 'domain, type, id',
     flagPredicate: "'cloudflare:outside-known-range' = ANY(tags)" },
-  hosts: { table: 'host', columns: 'id, hostname, os, os_version, first_seen_at, last_seen_at', search: 'hostname', order: 'hostname, id', hostScope: false },
+  sites: { table:'site', columns:'id, name, address_summary', search:'name', order:'name, id' },
+  hosts: { table: 'host', columns: 'id, site_id, hostname, os, os_version, first_seen_at, last_seen_at', search: 'hostname', order: 'hostname, id', hostScope: false },
   packages: { table: 'package', columns: 'id, name, version, ecosystem, source_host_or_image AS host_id, first_seen_at, last_seen_at', search: 'name', order: 'name, version, id', hostScope: true, predicate: "source_kind = 'host'" },
   'listening-ports': { table: 'listening_port', from: 'listening_port p JOIN asset_inventory.host h ON h.id=p.host_id', columns: 'p.id, p.host_id, h.hostname, p.protocol, p.port, p.bind_address, p.process, p.pid, p.first_seen_at, p.last_seen_at', order: 'port, protocol, id', hostScope: true, predicate: 'p.host_id IS NOT NULL' }
 });
@@ -12,7 +13,7 @@ export class InventoryError extends Error { constructor(code, status = 400) { su
 export function inventoryQuery(resource, params) {
   const spec = resources[resource];
   if (!spec) throw new InventoryError('NOT_FOUND', 404);
-  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'listening-ports' ? ['port','process_search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
+  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'hosts' ? ['site_id'] : []), ...(resource === 'listening-ports' ? ['port','process_search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
   for (const key of params.keys()) if (!allowed.has(key) || params.getAll(key).length !== 1) throw new InventoryError('INVALID_QUERY');
   function integer(key, fallback, max) {
     const raw = params.get(key); if (raw === null) return fallback;
@@ -26,6 +27,8 @@ export function inventoryQuery(resource, params) {
     if (!search.trim() || search.length > 200 || /[\u0000-\u001f\u007f]/.test(search)) throw new InventoryError('INVALID_QUERY');
     values.push(search.trim()); where.push(`strpos(lower(${spec.search}), lower($${values.length}::text)) > 0`);
   }
+  const siteId=params.get('site_id');
+  if(siteId!==null){if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(siteId))throw new InventoryError('INVALID_QUERY');values.push(siteId);where.push(`site_id=$${values.length}::uuid`);}
   const requestedPort=params.get('port'),processSearch=params.get('process_search');
   if(requestedPort!==null){if(!/^[1-9]\d{0,4}$/.test(requestedPort)||Number(requestedPort)>65535)throw new InventoryError('INVALID_QUERY');values.push(Number(requestedPort));where.push(`p.port=$${values.length}::int`);}
   if(processSearch!==null){if(!processSearch.trim()||processSearch.length>200||/[\u0000-\u001f\u007f]/.test(processSearch))throw new InventoryError('INVALID_QUERY');values.push(processSearch.trim());where.push(`strpos(lower(p.process),lower($${values.length}::text))>0`);}

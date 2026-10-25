@@ -69,3 +69,8 @@ The lookup is the technical identity source for direct/reloaded Host details; it
 ## v9 Listening port/process search
 
 Existing `GET /api/v1/inventory/listening-ports?port=8011&process_search=synthetic&page=1&page_size=10` now supports optional exact integer port1–65535 and case-insensitive literal process substring1–200characters. Both combine with AND, including existing host_id scope. Unknown/duplicate/control/empty/malformed filters reject400; other resources reject these keys. A read-only host join adds hostname to existing fields; no schema change. Standard data/meta and stable port/protocol/id paging remain. Counts are listening records, not distinct hosts. Query is stored inventory, not a live scan or CVE inference.
+
+
+## v10 Site Host filter
+
+`GET /api/v1/inventory/sites?page=1&page_size=10` lists existing Site id/name/address_summary, optional literal name search, standard count/page. `GET /api/v1/inventory/hosts?site_id=<UUID>&search=host-&page=1&page_size=10` filters exact accepted Host.site_id FK and existing literal hostname search with AND, adds site_id to returned Host fields. Invalid/duplicate UUID400; valid nonexistent Site yields empty Host filter (not a lookup404). Other resources reject site_id. Existing loopback opt-in GET/read-only pool and bounded query validation retained. No schema/entity/collector change.

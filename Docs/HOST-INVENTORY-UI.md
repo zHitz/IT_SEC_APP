@@ -53,3 +53,8 @@ From Host details select a package name to view matching hosts and their stored 
 ## v9 Search port/process
 
 From Host inventory or detail choose Search port or process. Enter an exact port or process substring (both means AND), then Find listening hosts. Results show hostname/HostID/protocol/port/process/PID/bind address, total and10rows/page. Empty/invalid input guidance and cleared failure/empty states prevent stale results. Back restores entry list/detail and list search/page context. Search is global stored inventory independent of origin list search. Temporary search panel is not persisted; reload restores originating Host/list route. `node scripts/inventory-ui-lab.mjs --hosts`:8011 ->Host11/PID111,synthetic-listener ->24records/3pages. No Cloudflare access, scan or CVE conclusions.
+
+
+## v10 Hosts by Site
+
+Filter hosts by Site from full list/detail. Paged Site buttons avoid silently truncating choices; select Site, search hostname, use Host page controls and read OS/version and total. Site page controls are independent of Host result pages. Return restores original full list/detail and search/page. Site choices come from existing Site inventory; no Site creation/editing. Unknown Site membership filter returns0rows; errors clear Hosts. Search panel is temporary; reload restores origin. Null Site Hosts remain available in full list but no assigned-Site filter. `node scripts/inventory-ui-lab.mjs --sites` gives Sample Site16Hosts and Secondary Test Site10Hosts; integration adds11emptySites to verify picker pages. Local synthetic only; no Cloudflare/CVE/native claim.

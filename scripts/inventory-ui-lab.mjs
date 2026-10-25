@@ -6,7 +6,7 @@ import {createInventoryReader} from '../backend/src/inventory/reader.mjs';
 import {createFrontend} from '../frontend/server.mjs';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
-export async function startInventoryUiLab({hostFixtures=false,packageFixtures=false,domainFixtures=24}={}){
+export async function startInventoryUiLab({hostFixtures=false,packageFixtures=false,domainFixtures=24,siteFixtures=false}={}){
  const db=new PGlite();await migrate(db,'up');await seed(db);
  for(let index=1;index<=domainFixtures;index++){
   const fqdn=`sample-${String(index).padStart(2,'0')}.test`,id=n=>`10000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
@@ -25,11 +25,12 @@ export async function startInventoryUiLab({hostFixtures=false,packageFixtures=fa
    SELECT $1::uuid,'osquery',first_seen_at,last_seen_at,observed_at,'confirmed','seed://host-ui-v5','synthetic-test',ARRAY['synthetic'],$2::uuid,'tcp',$3,'127.0.0.1','synthetic-listener',$4 FROM asset_inventory.listening_port LIMIT 1`,[id(index+200),id(index),8000+index,100+index]);
  }
  if(packageFixtures)await db.query("UPDATE asset_inventory.package SET name='shared-runtime',version=CASE WHEN right(source_host_or_image::text,1) IN ('1','3','5','7','9') THEN '2.0.0' ELSE '1.0.0' END WHERE raw_ref='seed://host-ui-v5'");
+ if(siteFixtures){await db.query(`INSERT INTO asset_inventory.site(id,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment,tags,name,address_summary) SELECT '40000000-0000-4000-8000-000000000001',source,first_seen_at,last_seen_at,observed_at,confidence,'seed://site-ui','synthetic-test',ARRAY['synthetic'],'Secondary Test Site','Synthetic site B' FROM asset_inventory.site LIMIT 1`);await db.query(`UPDATE asset_inventory.host SET site_id=CASE WHEN right(id::text,12)::bigint<=14 THEN '00000000-0000-4000-8000-000000000002'::uuid ELSE '40000000-0000-4000-8000-000000000001'::uuid END WHERE raw_ref='seed://host-ui-v5'`);}
  const api=createApp({readInventory:createInventoryReader({db}),readExactInventory:createExactInventoryReader({db})});await new Promise(resolve=>api.listen(0,'127.0.0.1',resolve));
  const app=createFrontend({root:fileURLToPath(new URL('../frontend/src/',import.meta.url)),backendOrigin:`http://127.0.0.1:${api.address().port}`,inventoryEnabled:true});await new Promise(resolve=>app.listen(0,'127.0.0.1',resolve));
  return {origin:`http://127.0.0.1:${app.address().port}`,db,async close(){await new Promise(resolve=>app.close(resolve));await new Promise(resolve=>api.close(resolve));await db.close();}};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- const lab=await startInventoryUiLab({hostFixtures:process.argv.includes('--hosts')||process.argv.includes('--packages'),packageFixtures:process.argv.includes('--packages'),domainFixtures:process.argv.includes('--flagged')?48:24});console.log(JSON.stringify({event:'inventory_ui_lab_ready',url:lab.origin+(process.argv.includes('--hosts')?'/inventory/hosts':'/inventory/domains'),synthetic:true,engine:'PostgreSQL17.5WASM',domains:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.domain')).rows[0].total),dnsRecords:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.dns_record')).rows[0].total),flaggedRecords:Number((await lab.db.query("SELECT count(*) AS total FROM asset_inventory.dns_record WHERE 'cloudflare:outside-known-range'=ANY(tags)")).rows[0].total),cloudflareRequests:0}));
+ const lab=await startInventoryUiLab({hostFixtures:process.argv.includes('--hosts')||process.argv.includes('--packages')||process.argv.includes('--sites'),packageFixtures:process.argv.includes('--packages'),domainFixtures:process.argv.includes('--flagged')?48:24,siteFixtures:process.argv.includes('--sites')});console.log(JSON.stringify({event:'inventory_ui_lab_ready',url:lab.origin+(process.argv.includes('--hosts')?'/inventory/hosts':'/inventory/domains'),synthetic:true,engine:'PostgreSQL17.5WASM',domains:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.domain')).rows[0].total),dnsRecords:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.dns_record')).rows[0].total),flaggedRecords:Number((await lab.db.query("SELECT count(*) AS total FROM asset_inventory.dns_record WHERE 'cloudflare:outside-known-range'=ANY(tags)")).rows[0].total),cloudflareRequests:0}));
  for(const signal of ['SIGINT','SIGTERM'])process.once(signal,async()=>{await lab.close();process.exit(0);});
 }
