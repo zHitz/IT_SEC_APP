@@ -4,15 +4,15 @@
 |---|---|
 | Task ID | TASK-S0-004 |
 | Result version | v18 |
-| Status | PARTIAL |
+| Status | DONE |
 | Spec version followed | SRSv1.0; TASK-S0-004; live Lead12:02 ACCEPTv17 and assignv18 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at (not submitted) | 2026-10-25T12:26:59.114149+07:00 |
-| Source/evidence commit | 3ced829e35445734dba2e3476a3e1cb0534394f1 |
+| Prepared at | 2026-10-25T13:06:43.856817+07:00 |
+| Source/evidence commit | 85e74a7a9276a145c0363c29921471af8dd57833 (implementation 3ced829e35445734dba2e3476a3e1cb0534394f1) |
 
 ## 1. Summary
 
-PARTIAL delivery: v18 DNS record details implemented and local verification passes. Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. Full65/65 tests, lint93modules/schema22+2/114FK and build PASS. Native browser validation/screenshots and ClickUp attachment/submission remain pending: browser tool reports local browser use disabled in Work settings; connector quota retry window not reached. No live Cloudflare calls or tag algorithm changes.
+DONE within assigned synthetic v18 scope: exact DNS UUID record detail fields/provenance/flag, click, direct/reload, native Back/Forward, origin detail return and missing record zero-field error pass. No live/production claim. Full65/65tests,lint93modules/schema22+2/114FK unchanged,buildPASS. Actual built-in browser evidence added after access was restored by app restart. ClickUp attachment retry timed out; use fixed-commit fallback explicitly authorized by Lead12:02.
 
 ## 2. Acceptance criteria
 
@@ -111,7 +111,7 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 
 | V18-1 | Assigned DNS record details behavior | PASS in actual local HTTP/PostgreSQL and DOM: Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. |
 | V18-2 | Full regression and boundaries | PASS:65tests,93modules,22+2/114FK unchanged,build;source above. |
-| V18-3 | Fresh native browser validation and delivery | PENDING: Work browser disabled; no screenshots/upload/submission claimed. |
+| V18-3 | Actual browser validation and delivery path | PASS browser: direct/reload, native Back/Forward, origin return, invalid zero partial; three screenshots. Attachment retry timed out; Lead-authorized fixed-commit fallback used in submission comment. |
 
 ## 3. Work completed
 
@@ -149,33 +149,38 @@ Shared work package files are listed explicitly; each task retains its own evide
 | Docs/evidence/S0-004/build-v18.txt | Actual native ESM build output |
 | Docs/RESULT-TASK-S0-004.md | Canonical v18 prepared RESULT, original and historical AC evidence retained |
 
+| Docs/evidence/S0-004/dns-record-reload-v18.png | Actual built-in browser reload viewport proof after access recovery |
+| Docs/evidence/S0-004/dns-record-history-v18.png | Actual built-in browser history viewport proof after access recovery |
+| Docs/evidence/S0-004/dns-record-invalid-v18.png | Actual built-in browser invalid viewport proof after access recovery |
+
 ## 5. Run and verify
 
 At repo root: `npm ci`; `node --test frontend/test/dns-record-detail.test.mjs`; `npm test`; `npm run lint`; `npm run build`. Lab and exact fragments in the respective UI guide v18 section. All data synthetic.
 
 ## 6. Tests and actual results
 
-Final65/65tests,0failed;lint93modules;schema22entities+2junctions/114FK unchanged;buildPASS. Saved outputs and verification-v18.json in Docs/evidence/S0-004. Actual loopback HTTP/PostgreSQL17.5WASM tests execute within BEGIN READ ONLY after fixture setup. Reload uses fresh Linkedom document and history uses the navigation fixture; these are not native browser evidence. No v18 browser screenshots.
+Final65/65tests,0failed;lint93modules;schema22entities+2junctions/114FK unchanged;buildPASS. Saved outputs and verification-v18.json in Docs/evidence/S0-004. Actual loopback HTTP/PostgreSQL17.5WASM tests execute within BEGIN READ ONLY after fixture setup. Reload uses fresh Linkedom document and history uses the navigation fixture; these are distinct from the additional actual built-in browser verification now completed. Three v18 screenshot files document reload/history/invalid states.
 
 ## 7. Issues and implementation decisions
 
-Initial Host test found Linkedom select value assignment and invalid sort selection errors; explicit safe option selection fixes both. Stronger final tests use varied OS/version text and verify ordering/ties and invalid page size. Version ordering follows stored text, not semantic versions. DNS detail normalizes UUID case and removes only record identity on return to preserve origin fragment. Browser creation and existing ClickUp tab access both returned `Local browser use is disabled in Work settings`; no settings changed or API quota retry attempted.
+Initial Host test found Linkedom select value assignment and invalid sort selection errors; explicit safe option selection fixes both. Stronger final tests use varied OS/version text and verify ordering/ties and invalid page size. Version ordering follows stored text, not semantic versions. DNS detail normalizes UUID case and removes only record identity on return to preserve origin fragment. Browser creation and existing ClickUp tab access both returned `Local browser use is disabled in Work settings`; no settings changed or premature API quota retry attempted. App restart restored built-in access. Actual browser route checks then passed. ClickUp Domain upload control was retried with filechooser listener armed first;10000ms timeout observed, so fixed-commit fallback is required. No attachment success claimed.
 
 ## 8. Not done, limitations and technical debt
 
-Native browser validation/screenshots and ClickUp submission/attachment retry pending. No production authentication/RBAC/scale/live Cloudflare/native Linux claim. Separate snapshots may change during inventory updates. Stored flags unchanged; no silent schema, osquery or tag algorithm changes. Historical rows retain their accepted evidence scope.
+Native browser validation/screenshots completed. Actual ClickUp file attachment unavailable after timeout; no uploaded file claimed. Submission uses exact fixed-commit RESULT and evidence links per live Lead12:02 authorization. No production authentication/RBAC/scale/live Cloudflare/native Linux claim. Separate snapshots may change during inventory updates. Stored flags unchanged; no silent schema, osquery or tag algorithm changes. Historical rows retain their accepted evidence scope.
 
 ## 9. Blockers and decisions required
 
-Delivery requires restored Work browser access or connector quota recovery (recorded next retry2026-10-25T07:00:31.401Z). No new technical/spec/security decision or production access requested. Q01–05 untouched.
+No content blocker for assigned synthetic v18. Browser access restored; filechooser timeout has Lead-authorized immutable GitHub fallback. Original native gaps are retained separately. No new technical/spec/security decision or production access requested. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push/update existing PR1; verify liveCI; retain prepared submission without posting duplicates. Once access returns, read live task comments/attachments first, finish browser verification, retry attachment and send one submission per task. QA approval required; Dev does not merge.
+Push browser-evidence/report update to existing PR1; verify liveCI. Live task comments show no v18 submission. Post one submission per task with exact commit RESULT/guide/evidence fallback; verify published UI and checkpoint. QA approval required; Dev does not merge.
 
 - [x] Exact10sections;original/historical/v18AC mapped separately.
 - [x] Exactsource/time,files,commands and actual test outputs.
 - [x] Limits and failures explicit;no false browser/upload/native claims.
-- [ ] Native browser verification and ClickUp delivery.
+- [x] Native browser verification with actual screenshots.
+- [x] Attachment failure recorded; authorized fixed-commit fallback prepared for verified task submission.
 
-History:v16 ACCEPT11:39;v17 submitted via verified immutable links and accepted by latest Lead12:02 comment;v18 assigned same comment, START published, implemented/tested, delivery pending.
+History:v16 ACCEPT11:39;v17 submitted via verified immutable links and accepted by latest Lead12:02 comment;v18 assigned same comment, START published, implemented/tested; after restart actual browser proof completed, upload retry timed out and authorized fixed-commit fallback selected.
