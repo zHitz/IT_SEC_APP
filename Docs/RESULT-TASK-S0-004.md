@@ -7,12 +7,12 @@
 | Status | DONE |
 | Spec version followed | SRSv1.0; TASK-S0-004; latest Lead04:13 v8 assignment; v7 ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T04:03:28.889810+07:00 |
-| Source/evidence commit | 9e2974742cd46a2feb55e26d0a34235c5b91eb4b |
+| Submitted at | 2026-10-25T08:17:28.303784+07:00 |
+| Source/evidence commit | e6ae95f4b59dafed6d9a3a182bfd517d35bd0bb3 (v8 corrected source/tests) |
 
 ## 1. Summary
 
-Completed the assigned exact-owner Domain API and integrated it into detail rendering. Parent lookup uses Domain UUID; related DNS rows join through the accepted Domain.fqdn FK with exact equality and server pagination. The former candidate scan and its100-page cap are removed. Actual SQL/HTTP/DOM/browser proof;39/39tests,lint60modules/schema parity and build pass. DONE applies to approved local synthetic scope. No schema, osquery, Cloudflare collector, credential or production change.
+DONE in approved synthetic v8 scope: Domain UUID deep links and real browser reload restore fresh exact-owner detail. Native Back/Forward restores selected Domain; Back retains search/filter/page/page size. Missing/invalid identities clear metadata/DNS and show errors. Existing v7 exact-owner API is reused unchanged.44/44 tests, lint65, unchanged22+2/114FK and build passed. No production/live Cloudflare or native/scale claim.
 
 ## 2. Acceptance criteria
 
@@ -80,6 +80,8 @@ From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node
 
 ## 7. Issues and implementation decisions
 
+Record correction v8 per Lead08:14: header timestamp/source and Summary corrected; no code/test change or rerun. Actual original submission08:07; this corrected file has the real correction timestamp above. v8 implementation source is e6ae95f (including test correction), not the historical v7 hash.
+
 UUID fragment satisfies UUID-or-fqdn alternative; no hostname/fqdn resolution alias added. Legacy detail fragment works. URL contains only validated context, no stale row snapshot. Test generation initially referenced an incorrect filename; corrected before passing. Linkedom select.value/selected emulation assertions failed; changed them to actual state/request assertions and independently verified selected Flagged in the real browser. Filter test also changed state without loading it; added explicit reload and the full44-test suite passed. Initial pushed commit contained that failing test output and premature summary; corrected in a follow-up commit before ClickUp submission. These failed runs are not counted as passes. No spec/schema change.
 
 ## 8. Not done, limitations and technical debt
@@ -100,3 +102,5 @@ Submit this actual file and evidence to assigned task and update existing QA PR;
 - [x] Canonical RESULT version incremented; evidence prepared for actual attachment.
 
 History: v2–v6 accepted in their recorded synthetic scopes; v7 exact-owner accepted by Lead04:13; v8 Domain deep-link/reload/history complete. Prior reports retained in Git/ClickUp.
+
+Record history: v8 documentation correction per Lead08:14; same v8 code/evidence, corrected header and Summary only plus this required correction note.
