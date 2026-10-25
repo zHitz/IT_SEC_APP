@@ -144,3 +144,12 @@ Run `node scripts/inventory-ui-lab.mjs --flagged-child`; append `#flagged=1&flag
 ## v26 combined list/detail journey
 
 Run `node scripts/inventory-ui-lab.mjs --detail-dns`; append `#domain=10000000-0000-4000-8000-000000000004&search=sample-&outside_known_range=true&sort=hostname&direction=desc&page=1&page_size=10&detail_dns_search=192.0.2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_page=2&record=30000000-0000-4000-8000-000000000030` to the Domain inventory URL. Domain list search/flag/sort/page and detail_dns_search/sort/direction/page plus record id share the route. Record Back restores detail, detail Back preserves list and saved detail fields. Invalid record reveals retained Domain details; invalid list/detail sorts clear only their list. Saved detail pages do not activate unrelated views; default DNS page1 is omitted. No schema/entity/production changes.
+
+
+### v27 combined origin journey
+
+Flagged-domain cards now offer Open Domain detail. `domain_origin=flagged` with `flagged_saved=1` preserves the Flagged list search/sort/page alongside the independent Domain list search/flag/sort/page and detail DNS search/sort/page. Record Back restores detail, and detail Back restores its actual origin. Main Domain list selections retain the main-list origin even when Flagged state is bookmarked.
+
+Reproduce with `node scripts/inventory-ui-lab.mjs --detail-dns --flagged`. Sample04 has 31 DNS records, search192.0.2 returns30 and detail page2 returns5. Flagged descending page2 contains Sample04. Synthetic local GETs only; Cloudflare requests0.
+
+`node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs` runs actual HTTP/PostgreSQL READ ONLY regression for reload, history, origin return/reopen and six independently invalid levels per task. Existing Atlas layout/style and native-evidence limits remain. See verification-v27.json and three v27 screenshots in the task evidence directory.

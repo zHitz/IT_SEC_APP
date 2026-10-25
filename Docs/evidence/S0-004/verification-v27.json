@@ -1,0 +1,56 @@
+{
+  "task": "TASK-S0-004",
+  "version": 27,
+  "verifiedAt": "2026-10-25T16:45:25.912562+07:00",
+  "tests": {
+    "total": 83,
+    "passed": 83,
+    "failed": 0,
+    "actualHttpPostgres": true,
+    "readOnlyTransactions": true,
+    "targetedProof": "DOMAIN_JOURNEY_V27_PROOF",
+    "invalidCases": 6
+  },
+  "lint": {
+    "modules": 94,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "directReload": true,
+    "nativeBackForward": true,
+    "originReturnReopen": true,
+    "invalidIsolation": true,
+    "screenshots": [
+      "domain-dual-reload-v27.png",
+      "domain-dual-history-v27.png",
+      "domain-dual-invalid-v27.png"
+    ]
+  },
+  "limits": [
+    "Synthetic local only",
+    "No schema/entity/API/collector change",
+    "QA approval required before merge"
+  ],
+  "failuresResolved": [
+    "Initial Host assertion used old Site fixture count; separate synthetic Site-journey fixture now places Host11 on required descending page2",
+    "Python console cp1258 could not print test checkmark; test exit0/log saved, lint and build subsequently completed",
+    "Browser exact-text selector matched hidden detail rows; scoped to actual record panel and verified final state"
+  ],
+  "combined": "Domain list searchsample-/flagtrue/hostname-desc/page2 + Flagged list searchsample-/hostname-desc/page2 + Sample04 DNS search192.0.2/value-desc/page2 + record id",
+  "rows": {
+    "flaggedPage2": 2,
+    "detailDnsPage2": 5
+  },
+  "overall": "DONE in assigned synthetic scope"
+}

@@ -138,3 +138,12 @@ Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&s
 ## v26 combined list/detail journey
 
 Run `node scripts/inventory-ui-lab.mjs --host-detail`; append `#host=20000000-0000-4000-8000-000000000011&search=host-&sort=hostname&direction=desc&page=2&page_size=10&package_sort=version&package_direction=desc&package_detail_search=package&package_detail_page=2&port_sort=pid&port_direction=desc&port_detail_search=synthetic&port_detail_page=2` to the Host inventory URL. Host list and independent package/port search/sort/page state share the route. package_detail_search filters package names;port_detail_search filters process names. Return saves host_saved and detail fields; selecting the Host again restores them. Saved detail pages do not activate unrelated views; default DNS page1 is omitted. No schema/entity/production changes.
+
+
+### v27 combined origin journey
+
+Site-filtered Host names now open exact Host detail. `host_origin=site` and saved Site picker/Host search-sort-page parameters retain the origin. Detail Back restores the selected Site Host list; Back to Site picker clears the selection while retaining picker search/sort/page. Package and port search-sort-page stay bookmarked through return/reopen. A full Host list selection keeps its own origin.
+
+Reproduce the Host11 page-2 journey with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey`. The separate synthetic Site-journey option assigns all 24 synthetic hosts to Sample Site; this intentionally extends the older 14-host fixture so hostname-desc page2 contains Host11. No persisted schema or API change.
+
+`node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs` runs actual HTTP/PostgreSQL READ ONLY regression for reload, history, origin return/reopen and six independently invalid levels per task. Existing Atlas layout/style and native-evidence limits remain. See verification-v27.json and three v27 screenshots in the task evidence directory.
