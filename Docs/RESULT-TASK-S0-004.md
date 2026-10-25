@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: v25 Complete flagged inventory chain
+# Result — TASK-S0-004: v26 Combined Domain list, detail and record journey
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v25 |
+| Result version | v26 |
 | Status | DONE |
-| Spec version followed | SRS v1.0; TASK-S0-004; live Lead15:41 ACCEPTv24 and assignv25 |
+| Spec version followed | SRS v1.0; TASK-S0-004; live Lead16:12 ACCEPTv25 and assignv26 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T16:01:43.375073+07:00 |
-| Source/evidence commit | a4422be6a43b7b8e245c77dad7d7291f3410bd71 |
+| Prepared at | 2026-10-25T16:21:23.494117+07:00 |
+| Source/evidence commit | 7b3b404226f99d2905d00fc269b2a6e4e83443b1 |
 
 ## 1. Summary
 
-DONE in declared scope. Flagged hostname-desc/searchsample-/page2 -> sample04 child value-desc/search192.0.2/page2 -> exact record detail chain survives direct/reload/history. Record Back preserves child state; child Back preserves flagged list sort/search/flag/page. Invalid record3,childsort4,listsort4 cases clear only affected content. Synthetic scope only;Cloudflare0requests. Full79/79tests,0fail;lint93;schema22+2/114FK unchanged;buildPASS.
+DONE in declared scope. Domain list search/flag/sort/page plus detail DNS search/sort/page and record id coexist. RecordBack restores detail;detailBack retains list and saved detail state. Sample04 search192.0.2 gives30 DNS rows,page2 five. Directrecord/reload/history and six invalid list/detail/record cases preserve unaffected content. Synthetic scope only;Cloudflare0requests. Final81/81tests,0fail;lint93;schema22+2/114FK unchanged;buildPASS.
 
 ## 2. Acceptance criteria
 
@@ -145,65 +145,69 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V25-3 | Independent invalid states | PASS: 3 record +4 child sort +4 list sort cases; unaffected owner/child/list context retained. |
 | V25-4 | Complete checks and evidence | PASS:79tests/0fail;lint93;schema22+2/114FK unchanged;build;three screenshots. |
 
+| V26-1 | Combined list/detail state | PASS: Domain list search/flag/sort/page plus detail DNS search/sort/page and record id coexist. RecordBack restores detail;detailBack retains list and saved detail state. Sample04 search192.0.2 gives30 DNS rows,page2 five. Directrecord/reload/history and six invalid list/detail/record cases preserve unaffected content. Synthetic scope only;Cloudflare0requests. |
+| V26-2 | Direct/reload/history and return context | PASS:actual HTTP/PostgreSQL/DOM and built-in browser;record return/detail return or Host reopen retain scoped state. |
+| V26-3 | Invalid state independence | PASS:six invalid cases per task;affected list/detail cleared,healthy context retained. |
+| V26-4 | Full checks/evidence | PASS:81tests/0fail;lint93;schema22+2/114FK unchanged;build;three screenshots. |
+
 ## 3. Work completed
 
-Implemented live Lead15:41 v25 assignment. Flagged hostname-desc/searchsample-/page2 -> sample04 child value-desc/search192.0.2/page2 -> exact record detail chain survives direct/reload/history. Record Back preserves child state; child Back preserves flagged list sort/search/flag/page. Invalid record3,childsort4,listsort4 cases clear only affected content. Synthetic scope only;Cloudflare0requests.
+Implemented live Lead16:12 v26 assignment. Domain list search/flag/sort/page plus detail DNS search/sort/page and record id coexist. RecordBack restores detail;detailBack retains list and saved detail state. Sample04 search192.0.2 gives30 DNS rows,page2 five. Directrecord/reload/history and six invalid list/detail/record cases preserve unaffected content. Synthetic scope only;Cloudflare0requests.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| Docs/DOMAIN-INVENTORY-UI.md | Document v25 exact combined route, controls, error isolation and reproduction. |
-| Docs/HOST-INVENTORY-UI.md | Document v25 exact combined route, controls, error isolation and reproduction. |
-| Docs/evidence/S0-003/build-v25.txt | Actual ESM build output. |
-| Docs/evidence/S0-003/combined-site-history-v25.png | Actual viewport screenshot combined-site-history-v25. |
-| Docs/evidence/S0-003/combined-site-invalid-v25.png | Actual viewport screenshot combined-site-invalid-v25. |
-| Docs/evidence/S0-003/combined-site-reload-v25.png | Actual viewport screenshot combined-site-reload-v25. |
-| Docs/evidence/S0-003/lint-v25.txt | Actual lint/schema parity output. |
-| Docs/evidence/S0-003/test-v25.txt | Actual complete79test passing output. |
-| Docs/evidence/S0-003/verification-v25.json | Actual structured v25 observations, counts and limitations. |
-| Docs/evidence/S0-004/build-v25.txt | Actual ESM build output. |
-| Docs/evidence/S0-004/flagged-chain-history-v25.png | Actual viewport screenshot flagged-chain-history-v25. |
-| Docs/evidence/S0-004/flagged-chain-invalid-v25.png | Actual viewport screenshot flagged-chain-invalid-v25. |
-| Docs/evidence/S0-004/flagged-chain-reload-v25.png | Actual viewport screenshot flagged-chain-reload-v25. |
-| Docs/evidence/S0-004/lint-v25.txt | Actual lint/schema parity output. |
-| Docs/evidence/S0-004/test-v25.txt | Actual complete79test passing output. |
-| Docs/evidence/S0-004/verification-v25.json | Actual structured v25 observations, counts and limitations. |
-| frontend/src/domain-navigation.mjs | Separate flagged-list sort validity and add child-to-list Back retaining flagged sort/search/flag/page. |
-| frontend/src/flagged-domains.mjs | Retain selected exact flagged child when list sort is invalid; verify stored flag with GET-only owner lookup; preserve independent list/child/record errors. |
-| frontend/src/host-navigation.mjs | Separate invalid Site host sort from picker-route validation and pass scoped validity independently. |
-| frontend/src/site-hosts.mjs | Keep valid picker rendered on invalid host sort while preserving combined controls, selected Site and parent-return bookmark. |
-| frontend/test/flagged-child-navigation.test.mjs | Test full list-child-record chain, direct record reload/history and 3 record +4 child +4 list invalid cases. |
-| frontend/test/site-navigation.test.mjs | Test both changing sort states, complete restore/history, both parent returns, four invalid cases per side with no cross-clearing. |
-| Docs/RESULT-TASK-S0-004.md | Canonical v25 report; original/historical AC retained and current criteria separate. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document exact v26 combined route, scoped search and return semantics. |
+| Docs/HOST-INVENTORY-UI.md | Document exact v26 combined route, scoped search and return semantics. |
+| Docs/evidence/S0-003/build-v26.txt | Actual ESM build output. |
+| Docs/evidence/S0-003/host-journey-history-v26.png | Actual viewport screenshot host-journey-history-v26. |
+| Docs/evidence/S0-003/host-journey-invalid-v26.png | Actual viewport screenshot host-journey-invalid-v26. |
+| Docs/evidence/S0-003/host-journey-reload-v26.png | Actual viewport screenshot host-journey-reload-v26. |
+| Docs/evidence/S0-003/lint-v26.txt | Actual lint/schema parity output. |
+| Docs/evidence/S0-003/test-v26.txt | Actual complete81test passing output. |
+| Docs/evidence/S0-003/verification-v26.json | Actual structured v26 observations, regression fix and limitations. |
+| Docs/evidence/S0-004/build-v26.txt | Actual ESM build output. |
+| Docs/evidence/S0-004/domain-journey-history-v26.png | Actual viewport screenshot domain-journey-history-v26. |
+| Docs/evidence/S0-004/domain-journey-invalid-v26.png | Actual viewport screenshot domain-journey-invalid-v26. |
+| Docs/evidence/S0-004/domain-journey-reload-v26.png | Actual viewport screenshot domain-journey-reload-v26. |
+| Docs/evidence/S0-004/lint-v26.txt | Actual lint/schema parity output. |
+| Docs/evidence/S0-004/test-v26.txt | Actual complete81test passing output. |
+| Docs/evidence/S0-004/verification-v26.json | Actual structured v26 observations, regression fix and limitations. |
+| frontend/src/domain-navigation.mjs | Carry list/detail/record context, save Domain detail page on list return, preserve Domain DNS on invalid record, omit default page1 from unrelated routes. |
+| frontend/src/host-navigation.mjs | Carry list plus both scoped search/sort/page states; save inactive Host detail bookmark on return and restore on reopen; avoid activating unrelated views. |
+| frontend/src/inventory-detail.mjs | Add scoped Host package-name/process searches and restore their controls; retain existing isolated sort validation. |
+| frontend/test/detail-dns-navigation.test.mjs | Add actual Domain list/flag/detail/record journey regression with reload/return/reopen/history and six independently invalid cases. |
+| frontend/test/host-scoped-navigation.test.mjs | Add actual combined list/package/port regression:reload/history,return/reopen,six invalid list/package/port cases. |
+| Docs/RESULT-TASK-S0-004.md | Canonical v26 report;original/historicalAC retained,current criteria separate. |
 
 ## 5. Run and verify
 
-Repository root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/site-navigation.test.mjs frontend/test/flagged-child-navigation.test.mjs`. Browserlabs:`node scripts/inventory-ui-lab.mjs --sites` (Host path) and `node scripts/inventory-ui-lab.mjs --flagged-child` (Domain path); append exact v25 fragment from corresponding UI guide.
+Repository root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/host-scoped-navigation.test.mjs frontend/test/detail-dns-navigation.test.mjs`. Browserlabs:`node scripts/inventory-ui-lab.mjs --host-detail` (Hostpath) and `node scripts/inventory-ui-lab.mjs --detail-dns` (Domainpath);append exactv26fragment in corresponding UIguide.
 
 ## 6. Tests and actual results
 
-79 tests passed;zero failures. Lint93modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Actual local HTTP/PostgreSQL tests execute READ ONLY after seed setup. Complete routes, changing each sort, parent/chain returns, freshDOM reload and history tested. Built-in browser actual reload and native history verified after settled-state checks; three viewport screenshots per task. Evidence:`Docs/evidence/S0-004/verification-v25.json`,test-v25.txt,lint-v25.txt,build-v25.txt and combined/chain reload/history/invalid screenshots.
+Final81tests passed,0failed;lint93modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Actual local HTTP/PostgreSQL regressions run inside READ ONLY after syntheticsetup. Tests cover list/detail search/sort/page,record directload,return/reopen,reload/history and six independent invalidcases per task. Actual built-in browser reload/nativehistory/return andinvalid screenshots captured after settled-state checks. Evidence:`Docs/evidence/S0-004/verification-v26.json`,test-v26.txt,lint-v26.txt,build-v26.txt andjourney reload/history/invalid screenshots.
 
 ## 7. Issues and implementation decisions
 
-No v25 test failures. Split list validation so invalid sort does not invalidate an entire container. Picker and Host controls retain independent search/sort/page; only the changed side resets its own page. Flagged child Back removes child keys and preserves flagged list keys. On invalid flagged-list sort, selected exact owner is fetched and checked against the existing stored-flag inventory predicate; only that child is retained, invalid sibling list cards are suppressed. Guard checks up to100 literal-name candidates; seed scope verified, no large-scale claim. Only GET inventory reads;no schema/entity/API/tagalgorithm/collector changes. Known MCPquota retry boundary honored; attempted browser upload/fallback outcome recorded honestly in task comment/checkpoint.
+Self-resolution: detail state is serialized in inactive list bookmarks (host_saved/domain_saved) so returning to list retains state without reopening detail. Saved detail pagination validates only active details. Host package search uses existing bound name search;port search uses existing bound process_search. First fullrun80/81:default Domain detailpage1 leaked into flagged-recordroute validation. Omit defaultpage1 and rerun allchecks;final81/81passes. Invalid record reveals retained Domain detail instead of clearing it. No schema/entity/API/tagalgorithm/collector changes. Known ClickUp MCPquota boundary honored;browser upload outcome and immutablefallback recorded honestly in taskcomment/checkpoint.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic local only;no production auth/RBAC/scale/CVE/nativeLinux/liveCloudflare/credential evidence. Viewport screenshots. Inventory changes can alter pagination between reads. DONE only assigned synthetic scope. Invalid flagged list retains selected child, not sibling list cards; up to100 name candidates checked for stored-flag guard.
+Syntheticlocal only;no productionauth/RBAC/scale/CVE/nativeLinux/liveCloudflare/credentialevidence. Viewport screenshots. Text versions sort lexically. DONEonlyassignedsyntheticscope. Invalid record shows error panel alongside retained Domain detail.
 
 ## 9. Blockers and decisions required
 
-No new missing input/spec/security/production decision or hard blocker. Q01..Q05 untouched. ClickUp MCPquota remains exhausted until recorded retry boundary; authorized browser/immutable GitHubfallback available. QA approval required before merge;Dev does not merge.
+No new missinginput/spec/security/productiondecision orhardblocker. Q01..Q05untouched. ClickUp MCPquota retryboundary honored;authorized browser/immutablefallbackavailable. QAapprovalrequired beforemerge;Devdoesnotmerge.
 
 ## 10. Next step and self-check
 
-Push existing featurePR;verify live current-headCI;try browsertask upload;publish one submission with authorized exactcommit report/evidence fallback if upload fails. UIverify/checkpoint;awaitLead/QA.
+Push existing featurePR;verify live current-headCI;try browserupload;publish exactlyone submission pertask using authorizedexactcommit fallback ifuploadfails. UIverify/checkpoint;awaitLead/QA.
 
-- [x] Exacttensections;original/historical/currentACseparate.
-- [x] Exactsource/time,files,commands,actualoutputs and3screenshots.
-- [x] Limits,decisions andread-only/nativeboundariesexplicit.
+- [x] Exacttensections;historical/currentACseparate.
+- [x] Exactsource/time,files,commands,actualoutputs,three screenshots.
+- [x] Regression/fix,limits,read-only/nativeboundariesexplicit.
 - [x] No schema/entity/productionchange.
 
-History:v24 accepted in live Lead15:41comment;v25 assigned there,STARTpublished15:55,implementedandverifiedthiscycle.
+History:v25accepted Lead16:12;pendingv25submissionloop closedthisrun;v26started andimplementedimmediately.
