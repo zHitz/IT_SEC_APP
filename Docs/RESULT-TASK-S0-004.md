@@ -80,7 +80,7 @@ From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node
 
 ## 7. Issues and implementation decisions
 
-UUID fragment satisfies UUID-or-fqdn alternative; no hostname/fqdn resolution alias added. Legacy detail fragment works. URL contains only validated context, no stale row snapshot. Test generation initially referenced an incorrect filename; corrected before passing. Linkedom select.value/selected emulation assertions failed; changed them to actual state/request assertions and independently verified selected Flagged in the real browser. These were test issues, not hidden passes. No spec/schema change.
+UUID fragment satisfies UUID-or-fqdn alternative; no hostname/fqdn resolution alias added. Legacy detail fragment works. URL contains only validated context, no stale row snapshot. Test generation initially referenced an incorrect filename; corrected before passing. Linkedom select.value/selected emulation assertions failed; changed them to actual state/request assertions and independently verified selected Flagged in the real browser. Filter test also changed state without loading it; added explicit reload and the full44-test suite passed. Initial pushed commit contained that failing test output and premature summary; corrected in a follow-up commit before ClickUp submission. These failed runs are not counted as passes. No spec/schema change.
 
 ## 8. Not done, limitations and technical debt
 
