@@ -1,0 +1,37 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "packageIdentity": "exact name + null-safe ecosystem",
+  "fixture": {
+    "hosts": 24,
+    "versions": [
+      "1.0.0",
+      "2.0.0"
+    ],
+    "pageSize": 10,
+    "pages": 3,
+    "versionSearch": "2.0 ->12records/2pages"
+  },
+  "browser": [
+    "Host11 package selection",
+    "page2/3 with both versions",
+    "versionsearch12records",
+    "returnHost11/PID111",
+    "returnList host- search/page2/3/size10"
+  ],
+  "checks": {
+    "tests": 45,
+    "pass": 45,
+    "lintModules": 67,
+    "schema": "22+2/114FK",
+    "build": "PASS"
+  },
+  "limits": [
+    "Host/version rows may include same host with multiple versions",
+    "Package subview not deep-linked; reload restores original Host",
+    "Native Linux/osquery not proven",
+    "No CVE inference or production data"
+  ],
+  "failures": []
+}

@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: Reloadable Host detail navigation
+# Result — TASK-S0-003: Package-to-hosts inventory view
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v7 |
+| Result version | v8 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; latest Lead03:53 v7assignment; v6ACCEPT retained |
+| Spec version followed | SRSv1.0; TASK-S0-003; latest Lead07:54 v8assignment; v7ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T04:13:02.225974+07:00 |
-| Source/evidence commit | 7fa45a3415f4110acd84d6fe9873db29efe2c8d0 |
+| Submitted at | 2026-10-25T08:11:37.082584+07:00 |
+| Source/evidence commit | See v8 commit on existing QA feature branch; logs/screenshots included |
 
 ## 1. Summary
 
-Completed all newly assigned Host navigation requirements: direct UUID fragment links, correct detail after reload, browser Back/Forward and retained list search/page/page-size. Unknown or malformed identity shows a clear error and clears detail metadata/related rows. Fresh read-only Host identity lookup avoids scanning lists or trusting stale history data. Actual DOM/HTTP/PostgreSQL and real browser proof;42/42tests,lint63modules/schema parity,buildPASS. Overall PARTIAL retains original native AC1/3/4 gaps; new v7work is complete. No Cloudflare/schema/production change.
+PARTIAL overall because original native Linux/osquery AC1/3/4 remain unverified. All newly assigned v8 package-to-hosts requirements are complete in approved synthetic scope. Host packages open exact name/ecosystem host/version inventory, searchable and paginated, with safe return to original Host/list. No schema, Cloudflare or production change.
 
 ## 2. Acceptance criteria
 
@@ -46,66 +46,65 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V7-3 | Unknown/invalid Host has clear error and no other Host partial data | Pass: exact lookup404/400; metadata/related rows cleared; actual browser and HTTP/DOM tests. |
 | V7-4 | Same local opt-in/style/schema boundaries, tests/docs/full checks | Pass:42/42tests,lint63/schema22+2/114FK,buildPASS; API/UI guides updated; no Cloudflare/schema/production change. |
 
+| V8-1 | Host package opens all matching hosts and versions | PASS: exact-name/null-safe ecosystem GET; actual24host/two-version READ ONLY SQL and browser proof. |
+| V8-2 | Package-name/version search, pagination and total | PASS: literal bound search, page/count one statement,24records/3pages;2.0 search12records/2pages; empty state and invalid queries tested. |
+| V8-3 | Return to originating Host and Host list with context | PASS: test restores Host11; actual browser restores Host11/PID111 and list host-/page2/3/size10. |
+| V8-4 | Atlas style/local opt-in/no schema or CVE inference; docs/full checks | PASS: existing tokens/frame and fixed loopback GET proxy;45/45tests,lint67/schema22+2/114FK,buildPASS. |
+
 ## 3. Work completed
 
-Read live STATE, ClickUp assignments and actual git/GitHub PR/CI/reviews before execution. Lead accepted v6 and assigned direct links/reload/history. Completed the active Domainv7 package first, then added Host identity lookup and isolated navigation controller, validated fragment/list context and error isolation, with hooks into the existing detail renderer. Posted [DEV][START] with actual targeted5/5tests. Ran full checks and real browser direct/reload/Back/Forward/error walkthrough, saved proof/screenshots, scanned and committed.
+Added one read-only package UUID-to-hosts endpoint and selected-package panel. Uses accepted package source_host_or_image mapping, only host source_kind, exact package name+ecosystem across all stored versions. Search remains scoped to selected identity. No arbitrary SQL identifiers or upstream target. The panel uses text nodes, bounded fetch timeout, explicit empty/error states and clears stale rows. Host v7 and Domain v8 regressions pass.
 
 ## 4. Files changed
 
-Source commit7fa45a3 contains19files; this canonical RESULT is a separate report update.
-
-| File | Specific change |
+| File | Purpose |
 |---|---|
-| Docs/HOST-INVENTORY-API.md | Documents exact Host identity endpoint fields/errors/read-only boundary. |
-| Docs/HOST-INVENTORY-UI.md | Current direct-link/reload/history behavior, reproduction and superseded v6limitation. |
-| Docs/evidence/S0-003/build-v7.txt | Actual ESM/database packaging output. |
-| Docs/evidence/S0-003/history-v7.png | Actual native Back/Forward restored Host12/PID112. |
-| Docs/evidence/S0-003/lint-v7.txt | Actual63module/schema parity output. |
-| Docs/evidence/S0-003/missing-v7.png | Actual unknown-Host error with metadata/related rows empty. |
-| Docs/evidence/S0-003/navigation-v7.json | Observed actual navigation/SQL/browser proof, limits and source/log hashes. |
-| Docs/evidence/S0-003/reload-v7.png | Actual direct link after real browser reload, Host11/PID111. |
-| Docs/evidence/S0-003/secret-scan-v7.json | Actual tracked-text known-pattern scan; binary files excluded. |
-| Docs/evidence/S0-003/test-v7.txt | Actual full42test output. |
-| backend/src/app.mjs | Allows Host identity route in the same optional GET-only exact dispatcher. |
-| backend/src/inventory/exact-reader.mjs | Adds bound Host UUID identity lookup, missing400/404 handling and fixed field projection; shared Domain reader preserved. |
-| backend/test/host-exact.test.mjs | Actual read-only SQL/HTTP lookup/OS/version/missing/invalid/query/method tests. |
-| frontend/server.mjs | Whitelists Host identity GET proxy and new navigation module, retaining fixed loopback gates. |
-| frontend/src/host-navigation.mjs | Parses identity/list fragment, validates context, manages direct/reload/list URLs and Back/Forward without copied Host metadata. |
-| frontend/src/host-page.mjs | Bootstraps reloadable Host navigation controller. |
-| frontend/src/inventory-detail.mjs | Adds navigation hooks, fresh Host lookup option and cleared metadata/title on error, without changing Domain exact behavior. |
-| frontend/src/inventory-table.mjs | Accepts trusted initial list state from validated navigation context. |
-| frontend/test/host-navigation.test.mjs | Actual synthetic API plus fresh DOM/history: direct/reload, Back/Forward, search/page retention, missing/invalid clearing and parser bounds. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v7 report with original native gaps, prior acceptance and current proof. |
+| backend/src/app.mjs | Dispatch whitelisted package UUID/hosts GET relation through existing gates/errors. |
+| backend/src/inventory/exact-reader.mjs | Single bound read statement for package identity, host/version page/count and existence. |
+| frontend/server.mjs | Fixed package-host route proxy and static module whitelist. |
+| frontend/src/package-hosts.mjs | Package panel, name/version search,10-row paging/count, safe rendering/error/return controls. |
+| frontend/src/host-navigation.mjs | Connect package selection to panel, preserve Host/list context and teardown. |
+| frontend/src/inventory-detail.mjs | Optional package-name selection hook; Domain behavior unchanged. |
+| frontend/test/package-hosts.test.mjs | Actual synthetic HTTP/PostgreSQL READ ONLY flow, search/pages/count/return and query errors. |
+| scripts/inventory-ui-lab.mjs | Optional --packages synthetic24host/two-version fixture; default fixtures unchanged. |
+| Docs/HOST-INVENTORY-API.md | Package endpoint response, identity, query and count semantics. |
+| Docs/HOST-INVENTORY-UI.md | Package navigation and honest reload limits/reproduction. |
+| Docs/evidence/S0-003/package-v8.json | Actual observed proof and limitations. |
+| Docs/evidence/S0-003/test-v8.txt | Complete45test output. |
+| Docs/evidence/S0-003/lint-v8.txt | Actual67module/schema check. |
+| Docs/evidence/S0-003/build-v8.txt | Actual successful build. |
+| Docs/evidence/S0-003/package-page-v8.png | Real browser page2of3,24host/version records. |
+| Docs/evidence/S0-003/package-search-v8.png | Real version2.0 search12records/2pages. |
+| Docs/evidence/S0-003/package-back-v8.png | Returned Host list retaining host-/page2/size10. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v8 report retaining original/historical AC rows above. |
 
 ## 5. Run and verify
 
-Node24 from IT_SEC_APP: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts`. Open printed origin plus /inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10. Reload: Host11, package11 and PID111 remain. Back to list retains searchhost-/page2. Open Host12, use native browser Back then Forward: Host12/PID112 restore. Replace fragment Host UUID with ffffffff-ffff-ffff-ffff-ffffffffffff for clear not-found; not-a-uuid for invalid link. `node --test frontend/test/host-navigation.test.mjs backend/test/host-exact.test.mjs`; full `npm run lint`, `npm test`, `npm run build`. All lab data synthetic, no token or nativeLinux claim.
+From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. For browser proof run `node scripts/inventory-ui-lab.mjs --packages`, use emitted origin and `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10`. Select shared-runtime, inspect24rows/3pages, Next, search2.0, return Host11, reopen and Back to host list. Synthetic local loopback lab only; no production token.
 
 ## 6. Tests and actual results
 
-Targeted5/5 passed including Domain exact-owner regression. Full sequence all exit0:42tests/pass42/fail0/duration9311.0947ms; lint63modules; schema22business+2junctions/114FK unchanged; build backend/frontendESM/database assetsPASS. Actual Host lookup SQL runs inside BEGIN READ ONLY; lookup/OS/version, missing404, invalid400/query400, unsupported404 and nonGET405 pass. Navigation test uses actual synthetic HTTP/PostgreSQL plus new DOM mount for reload and event-driven history for Back/Forward; URI context retained and error metadata/rows empty. Actual browser separately opened direct Host11, reloaded successfully, returned to searchhost-/page2, opened Host12 then native Back/Forward restored PID112. Unknown UUID displayed Host not found with empty metadata/related; malformed ID displayed Invalid host link. Three screenshots recorded. No final test failure. Native/browser-simulator evidence distinctions remain explicit.
+45/45tests pass, lint67modules, schema22entities+2junctions/114nativeFK unchanged, buildPASS. Package flow executes actual HTTP and PostgreSQL17.5WASM in BEGIN READ ONLY: exact selected identity,24host rows,2versions, pagination/count/search, empty state, Host return, missing404/invalid400/nonGET405. Real browser independently verifies select/page/search/both return paths. All earlier Host, Domain and collector regressions pass. Actual accepted600010ms outage remains retained and was not rerun. No native Linux/osquery claim.
 
 ## 7. Issues and implementation decisions
 
-Chose UUID fragment identity, as Lead permits id or hostname. Added the small read-only Host lookup needed to resolve a standalone link without scanning host pages; no table/entity or accepted data mapping changed. URL stores identity and bounded list context only, not copied Host observations or credentials. Old #detail=UUID links still work. Direct-open Back returns safely to encoded list context; app-created detail entries use native history. Fresh parent lookup and matching child IDs prevent stale/cross-host partial results. Browser history behavior is isolated with injected navigation for tests and separately checked in real browser. No security/production policy decision or Cloudflare code change.
+Package identity is exact name plus ecosystem, not selected version; otherwise cross-host version comparison would be lost. Counts are host/version observation rows; multiple stored versions can produce multiple rows for a Host. Search is within that package identity and matches name OR version literally; no SQL wildcard interpretation. Existing UUID provides a stable selected package reference; missing/non-host package404. Package subview is temporary within originating Host route; reload returns Host details, no new package deep-link scope assumed. No task-specific failed tests in v8; targeted3checks and final45checks passed. Prior Domain test-fix history is separate and disclosed in its RESULT.
 
 ## 8. Not done, limitations and technical debt
 
-Original nativeLinux/osquery AC1/3/4 remain unverified; accepted actual600010ms outage evidence retained without repetition. No production/token/Cloudflare/schema/authRBAC/nativePG/Docker changes. Hostname aliases and query-string routing are not promised; canonical UUID fragment and legacy detail fragment meet the assigned alternative. List context captures the Host list when entering detail; this is not a global application session-storage policy. Exact viewport/reduced-motion runtime emulation, assistive technology certification and huge-map performance are not claimed. PostgreSQL17.5WASM remains the actual lab engine.
+Original native AC1/3/4 remain unverified (Windows SQLite Linux-inventory simulators, actual HTTP/PostgreSQLWASM, not native Linux/osquery). No real credentials/production/Cloudflare changes/CVE conclusions. No new RBAC or schema/entity. No package deep-link reload persistence or scale benchmark;24synthetic hosts prove functional pagination only. Exact viewport/reduced-motion emulation not claimed. Accepted600010ms experiment preserved, not reconstructed.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v7; all newly assigned navigation requirements pass. Original native verification still requires approved real Linux/osquery inputs. No Q01–05 answer or scope/priority/security decision was taken.
+No hard blocker for assigned package scope; all v8 requirements pass. Native follow-ups remain separately required before production; no new PO decision/Q01–05 answer.
 
 ## 10. Next step and self-check
 
-Push source/report to the live recorded feature branch and update the existing QA PR without merge. Upload actual canonical v7RESULT, API/UI guides, proof/logs/screenshots with one [DEV][SUBMISSION]PARTIAL comment; verify links and current GitHub CI/checkpoint. Await specific Lead/QA feedback rather than duplicate accepted work.
+Attach this actual RESULT and proof to assigned task, update existing QA PR, await specific review/new assignment. Do not merge, self-ACCEPT or change task status/dependencies.
 
-- [x] Ten ordered sections and exact task/version/status/spec.
-- [x] Original/native limits and each V7criterion mapped separately.
-- [x] Every changed file, real command/output and browser limit disclosed.
-- [x] No secrets, production/native claim or repeated ten-minute run.
-- [x] One canonical RESULT and accepted history preserved.
+- [x] Ten sections in order; original and new criteria individually mapped.
+- [x] Actual commands/outputs, all changed files, limits and assumptions listed.
+- [x] PARTIAL preserves native gaps; no production/native/scale claim.
+- [x] Canonical version incremented; actual attachments prepared.
 
-History: v2PoC accepted; v3readiness accepted; v4API accepted; v5frontend accepted; v6detail/QA raw-reference fix accepted by latest Lead03:53; v7Host direct/reload/history complete, overallPARTIAL for original native gaps. Prior canonical reports remain Git/ClickUp.
-
+History: v2–v6 accepted in recorded PoC scopes; v7 Host navigation accepted Lead07:54; v8 package-to-hosts complete. Previous versions retained in Git/ClickUp.

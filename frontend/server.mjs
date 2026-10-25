@@ -11,6 +11,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
   const inventoryFiles = new Map([
     ['/inventory/hosts', ['hosts.html', 'text/html; charset=utf-8']],
     ['/domain-navigation.mjs', ['domain-navigation.mjs', 'text/javascript; charset=utf-8']],
+    ['/package-hosts.mjs', ['package-hosts.mjs', 'text/javascript; charset=utf-8']],
     ['/host-navigation.mjs', ['host-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/inventory-detail.mjs', ['inventory-detail.mjs', 'text/javascript; charset=utf-8']],
     ['/host-page.mjs', ['host-page.mjs', 'text/javascript; charset=utf-8']],
@@ -30,7 +31,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     if (request.method !== 'GET') { response.writeHead(405).end(); return; }
-    const exactInventoryRoute=/^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+)(?:\?|$)/.test(request.url);
+    const exactInventoryRoute=/^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+|packages\/[^/?]+\/hosts)(?:\?|$)/.test(request.url);
     const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records|hosts|packages|listening-ports)(?:\?|$)/.test(request.url) || exactInventoryRoute;
     if (inventoryEnabled && (inventoryRoute || inventoryFiles.has(request.url)) && !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.localAddress)) { response.writeHead(403).end(); return; }
     if (inventoryEnabled && inventoryRoute) {
