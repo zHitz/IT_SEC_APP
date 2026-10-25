@@ -1,0 +1,17 @@
+{
+  "scope": "synthetic v17",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "63/63",
+  "lintModules": 90,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "browser": "reload/Back/Forward/error viewport screenshots",
+  "cloudflareRequests": 0,
+  "search": "sample-",
+  "flag": "true",
+  "page": 2,
+  "domains": 12,
+  "search12": 1,
+  "invalidCases": 5,
+  "initialIssue": "flag selection lost during option initialization;explicitly select desired option last;focused/full rerun"
+}

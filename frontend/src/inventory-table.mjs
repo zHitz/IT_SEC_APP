@@ -71,14 +71,14 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
    if(state.invalidCombined)throw Error('INVALID_COMBINED');const response=await fetcher(`/api/v1/inventory/${state.resource}?${query}`,{signal,headers:{Accept:'application/json'}});
    if(!response.ok)throw Error('UNAVAILABLE');
    const data=validateInventory(await response.json(),state.resource);
-   if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize||(state.siteId&&(state.page>Math.max(1,data.meta.total_pages)||data.data.some(r=>r.site_id!==state.siteId))))throw Error('INVALID_RESPONSE');render(data);
+   if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize||((state.siteId||state.flag)&&(state.page>Math.max(1,data.meta.total_pages)||(state.siteId&&data.data.some(r=>r.site_id!==state.siteId)))))throw Error('INVALID_RESPONSE');render(data);
   }catch(error){
    if(version!==generation)return;
    state.totalPages=0;get('inventory-page').textContent='Page unavailable';get('inventory-total').textContent='Inventory unavailable';
-   get('inventory-status').textContent=error.message==='INVALID_COMBINED'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
+   get('inventory-status').textContent=error.message==='INVALID_COMBINED'?(mode==='host'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Invalid combined Domain filter. Check search, flag and page.'):'Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
   }finally{clearTimeout(timeout);if(version===generation){state.busy=false;controls();}}
  }
- const userLoad=()=>onStateChange&&state.resource==='hosts'?onStateChange({...state,siteId:siteInput?.value??''}):load();
+ const userLoad=()=>onStateChange&&['hosts','domains'].includes(state.resource)?onStateChange({...state,siteId:siteInput?.value??''}):load();
  get('inventory-search').addEventListener('submit',event=>{event.preventDefault();state.search=get('domain-search').value.trim();state.flag=get('range-filter').value;state.page=1;void userLoad();});
  get('range-filter').addEventListener('change',()=>{state.flag=get('range-filter').value;state.search=get('domain-search').value.trim();state.page=1;void userLoad();});
  get('clear-filters').addEventListener('click',()=>{if(siteInput)siteInput.value='';get('domain-search').value='';get('range-filter').querySelector('option[value=""]').selected=true;state.search='';state.flag='';state.page=1;void userLoad();});

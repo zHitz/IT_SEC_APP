@@ -13,23 +13,24 @@ export function parseDomainRoute(location){
  const flaggedInvalid=flagged&&(childInvalid||params.getAll('flagged').length!==1||params.get('flagged')!=='1'||params.getAll('flagged_search').length>1||params.getAll('flagged_page').length>1||!flaggedPage||flaggedSearch.length>200||/[\u0000-\u001f\u007f]/.test(flaggedSearch)||params.has('value_search'));
  const detailDnsPage=params.has('detail_dns_page')?integer('detail_dns_page',0,100000):1,invalidDetailDns=params.getAll('detail_dns_page').length>1||!detailDnsPage||(params.has('detail_dns_page')&&(!id||flagged||params.has('value_search')));
  const recordRoute=['flagged_records','record_search','record_page'].some(k=>params.has(k)),recordSearch=params.get('record_search')??'',recordPage=params.has('record_page')?integer('record_page',0,100000):1,recordInvalid=recordRoute&&(params.get('flagged_records')!=='1'||['flagged_records','record_search','record_page'].some(k=>params.getAll(k).length>1)||!recordPage||recordSearch.length>200||/[\u0000-\u001f\u007f]/.test(recordSearch)||flagged||params.has('value_search')||params.has('detail_dns_page'));
- return{recordRoute,recordSearch,recordPage,recordInvalid,detailDnsPage,invalidDetailDns,childOwner,childPage,flagged,flaggedSearch,flaggedPage,flaggedInvalid,valueSearch:params.has('value_search')?(params.getAll('value_search').length===1?params.get('value_search'):'\u0000'):null,dnsPage:integer('dns_page',1,100000),id:id===null?null:id.toLowerCase(),context:{resource:'domains',search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
+ const invalidCombined=params.has('outside_known_range')&&(!['true','false'].includes(params.get('outside_known_range'))||['outside_known_range','search','page','page_size'].some(k=>params.getAll(k).length>1)||raw.length>200||/[\u0000-\u001f\u007f]/.test(raw)||(params.has('page')&&(!/^[1-9]\d*$/.test(params.get('page'))||Number(params.get('page'))>100000))||(params.has('page_size')&&!['10','25','50','100'].includes(params.get('page_size'))));
+ return{recordRoute,recordSearch,recordPage,recordInvalid,detailDnsPage,invalidDetailDns,childOwner,childPage,flagged,flaggedSearch,flaggedPage,flaggedInvalid,valueSearch:params.has('value_search')?(params.getAll('value_search').length===1?params.get('value_search'):'\u0000'):null,dnsPage:integer('dns_page',1,100000),id:id===null?null:id.toLowerCase(),context:{resource:'domains',invalidCombined,search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
 }
 export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
  const nav=navigation??{history:view.history,location:view.location,events:view};
  const route=parseDomainRoute(nav.location);let recordView,flaggedView,valueView,core,lastRoute=null,routePending=Promise.resolve();
  const get=id=>document.getElementById(id);
- const context=()=>({resource:'domains',search:core.list.state.search,flag:core.list.state.flag,page:core.list.state.page,pageSize:core.list.state.pageSize});
+ const context=()=>({resource:'domains',invalidCombined:false,search:core.list.state.search,flag:core.list.state.flag,page:core.list.state.page,pageSize:core.list.state.pageSize});
  function fragment(id,ctx){const p=new URLSearchParams(id===null?{list:'1'}:{domain:id});if(ctx.search)p.set('search',ctx.search);if(ctx.flag)p.set('outside_known_range',ctx.flag);p.set('page',String(ctx.page));p.set('page_size',String(ctx.pageSize));return'#'+p;}
- function applyContext(ctx){
-  const changed=['resource','search','flag','page','pageSize'].some(k=>core.list.state[k]!==ctx[k]);
-  Object.assign(core.list.state,ctx);get('domain-search').value=ctx.search;for(const option of get('range-filter').querySelectorAll('option'))option.selected=option.value===ctx.flag;
+ function applyContext(ctx,force=false){
+  const changed=['resource','invalidCombined','search','flag','page','pageSize'].some(k=>core.list.state[k]!==ctx[k]);
+  Object.assign(core.list.state,ctx);get('domain-search').value=ctx.search;for(const option of get('range-filter').querySelectorAll('option'))option.selected=option.value===ctx.flag;get('range-filter').querySelector('option[value="'+ctx.flag+'"]').selected=true;
   for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(ctx.pageSize);
-  return changed?core.list.reload():Promise.resolve();
+  return changed||force?core.list.reload():Promise.resolve();
  }
- async function sync(){
-  const key=nav.location?.hash??'';if(lastRoute===key)return;recordView?.hide();flaggedView?.hide();valueView?.hide();lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
+ async function sync(force=false){
+  const key=nav.location?.hash??'';if(lastRoute===key)return;recordView?.hide();flaggedView?.hide();valueView?.hide();lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context,force);
   if(next.id===null&&!next.invalidDetailDns)core.back();else await core.open({id:next.id??'00000000-0000-4000-8000-000000000000',fqdn:'Domain details',source:null,confidence:null,tags:[],first_seen_at:null,last_seen_at:null},{recordHistory:false,dnsPage:next.detailDnsPage,invalidDns:next.invalidDetailDns});
   await pending;if(next.recordRoute){await recordView.restore(next.recordSearch,next.recordPage,next.recordInvalid);return;}if(next.flagged){await flaggedView.restore(next.flaggedSearch,next.flaggedPage,next.flaggedInvalid,next.childOwner,next.childPage);return;}if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
  }
@@ -42,8 +43,8 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
   if(nav.history?.state?.atlasFromList){nav.history.back();return;}
   const ctx=parseDomainRoute(nav.location).context;nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));lastRoute=null;routePending=sync();
  }
- core=mountInventoryDetail(document,{mode:'domain',fetcher,initialState:route.context,manageHistory:false,onSelection:row=>navigate(row.id),onBack:back,onDnsPage:(id,page)=>{const p=new URLSearchParams(fragment(id,context()).slice(1));p.set('detail_dns_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+p);lastRoute=null;routePending=sync();}});
- get('domain-search').value=route.context.search;for(const option of get('range-filter').querySelectorAll('option'))option.selected=option.value===route.context.flag;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
+ core=mountInventoryDetail(document,{mode:'domain',fetcher,initialState:route.context,manageHistory:false,onSelection:row=>navigate(row.id),onBack:back,onListChange:ctx=>{nav.history?.pushState(null,'',nav.location.pathname+fragment(null,ctx));lastRoute=null;return routePending=sync(true);},onDnsPage:(id,page)=>{const p=new URLSearchParams(fragment(id,context()).slice(1));p.set('detail_dns_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+p);lastRoute=null;routePending=sync();}});
+ get('domain-search').value=route.context.search;for(const option of get('range-filter').querySelectorAll('option'))option.selected=option.value===route.context.flag;get('range-filter').querySelector('option[value="'+route.context.flag+'"]').selected=true;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
  const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
  function valueNavigate(value,page){
   const parsed=parseDomainRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('value_search',value);params.set('dns_page',String(page));
