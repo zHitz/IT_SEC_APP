@@ -129,3 +129,8 @@ Run `node scripts/inventory-ui-lab.mjs --detail-dns`, then append `#domain=10000
 ## v23 Flagged owner child DNS sorting
 
 Run `node scripts/inventory-ui-lab.mjs --flagged-child` and append `#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2` to the printed inventory URL. Child sort/search parameters apply to flagged_owner only: child_sort=type|value, child_direction=asc|desc, child_search literal type/value match, child_page. The exact-owner DNS endpoint is reused. Invalid child sort/search empties only that owner child table while retaining owner ID/source/confidence and healthy siblings. One routed child owner is supported at a time. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.
+
+
+## v24 Flagged child record return
+
+Run `node scripts/inventory-ui-lab.mjs --flagged-child`; append `#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2&record=30000000-0000-4000-8000-000000000011` to the Domain /inventory/domains URL on its printed origin. Child record values open DNS record details while retaining the complete flagged owner/child search/sort/page fragment. Back restores that child view; direct record links and reload preserve context. Malformed, missing or duplicate record links clear only record details and reveal the intact child and sibling lists. No schema/entity/production changes.

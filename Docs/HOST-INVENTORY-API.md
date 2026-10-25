@@ -96,3 +96,8 @@ Exact GET /api/v1/inventory/packages/<UUID>/hosts accepts sort=hostname|version 
 ## v23 port/process result ordering
 
 The existing `GET /api/v1/inventory/listening-ports` sort parameter accepts hostname, port, process or pid; direction asc/desc. Existing exact port/process_search filters and AND semantics remain bound. Sort uses explicit NULLS LAST and stable id ascending ties. No endpoint or schema added.
+
+
+## v24 Site picker ordering
+
+`GET /api/v1/inventory/sites?search=Site&sort=name&direction=desc&page=2&page_size=10` uses existing literal name search and whitelisted name ordering, NULLS LAST and stable id ascending ties. Duplicate/invalid parameters return400. No schema or new endpoint.

@@ -123,3 +123,8 @@ Run `node scripts/inventory-ui-lab.mjs --sites`, then append `#list=1&site_picke
 ## v23 Port/process result sorting
 
 Run `node scripts/inventory-ui-lab.mjs --hosts` and append `#list=1&port_search=1&process_search=synthetic-listener&port_page=2&result_sort=hostname&result_direction=desc` to the printed inventory URL. Sort results by hostname/port/process/pid with result_sort and result_direction; port/process inputs and parent context remain on invalid sort. Existing sort parameter whitelist adds hostname/process; port and PID are numeric. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.
+
+
+## v24 Site picker sorting
+
+Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host /inventory/hosts URL on its printed origin. Picker uses picker_search (literal name substring), picker_sort=name, picker_direction=asc|desc and picker_page, separately from Site host search/sort/page. Invalid picker sorting clears picker options only. Parent list/detail return saves and reopens picker context and selected Site. No schema/entity/production changes.

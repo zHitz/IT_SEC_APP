@@ -1,0 +1,37 @@
+{
+  "version": 24,
+  "recordedAt": "2026-10-25T08:31:21.218019+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM",
+  "tests": 77,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "route": "#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "invalidCases": 4,
+  "healthyContextRetained": true,
+  "observations": {
+    "pickerSites": 13,
+    "selectedSiteHosts": 16,
+    "hostPage2Rows": 6,
+    "pickerDirections": 2,
+    "parentReturnPaths": 2
+  },
+  "failuresAndResolution": [
+    "Adding a picker form before the host form broke an existing first-input assertion; preserved the established host form order and reran targeted/full tests successfully."
+  ],
+  "limits": [
+    "Viewport screenshots; synthetic local only.",
+    "Native Linux/osquery AC1/3/4 remain unverified; accepted600010msoutage retained,notrerun."
+  ]
+}
