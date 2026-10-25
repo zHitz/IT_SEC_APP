@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: v29 Cross-view journey robustness
+# Result — TASK-S0-003: v30 Independent tabs and fresh saved URLs
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v29 |
+| Result version | v30 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; live Lead17:12 ACCEPTv28 and assignv29 |
+| Spec version followed | SRS v1.0; TASK-S0-003; live Lead17:41 ACCEPTv29 and assignv30 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T17:28:45.846390+07:00 |
-| Source/evidence commit | 5caf7f8f6f524eaf1ca85f92de30e691cb3c3a0e |
+| Prepared at | 2026-10-25T17:59:00.891269+07:00 |
+| Source/evidence commit | 3d688e8191047e450073ddd44d4da6b7900bb505 |
 
 ## 1. Summary
 
-Complete v28 Host and Domain journeys survive three consecutive round trips from each starting view with exact fragments. Saved-invalid destinations show a clear error and zero affected partial rows; source remains exact, and an explicit valid URL repairs only the destination. Clean no-fragment tabs remain default without fabricated bookmarks; journeys created afterward persist normally. Final89/89tests,0fail;lint96;schema22+2/114FK unchanged;buildPASS. Native AC1/3/4unverified;acceptedactual600010msoutage retained/notrerun;overallPARTIAL.
+Two independently created browser tabs keep distinct Host/Domain journeys without cross-tab fragment copying. Complete saved URLs restore nested state in fresh sessions; two round trips per tab remain exact. Invalid saved URLs show clear errors, zero affected partial rows and healthy siblings; explicit repair works. Closing those tabs leaves a newly opened tab default without fabricated bookmarks. Final92/92tests,0fail;lint96;schema22+2/114FK unchanged;buildPASS. No runtime change needed. NativeAC1/3/4unverified;acceptedactual600010msoutage retained/notrerun;overallPARTIAL.
 
 ## 2. Acceptance criteria
 
@@ -176,53 +176,60 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V29-3 | Clean default tabs without fabricated bookmarks; newly created source journey persists | PASS: both no-fragment views remain default, no synthetic #list=1 and no copied other fragment. New journey survives subsequent switch; explicit default removes only own prior bookmark. |
 | V29-4 | 89/89 tests;96modules;unchanged schema/build;logs and3screenshots | PASS:89tests,0fail;lint96;schema22+2/114FK unchanged;buildPASS;verification-v29.json,test/lint/build-v29.txt,three real screenshots. |
 
+
+| ID | v30 criterion | Result / actual evidence |
+|---|---|---|
+| V30-1 | Two independent tabs with distinct Host/Domain journeys, no cross-tab copy | PASS: separate integration stores and two actual browser tabs;tabA package/portpage2 and DNSpage2/record30,tabB package/portpage1 and DNSpage1/record29;both unchanged after othertab navigation. |
+| V30-2 | Saved complete URLs in fresh empty sessions then two exact round trips | PASS: both starting views assert initial0storageentries,restore full explicit fragment; actual fresh-tab other-view links default;2roundtrips each compare exact href fragments. |
+| V30-3 | Fresh invalid URLs,0affectedpartialrows,healthy sibling,repair;newtab afterclose default | PASS: Host invalidpackage0rows/6healthyports;Domain invalidrecord0fields/5healthyDNSrows;validexplicitURL repairs;new independently created tab default afterclose. |
+| V30-4 | Exactly3newtests,92/92,lint96,schema/build/evidence | PASS:3newtests in existing view-bookmarks.test.mjs;92pass/0fail;lint96;schema22+2/114FK unchanged;buildPASS;verification-v30.json,test/lint/build-v30.txt and3actualscreenshots. |
+
 ## 3. Work completed
 
-Complete v28 Host and Domain journeys survive three consecutive round trips from each starting view with exact fragments. Saved-invalid destinations show a clear error and zero affected partial rows; source remains exact, and an explicit valid URL repairs only the destination. Clean no-fragment tabs remain default without fabricated bookmarks; journeys created afterward persist normally. Kept fragment-only sessionStorage and explicit URL precedence. Added exactly three targeted tests in the existing file; no new module, API, schema or style change. Actual browser exercised clean defaults, creation of a journey, three complete round trips from each starting view, reload/native history, saved-invalid destination and explicit repair both directions. Published [DEV][START] on each exact task before implementation.
+Two independently created browser tabs keep distinct Host/Domain journeys without cross-tab fragment copying. Complete saved URLs restore nested state in fresh sessions; two round trips per tab remain exact. Invalid saved URLs show clear errors, zero affected partial rows and healthy siblings; explicit repair works. Closing those tabs leaves a newly opened tab default without fabricated bookmarks. Added exactly3targeted tests in existing file; no runtime/schema/entity/API/style change. Initial START published17:55 and verified at bottom of each comment list before implementation; one START per task/version. Actual browser uses independently created tabs with no opener; integration harness models separate tab-session stores and actual READ ONLY HTTP/PostgreSQL.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/view-bookmarks.mjs | Replace fabricated #list=1 fallback with removeItem for only current path when its explicit hash is empty; nonempty safe fragments unchanged. |
-| frontend/test/view-bookmarks.test.mjs | Add exactly3tests in existing module:3roundtrips bothstarts;invaliddest/explicitrepair bothdirections;cleandefault/newjourney bothdirections. Shared actual HTTP/PostgreSQL READ ONLY harness uses fresh documents and exact string equality. |
-| Docs/HOST-INVENTORY-UI.md | Document repeated switching, invalid destination repair and empty/default bookmark semantics. |
-| Docs/DOMAIN-INVENTORY-UI.md | Document both-direction recovery/default behavior and proof marker commands. |
-| Docs/evidence/S0-003/verification-v29.json | Record actual89pass/lint96/schema/build, per-criterion results, browser and limits. |
-| Docs/evidence/S0-003/{test,lint,build}-v29.txt | Final actual complete-suite,lint/schema and build output. |
-| Docs/evidence/S0-003/host-roundtrip-{reload,history,invalid}-v29.png | Three settled real built-in browser screenshots after repeated round trips; synthetic only. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v29 report with exact source/time and separate V29 rows; original/history retained. |
+| frontend/test/view-bookmarks.test.mjs | Exactly3newtests:independenttabstores/distinctjourneys;freshsavedURLrestore/tworoundtrips;freshinvalidURL/repair/cleannewsession. ActualHTTP/PostgreSQL READONLY harness. |
+| Docs/HOST-INVENTORY-UI.md | Document independent tabs,saved Host URLs,reproduction and opener/duplicated-tab limitation. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document fresh Domain/DNS/record restoration and tab-specific evidence limits. |
+| Docs/evidence/S0-003/verification-v30.json | Actual92pass/lint96/schema/build,eachV30criterion,independentbrowser tab proof and limits. |
+| Docs/evidence/S0-003/{test,lint,build}-v30.txt | Actual final fullsuite92pass/0fail,lint96/schema22+2/114FK,build output. |
+| Docs/evidence/S0-003/host-tabs-{reload,history,invalid}-v30.png | Three real settled browser screenshots from independent/fresh-tab checks. |
+| Docs/RESULT-TASK-S0-003.md | Canonicalv30report;original/historyAC retained,separateV30rows,exactsource/time. |
 
 ## 5. Run and verify
 
-From repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`.
-Focused: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs` (6tests total,3newv29).
-Browser lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`.
-In a fresh tab open /inventory/hosts without hash, click Domain and back: both default, links have no fragment. Set hostRoute/domainRoute from the test using explicit URLs in that same tab. Click sidebar three round trips starting from each view, compare full href fragments exactly. Replace package_sort=version with bad for Host or recordUUID with bad for Domain; leave and re-enter invalid destination, verify0affectedrows and healthy sibling; repair via exact valid explicit URL and verify source remains exact. Test harness setup occurs before BEGIN READ ONLY.
+Repository root:`npm ci`;`npm test`;`npm run lint`;`npm run build`.
+Focused:`node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs` (9tests,3newv30).
+Browserlab:`node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`.
+Independently create two new tabs without an opener. Open hostRoute/domainRoute from the test in tabA;use package_detail_page=1,port_detail_page=1,detail_dns_page=1,record29 variants in tabB. Verify fresh other-view links have no hash,establish both views and perform2roundtrips each;compare full href fragments and confirm othertab unchanged. In separate fresh tabs open invalidpackage_sort=bad or record=bad;verifyerror/0affectedpartialrows/healthy sibling,repair by validexplicitURL,close,andopennewdefaulttab. Setup writes syntheticfixtures before BEGIN READ ONLY.
 
 ## 6. Tests and actual results
 
-Full89/89passed,0failed;lint96modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Six targeted tests pass, including exactly3newv29 tests. V29_ROUND_TRIPS records3roundtrips per starting view with exact fragments; V29_INVALID_REPAIR records invalid saved destination,0affectedpartialrows,healthy sibling,explicitrepair/sourceexact; V29_CLEAN_TAB recordsdefaultdestination/noinventedbookmark/newjourneypersisted/ownbookmarkclear. All integration evidence uses actual HTTP/PostgreSQL17.5WASM READ ONLY after syntheticsetup. Built-in browser independently verified all three scenarios, bothdirections, reload/Back/Forward and captured3screenshots per task. Cloudflare0requests.
+92/92fullsuitepass,0fail;9targetedpass;exactly3newtests;lint96modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. V30_TAB_ISOLATION records2independentstores/distinctjourneys/2roundtripseach/nooverwrite. V30_FRESH_URL recordsinitial0entries/completeexplicitfragment/2exactroundtrips bothstarts. V30_INVALID_FRESH recordsinvaliderror/0affectedpartialrows/healthysibling/repair/newtabdefault bothmodes. Actual built-in browser tabs independently verified the same visible behavior,plusreload/nativeBackForward,and three screenshots per task. Cloudflare0requests.
 
 ## 7. Issues and implementation decisions
 
-Observed prior implementation invented #list=1 for empty routes; changed it to remove only the current view key. This makes explicit default authoritative while preserving the other view; if session storage is denied, explicit URL remains usable under existing fallback. Exactly3new tests stay in view-bookmarks.test.mjs, so lint remains96 rather than97. Reused existing full v28 fragments and fixtures without relaxing any acceptance criterion. No targeted/full test failures. ClickUp initially omitted the actual17:25 START from the rendered comment window; I misread that as a failed send and posted a redundant17:30 START correction. The original START later became visible, so the correction claim that it had not published was mistaken. Initial START did publish before implementation; no duplicate SUBMISSION is made. Invalid states are produced only with synthetic URLs; no storage secrets/rows or infrastructure data inspected.
+Existing tab-session implementation already satisfies v30; no unnecessary runtime mutation. Added exactly3tests in existing view-bookmarks.test.mjs so lint remains96. Integration tests model independent stores with fresh maps; actual browser verification separately demonstrates independently created tabs. A fresh tab without an opener is distinct from duplicated/opener-created tabs,where browsers may clone initial sessionStorage; no claim for those cases. No targeted/fulltest failures. START verification used emptycomposer plus actualpublishedtext at bottom of virtualized comment list; no duplicate START or corrective milestone.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic/local only, no production/RBAC/scale/CVE/nativeLinux/liveCloudflare proof. Session storage denied/cleared or fragment>16384 disables persistence while explicit URLs work; separate tabs/sessions independent. Validity remains the existing destination parser's responsibility; stored invalid fragments are not silently rewritten. Native AC1/3/4 unverified;accepted actual600010msoutage retained/notrerun;overallPARTIAL. No API/schema/entity/collector change. ClickUp quota boundary honored; actual upload result and Lead-authorized exact commit fallback recorded in submission/checkpoint.
+Synthetic/local only;no production/RBAC/scale/CVE/nativeLinux/liveCloudflareproof. Opener/duplicated-tab session cloning not claimed as empty freshstorage. Denied/cleared sessionstorage or fragment>16384 disables persistence;explicitURLs work. No inventory rows/credentials/serverstate stored. NativeAC1/3/4unverified;acceptedactual600010msoutage retained/notrerun;overallPARTIAL. Actual ClickUp upload result/immutable fallback recorded in submission/checkpoint;APIquota boundary honored.
 
 ## 9. Blockers and decisions required
 
-No new missing-input/spec/security/production decision or hard blocker. Q-01..Q-05 untouched. Separate QAapproval required before merge; Dev does not merge. Lead17:12 authorizes immutable GitHub fallback after actual upload failure.
+No new missinginput/spec/security/productiondecision orhardblocker. Q-01..Q-05untouched. QAapprovalrequired beforemerge;Devdoesnotmerge. Lead17:41authorizes exactGitHubfallback afteractualuploadfailure.
 
 ## 10. Next step and self-check
 
-Push existing feature branch and update PR1;verify current-headCI live. Attempt RESULT upload, publish exactlyone [DEV][SUBMISSION] per task with honest attachment outcome and immutable links if necessary, verify UI and checkpoint. Execute valid new Lead/QA work without duplicate submission.
+Push existing featurebranch/updateexistingPR1,verifylivecurrent-headCI. AttemptRESULTupload;publish exactlyone [DEV][SUBMISSION] pertask withhonestuploadoutcome/exactimmutablelinksifneeded. VerifyUI/checkpoint;executevalidnewLead/QAworkwithoutduplicates.
 
-- [x] Exacttensections;original/historical/current AC separate.
-- [x] Exactsource/time, each changed file, reproduction and actual output.
-- [x] Three new targeted tests,89fullsuite,96modules,unchangedschema/build.
-- [x] Three actual screenshots and storage/native/security limits explicit;no selfaccept/statuschange/merge.
+- [x] Exacttensections;original/historical/currentACseparate.
+- [x] Exactsource/time,eachfile,commands,realoutput.
+- [x] Three newtests,92fullsuite,lint96,unchangedschema/build,threeactualscreenshots.
+- [x] Fresh-tab modeling/browser distinction,storage/native/securitylimits explicit;no selfaccept/statuschange/merge.
 
-History:v28 accepted by live Lead17:12 at reporthead5eeead4217eeeae14489597751b615b2765e7cf3. v29started and implemented in this execution cycle. Source/evidence commit above is the exact tested implementation.
+History:v29accepted byliveLead17:41at reporthead2198e22d13b80d8e1a772741b9ec23b1d681c6fe. v30START17:55 verifiedbeforeimplementation;work executedthiscycle. Source/evidencecommit above is exact tested package.
