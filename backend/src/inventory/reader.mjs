@@ -12,7 +12,7 @@ export class InventoryError extends Error { constructor(code, status = 400) { su
 export function inventoryQuery(resource, params) {
   const spec = resources[resource];
   if (!spec) throw new InventoryError('NOT_FOUND', 404);
-  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
+  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
   for (const key of params.keys()) if (!allowed.has(key) || params.getAll(key).length !== 1) throw new InventoryError('INVALID_QUERY');
   function integer(key, fallback, max) {
     const raw = params.get(key); if (raw === null) return fallback;
@@ -25,6 +25,11 @@ export function inventoryQuery(resource, params) {
   if (search !== null) {
     if (!search.trim() || search.length > 200 || /[\u0000-\u001f\u007f]/.test(search)) throw new InventoryError('INVALID_QUERY');
     values.push(search.trim()); where.push(`strpos(lower(${spec.search}), lower($${values.length}::text)) > 0`);
+  }
+  const valueSearch = params.get('value_search');
+  if(valueSearch!==null){
+    if(!valueSearch.trim()||valueSearch.length>200||/[\u0000-\u001f\u007f]/.test(valueSearch))throw new InventoryError('INVALID_QUERY');
+    values.push(valueSearch.trim());where.push(`strpos(lower(value),lower($${values.length}::text))>0`);
   }
   const flagged = params.get('outside_known_range');
   if (flagged !== null) {
