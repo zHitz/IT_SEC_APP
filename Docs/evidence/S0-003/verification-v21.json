@@ -30,5 +30,6 @@
     "Browser screenshots are viewport captures.",
     "Native Linux/osquery AC1/3/4 remain unverified.",
     "Original accepted 600010ms outage proof retained, not rerun."
-  ]
+  ],
+  "parentDetailReturnAndReopen": true
 }
