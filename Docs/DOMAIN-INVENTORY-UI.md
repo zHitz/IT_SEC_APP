@@ -78,3 +78,8 @@ Open `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged=1&fla
 `flagged=1` is required and unique. Optional flagged_search is unique, at most 200 characters without controls; flagged_page is a unique integer 1..100000. Invalid values, duplicates or combining flagged view with value_search show an explicit error and zero cards. Parent list page/search parameters retain their existing meaning. No schema, tag algorithm, osquery or Cloudflare changes.
 
 Reproduce: `node --test frontend/test/flagged-navigation.test.mjs frontend/test/flagged-domains.test.mjs`, then `npm test`, `npm run lint`, `npm run build`. Actual HTTP/PostgreSQL and browser evidence is under `Docs/evidence/S0-004/*v12*`.
+
+
+### v13 child DNS routes (supersedes local child-page reset limitation)
+Run `node scripts/inventory-ui-lab.mjs --flagged-child`; open `/inventory/domains#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2`. Optional fixture adds11synthetic DNS to existing sample04, total12/2pages. Reload and Back/Forward retain owner and child page; parent search/page changes clear child selection.
+Unique flagged_owner UUID and child_page integer1..100000 required together; owner must belong to the encoded flagged parent page. Missing/nonflagged/offpage owner or child page outside actual record pages fails closed with explicit error and0cards. One child selection per fragment; other owners start page1. Type/value/proxied/TTL/tags unchanged, no flag algorithm or Cloudflare requests. Test `node --test frontend/test/flagged-child-navigation.test.mjs`.

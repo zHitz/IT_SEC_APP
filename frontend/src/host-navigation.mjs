@@ -10,7 +10,9 @@ export function parseHostRoute(location){
  const id=params.has('host')?(params.get('host')??''):params.has('detail')?(params.get('detail')??''):null;
  const unassigned=['unassigned','unassigned_search','unassigned_page'].some(k=>params.has(k)),unassignedSearch=params.get('unassigned_search')??'',unassignedPage=params.has('unassigned_page')?integer('unassigned_page',0,100000):1;
  const unassignedInvalid=unassigned&&(params.getAll('unassigned').length!==1||params.get('unassigned')!=='1'||params.getAll('unassigned_search').length>1||params.getAll('unassigned_page').length>1||!unassignedPage||unassignedSearch.length>200||/[\u0000-\u001f\u007f]/.test(unassignedSearch));
- return{unassigned,unassignedSearch,unassignedPage,unassignedInvalid,id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
+ const sitePicker=['site_picker','selected_site','picker_page','site_search','site_host_page'].some(k=>params.has(k)),selectedSite=params.get('selected_site')??'',pickerPage=params.has('picker_page')?integer('picker_page',0,100000):1,siteHostPage=params.has('site_host_page')?integer('site_host_page',0,100000):1,siteSearch=params.get('site_search')??'';
+ const siteInvalid=sitePicker&&(unassigned||params.get('site_picker')!=='1'||['site_picker','selected_site','picker_page','site_search','site_host_page'].some(k=>params.getAll(k).length>1)||!pickerPage||!siteHostPage||siteSearch.length>200||/[\u0000-\u001f\u007f]/.test(siteSearch)||(selectedSite&&!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(selectedSite)));
+ return{sitePicker,selectedSite,pickerPage,siteHostPage,siteSearch,siteInvalid,unassigned,unassignedSearch,unassignedPage,unassignedInvalid,id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
 }
 export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
@@ -28,7 +30,7 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  async function sync(){
   const key=nav.location?.hash??'';if(lastRoute===key)return;siteView?.hide();portView?.hide();packageView?.hide();lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,hostname:'Host details',os:null,os_version:null,first_seen_at:null,last_seen_at:null},{recordHistory:false});
-  await pending;if(next.unassigned)await siteView.restoreUnassigned(next.unassignedSearch,next.unassignedPage,next.unassignedInvalid);
+  await pending;if(next.sitePicker){await siteView.restoreSite(next.selectedSite,next.pickerPage,next.siteSearch,next.siteHostPage,next.siteInvalid);return;}if(next.unassigned)await siteView.restoreUnassigned(next.unassignedSearch,next.unassignedPage,next.unassignedInvalid);
  }
  function navigate(id){
   const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
@@ -46,7 +48,8 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  portView=mountPortSearch(document,{fetcher});
  function unassignedNavigate(search,page){const parsed=parseHostRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('unassigned','1');params.set('unassigned_search',search);params.set('unassigned_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();}
  function unassignedBack(){const parsed=parseHostRoute(nav.location);nav.history?.pushState(null,'',nav.location.pathname+fragment(parsed.id,context()));lastRoute=null;return routePending=sync();}
- siteView=mountSiteHosts(document,{fetcher,onUnassignedNavigate:unassignedNavigate,onUnassignedBack:unassignedBack});
+ function siteNavigate(site,pickerPage,search,page){const parsed=parseHostRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('site_picker','1');if(site)params.set('selected_site',site);params.set('picker_page',String(pickerPage));params.set('site_search',search);params.set('site_host_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();}
+ siteView=mountSiteHosts(document,{fetcher,onSiteNavigate:siteNavigate,onSiteBack:unassignedBack,onUnassignedNavigate:unassignedNavigate,onUnassignedBack:unassignedBack});
  const ready=Promise.all([core.ready,sync()]);
  return{ready,core,packageView,portView,siteView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);siteView.destroy();portView.destroy();packageView.destroy();core.destroy();}};
 }

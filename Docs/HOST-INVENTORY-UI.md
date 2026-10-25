@@ -72,3 +72,8 @@ In the `--hosts` local synthetic lab, open `/inventory/hosts#list=1&search=host-
 Require unique unassigned=1. Optional unassigned_search is unique, <=200 characters without controls; unassigned_page is unique integer1..100000. Invalid marker, duplicates, controls or invalid page show explicit error and zero rows. Site picker remains a separate temporary view; no Site changes. Existing accepted GET site_assigned=false stays exact site_id IS NULL.
 
 Reproduce: `node --test frontend/test/unassigned-navigation.test.mjs frontend/test/unassigned-hosts.test.mjs`; full `npm test`, `npm run lint`, `npm run build`. No production or credential inputs.
+
+
+### v13 Site-picker routes (supersedes temporary picker limitation)
+Run `node scripts/inventory-ui-lab.mjs --sites --hosts`; open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2`. Reload retains selected Sample Site, picker2/2, hostname search and Host2/2. Search, Site selection, picker/Host pages push browser history; return restores origin context. Existing unassigned routes remain separate.
+Unique site_picker=1, optional UUID selected_site, positive picker_page/site_host_page<=100000, site_search<=200/no controls required. Invalid/duplicate/missing Site/out-of-range picker error clears all rows. Site resolution uses accepted Sites GET, bounded100pages of100 and8second timeout; selected Site may be off displayed picker page. No Site mutations. Test `node --test frontend/test/site-navigation.test.mjs frontend/test/site-hosts.test.mjs`. Synthetic substring host- also matches sample-host-a/b, giving16SampleSite Hosts.
