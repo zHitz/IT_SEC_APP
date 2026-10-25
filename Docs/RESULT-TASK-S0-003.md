@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: Port/process navigation
+# Result — TASK-S0-003: Combined main Host filters
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v15 |
+| Result version | v16 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead10:38 ACCEPTv14 and assignv15 |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead11:06 ACCEPTv15 and assignv16 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T10:52:01.550581+07:00 |
-| Source/evidence commit | 47ec7773b9582183c993885d95d4157ee5f54864 |
+| Submitted at | 2026-10-25T11:20:57.258480+07:00 |
+| Source/evidence commit | 6c2e0a17a1a78737540bceb3c931d9a38271b168 |
 
 ## 1. Summary
 
-PARTIAL overall; nativeAC1/3/4 remain unverified. Assigned v15 direct port/process/page links, reload/history and invalid-state clearing complete. Host/port/process/PID and origin returns retained. Full59/59tests,lint86/schema22+2/114FK unchanged,buildPASS.
+PARTIAL overall; nativeAC1/3/4 unverified. Assigned v16 combined Site/hostname/page direct links, reload/history, invalid clearing and detail return complete. Full61/61tests,lint88/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -96,56 +97,62 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V15-3 | Fields/returns | PASS: actual READ ONLY HTTP/PostgreSQL and browser evidence: Host/port/process/PID, detail and full-list search/page returns retained. |
 | V15-4 | Docs/full checks/exact source/boundaries | PASS:59tests,86modules,22+2/114FK unchanged,build; exact source above. |
 
+
+| V16-1 | Direct/reload | PASS: actual HTTP/PostgreSQL/browser evidence: SampleSite+host-/page2/16matches. |
+| V16-2 | History/returns | PASS: actual HTTP/PostgreSQL/browser evidence: Host11search1 and original Site/page context;detailreturn. |
+| V16-3 | Invalid/no partial | PASS: actual HTTP/PostgreSQL/browser evidence: 5malformed/duplicate/control states0rows. |
+| V16-4 | Checks/boundaries | PASS: actual HTTP/PostgreSQL/browser evidence: 61tests,88modules,22+2/114FK unchanged,build;exact source. |
+
 ## 3. Work completed
 
-PARTIAL overall; nativeAC1/3/4 remain unverified. Assigned v15 direct port/process/page links, reload/history and invalid-state clearing complete. Host/port/process/PID and origin returns retained. Accepted read-only endpoints reused; no backend/schema changes.
+PARTIAL overall; nativeAC1/3/4 unverified. Assigned v16 combined Site/hostname/page direct links, reload/history, invalid clearing and detail return complete. Accepted read-only endpoints reused; no backend/schema changes.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Port/process route parse/validation/history/restore |
-| frontend/src/port-search.mjs | Restore/search/page callbacks and out-of-range clearing |
-| frontend/test/port-search.test.mjs | Existing regression uses actual history; updated explicit invalid-route assertion |
-| frontend/test/port-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalid routes |
-| Docs/HOST-INVENTORY-UI.md | v15 contract/reproduction/limits |
-| Docs/evidence/S0-003/port-v15.json | Measured proof/errors/limits |
-| Docs/evidence/S0-003/test-v15.txt | Final59test output |
-| Docs/evidence/S0-003/lint-v15.txt | 86module/schema parity |
-| Docs/evidence/S0-003/build-v15.txt | Successful build |
-| Docs/evidence/S0-003/port-reload-v15.png | Real browser reload evidence |
-| Docs/evidence/S0-003/port-history-v15.png | Real browser history evidence |
-| Docs/evidence/S0-003/port-invalid-v15.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-003.md | Canonical v15 tensection report |
+| frontend/src/host-navigation.mjs | Combined route parse/history/context preservation |
+| frontend/src/inventory-table.mjs | Main Site UUID input, accepted site_id query, invalid state/scope validation and user-state callback |
+| frontend/src/inventory-detail.mjs | Forward list-state callback |
+| frontend/test/combined-host-navigation.test.mjs | Actual READ ONLY reload/history/detail return/5invalid cases |
+| Docs/HOST-INVENTORY-UI.md | v16 contract/reproduction/limits |
+| Docs/evidence/S0-003/combined-v16.json | Measured proof and limits |
+| Docs/evidence/S0-003/test-v16.txt | Full61test output |
+| Docs/evidence/S0-003/lint-v16.txt | 88module/schema parity |
+| Docs/evidence/S0-003/build-v16.txt | Successful build |
+| Docs/evidence/S0-003/combined-reload-v16.png | Real browser reload evidence |
+| Docs/evidence/S0-003/combined-history-v16.png | Real browser history evidence |
+| Docs/evidence/S0-003/combined-invalid-v16.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-003.md | Canonical v16 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts`; exact steps/fragment in `Docs/HOST-INVENTORY-UI.md` v15. Focused `node --test frontend/test/port-navigation.test.mjs frontend/test/port-search.test.mjs`. Synthetic loopback only.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. `node scripts/inventory-ui-lab.mjs --hosts --sites`; exact fragments/steps in `Docs/HOST-INVENTORY-UI.md` v16. Focused `node --test frontend/test/combined-host-navigation.test.mjs`. Synthetic loopback only.
 
 ## 6. Tests and actual results
 
-59/59tests,0failures final suite;lint86modules;schema22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY and browser evidence proves new criteria above. Existing inventory/collector/returns green;0Cloudflare requests. Initial focused failures corrected as documented below, full suite rerun.
+61/61tests,0failures final suite;lint88modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM/history and real browser reload/Back/Forward/error evidence proves new rows above. Existing collector/inventory/return regressions green;0Cloudflare requests. No failed new Host test.
 
 ## 7. Issues and implementation decisions
 
-Initial legacy test expected Enter port; routed invalid input now explicitly says Invalid port/process route. Updated assertion to new contract; focused/full checks reran. No technical blocker. Exact port and case-insensitive literal process filters combine AND; distinct port_page avoids origin list page collision.
+Site ID text filter uses accepted UUID semantics with hostname and page, preserving existing Site picker separately. Unique valid site/search/page/page_size checks prevent silently defaulting malformed combined state. Well-formed missing Site UUID returns valid empty API result; no invented existence validation or new endpoint. No failed Host-task tests.
 
 ## 8. Not done, limitations and technical debt
 
-NativeLinux/osqueryAC1/3/4 unverified;600010ms accepted evidence retained/not rerun. No production/RBAC/CVE/scale/live scan claim. No schema/entity/flagalgorithm/osquery/Cloudflare changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+NativeAC1/3/4 remain unverified;600010ms accepted evidence retained/not rerun. Site UUID input, not new Site-name selector; UUID discoverable via existing picker/GET. Missing well-formed UUID can produce empty results. No production/RBAC/CVE/scale claim. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for synthetic v15; no new PO/security/credential/spec decision. Q01–05 untouched.
+No hard blocker for synthetic v16; no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once; await concrete review/next valid Lead assignment. Never self-accept/merge.
+Push existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review/nextvalidLeadassignment. No self-accept/merge.
 
 - [x] Exact10sections; original/historical/newAC mapped separately.
-- [x] Exact current source/time/Summary; all files and commands.
-- [x] Actual outputs/browser evidence/errors/decisions/limits.
-- [x] Read-only/local/no-secret/native boundaries retained.
-- [x] Canonical increment; accepted history retained in Git/ClickUp.
+- [x] Exact source/time/Summary; all files and commands.
+- [x] Actual logs/browser evidence/errors/decisions/limits.
+- [x] Local/read-only/no-secret/native boundaries.
+- [x] Canonical increment; prior reports/history in Git/ClickUp.
 
-History: v14ACCEPT10:38;v15assigned same comment and completed this cycle.
+History: v15ACCEPT11:06;v16assigned same comment, completed this cycle.
