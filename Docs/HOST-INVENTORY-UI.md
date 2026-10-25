@@ -94,3 +94,7 @@ site_id/search/page/page_size must be unique when Site filtering is present; UUI
 
 
 ### v17 Host scoped detail: run `node scripts/inventory-ui-lab.mjs --hosts --host-detail`; open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&package_detail_page=2&port_detail_page=2&search=host-&page=2&page_size=10`. Optional30extra packages+ports yield31each/2pages/6rowseachpage2. Reload/history restores both independently; change one retains other. Unique positive child pages1..100000 require Host identity; malformed/duplicate/conflicting/out-of-range clears all detail/child data. Return keeps parent context. No native claim.
+
+## v18 main Host sort
+
+Sort Hosts and Sort direction selectors apply server ordering and reset page1. Direct example after `node scripts/inventory-ui-lab.mjs --hosts`: `/inventory/hosts#list=1&sort=hostname&direction=desc&search=host-&page=2&page_size=10`. Sort/search/page persist through fresh DOM reload, history and detail return. Invalid sort/direction, duplicate keys, page0, invalid page size and control search clear all rows. OS/version columns remain. Run `node --test frontend/test/host-sort-navigation.test.mjs`. Full65tests/lint93/schema/build pass. Current run has DOM/history plus actual loopback HTTP/PostgreSQL evidence; browser verification/screenshots are pending because Work browser access is disabled. See evidence/S0-003/verification-v18.json.

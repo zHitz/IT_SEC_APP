@@ -60,3 +60,7 @@ Same opt-in backend reader pool/default_transaction_read_only/statement_timeout 
 ## v9 DNS value search
 
 `GET /api/v1/inventory/dns-records?value_search=192.0.2.25&page=1&page_size=10` returns stored Domain owner plus record/provenance fields in the standard data/meta envelope. value_search is a trimmed1–200character, case-insensitive literal substring of DNSRecord.value; it is not an IP-range query, wildcard, live lookup or CVE conclusion. Empty/control/duplicate/unknown keys reject400; other resources reject this parameter. It composes with existing owner search and outside-known-range filter using AND. One bound SELECT supplies count/page, stable domain/type/id order, existing read-only transaction/pool/gates. No schema or collector changes.
+
+## v18 exact DNS record
+
+GET `/api/v1/inventory/dns-records/<UUID>` returns `{data:{id,domain,type,value,proxied,ttl,source,first_seen_at,last_seen_at,confidence,tags}}` from the exact stored UUID. UUID bound to SQL; no query parameters or relation accepted (400); invalid UUID400, missing404, POST405; disabled inventory retains404. Flag is displayed from exact stored cloudflare:outside-known-range tag; no flag algorithm change. No raw_ref or payload returned. Loopback opt-in proxy allowlist includes this GET only.

@@ -22,7 +22,7 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
  const get=id=>document.getElementById(id);
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
  const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false,...initialState};
- let generation=0,active;let siteInput;if(mode==='host'){const label=document.createElement('label');label.textContent='Site ID filter';siteInput=document.createElement('input');siteInput.setAttribute('aria-label','Site ID filter');siteInput.placeholder='All Sites or Site UUID';siteInput.value=state.siteId??'';label.append(siteInput);get('inventory-search').append(label);}
+ let generation=0,active;let siteInput,sortInput,directionInput;if(mode==='host'){const label=document.createElement('label');label.textContent='Site ID filter';siteInput=document.createElement('input');siteInput.setAttribute('aria-label','Site ID filter');siteInput.placeholder='All Sites or Site UUID';siteInput.value=state.siteId??'';label.append(siteInput);get('inventory-search').append(label);for(const [name,values,key]of [['Sort Hosts',['hostname','os','os_version'],'sort'],['Sort direction',['asc','desc'],'direction']]){const l=document.createElement('label');l.textContent=name;const select=document.createElement('select');select.setAttribute('aria-label',name);for(const value of values){const o=document.createElement('option');o.value=value;o.textContent=value;select.append(o);}[...select.querySelectorAll('option')].find(o=>o.value===(values.includes(state[key])?state[key]:values[0])).selected=true;l.append(select);get('inventory-search').append(l);if(key==='sort')sortInput=select;else directionInput=select;select.addEventListener('change',()=>{state.page=1;void userLoad();});}}
  function render(data){
   const head=document.createElement('tr');
   for(const [,label]of columns[state.resource]){const th=document.createElement('th');th.scope='col';th.textContent=label;head.append(th);}
@@ -40,7 +40,7 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
      if(key.endsWith('_at')&&row[key]){const date=new Date(row[key]);if(!Number.isNaN(+date)){td.textContent=date.toISOString().replace('T',' ').replace('.000Z',' UTC');td.title=row[key];}}
      if(['domain','fqdn','value'].includes(key))td.className='mono';
     }
-    if(onSelect && ((state.resource==='hosts'&&key==='hostname')||(state.resource==='domains'&&key==='fqdn'))){
+    if(onSelect && ((state.resource==='hosts'&&key==='hostname')||(state.resource==='domains'&&key==='fqdn')||(state.resource==='dns-records'&&key==='value'))){
      const link=document.createElement('a');link.className='inventory-link';link.href='#detail='+encodeURIComponent(row.id);link.textContent=row[key];link.setAttribute('aria-label','Open '+row[key]);
      link.addEventListener('click',event=>{event.preventDefault();onSelect(row,state.resource);});td.replaceChildren(link);
     }
@@ -65,7 +65,7 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
   state.busy=true;controls();get('inventory-retry').hidden=true;get('inventory-status').textContent='Loading inventory…';
   get('inventory-rows').replaceChildren();get('inventory-total').textContent='Loading inventory…';
   const query=new URLSearchParams({page:String(state.page),page_size:String(state.pageSize)});
-  if(state.resource==='hosts'&&state.siteId)query.set('site_id',state.siteId);if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
+  if(state.resource==='hosts'){if(state.sort)query.set('sort',state.sort);if(state.direction)query.set('direction',state.direction);}if(state.resource==='hosts'&&state.siteId)query.set('site_id',state.siteId);if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
   const timeout=setTimeout(()=>controller.abort(),8000);
   try{
    if(state.invalidCombined)throw Error('INVALID_COMBINED');const response=await fetcher(`/api/v1/inventory/${state.resource}?${query}`,{signal,headers:{Accept:'application/json'}});
@@ -78,7 +78,7 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
    get('inventory-status').textContent=error.message==='INVALID_COMBINED'?(mode==='host'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Invalid combined Domain filter. Check search, flag and page.'):'Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
   }finally{clearTimeout(timeout);if(version===generation){state.busy=false;controls();}}
  }
- const userLoad=()=>onStateChange&&['hosts','domains'].includes(state.resource)?onStateChange({...state,siteId:siteInput?.value??''}):load();
+ const userLoad=()=>onStateChange&&['hosts','domains'].includes(state.resource)?onStateChange({...state,siteId:siteInput?.value??'',sort:sortInput?.value??'hostname',direction:directionInput?.value??'asc'}):load();
  get('inventory-search').addEventListener('submit',event=>{event.preventDefault();state.search=get('domain-search').value.trim();state.flag=get('range-filter').value;state.page=1;void userLoad();});
  get('range-filter').addEventListener('change',()=>{state.flag=get('range-filter').value;state.search=get('domain-search').value.trim();state.page=1;void userLoad();});
  get('clear-filters').addEventListener('click',()=>{if(siteInput)siteInput.value='';get('domain-search').value='';get('range-filter').querySelector('option[value=""]').selected=true;state.search='';state.flag='';state.page=1;void userLoad();});
@@ -87,5 +87,5 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
  get('inventory-prev').addEventListener('click',()=>{if(!get('inventory-prev').disabled){state.page--;void userLoad();}});
  get('inventory-next').addEventListener('click',()=>{if(!get('inventory-next').disabled){state.page++;void userLoad();}});
  get('inventory-retry').addEventListener('click',()=>void load());
- return {ready:load(),state,reload:load,setSiteInput(value){if(siteInput)siteInput.value=value;},destroy(){generation++;active?.abort();}};
+ return {ready:load(),state,reload:load,setSiteInput(value){if(siteInput)siteInput.value=value;},setSort(sort,direction){for(const [select,value]of [[sortInput,sort],[directionInput,direction]])if(select){for(const o of select.querySelectorAll('option'))o.selected=false;const options=[...select.querySelectorAll('option')];(options.find(o=>o.value===value)??options[0]).selected=true;}},destroy(){generation++;active?.abort();}};
 }

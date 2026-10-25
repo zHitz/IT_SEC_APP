@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-10-25T12:26:00.054427+07:00",
+  "scope": "synthetic local HTTP/PostgreSQL17.5WASM and Linkedom DOM/history fixture",
+  "nativeBrowserVerified": false,
+  "browserFailure": "Local browser use is disabled in Work settings",
+  "tests": 65,
+  "lintModules": 93,
+  "schema": "22 entities + 2 junctions / 114 native FKs unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "productionAccess": false,
+  "submissionState": "not submitted; browser unavailable and connector retry window not reached",
+  "sortFields": [
+    "hostname",
+    "os",
+    "os_version"
+  ],
+  "directions": [
+    "asc",
+    "desc"
+  ],
+  "stableTieId": true,
+  "pagesNoDuplicates": true,
+  "variedStoredOSVersions": true,
+  "reloadFreshDom": true,
+  "historyFixtureBackForward": true,
+  "detailReturn": true,
+  "invalidCases": 6,
+  "nativeAC134": "unverified",
+  "acceptedOutageMs": 600010
+}

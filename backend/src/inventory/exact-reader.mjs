@@ -18,6 +18,7 @@ export function createExactInventoryReader({db}){
    if(!rows[0].owner_exists)throw new InventoryError('PACKAGE_NOT_FOUND',404);
    return{package:rows[0].package,data:rows[0].data,meta:{page,page_size:pageSize,total:rows[0].total,total_pages:Math.ceil(rows[0].total/pageSize)}};
   }
+  if(resource==='dns-records'){if(!uuid.test(id))throw new InventoryError('INVALID_ID');if(relation||[...params.keys()].length)throw new InventoryError('INVALID_QUERY');const{rows}=await db.query('SELECT id,domain,type,value,proxied,ttl,source,first_seen_at,last_seen_at,confidence,tags FROM asset_inventory.dns_record WHERE id=$1::uuid',[id]);if(!rows.length)throw new InventoryError('DNS_RECORD_NOT_FOUND',404);return{data:rows[0]};}
   if(resource==='hosts'){
    if(!uuid.test(id))throw new InventoryError('INVALID_ID');
    if(relation)throw new InventoryError('NOT_FOUND',404);

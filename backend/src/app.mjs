@@ -21,7 +21,7 @@ export function createApp({ ingestOsquery, readInventory, readExactInventory } =
       }
       return;
     }
-    const exactMatch=/^\/api\/v1\/inventory\/(domains|hosts|packages)\/([^/?]+)(?:\/(dns-records|hosts))?(?:\?|$)/.exec(request.url);
+    const exactMatch=/^\/api\/v1\/inventory\/(domains|hosts|packages|dns-records)\/([^/?]+)(?:\/(dns-records|hosts))?(?:\?|$)/.exec(request.url);
     if(exactMatch&&readExactInventory){
       if(request.method!=='GET'){response.setHeader('Allow','GET');response.writeHead(405).end(JSON.stringify({error:{code:'METHOD_NOT_ALLOWED',message:'Use GET',request_id:requestId}}));return;}
       try{

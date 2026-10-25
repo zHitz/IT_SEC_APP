@@ -10,6 +10,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
   if (inventoryEnabled && !['127.0.0.1', '[::1]'].includes(upstream.hostname)) throw Error('Inventory requires loopback backend');
   const inventoryFiles = new Map([
     ['/inventory/hosts', ['hosts.html', 'text/html; charset=utf-8']],
+    ['/dns-record-detail.mjs', ['dns-record-detail.mjs', 'text/javascript; charset=utf-8']],
     ['/dns-value-search.mjs', ['dns-value-search.mjs', 'text/javascript; charset=utf-8']],
     ['/flagged-domains.mjs', ['flagged-domains.mjs', 'text/javascript; charset=utf-8']],
     ['/domain-navigation.mjs', ['domain-navigation.mjs', 'text/javascript; charset=utf-8']],
@@ -35,7 +36,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     if (request.method !== 'GET') { response.writeHead(405).end(); return; }
-    const exactInventoryRoute=/^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+|packages\/[^/?]+\/hosts)(?:\?|$)/.test(request.url);
+    const exactInventoryRoute=/^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+|dns-records\/[^/?]+|packages\/[^/?]+\/hosts)(?:\?|$)/.test(request.url);
     const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records|hosts|packages|listening-ports|sites)(?:\?|$)/.test(request.url) || exactInventoryRoute;
     if (inventoryEnabled && (inventoryRoute || inventoryFiles.has(request.url)) && !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.localAddress)) { response.writeHead(403).end(); return; }
     if (inventoryEnabled && inventoryRoute) {

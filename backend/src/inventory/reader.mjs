@@ -13,7 +13,7 @@ export class InventoryError extends Error { constructor(code, status = 400) { su
 export function inventoryQuery(resource, params) {
   const spec = resources[resource];
   if (!spec) throw new InventoryError('NOT_FOUND', 404);
-  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'hosts' ? ['site_id','site_assigned'] : []), ...(resource === 'listening-ports' ? ['port','process_search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
+  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'hosts' ? ['site_id','site_assigned','sort','direction'] : []), ...(resource === 'listening-ports' ? ['port','process_search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
   for (const key of params.keys()) if (!allowed.has(key) || params.getAll(key).length !== 1) throw new InventoryError('INVALID_QUERY');
   function integer(key, fallback, max) {
     const raw = params.get(key); if (raw === null) return fallback;
@@ -21,6 +21,7 @@ export function inventoryQuery(resource, params) {
     return Number(raw);
   }
   const page = integer('page', 1, 100000), pageSize = integer('page_size', 25, 100);
+  const sort=params.get('sort')??'hostname',direction=params.get('direction')??'asc';if(resource==='hosts'&&(!['hostname','os','os_version'].includes(sort)||!['asc','desc'].includes(direction)))throw new InventoryError('INVALID_QUERY');const order=resource==='hosts'?sort+' '+direction+' NULLS LAST, id asc':spec.order;
   const values = [], where = spec.predicate ? [spec.predicate] : [];
   const search = params.get('search');
   if (search !== null) {
@@ -52,9 +53,9 @@ export function inventoryQuery(resource, params) {
   values.push(pageSize, (page - 1) * pageSize);
   // Only whitelisted identifiers enter SQL; all caller data is bound. One statement gives consistent count/page.
   const sql = `WITH filtered AS (SELECT ${spec.columns} FROM asset_inventory.${spec.from ?? spec.table}${where.length ? ` WHERE ${where.join(' AND ')}` : ''}),
-    page_rows AS (SELECT * FROM filtered ORDER BY ${spec.order} LIMIT $${values.length - 1} OFFSET $${values.length})
+    page_rows AS (SELECT * FROM filtered ORDER BY ${order} LIMIT $${values.length - 1} OFFSET $${values.length})
     SELECT (SELECT count(*)::int FROM filtered) AS total,
-      COALESCE((SELECT json_agg(page_rows ORDER BY ${spec.order}) FROM page_rows), '[]'::json) AS data`;
+      COALESCE((SELECT json_agg(page_rows ORDER BY ${order}) FROM page_rows), '[]'::json) AS data`;
   return { sql, values, page, pageSize };
 }
 export function createInventoryReader({ db }) {

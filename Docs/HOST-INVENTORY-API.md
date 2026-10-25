@@ -79,3 +79,7 @@ Existing `GET /api/v1/inventory/listening-ports?port=8011&process_search=synthet
 ## v11 Unassigned Hosts
 
 `GET /api/v1/inventory/hosts?site_assigned=false&search=host-&page=1&page_size=10` applies exact site_id IS NULL with existing literal hostname search. true means IS NOT NULL. Only explicit true/false, unique key; combining with site_id rejects400 to avoid contradictory scope. No Site rows are created/updated/deleted. Existing response site_id field and read-only loopback gates retained.
+
+## v18 Host ordering
+
+GET `/api/v1/inventory/hosts?sort=os_version&direction=desc&search=host-&page=2&page_size=10`. `sort` accepts hostname (default), os, os_version; direction asc (default) or desc. Unknown/duplicate parameters return400. Ordering uses stored PostgreSQL text, NULLS LAST, then id ascending to make ties stable. OS version ordering is lexical, not semantic version comparison. Search/Site predicates and count/page consistency remain unchanged. No schema writes.
