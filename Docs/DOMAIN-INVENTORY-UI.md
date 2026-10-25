@@ -59,3 +59,8 @@ Regression: `node --test frontend/test/domain-navigation.test.mjs`. Uses actual 
 ## v9 Search DNS values
 
 Choose Search DNS values from either Domain/DNS list or Domain detail. Enter an IP, hostname or other stored value; Find DNS records displays Domain, type, value, proxied,TTL,tags with10rows/page and total. Matching is a case-insensitive literal substring, not CIDR or wildcard. Back to previous list or detail restores the entry view and its existing list search/filter/page state. Search is global stored DNS inventory, independent of the list filter; that filter remains retained on return. Empty input shows guidance; errors clear rows and can be retried by searching. Browser route navigation closes this temporary panel; reload restores original Domain/list route, not search results. No external DNS/Cloudflare calls. Synthetic lab: `node scripts/inventory-ui-lab.mjs`;192.0.2.25 yields18records/2pages,198.51.100.25 yields6records.
+
+
+## v10 Reloadable DNS search routes
+
+Direct link: `/inventory/domains#value_search=192.0.2.25&dns_page=2&search=sample-&page=2&page_size=10`. Optional `domain=<UUID>` preserves the originating detail; list search/filter/page use existing keys, while `dns_page` is independent. Reload fetches fresh results through accepted value_search GET. Submitting a new value or changing DNS page creates a native history entry; Back/Forward restores the value and result page. The explicit return button navigates to the origin list/detail route without value_search. Empty/control/duplicate values show an error with zero result rows. DNS page defaults1 and is bounded100000. Value length1–200 and literal matching unchanged. Previous v9 non-persistent panel limitation is superseded. No live DNS/Cloudflare/schema/osquery change.

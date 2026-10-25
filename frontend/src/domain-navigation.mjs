@@ -6,7 +6,7 @@ export function parseDomainRoute(location){
  const raw=params.get('search')??'';const search=raw.length<=200&&!/[\u0000-\u001f\u007f]/.test(raw)?raw.trim():'';
  const size=integer('page_size',25,100),pageSize=[10,25,50,100].includes(size)?size:25;
  const id=params.has('domain')?(params.get('domain')??''):params.has('detail')?(params.get('detail')??''):null;
- return{id:id===null?null:id.toLowerCase(),context:{resource:'domains',search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
+ return{valueSearch:params.has('value_search')?(params.getAll('value_search').length===1?params.get('value_search'):'\u0000'):null,dnsPage:integer('dns_page',1,100000),id:id===null?null:id.toLowerCase(),context:{resource:'domains',search,flag:['true','false'].includes(params.get('outside_known_range'))?params.get('outside_known_range'):'',page:integer('page',1,100000),pageSize}};
 }
 export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
@@ -24,7 +24,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  async function sync(){
   valueView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,fqdn:'Domain details',source:null,confidence:null,tags:[],first_seen_at:null,last_seen_at:null},{recordHistory:false});
-  await pending;
+  await pending;if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
  }
  function navigate(id){
   const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
@@ -38,7 +38,12 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  core=mountInventoryDetail(document,{mode:'domain',fetcher,initialState:route.context,manageHistory:false,onSelection:row=>navigate(row.id),onBack:back});
  get('domain-search').value=route.context.search;for(const option of get('range-filter').querySelectorAll('option'))option.selected=option.value===route.context.flag;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
  const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
- valueView=mountDnsValueSearch(document);valueView.setFetcher(fetcher);
+ function valueNavigate(value,page){
+  const parsed=parseDomainRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('value_search',value);params.set('dns_page',String(page));
+  nav.history?.pushState({atlasValueSearch:true},'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();
+ }
+ function valueBack(){const parsed=parseDomainRoute(nav.location);nav.history?.pushState(null,'',nav.location.pathname+fragment(parsed.id,context()));lastRoute=null;return routePending=sync();}
+ valueView=mountDnsValueSearch(document,{onNavigate:valueNavigate,onBack:valueBack});valueView.setFetcher(fetcher);
  const ready=Promise.all([core.ready,sync()]);
  return{ready,core,valueView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);valueView.destroy();core.destroy();}};
 }
