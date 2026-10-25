@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: v18 DNS record details
+# Result — TASK-S0-004: v19 Domain combined sorting
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v18 |
+| Result version | v19 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; live Lead12:02 ACCEPTv17 and assignv18 |
+| Spec version followed | SRSv1.0; TASK-S0-004; live Lead13:11 ACCEPTv18 and assignv19 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T13:06:43.856817+07:00 |
-| Source/evidence commit | 85e74a7a9276a145c0363c29921471af8dd57833 (implementation 3ced829e35445734dba2e3476a3e1cb0534394f1) |
+| Prepared at | 2026-10-25T13:31:12.477501+07:00 |
+| Source/evidence commit | 8f5f0c9b4f97ad43a10c7d9cac8d5647cc012031 |
 
 ## 1. Summary
 
-DONE within assigned synthetic v18 scope: exact DNS UUID record detail fields/provenance/flag, click, direct/reload, native Back/Forward, origin detail return and missing record zero-field error pass. No live/production claim. Full65/65tests,lint93modules/schema22+2/114FK unchanged,buildPASS. Actual built-in browser evidence added after access was restored by app restart. ClickUp attachment retry timed out; use fixed-commit fallback explicitly authorized by Lead12:02.
+DONE in declared scope. Hostname asc/desc with stable id ties/NULLS LAST;sort/search/flag/page route;desc/searchsample-/flagtrue/page2 yields sample08+sample04 of12;native reload/history/detailreturn;4invalidsort casesclearallrows. Full67/67tests,lint93modules,schema22+2/114FK unchanged,buildPASS. Actual loopback READ ONLY PostgreSQL17.5WASM/DOM tests and native built-in browser screenshots. No real Cloudflare/production/token/tagalgorithm/schema/osquery change.
 
 ## 2. Acceptance criteria
 
@@ -113,74 +113,75 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V18-2 | Full regression and boundaries | PASS:65tests,93modules,22+2/114FK unchanged,build;source above. |
 | V18-3 | Actual browser validation and delivery path | PASS browser: direct/reload, native Back/Forward, origin return, invalid zero partial; three screenshots. Attachment retry timed out; Lead-authorized fixed-commit fallback used in submission comment. |
 
+
+| V19-1 | Assigned sorting and route behavior | PASS: Hostname asc/desc with stable id ties/NULLS LAST;sort/search/flag/page route;desc/searchsample-/flagtrue/page2 yields sample08+sample04 of12;native reload/history/detailreturn;4invalidsort casesclearallrows. |
+| V19-2 | Full validation and unchanged boundaries | PASS:67tests/0fail,lint93,schema22+2/114FK,build. Actual proof/logs/screenshots in evidence folder. |
+| V19-3 | Browser evidence | PASS:3actual screenshots reload/history/invalid;scope and errors above verified in native built-in browser. |
+
 ## 3. Work completed
 
-Exact UUID detail with owner/type/value/proxied/TTL/tags/provenance/flag; fresh DOM reload, Back/Forward fixture, origin detail return, malformed/missing/duplicate records clear all fields, POST405 and unknown-query400. Same Atlas shell/style retained. Code and evidence committed; no schema, collector, real infrastructure or credential access.
+Hostname asc/desc with stable id ties/NULLS LAST;sort/search/flag/page route;desc/searchsample-/flagtrue/page2 yields sample08+sample04 of12;native reload/history/detailreturn;4invalidsort casesclearallrows. No schema or collector changes. Existing Atlas frame/tokens reused; local opt-in GET only.
 
 ## 4. Files changed
 
-Shared work package files are listed explicitly; each task retains its own evidence and canonical RESULT.
+Shared work package source/evidence files:
 
-| File | Change |
+| File | Specific change |
 |---|---|
-| frontend/src/inventory-table.mjs | Host sort controls, safe selection and record value selection callbacks |
-| frontend/src/inventory-detail.mjs | DNS child record selection callback |
-| backend/src/app.mjs | Allow exact DNS record GET routing |
-| backend/src/inventory/exact-reader.mjs | UUID-bound DNS record SELECT, strict query/errors and safe provenance projection |
-| backend/src/inventory/reader.mjs | Whitelisted Host sort/direction, NULLS LAST with stable id tie order |
-| frontend/server.mjs | Opt-in loopback GET proxy for exact DNS UUID and new module |
-| frontend/src/dns-value-search.mjs | Record selection from value and flagged-record results |
-| frontend/src/domain-navigation.mjs | Record identity routes/history and origin fragment restoration |
-| frontend/src/host-navigation.mjs | Host sort/search/page fragment restoration and strict invalid state handling |
-| frontend/src/dns-record-detail.mjs | Exact record view, safe text, timeout/stale suppression and zero-field failures |
-| frontend/test/dns-record-detail.test.mjs | Actual READ ONLY HTTP/PostgreSQL and fresh DOM/history/detail/error verification |
-| frontend/test/host-sort-navigation.test.mjs | Actual varied-text ordering across 3 fields/2 directions, stable ties/pages, reload/history/invalid verification |
-| Docs/HOST-INVENTORY-API.md | v18 contract, reproduction commands and observed limits for respective feature |
-| Docs/HOST-INVENTORY-UI.md | v18 contract, reproduction commands and observed limits for respective feature |
-| Docs/DOMAIN-INVENTORY-API.md | v18 contract, reproduction commands and observed limits for respective feature |
-| Docs/DOMAIN-INVENTORY-UI.md | v18 contract, reproduction commands and observed limits for respective feature |
-| Docs/evidence/S0-003/verification-v18.json | Actual feature proof summary and explicit browser/delivery limits |
-| Docs/evidence/S0-003/test-v18.txt | Final65test output, including READ ONLY integration proofs |
-| Docs/evidence/S0-003/lint-v18.txt | 93module and accepted schema parity output |
-| Docs/evidence/S0-003/build-v18.txt | Actual native ESM build output |
-| Docs/evidence/S0-004/verification-v18.json | Actual feature proof summary and explicit browser/delivery limits |
-| Docs/evidence/S0-004/test-v18.txt | Final65test output, including READ ONLY integration proofs |
-| Docs/evidence/S0-004/lint-v18.txt | 93module and accepted schema parity output |
-| Docs/evidence/S0-004/build-v18.txt | Actual native ESM build output |
-| Docs/RESULT-TASK-S0-004.md | Canonical v18 prepared RESULT, original and historical AC evidence retained |
-
-| Docs/evidence/S0-004/dns-record-reload-v18.png | Actual built-in browser reload viewport proof after access recovery |
-| Docs/evidence/S0-004/dns-record-history-v18.png | Actual built-in browser history viewport proof after access recovery |
-| Docs/evidence/S0-004/dns-record-invalid-v18.png | Actual built-in browser invalid viewport proof after access recovery |
+| Docs/DOMAIN-INVENTORY-API.md | v19 API/UI contract, exact route and reproduction/limits |
+| Docs/DOMAIN-INVENTORY-UI.md | v19 API/UI contract, exact route and reproduction/limits |
+| Docs/HOST-INVENTORY-API.md | v19 API/UI contract, exact route and reproduction/limits |
+| Docs/HOST-INVENTORY-UI.md | v19 API/UI contract, exact route and reproduction/limits |
+| Docs/evidence/S0-003/build-v19.txt | Actual ESM build output |
+| Docs/evidence/S0-003/host-scoped-sort-history-v19.png | Actual built-in browser history viewport evidence |
+| Docs/evidence/S0-003/host-scoped-sort-invalid-v19.png | Actual built-in browser invalid/error viewport evidence |
+| Docs/evidence/S0-003/host-scoped-sort-reload-v19.png | Actual built-in browser reload viewport evidence |
+| Docs/evidence/S0-003/lint-v19.txt | 93module/schema parity output |
+| Docs/evidence/S0-003/test-v19.txt | Actual final full67test output |
+| Docs/evidence/S0-003/verification-v19.json | Actual proof,errors,limits and test/browser scope |
+| Docs/evidence/S0-004/build-v19.txt | Actual ESM build output |
+| Docs/evidence/S0-004/domain-sort-history-v19.png | Actual built-in browser history viewport evidence |
+| Docs/evidence/S0-004/domain-sort-invalid-v19.png | Actual built-in browser invalid/error viewport evidence |
+| Docs/evidence/S0-004/domain-sort-reload-v19.png | Actual built-in browser reload viewport evidence |
+| Docs/evidence/S0-004/lint-v19.txt | 93module/schema parity output |
+| Docs/evidence/S0-004/test-v19.txt | Actual final full67test output |
+| Docs/evidence/S0-004/verification-v19.json | Actual proof,errors,limits and test/browser scope |
+| backend/src/inventory/reader.mjs | Resource-specific strict sort/direction whitelists; hostname to fqdn mapping;NULLS LAST/id ties;safe bound filters |
+| frontend/src/domain-navigation.mjs | Strict combined Domain sort/search/flag/page route restoration and detail return |
+| frontend/src/host-navigation.mjs | Independent package/port sort route fields, callbacks and round-trip context |
+| frontend/src/inventory-detail.mjs | Scoped sort controls/queries and isolated invalid-sort list error with parent/healthy list retained |
+| frontend/src/inventory-table.mjs | Domain sort controls and server query state shared with existing Host controls |
+| frontend/test/combined-domain-navigation.test.mjs | Added READ ONLY v19 ordering/combined route/reload/history/detail/invalid assertions |
+| frontend/test/host-scoped-navigation.test.mjs | Added READ ONLY four-field/two-direction ordering, ties, independent errors and return regression |
+| Docs/RESULT-TASK-S0-004.md | Canonical v19report;original/historicalAC retained,current separate mapping |
 
 ## 5. Run and verify
 
-At repo root: `npm ci`; `node --test frontend/test/dns-record-detail.test.mjs`; `npm test`; `npm run lint`; `npm run build`. Lab and exact fragments in the respective UI guide v18 section. All data synthetic.
+Repo root:`npm ci`;`npm test`;`npm run lint`;`npm run build`. Focused:`node --test frontend/test/host-scoped-navigation.test.mjs frontend/test/combined-domain-navigation.test.mjs`. Browser labs:`node scripts/inventory-ui-lab.mjs --hosts --host-detail` and `node scripts/inventory-ui-lab.mjs --flagged`;exact route examples in respective UI guide v19section.
 
 ## 6. Tests and actual results
 
-Final65/65tests,0failed;lint93modules;schema22entities+2junctions/114FK unchanged;buildPASS. Saved outputs and verification-v18.json in Docs/evidence/S0-004. Actual loopback HTTP/PostgreSQL17.5WASM tests execute within BEGIN READ ONLY after fixture setup. Reload uses fresh Linkedom document and history uses the navigation fixture; these are distinct from the additional actual built-in browser verification now completed. Three v18 screenshot files document reload/history/invalid states.
+67/67tests,0failed;lint93modules;22entities+2junctions/114FK unchanged;buildPASS. Both actual integration tests hold BEGIN READ ONLY after synthetic fixture setup. Host four sortfields/twodirections with varying stored version values and id ties;Domain bothdirections/combined filters;freshDOM/history and actual browser checks distinct. Three browser screenshots per task plus verification-v19.json/test-v19.txt/lint-v19.txt/build-v19.txt. No nativeLinux/liveCloudflare/production test claim.
 
 ## 7. Issues and implementation decisions
 
-Initial Host test found Linkedom select value assignment and invalid sort selection errors; explicit safe option selection fixes both. Stronger final tests use varied OS/version text and verify ordering/ties and invalid page size. Version ordering follows stored text, not semantic versions. DNS detail normalizes UUID case and removes only record identity on return to preserve origin fragment. Browser creation and existing ClickUp tab access both returned `Local browser use is disabled in Work settings`; no settings changed or premature API quota retry attempted. App restart restored built-in access. Actual browser route checks then passed. ClickUp Domain upload control was retried with filechooser listener armed first;10000ms timeout observed, so fixed-commit fallback is required. No attachment success claimed.
+Actual browser found scoped Host sort lost on detail/list/detail return. Added scoped sort properties to route context;new regression checks packageversion/desc and portPID return;full67tests/lint/build rerunPASS and browser reverified. Invalid child sort is isolated before its GET and renders a clear error with controls;healthy child and parent remain. Historical invalid-page behavior unchanged. SQL identifier whitelist only;sort values never interpolated unrestricted. Versions lexical,notsemver. Module count remains93 by extending existing test modules. Lead-authorized immutable GitHub fallback permitted if attachment retry fails;record actual delivery outcome in task comment/state.
 
 ## 8. Not done, limitations and technical debt
 
-Native browser validation/screenshots completed. Actual ClickUp file attachment unavailable after timeout; no uploaded file claimed. Submission uses exact fixed-commit RESULT and evidence links per live Lead12:02 authorization. No production authentication/RBAC/scale/live Cloudflare/native Linux claim. Separate snapshots may change during inventory updates. Stored flags unchanged; no silent schema, osquery or tag algorithm changes. Historical rows retain their accepted evidence scope.
+Synthetic loopback only;no productionauth/RBAC/scale/CVE/realcredential/liveCloudflare claim. No schema/entity/tagalgorithm/osquery change. Independent page snapshots may change across inventoryupdates. SQLNULLS LAST explicit;not a claim of real infrastructure behavior. Original accepted collector AC evidence retains its historicalscope.
 
 ## 9. Blockers and decisions required
 
-No content blocker for assigned synthetic v18. Browser access restored; filechooser timeout has Lead-authorized immutable GitHub fallback. Original native gaps are retained separately. No new technical/spec/security decision or production access requested. Q01–05 untouched.
+No content blocker for assignedv19;no new PO/security/production/spec decision. Q01–05untouched. Filechooser limit has explicitly authorized fixed-commit fallback;do not falsely claim an attachment upload.
 
 ## 10. Next step and self-check
 
-Push browser-evidence/report update to existing PR1; verify liveCI. Live task comments show no v18 submission. Post one submission per task with exact commit RESULT/guide/evidence fallback; verify published UI and checkpoint. QA approval required; Dev does not merge.
+Push existing featurePR;verifycurrentheadCI;retry task upload and post exactlyone v19submission with canonicalreport/evidence or authorized exactcommitfallback. UIverify publication/checkpoint;await specificLead/QAreview. No selfaccept/merge.
 
-- [x] Exact10sections;original/historical/v18AC mapped separately.
-- [x] Exactsource/time,files,commands and actual test outputs.
-- [x] Limits and failures explicit;no false browser/upload/native claims.
-- [x] Native browser verification with actual screenshots.
-- [x] Attachment failure recorded; authorized fixed-commit fallback prepared for verified task submission.
+- [x] Exact10sections;original/historical/v19criteria separately mapped.
+- [x] Exactsource/time,allchangedfiles,commands,actualoutputs and3screenshots.
+- [x] Errors,assumptions,limits and native boundaries honest.
+- [x] No schema/entity/collector/production change;canonical versionincrement.
 
-History:v16 ACCEPT11:39;v17 submitted via verified immutable links and accepted by latest Lead12:02 comment;v18 assigned same comment, START published, implemented/tested; after restart actual browser proof completed, upload retry timed out and authorized fixed-commit fallback selected.
+History:v17accepted12:02;v18submitted13:07Domain/13:08Host thenaccepted13:11;v19assignedsameLeadcomment,STARTpublished andexecutedthiscycle.
