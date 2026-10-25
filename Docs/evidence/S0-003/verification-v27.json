@@ -1,7 +1,7 @@
 {
   "task": "TASK-S0-003",
   "version": 27,
-  "verifiedAt": "2026-10-25T16:45:25.907225+07:00",
+  "verifiedAt": "2026-10-25T16:47:08.600540+07:00",
   "tests": {
     "total": 83,
     "passed": 83,
@@ -45,7 +45,8 @@
   "failuresResolved": [
     "Initial Host assertion used old Site fixture count; separate synthetic Site-journey fixture now places Host11 on required descending page2",
     "Python console cp1258 could not print test checkmark; test exit0/log saved, lint and build subsequently completed",
-    "Browser exact-text selector matched hidden detail rows; scoped to actual record panel and verified final state"
+    "Browser exact-text selector matched hidden detail rows; scoped to actual record panel and verified final state",
+    "Site picker return now bookmarks selected Site via site_resume and retains Host page on reopening same Site; strengthened regression and actual browser verified after loading updated module"
   ],
   "combined": "Site picker searchSite/name-desc/page2 + Site Hosts searchhost-/hostname-desc/page2 + Host11 packages searchpackage/version-desc/page2 + ports searchsynthetic/pid-desc/page2",
   "rows": {
