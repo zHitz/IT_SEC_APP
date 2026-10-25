@@ -8,7 +8,9 @@ export function parseHostRoute(location){
  const raw=params.get('search')??'';const search=raw.length<=200&&!/[\u0000-\u001f\u007f]/.test(raw)?raw.trim():'';
  const size=integer('page_size',25,100),pageSize=[10,25,50,100].includes(size)?size:25;
  const id=params.has('host')?(params.get('host')??''):params.has('detail')?(params.get('detail')??''):null;
- return{id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
+ const unassigned=['unassigned','unassigned_search','unassigned_page'].some(k=>params.has(k)),unassignedSearch=params.get('unassigned_search')??'',unassignedPage=params.has('unassigned_page')?integer('unassigned_page',0,100000):1;
+ const unassignedInvalid=unassigned&&(params.getAll('unassigned').length!==1||params.get('unassigned')!=='1'||params.getAll('unassigned_search').length>1||params.getAll('unassigned_page').length>1||!unassignedPage||unassignedSearch.length>200||/[\u0000-\u001f\u007f]/.test(unassignedSearch));
+ return{unassigned,unassignedSearch,unassignedPage,unassignedInvalid,id:id===null?null:id.toLowerCase(),context:{resource:'hosts',search,page:integer('page',1,100000),pageSize}};
 }
 export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
@@ -24,9 +26,9 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
   return changed?core.list.reload():Promise.resolve();
  }
  async function sync(){
-  siteView?.hide();portView?.hide();packageView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
+  const key=nav.location?.hash??'';if(lastRoute===key)return;siteView?.hide();portView?.hide();packageView?.hide();lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,hostname:'Host details',os:null,os_version:null,first_seen_at:null,last_seen_at:null},{recordHistory:false});
-  await pending;
+  await pending;if(next.unassigned)await siteView.restoreUnassigned(next.unassignedSearch,next.unassignedPage,next.unassignedInvalid);
  }
  function navigate(id){
   const ctx=context();nav.history?.replaceState({atlasList:ctx},'',nav.location.pathname+fragment(null,ctx));
@@ -42,7 +44,9 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  get('domain-search').value=route.context.search;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
  const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
  portView=mountPortSearch(document,{fetcher});
- siteView=mountSiteHosts(document,{fetcher});
+ function unassignedNavigate(search,page){const parsed=parseHostRoute(nav.location),params=new URLSearchParams(fragment(parsed.id,context()).slice(1));params.set('unassigned','1');params.set('unassigned_search',search);params.set('unassigned_page',String(page));nav.history?.pushState(null,'',nav.location.pathname+'#'+params);lastRoute=null;return routePending=sync();}
+ function unassignedBack(){const parsed=parseHostRoute(nav.location);nav.history?.pushState(null,'',nav.location.pathname+fragment(parsed.id,context()));lastRoute=null;return routePending=sync();}
+ siteView=mountSiteHosts(document,{fetcher,onUnassignedNavigate:unassignedNavigate,onUnassignedBack:unassignedBack});
  const ready=Promise.all([core.ready,sync()]);
  return{ready,core,packageView,portView,siteView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);siteView.destroy();portView.destroy();packageView.destroy();core.destroy();}};
 }

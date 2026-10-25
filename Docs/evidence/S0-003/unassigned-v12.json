@@ -1,0 +1,25 @@
+{
+  "scope": "synthetic local unassigned Host routes",
+  "actualHttpPostgreSQL": "17.5WASM",
+  "nullSiteHosts": 24,
+  "parentPages": 3,
+  "search": "host-11 ->1",
+  "freshDomReload": true,
+  "realBrowserReloadBackForward": true,
+  "invalidRoutes": 6,
+  "invalidRows": 0,
+  "osVersion": "Synthetic Linux12.3",
+  "originListDetailReturn": true,
+  "checks": {
+    "tests": "53/53",
+    "lintModules": 80,
+    "schema": "22+2/114FK unchanged",
+    "build": "PASS"
+  },
+  "limits": [
+    "nativeAC1/3/4 unverified",
+    "no production/RBAC/scale/CVE claim"
+  ],
+  "siteMutations": 0,
+  "cloudflareRequests": 0
+}

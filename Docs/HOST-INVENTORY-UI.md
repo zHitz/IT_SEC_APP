@@ -63,3 +63,12 @@ Filter hosts by Site from full list/detail. Paged Site buttons avoid silently tr
 ## v11 Unassigned Hosts
 
 View unassigned hosts from Host list/detail reuses Site panel in null-membership mode: hides Site picker, shows exact null-Site Hosts with OS/version, hostname search/count and10-row paging. Assigned Hosts excluded. Return restores original full list/detail and context. Empty/error clears rows. No Site mutation. Temporary panel reload returns original route. `node scripts/inventory-ui-lab.mjs --hosts` has24null-Site Hosts/3pages and2assigned seed Hosts; hostname host-11 yields1. No nativeLinux/CVE/production claim.
+
+
+### v12: unassigned Host links and history
+
+In the `--hosts` local synthetic lab, open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&unassigned=1&unassigned_search=host-&unassigned_page=2`. Reload restores the unassigned view, hostname search and parent page. Search/page changes push history; browser Back/Forward restores them. Return preserves origin list/detail and full-list search/page/size. OS/version remain declared inventory, not native verification.
+
+Require unique unassigned=1. Optional unassigned_search is unique, <=200 characters without controls; unassigned_page is unique integer1..100000. Invalid marker, duplicates, controls or invalid page show explicit error and zero rows. Site picker remains a separate temporary view; no Site changes. Existing accepted GET site_assigned=false stays exact site_id IS NULL.
+
+Reproduce: `node --test frontend/test/unassigned-navigation.test.mjs frontend/test/unassigned-hosts.test.mjs`; full `npm test`, `npm run lint`, `npm run build`. No production or credential inputs.
