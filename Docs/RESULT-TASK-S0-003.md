@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: v33 Independent filtered tabs and saved-URL restore
+# Result — TASK-S0-003: v34 Duplicate/opener isolation (partial native evidence)
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v33 |
+| Result version | v34 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; live Lead22:01 ACCEPTv32 and V33-1..4 assignment |
+| Spec version followed | SRS v1.0; TASK-S0-003; live Lead22:32 ACCEPTv33 and V34-1..4 assignment |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T22:21:46.869398+07:00 |
-| Source/evidence commit | 47a97f915a72bf33791ab7444f4e104b3cbf1481 |
+| Prepared at | 2026-10-25T23:08:12.493811+07:00 |
+| Source/evidence commit | 396f985ab8cd013ba45d3da498ac7edb91bc69a5 |
 
 ## 1. Summary
 
-Independent filtered tab pairs preserve distinct Host and Domain journeys while the other tab navigates. All four complete saved URLs restore into fresh sessions and survive two exact cross-view round trips. Invalid filtered destinations clear only affected rows and repair explicitly. Full101/101 tests, lint96, unchanged schema and build pass. Native AC1/3/4 remain unverified; accepted actual 600010ms outage evidence is retained without rerun. Overall PARTIAL.
+Added exactly three integration tests modeling duplicate/opener copied-store isolation for all four filtered journeys. Full104/104, lint96, unchanged schema and build pass. Added opt-in lab-only real opener controls and corrected a stale-fragment link. Actual Chrome screenshots are retained, but the final native acceptance trace is incomplete after browser safety/user-input interruptions. Overall PARTIAL; modeled evidence is not native proof. Original native Host AC1/3/4 remain unverified; accepted actual600010ms outage evidence is retained without rerun.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -207,63 +208,73 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V33-3 | Fresh invalid destination after switch, repair and closed-session defaults | PASS: V33_INVALID_FRESH, four invalid sorts, zero affected cells, retained healthy main/source exact and explicit repair; V33_CLOSED_DEFAULT. Browser independently verifies four paths, 125 healthy Host cells / 150 Domain cells, and new no-fragment tab defaults in both views. |
 | V33-4 | Exactly three new tests, complete checks and fresh artifacts | PASS: full 101/101, zero failures; lint96, schema22+2/114 FK unchanged, build PASS. verification-v33.json, test/lint/build-v33.txt and three new actual screenshots attached with this RESULT. |
 
+
+| V34-1 | Native Duplicate restores complete filtered journey and isolates original bookmark | PARTIAL: V34_DUPLICATE_MODEL passes for all4journeys with copied initial stores in separate Maps and exact parent state. Actual native Duplicate screenshots retained, but final all-journey parent-bookmark cross-view trace is incomplete. No full native-clone claim. |
+| V34-2 | Real opener child restores its own URL and closing preserves opener | PARTIAL: V34_OPENER_MODEL passes explicit child URL precedence for all4journeys. Actual screenshots show opener=true. Lab stale-hash link corrected to refresh on click. Final corrected Flagged-record opener and all-parent saved-bookmark checks remain unverified. |
+| V34-3 | Invalid duplicate clears affected rows only, repairs explicitly, parent unaffected | PARTIAL: V34_INVALID_CLONE passes all4journeys with0affected rows, retained healthy main, explicit repair and exact unchanged parent store. Actual error screenshots retained; complete final native traces remain pending. |
+| V34-4 | Exactly3newtests, checks and artifacts | PASS for requested deliverables: full104/104pass,0fail; lint96; unchanged22+2/114FK; buildPASS; verification-v34.json,3actuallogs and3actualscreenshots per task. These outputs do not remove V34-1..3 native gaps. |
+
 ## 3. Work completed
 
-Added exactly three tests in the existing view-bookmarks module, using actual HTTP/PostgreSQL READ ONLY after synthetic setup. Verified independent browser tabs, fresh saved URLs, invalid destinations and new-tab defaults. Existing runtime behavior meets v33; no runtime/API/schema/style changes. One START per assigned task was published and verified at22:14.
+Implemented three tests in the existing view-bookmarks module, using actual HTTP/PostgreSQL READ ONLY after synthetic setup. Separate Maps copy an initial snapshot to model session cloning. Child explicit URLs win over inherited bookmarks; original store/hash stay unchanged after child navigation/teardown. The lab flag --opener-tabs injects a synthetic control and external script only in that opt-in lab. Production frontend/API/schema/style/collectors are unchanged. One START per task was verified22:44; no duplicate START during resume.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/test/view-bookmarks.test.mjs | Three tests: independent filtered pairs, four fresh saved URLs, four fresh invalid destinations plus new-session defaults. Helpers save via actual navigation action and assert scoped row counts. |
-| Docs/HOST-INVENTORY-UI.md | v33 reproduction for Site/Unassigned filtered tabs and scoped page2. |
-| Docs/DOMAIN-INVENTORY-UI.md | v33 reproduction for Flagged Domain/record tabs, child DNS and Host origins. |
-| Docs/evidence/S0-003/verification-v33.json | Actual browser URLs/checks, automated outcomes and explicit storage/native limits. |
-| Docs/evidence/S0-003/test-v33.txt | Final actual101pass/0fail log and V33 proof markers. |
-| Docs/evidence/S0-003/lint-v33.txt | Actual96module and22+2/114FK checks. |
-| Docs/evidence/S0-003/build-v33.txt | Actual backend/frontend/migration build output. |
-| Docs/evidence/S0-003/host-independent-tabs-v33.png | Actual settled filtered view after independent-tab round trips. |
-| Docs/evidence/S0-003/host-fresh-url-v33.png | Actual settled detail restored from complete saved URL. |
-| Docs/evidence/S0-003/host-fresh-invalid-v33.png | Actual invalid filtered destination after switch, showing error without partial rows. |
-| Docs/evidence/S0-004/verification-v33.json | Actual browser URLs/checks, automated outcomes and explicit storage/native limits. |
-| Docs/evidence/S0-004/test-v33.txt | Final actual101pass/0fail log and V33 proof markers. |
-| Docs/evidence/S0-004/lint-v33.txt | Actual96module and22+2/114FK checks. |
-| Docs/evidence/S0-004/build-v33.txt | Actual backend/frontend/migration build output. |
-| Docs/evidence/S0-004/domain-independent-tabs-v33.png | Actual settled filtered view after independent-tab round trips. |
-| Docs/evidence/S0-004/domain-fresh-url-v33.png | Actual settled detail restored from complete saved URL. |
-| Docs/evidence/S0-004/domain-fresh-invalid-v33.png | Actual invalid filtered destination after switch, showing error without partial rows. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v33 report with exact ten sections and separate historical/current AC rows. |
+| frontend/test/view-bookmarks.test.mjs | Exactly3newtests: copied-store duplicate restoration/isolation; opener-model explicit URL precedence/close; invalid cloned destination0rows/repair/unchanged parent. Added clone34 helper with distinct-Map assertion. |
+| scripts/inventory-ui-lab.mjs | Opt-in openerFixtures/--opener-tabs wraps only lab responses with a visible opener-status panel and target=_blank rel=opener link. href updates at click time; panel is scoped to main. No production server change. |
+| Docs/HOST-INVENTORY-UI.md | v34 native reproduction and model/native distinction; remaining checks. |
+| Docs/DOMAIN-INVENTORY-UI.md | Same for Flagged Domain/record journeys, with incomplete opener case explicit. |
+| Docs/evidence/S0-003/verification-v34.json | Actual104pass/lint/schema/build outputs, partial native scope, remaining checks and screenshot hashes. |
+| Docs/evidence/S0-003/test-v34.txt | Final actual104pass/0fail log with V34 proof markers. |
+| Docs/evidence/S0-003/lint-v34.txt | Actual96module syntax/safety and unchanged22+2/114FK output. |
+| Docs/evidence/S0-003/build-v34.txt | Actual backend/frontend/migration build output. |
+| Docs/evidence/S0-003/host-duplicate-v34.png | Actual Chrome duplicate with restored synthetic detail; partial evidence only. |
+| Docs/evidence/S0-003/host-opener-v34.png | Actual Chrome child showing opener=true; partial evidence only. |
+| Docs/evidence/S0-003/host-invalid-duplicate-v34.png | Actual invalid synthetic child route/error; partial evidence only. |
+| Docs/evidence/S0-004/verification-v34.json | Actual104pass/lint/schema/build outputs, partial native scope, remaining checks and screenshot hashes. |
+| Docs/evidence/S0-004/test-v34.txt | Final actual104pass/0fail log with V34 proof markers. |
+| Docs/evidence/S0-004/lint-v34.txt | Actual96module syntax/safety and unchanged22+2/114FK output. |
+| Docs/evidence/S0-004/build-v34.txt | Actual backend/frontend/migration build output. |
+| Docs/evidence/S0-004/domain-duplicate-v34.png | Actual Chrome duplicate with restored synthetic detail; partial evidence only. |
+| Docs/evidence/S0-004/domain-opener-v34.png | Actual Chrome child showing opener=true; partial evidence only. |
+| Docs/evidence/S0-004/domain-invalid-duplicate-v34.png | Actual invalid synthetic child route/error; partial evidence only. |
+| Docs/RESULT-TASK-S0-003.md | Canonical ten-section v34 PARTIAL report; preserve prior AC/history and append distinct V34 rows. |
 
 ## 5. Run and verify
 
-At repository root: `npm ci`; `npm test`; `npm run lint`; `npm run build`. Focused reproduction: `node --test frontend/test/view-bookmarks.test.mjs` (18 tests total; full-suite execution includes all18). Lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`.
+Repository root: `npm ci`; `npm test`; `npm run lint`; `npm run build`. Focused: `node --test frontend/test/view-bookmarks.test.mjs` (21tests total, exactly3newv34; all included in full suite). Lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged --opener-tabs`.
 
-Use filtered32 routes in the test, open Site Host11/Flagged Domain in tabA and Unassigned Host20/Flagged record in tabB. Perform two sidebar round trips each, compare complete URL strings and scoped rows. Save four URLs, close and independently open each without opener; establish opposite view and repeat two exact trips. For each filtered list URL, set site_sort/unassigned_sort/flagged_sort/record_sort=bad in a fresh tab; switch to exact opposite source and return, require0affected cells with healthy main retained, return to exact source, and repair using explicit valid URL. Close and open no-fragment Host then Domain: defaults.
+For Site Host11, Unassigned Host20, Flagged Domain/Sample04 and exact Flagged record, save complete filtered URLs. Use actual Chrome tab context menu > Duplicate. Compare complete URL and detail; navigate only child, return to original and verify original bookmark via a cross-view round trip. In duplicate, open invalid site_sort/unassigned_sort/flagged_sort/record_sort, require0affected rows and healthy sibling, repair by explicit valid URL, then check original again. Use the lab target=_blank rel=opener link; require visible opener=true and child own URL, close child, recheck original bookmark. Repeat final checks after any lab correction. Remaining native steps are explicitly pending, not claimed executed.
 
 ## 6. Tests and actual results
 
-Final `npm test`:101tests,101pass,0fail. Exactly3newtests. Lint PASS96modules. Schema PASS22entities+2junctions/114nativeFK unchanged. Build PASS backend, frontend and migration assets. V33_TAB_ISOLATION covers two independent stores and two pairs; V33_FRESH_URL covers4journeys with initial0Mapentries/two trips; V33_INVALID_FRESH covers4sort errors with0affected rows/healthy sibling/exact source/repair; V33_CLOSED_DEFAULT covers new-session defaults. Actual built-in browser verifies distinct tab URLs, all4fresh URLs/two trips, all4invalid paths, scoped Host6+6rows, Sample04 DNS5rows and closed-tab defaults. Three actual screenshots per task. Cloudflare0requests.
+Final retained npm test:104tests,104pass,0fail. Exactly3newtests. Lint PASS96modules. Schema PASS22entities+2junctions/114nativeFK unchanged. Build PASS backend/frontend/migration assets. V34_DUPLICATE_MODEL, V34_OPENER_MODEL and V34_INVALID_CLONE each cover all4filtered journeys against actual HTTP/PostgreSQL; copied initial store semantics are modeled with separate Maps. Three real Chrome screenshots per task have SHA256 entries in verification-v34.json. Native screenshot observations are partial; they are not a complete all-journey trace. Cloudflare0requests. Full suite/lint/build rerun after the lab-link lifecycle fix passed.
 
 ## 7. Issues and implementation decisions
 
-Initial targeted/full runs exposed one test-harness failure: detail33 destroyed its document before a real nav click could save the latest detail bookmark. Corrected helper to exercise the actual leave action before teardown, matching browser behavior. Final full suite101/101 passes. No runtime fix was needed. Initial failure is disclosed here; final retained logs are the successful rerun. Zero initial storage entries are asserted in fresh Map-backed integration stores. Actual browser evidence uses independent tabs without opener and visible DOM/URL checks, not direct sessionStorage enumeration. No browser-storage-count claim is made.
+In-app browser exposes no native Duplicate capability; clicking the opener link created no child tab there. Used a dedicated native Chrome window and observed actual Duplicate and real opener=true. Found the initial lab-only opener link retained the initial URL after hash-only navigation; fixed href refresh on click and moved the panel into main. This was a fixture issue, not an inventory runtime defect. Repeated full checks after correction.
+
+Prior turn Computer Use stopped because it could not determine the Windows browser URL confidently enough to enforce policy. On this resume, native address-field input reported user input in that window. No further native actions were taken; no policy weakening or bypass. Preserve partial actual screenshots and label unverified acceptance evidence honestly. Windows AX timing/position issues were not treated as app regressions. A checkpoint print encountered cp1258 encoding failure after the checkpoint write; this was console-only and not a test failure.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic/local only; no production/RBAC/scale/CVE/native Linux/live Cloudflare proof. Existing storage denial/clearing and fragment16384 limits remain. Independent tabs without opener verified; duplicate/opener storage cloning excluded. Healthy main sibling rows remain in DOM but are hidden while filtered panel is active; no simultaneous visibility claim. Native AC1/3/4 remain unverified; accepted actual 600010ms outage evidence is retained without rerun. Overall PARTIAL. Exact uploaded attachment IDs and published comment fingerprints are recorded in STATE after submission.
+Final native duplicate/opener/invalid traces for all4journeys remain incomplete, including corrected Flagged-record opener and original saved bookmark verified through cross-view return after child closure. Integration Map snapshots do not prove browser storage cloning. Browser sessionStorage is not enumerated. Domain screenshots include earlier partial lab observations; Site captures include the corrected lab. Synthetic/local only; no production/RBAC/scale/CVE/live Cloudflare/native Linux proof. Original native Host AC1/3/4 remain unverified; accepted actual600010ms outage evidence is retained without rerun. Existing storage denial/clearing and fragment-length limits remain. Healthy sibling rows may be retained hidden in DOM; no simultaneous-visibility claim.
 
 ## 9. Blockers and decisions required
 
-No new hard blocker or missing-input/spec/security/production decision. Q-01..Q-05 untouched. QA approval required before merge; Dev does not merge. Routine comments and RESULT/evidence uploads remain within the exact assigned tasks.
+Native UI verification currently limited by browser-control safety/user-input interruption. No spec/AC change requested or assumed; no new production/security/credential access needed. Continue remaining browser evidence when that surface is available. Do not treat routine fixture issues as Lead blockers. Q-01..Q-05 untouched. QA approval remains required before merge; Dev does not merge.
 
 ## 10. Next step and self-check
 
-Push assigned feature branch, update existing PR1, verify live head/CI, attach RESULT plus seven evidence files per task, and publish exactly one [DEV][SUBMISSION] per task after checking duplicates. Then checkpoint actual attachments/comment fingerprints and follow concrete Lead/QA work.
+Push assigned feature branch/update existing PR1; verify live head/CI. Submit this honest PARTIAL RESULT with7evidence files per task and exactly1submission comment after duplicate check. Record actual uploaded IDs and published fingerprints in STATE. Next executable work: resume final corrected-lab native traces for all4journeys and original saved-bookmark checks; resubmit an incremented report only with new evidence. Do not claim DONE or stop permanently at modeled evidence.
 
-- [x] Exact ten numbered sections; original and historical AC retained; V33 rows separate.
-- [x] Exact source/time, specific files, commands and actual outputs.
-- [x] Exactly3newtests;101fullpass;lint96;schema unchanged;buildPASS;3freshscreenshots per task.
-- [x] Initial harness failure and model/browser/storage/native limits disclosed.
-- [x] No self-accept, status mutation, production access or merge.
+- [x] Exact ten sections; original/history/current AC separate.
+- [x] Exact source/time, specific files, reproduction and actual outputs.
+- [x] Exactly3newtests;104pass;lint96;schema unchanged;buildPASS;3actualscreenshots per task.
+- [x] Model/native distinction, fixture correction, interruption and remaining evidence explicit.
+- [ ] Complete all native V34-1..3 traces and parent-bookmark verification.
+- [x] No selfaccept/status change/production access/merge.
 
-History: v32 accepted by live Lead22:01; v33 assigned in that same comment. One v33 START per task verified22:14. Source/evidence commit is shown above; report follows in a separate commit.
+History: v33 accepted by live Lead22:32; same comment assigned v34. One v34 START per task22:44. v34 implementation resumed after interruption; no v34 submission existed at the start of this run. Source/evidence commit is above; this report follows in a separate commit.
