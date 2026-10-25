@@ -1,20 +1,21 @@
-# Result — TASK-S0-004: Flagged child DNS route persistence
+# Result — TASK-S0-004: Domain detail DNS navigation
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v13 |
+| Result version | v14 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; Lead09:34 ACCEPTv12 and assignv13 |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead10:06 ACCEPTv13 and assignv14 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T09:51:54.346153+07:00 |
-| Source/evidence commit | 603e74e664d6e6cad9b291f5c50a31c3396f18e9 |
+| Submitted at | 2026-10-25T10:20:50.842997+07:00 |
+| Source/evidence commit | 89c9c536c9a04908be9bfaa18c931659a233bb82 |
 
 ## 1. Summary
 
-DONE in approved synthetic v13 scope. Flagged owner/child DNS page persist in fragments, reload and Back/Forward. Invalid/missing/offpage owner and out-of-range child pages clear all cards. Full55/55tests,lint82/schema22+2/114FK unchanged,buildPASS.
+DONE in approved synthetic v14 scope. Domain identity/DNS page direct links restore after reload/Back/Forward; malformed/duplicate/out-of-range page errors clear DNS/provenance. Existing fields and list context retained. Full57/57tests,lint84/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -80,56 +81,62 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V13-3 | Invalid state explicit/no partial | PASS: 6child invalid cases;0rows/cards; real browser error screenshot. |
 | V13-4 | Fields/style/boundaries and complete checks | PASS:55tests,lint82/schema22+2/114FK unchanged,build; existing OS/version or ownerDNS fields retained. |
 
+
+| V14-1 | Direct link and reload | PASS: sample04,31DNS/page2/6rows/provenance through actual HTTP/PostgreSQL freshDOM and real browser. |
+| V14-2 | Back/Forward and returns | PASS: history fixture and real browser replay pages/search; existing return regressions pass. |
+| V14-3 | Invalid state/no partial | PASS: 4detailDNS invalid cases; zero cells; real browser error screenshot. |
+| V14-4 | Fields/style/docs/full checks/boundaries | PASS:57tests,84modules,22+2/114FK unchanged,build; exact source header. |
+
 ## 3. Work completed
 
-Added flagged_owner/child_page validation/history callbacks and exact-owner restore. Existing parent flagged search/page remains; changing parent context clears child selection. Optional fixture supplies12DNS forsample04 across2pages.
+DONE in approved synthetic v14 scope. Domain identity/DNS page direct links restore after reload/Back/Forward; malformed/duplicate/out-of-range page errors clear DNS/provenance. Existing fields and list context retained. Existing read-only exact endpoints reused; no backend/schema changes.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/domain-navigation.mjs | Child UUID/page parse, validation and history encoding |
-| frontend/src/flagged-domains.mjs | Route child paging, owner membership and page-bound validation, fail-closed cards |
-| frontend/test/flagged-child-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalid cases |
-| scripts/inventory-ui-lab.mjs | Optional11extra synthetic DNS;12sample04records/2childpages |
-| Docs/DOMAIN-INVENTORY-UI.md | v13 route contract/reproduction/limits |
-| Docs/evidence/S0-004/child-v13.json | Actual proof and limits |
-| Docs/evidence/S0-004/test-v13.txt | Full55test output |
-| Docs/evidence/S0-004/lint-v13.txt | 82module/schema parity output |
-| Docs/evidence/S0-004/build-v13.txt | Successful build |
-| Docs/evidence/S0-004/child-reload-v13.png | Real browser reload evidence |
-| Docs/evidence/S0-004/child-history-v13.png | Real browser history evidence |
-| Docs/evidence/S0-004/child-invalid-v13.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-004.md | Canonical v13 tensection report |
+| frontend/src/domain-navigation.mjs | Parse detail_dns_page, validation and history callbacks |
+| frontend/src/inventory-detail.mjs | Restore DNS page, callback paging, out-of-range validation/error clearing |
+| frontend/test/detail-dns-navigation.test.mjs | Actual READ ONLY direct/reload/history,provenance and4invalidcases |
+| scripts/inventory-ui-lab.mjs | Optional30extra syntheticDNS for31records/2detailpages |
+| Docs/DOMAIN-INVENTORY-UI.md | v14 contract/reproduction/limits |
+| Docs/evidence/S0-004/detail-v14.json | Proof and honest limits |
+| Docs/evidence/S0-004/test-v14.txt | Full57test output |
+| Docs/evidence/S0-004/lint-v14.txt | 84module/schema parity |
+| Docs/evidence/S0-004/build-v14.txt | Successful build |
+| Docs/evidence/S0-004/detail-reload-v14.png | Real browser reload evidence |
+| Docs/evidence/S0-004/detail-history-v14.png | Real browser history evidence |
+| Docs/evidence/S0-004/detail-invalid-v14.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-004.md | Canonical v14 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --flagged-child`; exact fragment in `Docs/DOMAIN-INVENTORY-UI.md` v13 section. Focused test `node --test frontend/test/flagged-child-navigation.test.mjs frontend/test/flagged-domains.test.mjs`. Use synthetic local origin only.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --detail-dns`; exact direct fragment in `Docs/DOMAIN-INVENTORY-UI.md` v14. Focused `node --test frontend/test/detail-dns-navigation.test.mjs`. Synthetic loopback only.
 
 ## 6. Tests and actual results
 
-55/55tests pass,0failures in final full suite; lint82modules,22entities+2junctions/114FK parity; buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM reload/history and real browser reload/Back/Forward/error screenshots. sample04 flagged owner12DNS/2pages,child2 has2rows;6invalid cases. No failed child-task tests. Previous inventory/collector/return regressions pass.0Cloudflare requests; no production data.
+57/57tests,0failures final suite; lint84modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY, freshDOM reload/history and real browser verify identity/search/page/reload/Back/Forward/errors. Domain31DNS/page2has6rows;provenance cloudflare/confirmed/timestamps, DNS fields preserved;4invalidcases. No failed Domain task tests. Existing owner-scoping/return/collector regressions green.0Cloudflare requests.
 
 ## 7. Issues and implementation decisions
 
-Encoded owner must occur on encoded flagged parent page; this verifies existing accepted tag membership without scanning unrelated pages or adding backend paths. One selected child per fragment; other owners defaultpage1. Parent changes clear child selection. Malformed/duplicate params fail before panel requests; missing/offpage owner and out-of-range actual page fail closed.
+detail_dns_page is distinct from value-search dns_page and flagged child_page. Positive unique page requires Domain identity; conflicting search/flagged routes rejected. Actual record page bounds verified after exact-owner GET. Optional fixture30extraDNS only, default fixture unchanged.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/liveCloudflare/native/scale/RBAC claim. Owner must belong to encoded parent page; one child selection encoded. Separate parent/child snapshots may change concurrently; fan-out<=10. No schema/entity/osquery/flagalgorithm changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+No production/token/liveCloudflare/native/scale/RBAC claim. Separate parent/child snapshots may change under updates. No schema/entity/flagalgorithm/osquery changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for assigned synthetic v13. No new PO/security/spec/credential decision; Q01–05 untouched.
+No hard blocker for synthetic v14; no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push to existing QA PR, attach canonical RESULT/guide/proof/logs/screenshots once and await concrete review; execute next valid Lead assignment. Never self-accept/merge.
+Push to existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review and execute next valid assignment. Never self-accept/merge.
 
-- [x] Exact10sections; original/historical/new AC separately mapped.
-- [x] Exact current source/time/Summary and each changed file.
-- [x] Actual commands/logs/browser evidence; errors/assumptions/limits disclosed.
-- [x] Local/read-only/no-secret/native boundaries retained.
+- [x] Exact10sections; original/historical/newAC separately mapped.
+- [x] Exact current source/time/Summary; all changed files and reproduction commands.
+- [x] Actual logs/browser proof, failures/decisions/limits disclosed.
+- [x] Local/read-only/no-secret/native boundaries preserved.
 - [x] Canonical increment; prior reports/history retained in Git/ClickUp.
 
-History: v12 ACCEPT live 09:34; v13 assigned in same comment and completed in this execution cycle.
+History: v13 ACCEPT live10:06;v14assigned same comment and completed this cycle.

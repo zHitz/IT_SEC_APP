@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: Site-picker route persistence
+# Result — TASK-S0-003: Package-to-hosts navigation
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v13 |
+| Result version | v14 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead09:46 ACCEPTv12 and assignv13 |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead10:06 ACCEPTv13 and assignv14 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T09:51:54.346153+07:00 |
-| Source/evidence commit | 603e74e664d6e6cad9b291f5c50a31c3396f18e9 |
+| Submitted at | 2026-10-25T10:20:50.842997+07:00 |
+| Source/evidence commit | 89c9c536c9a04908be9bfaa18c931659a233bb82 |
 
 ## 1. Summary
 
-PARTIAL overall; nativeLinux/osquery AC1/3/4 remain unverified. All assigned v13 Site-picker navigation requirements complete. Selected Site/picker page/hostname search/Host page persist across direct link, reload and Back/Forward; invalid state clears rows. Full55/55tests,lint82/schema22+2/114FK unchanged,buildPASS.
+PARTIAL overall; nativeAC1/3/4 unverified. Assigned v14 package identity/search/page routes, reload/history/error handling complete. Host/version fields and origin returns retained. Full57/57tests,lint84/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 
@@ -82,57 +83,62 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V13-3 | Invalid state explicit/no partial | PASS: 7Site invalid cases;0rows/cards; real browser error screenshot. |
 | V13-4 | Fields/style/boundaries and complete checks | PASS:55tests,lint82/schema22+2/114FK unchanged,build; existing OS/version or ownerDNS fields retained. |
 
+
+| V14-1 | Direct link and reload | PASS: shared-runtime/deb,2.0search,12records/page2/2rows through actual HTTP/PostgreSQL freshDOM and real browser. |
+| V14-2 | Back/Forward and returns | PASS: history fixture and real browser replay pages/search; existing return regressions pass. |
+| V14-3 | Invalid state/no partial | PASS: 6package invalid cases; zero cells; real browser error screenshot. |
+| V14-4 | Fields/style/docs/full checks/boundaries | PASS:57tests,84modules,22+2/114FK unchanged,build; exact source header. |
+
 ## 3. Work completed
 
-Implemented strict Site route parse/history, asynchronous selected-Site resolution using accepted GET, picker/Host restoration and origin list/detail return. Existing unassigned routes and Site FK behavior preserved.
+PARTIAL overall; nativeAC1/3/4 unverified. Assigned v14 package identity/search/page routes, reload/history/error handling complete. Host/version fields and origin returns retained. Existing read-only exact endpoints reused; no backend/schema changes.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Site route parser, invalid state, navigation callbacks and restore |
-| frontend/src/site-hosts.mjs | Selected Site resolution, picker/search/Host pages, route callbacks,8second abort/stale guards and errors |
-| frontend/test/site-hosts.test.mjs | Adapt existing Site/Host/failure/both-return regression to history |
-| frontend/test/site-navigation.test.mjs | Actual READ ONLY direct/reload/history/7invalid route cases |
-| scripts/inventory-ui-lab.mjs | Optional11extra synthetic Sites for13Site/2page fixture |
-| Docs/HOST-INVENTORY-UI.md | v13 route contract/reproduction/limits |
-| Docs/evidence/S0-003/site-v13.json | Actual proof and limits |
-| Docs/evidence/S0-003/test-v13.txt | Full55test output |
-| Docs/evidence/S0-003/lint-v13.txt | 82module/schema parity output |
-| Docs/evidence/S0-003/build-v13.txt | Successful build |
-| Docs/evidence/S0-003/site-reload-v13.png | Real browser reload evidence |
-| Docs/evidence/S0-003/site-history-v13.png | Real browser history evidence |
-| Docs/evidence/S0-003/site-invalid-v13.png | Real browser invalid evidence |
-| Docs/RESULT-TASK-S0-003.md | Canonical v13 tensection report |
+| frontend/src/host-navigation.mjs | Package fragment parse/validation/history/return |
+| frontend/src/package-hosts.mjs | Identity resolution, restore/search/page callbacks, strict response scope and out-of-range clearing |
+| frontend/test/package-hosts.test.mjs | Adapt existing package/return regression to real history |
+| frontend/test/package-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalidcases |
+| Docs/HOST-INVENTORY-UI.md | v14 contract/reproduction/limits |
+| Docs/evidence/S0-003/package-v14.json | Proof and honest limits |
+| Docs/evidence/S0-003/test-v14.txt | Full57test output |
+| Docs/evidence/S0-003/lint-v14.txt | 84module/schema parity |
+| Docs/evidence/S0-003/build-v14.txt | Successful build |
+| Docs/evidence/S0-003/package-reload-v14.png | Real browser reload evidence |
+| Docs/evidence/S0-003/package-history-v14.png | Real browser history evidence |
+| Docs/evidence/S0-003/package-invalid-v14.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-003.md | Canonical v14 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --sites --hosts`; exact fragment in `Docs/HOST-INVENTORY-UI.md` v13 section. Focused test `node --test frontend/test/site-navigation.test.mjs frontend/test/site-hosts.test.mjs`. Use synthetic local origin only.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --packages --hosts`; exact direct fragment in `Docs/HOST-INVENTORY-UI.md` v14. Focused `node --test frontend/test/package-navigation.test.mjs frontend/test/package-hosts.test.mjs`. Synthetic loopback only.
 
 ## 6. Tests and actual results
 
-55/55tests pass,0failures in final full suite; lint82modules,22entities+2junctions/114FK parity; buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM reload/history and real browser reload/Back/Forward/error screenshots. 13Sites/2pickerpages,SampleSite16Hosts/2pages,host11search1;7invalid cases. Initial test expectation correction described below. Previous inventory/collector/return regressions pass.0Cloudflare requests; no production data.
+57/57tests,0failures final suite; lint84modules;22entities+2junctions/114FK unchanged;buildPASS. Actual HTTP/PostgreSQL17.5WASM BEGIN READ ONLY, freshDOM reload/history and real browser verify identity/search/page/reload/Back/Forward/errors. Package2versions/24unfiltered/12search2.0/page2has2rows;6invalidcases. Initial test expectation corrected as below. Existing owner-scoping/return/collector regressions green.0Cloudflare requests.
 
 ## 7. Issues and implementation decisions
 
-First Site route assertion expected14 host- matches; actual response correctly includes2sample-host seed names,16total. Corrected assertion and reran focused/full suite. Selected Site can be outside picker page; bounded100x100 GET lookup,8second timeout, abort/stale guards prevent obsolete route display. No new backend endpoint.
+Initial invalid test used unfiltered page3, which is valid for24records. Corrected to page4, reran focused/full checks. UUID identifies package row; accepted endpoint resolves exact name/ecosystem across host versions. Search keeps existing package-name/version semantics. No backend change.
 
 ## 8. Not done, limitations and technical debt
 
-Native AC1/3/4 unverified;600010ms accepted evidence retained/not rerun. Lookup capped10000Sites/8seconds; larger/unavailable/missing Site errors explicitly. No production/token/RBAC/scale/CVE/Cloudflare or Site mutation. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
+NativeLinux/osqueryAC1/3/4 remain unverified; accepted600010ms evidence retained/not rerun. No production/RBAC/CVE/scale claim. Optional origin Host may be omitted in direct link; explicit list return remains available. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for assigned synthetic v13. No new PO/security/spec/credential decision; Q01–05 untouched.
+No hard blocker for synthetic v14; no new PO/security/credential/spec decision. Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push to existing QA PR, attach canonical RESULT/guide/proof/logs/screenshots once and await concrete review; execute next valid Lead assignment. Never self-accept/merge.
+Push to existing QA PR; attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete review and execute next valid assignment. Never self-accept/merge.
 
-- [x] Exact10sections; original/historical/new AC separately mapped.
-- [x] Exact current source/time/Summary and each changed file.
-- [x] Actual commands/logs/browser evidence; errors/assumptions/limits disclosed.
-- [x] Local/read-only/no-secret/native boundaries retained.
+- [x] Exact10sections; original/historical/newAC separately mapped.
+- [x] Exact current source/time/Summary; all changed files and reproduction commands.
+- [x] Actual logs/browser proof, failures/decisions/limits disclosed.
+- [x] Local/read-only/no-secret/native boundaries preserved.
 - [x] Canonical increment; prior reports/history retained in Git/ClickUp.
 
-History: v12 ACCEPT live 09:46; v13 assigned in same comment and completed in this execution cycle.
+History: v13 ACCEPT live10:06;v14assigned same comment and completed this cycle.
