@@ -133,3 +133,8 @@ Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&s
 ## v25 Combined picker/host state
 
 Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Picker changes retain selectedSite and host search/sort/page; host changes retain picker search/sort/page. Each changed list resets only its own page. Both parent return paths retain the full bookmark. Invalid picker sort clears picker only; invalid host sort clears host rows only. Direct/reload/native history retain the complete fragment. No schema/entity/production changes.
+
+
+## v26 combined list/detail journey
+
+Run `node scripts/inventory-ui-lab.mjs --host-detail`; append `#host=20000000-0000-4000-8000-000000000011&search=host-&sort=hostname&direction=desc&page=2&page_size=10&package_sort=version&package_direction=desc&package_detail_search=package&package_detail_page=2&port_sort=pid&port_direction=desc&port_detail_search=synthetic&port_detail_page=2` to the Host inventory URL. Host list and independent package/port search/sort/page state share the route. package_detail_search filters package names;port_detail_search filters process names. Return saves host_saved and detail fields; selecting the Host again restores them. Saved detail pages do not activate unrelated views; default DNS page1 is omitted. No schema/entity/production changes.
