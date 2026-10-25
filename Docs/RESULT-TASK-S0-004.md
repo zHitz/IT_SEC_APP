@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: v27 Dual-origin Domain, DNS detail and record journey
+# Result — TASK-S0-004: v28 Independent inventory view journeys
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v27 |
+| Result version | v28 |
 | Status | DONE (assigned synthetic scope) |
-| Spec version followed | SRS v1.0; TASK-S0-004; live Lead16:31 ACCEPTv26 and assignv27 |
+| Spec version followed | SRS v1.0; TASK-S0-004; live Lead16:52 ACCEPTv27 and assignv28 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T16:47:53.415052+07:00 |
-| Source/evidence commit | 431b26205e26b3874a6869229a2ba1d3886d1fb6 |
+| Prepared at | 2026-10-25T16:59:48.845422+07:00 |
+| Source/evidence commit | 316d38c1b7cf75ba575d82dd378fd2b9c9ad7659 |
 
 ## 1. Summary
 
-One fragment retains Domain list search sample-/flag true/hostname-desc/page2, Flagged list search sample-/hostname-desc/page2, Sample04 detail DNS value-desc/search192.0.2/page2 and record UUID. Record Back restores DNS detail; detail Back restores its actual Domain or Flagged list origin. Detail page2 has5 rows; Flagged page2 has2 owners. Final83tests pass,0fail;lint94;schema unchanged;buildPASS. No production, collector, API contract or schema change. QA approval remains required before merge.
+The complete Domain list searchsample-/flagtrue/hostname-desc/page2, Flagged list searchsample-/hostname-desc/page2, Sample04 detail DNS value-desc/search192.0.2/page2 and record UUID fragment survives sidebar switching to the other inventory view and back. Separate tab-session bookmarks preserve both journeys without cross-clearing. Direct URLs remain authoritative; reload and native Back/Forward retain the current route. Correct origin return/reopen remains intact after switching. Final86/86tests,0fail;lint96;schema unchanged;buildPASS. DONE is limited to assigned synthetic/local scope.
 
 ## 2. Acceptance criteria
 
@@ -158,56 +158,64 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V27-3 | At least six independently invalid levels | PASS: Domain sort/direction, Flagged sort/direction, detail DNS sort and record UUID; affected rows clear, healthy main/detail state retained. |
 | V27-4 | Full suite, lint/build/schema, verification/logs and three screenshots | PASS:83/83 tests,0fail;lint94modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. verification-v27.json, test/lint/build-v27.txt and three actual v27 screenshots. |
 
+
+| ID | v28 criterion | Result / actual evidence |
+|---|---|---|
+| V28-1 | Complete v27 journey survives switch to other inventory view and back | PASS: exact fragment preserved through separate fixed-path session bookmarks; no reset or cross-clear. Domain list searchsample-/flagtrue/hostname-desc/page2, Flagged list searchsample-/hostname-desc/page2, Sample04 detail DNS value-desc/search192.0.2/page2 and record UUID |
+| V28-2 | Direct/reload/native history and correct origin after switching | PASS: actual HTTP/PostgreSQL fresh-document regressions and built-in browser. Record Back restores five-row DNS detail page2; detail Back restores actual Domain or Flagged list origin. |
+| V28-3 | Six invalid levels remain independent across views | PASS: six Host and six Domain invalid-level round trips; affected rows clear, other view fragment remains exact, no partial rows. |
+| V28-4 | Full checks and actual logs/screenshots | PASS:86/86 tests,0fail;lint96modules;schema22+2/114FK unchanged;buildPASS;verification-v28.json,test/lint/build-v28.txt and three actual screenshots. |
+
 ## 3. Work completed
 
-One fragment retains Domain list search sample-/flag true/hostname-desc/page2, Flagged list search sample-/hostname-desc/page2, Sample04 detail DNS value-desc/search192.0.2/page2 and record UUID. Record Back restores DNS detail; detail Back restores its actual Domain or Flagged list origin. Detail page2 has5 rows; Flagged page2 has2 owners. Reused accepted GET inventory endpoints and existing Atlas UI controls/styles. Implemented explicit origin bookmarks so nested return does not fall into a different list. Verified actual built-in browser direct/reload/Back/Forward and invalid-state screenshots. Published [DEV][START] on the exact assigned task; no status change.
+Added view bookmarks at the two existing page entry points. Only fixed Host/Domain sidebar paths receive a safe saved fragment. Read current URL on click because pushState emits no hashchange; refresh links on pageshow/history events. Store only fragment strings, never rows/credentials or server state. Retain existing route parsers, origin handling, GET endpoints, schema and Atlas styling. Published [DEV][START] on each exact task; no task status mutation.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Serialize explicit Site origin and inactive Site bookmark; restore selected Site Host list on detail Back; site_resume retains Host page through picker reopen. |
-| frontend/src/site-hosts.mjs | Make Host names open exact Host detail; add Back to Site picker; preserve same-Site Host search/sort/page. |
-| frontend/src/domain-navigation.mjs | Serialize Flagged origin and saved Flagged list alongside Domain/detail context; route detail Back to correct origin. |
-| frontend/src/flagged-domains.mjs | Add explicit Open Domain detail buttons on existing stored-flag owner cards. |
-| frontend/test/combined-origin-navigation.test.mjs | Two actual HTTP/PostgreSQL READ ONLY integration regressions cover combined journeys, fresh DOM, native-history fixture, all returns/reopens and six invalid cases per task. |
-| scripts/inventory-ui-lab.mjs | Add isolated siteJourneyFixtures / --site-journey option assigning24 synthetic hosts to Sample Site so Host11 occurs on descending page2; old fixtures unchanged. |
-| Docs/HOST-INVENTORY-UI.md | Document Site origin, return/reopen behavior, fixture option and reproduction command. |
-| Docs/DOMAIN-INVENTORY-UI.md | Document dual-origin parameters and Domain/Flagged return semantics. |
-| Docs/evidence/S0-004/verification-v27.json | Record actual check results, fixture rows, browser checks, failures and limits. |
-| Docs/evidence/S0-004/{test,lint,build}-v27.txt | Actual final full-suite83pass,lint94/schema22+2/114FK and build output. |
-| Docs/evidence/S0-004/domain-dual-{reload,history,invalid}-v27.png | Three actual built-in browser screenshots; synthetic data only. |
-| Docs/RESULT-TASK-S0-004.md | Canonical v27 report; preserve original and previous version AC evidence, add separate V27-1..4 rows. |
+| frontend/src/view-bookmarks.mjs | New shared lifecycle: separate per-path tab-session fragment storage; fixed same-origin sidebar links; save current pushState fragment on click/pagehide; refresh on hashchange/popstate/pageshow; bounded/control-free stored values; storage denial fallback. |
+| frontend/src/host-page.mjs | Mount view bookmarks before Host navigation; explicit current fragment remains authoritative. |
+| frontend/src/inventory-page.mjs | Mount view bookmarks before Domain navigation; independent Domain session key. |
+| frontend/server.mjs | Add only view-bookmarks.mjs to existing frontend module allowlist; no API or schema change. |
+| frontend/test/view-bookmarks.test.mjs | Two actual HTTP/PostgreSQL READ ONLY integration tests across fresh Host/Domain documents, reload/history/return/reopen, six invalid cases each; third test unsafe storage and denied writes. |
+| Docs/HOST-INVENTORY-UI.md | Document same-tab view switching, reproduction, explicit URL precedence and persistence limits. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document dual-origin preservation across switching and storage boundaries. |
+| Docs/evidence/S0-004/verification-v28.json | Actual86pass/lint96/schema/build/browser results and failures/limits. |
+| Docs/evidence/S0-004/{test,lint,build}-v28.txt | Actual final full-suite,lint/schema and build output. |
+| Docs/evidence/S0-004/domain-switch-{reload,history,invalid}-v28.png | Three real built-in browser screenshots after view switch; settled state. |
+| Docs/RESULT-TASK-S0-004.md | Canonical ten-section v28 report; retain original/historical AC, add separate V28 rows. |
 
 ## 5. Run and verify
 
-From repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`.
-Focused: `node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs`.
-Host lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey`; Domain lab: `node scripts/inventory-ui-lab.mjs --detail-dns --flagged`. For combined browser verification both sets of flags can be used in one lab. Open the returned loopback origin at /inventory/hosts or /inventory/domains and use the full fragment in combined-origin-navigation.test.mjs. Setup writes synthetic fixtures before the regression begins READ ONLY; runtime API calls are GET/SELECT only.
+Repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`.
+Focused: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs`.
+Actual browser lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`.
+Open returned loopback origin at /inventory/domains with domainRoute from the test, then /inventory/hosts with hostRoute in the same tab. Use sidebar to switch both directions; reload and native Back/Forward. Host Back returns Site Host page2; reopen Host11. Domain record Back returns DNS page2, then detail Back returns Flagged origin; repeat without domain_origin for main Domain origin. Replace each of the six level keys with bad and verify round trips retain the other view. Fixture setup precedes BEGIN READ ONLY; actual runtime APIs remain GET/SELECT.
 
 ## 6. Tests and actual results
 
-Final full suite83/83 passed,0failed;lint94modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Both targeted tests use actual local HTTP and PostgreSQL17.5 WASM with BEGIN READ ONLY after setup. Output markers HOST_JOURNEY_V27_PROOF and DOMAIN_JOURNEY_V27_PROOF each record six invalid cases and successful reload/history/return/reopen. Actual built-in browser verified Host11 six package/six port rows, Site Host page2/3 and picker page2/2; Sample04 DNS page2/2 five rows, record192.0.2.99, Flagged page2/2 and main Domain page2/2. Screenshots were captured after settled visible state and inspected. Evidence in Docs/evidence/S0-004; Cloudflare requests0.
+Full86tests passed,0failed;lint96modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. Three targeted tests pass. VIEW_SWITCH_V28_PROOF reports exact fragments retained, fresh documents, reload/history, correct origin and six independent invalid cases per view. Actual built-in browser independently verified both sidebar directions, Host Site page2/3 plus six package/six port rows, Domain record192.0.2.99 and five DNS rows page2/2, both Domain/Flagged returns and native history. Three settled screenshots under Docs/evidence/S0-004. Cloudflare requests0.
 
 ## 7. Issues and implementation decisions
 
-Initial targeted Host assertion used an old Site fixture count, then showed Host11 was absent from that descending second page. Added a separate synthetic Site-journey fixture; did not alter existing fixtures or schema. Strengthened the test for picker return and same-Site reopen; fixed page reset using site_resume. Explicit origin survives nested detail changes while a main-list selection keeps its main origin. Browser hash-only navigation initially retained an older loaded module; reloaded the local page and verified final behavior. A broad exact-text selector matched hidden rows; scoped it to the actual DNS record panel. Python cp1258 console could not print the test checkmark after tests exited0; logs were intact, lint/build then completed. Final full checks rerun after the last source change. All these are resolved technical/lab details, not blockers.
+Use sessionStorage rather than shared localStorage so separate tabs do not overwrite each other. Fixed same-origin inventory paths prevent stored values from selecting an external destination; only fragments beginning #, at most16384 characters and without controls are accepted. Explicit URL fragments are never replaced by a stored value. Browser reload/history remains standard URL navigation; pageshow refresh handles restored pages. Initial shell edit hit cp1258 when reading server source; retried UTF-8 before testing. Initial invalid screenshot captured a loading state; replaced after exact visible error and healthy rows settled. No test failures in targeted or full suite. These resolved technical details require no scope/schema decision.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic/local only; no production authentication/RBAC/scale/native Linux/live Cloudflare/CVE evidence. Versions sort lexically. Existing bounded Site identity lookup and stored-flag owner guard limits remain; no scale claim. DONE applies only to the assigned synthetic local scope; no live infrastructure claim. ClickUp quota boundary honored; if browser file upload fails, use the Lead-authorized immutable GitHub report-commit fallback, report zero new attachments honestly.
+If sessionStorage is denied/cleared or the fragment exceeds the bound, explicit URLs remain usable but cross-view persistence is unavailable. Persistence is per tab/session, not across devices or new sessions. No production auth/RBAC/scale/CVE/native Linux/live Cloudflare evidence. Assigned synthetic/local scope only. No schema/entity/API/collector mutation. ClickUp quota boundary honored; actual upload result and immutable report-commit fallback recorded in submission/checkpoint if upload fails.
 
 ## 9. Blockers and decisions required
 
-No new missing-input/spec/security/production decision or hard blocker. Q-01..Q-05 untouched. Separate QA approval is required before merge; Dev does not merge. ClickUp upload outcome and submission fingerprints are recorded in the final task comment and checkpoint.
+No new missing input/spec/security/production decision or hard blocker. Q-01..Q-05 untouched. Separate QA approval remains required before merge; Dev does not merge. Browser upload fallback is authorized by Lead16:52.
 
 ## 10. Next step and self-check
 
-Push the existing feature branch and update existing PR1. Verify current-head CI live, attempt actual RESULT upload, and publish exactly one [DEV][SUBMISSION] per assigned task using exact immutable fallback if needed. Verify UI and checkpoint; continue valid Lead/QA work without duplicate submission.
+Push existing feature branch and update PR1; verify current-headCI live. Attempt RESULT upload and publish exactly one [DEV][SUBMISSION] on each task with honest attachment outcome and exact immutable links if needed. Verify published UI and checkpoint; execute valid next Lead/QA assignment without duplicates.
 
-- [x] Exact ten numbered sections and separate original/historical/current AC rows.
-- [x] Exact source/time, specific files, reproduction commands and actual output.
-- [x] Six invalid cases per task, three actual screenshots, failures/fixes and limits stated.
-- [x] Schema/collector/API/production boundaries retained; no self-ACCEPT/status change/merge.
+- [x] Exact ten numbered sections; original/historical/current AC separate.
+- [x] Exact source/time, each file, reproduction commands and actual outputs.
+- [x] Both view switches, origin returns/history, six invalid levels per view, three actual screenshots.
+- [x] Storage limits and failures explicit; schema/security/native boundaries retained.
 
-History: v26 accepted in live Lead16:31 comment at prior report head af12f0eeaafc7392918ac364e60cd6dda4c010a2. v27 started16:40 and executed in this cycle. Initial v27 source b1b5b81284d0084965cf6ff8f72cc1a1655cff07; final source above includes the same-Site reopen correction and final evidence.
+History: v27 accepted by live Lead16:52 at report head ae82943bf17702a2b284656359c242dd19af6cf7. v28 started16:55 and executed in this cycle. Source/evidence commit above is the exact tested implementation.
