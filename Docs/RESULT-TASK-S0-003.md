@@ -1,18 +1,18 @@
-# Result — TASK-S0-003: v21 Unassigned Hosts sorting
+# Result — TASK-S0-003: v22 Site-filtered Hosts sorting
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v21 |
+| Result version | v22 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-003; live Lead assignment 1100390000161152 accepting v20 and assigning v21 |
+| Spec version followed | SRS v1.0; TASK-S0-003; live Lead assignment 1100390000161217 accepting v21 and assigning v22 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T14:22:19.509615+07:00 |
-| Source/evidence commit | ee21fa011beb7de289f14d287e49b10917bbd3c7 |
+| Prepared at | 2026-10-25T14:57:13.988261+07:00 |
+| Source/evidence commit | bd34be98b3246fe6c5fcf847b3a2b3a10df7205a |
 
 ## 1. Summary
 
-PARTIAL in declared scope. v21 adds Unassigned Hosts sort controls, combined search/sort/page fragments, direct and reload restoration, native Back/Forward, and parent full-list/detail return with saved state. Invalid sort clears only this view. 71/71 tests pass; lint 93 modules; schema 22 entities + 2 junctions / 114 native FKs unchanged; build PASS. Synthetic local evidence only. Original native AC1/3/4 remain unverified; accepted actual 600010 ms outage evidence is retained, not rerun.
+PARTIAL in declared scope. v22 adds Site-filtered Hosts sorting with combined search/sort/page fragments, direct/reload and native Back/Forward restoration. Invalid sorts clear only the affected list and preserve parent information. 73/73 tests pass; lint 93 modules; schema 22 entities + 2 junctions / 114 native FKs unchanged; build PASS. Site filters use existing site_id and sort API parameters; 16 Sample Site hosts, descending page 2 has six rows. Original native AC1/3/4 remain unverified; accepted actual 600010 ms outage evidence retained, not rerun.
 
 ## 2. Acceptance criteria
 
@@ -129,65 +129,72 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V21-2 | Parent detail/full-list return and isolated invalid sort | PASS: both parent return/reopen paths preserve search/sort/page in actual HTTP/DOM tests; four invalid sort routes clear only the scoped view and retain parent rows. |
 | V21-3 | Complete checks and evidence within scope | PASS: 71/71 tests; lint93; schema22+2/114FK unchanged; build PASS; synthetic fixtures only. |
 
+| V22-1 | Site-filtered Hosts sorting, stable ties/NULLS LAST and combined direct/reload/history routes | PASS: verification-v22.json, actual HTTP/PostgreSQL regression and three browser screenshots. Six Host sort combinations using existing Site filter. |
+| V22-2 | Invalid sort clears only scoped list, preserving parent information | PASS: four invalid-sort routes, zero partial rows; Host parent detail information retained; Site state saved across return/reopen. |
+| V22-3 | Full checks and evidence within scope | PASS: 73 tests, zero failures; lint93; schema22+2/114FK unchanged; build PASS; synthetic fixtures only. |
+
 ## 3. Work completed
 
-Implemented and verified Lead assignment 1100390000161152. Sort controls preserve search and reset page on change. Inactive saved bookmarks let parent views render normally and restore the scoped view on explicit reopen. No API/schema/entity/tag/collector changes.
+Implemented live Lead assignment 1100390000161217. Controls update scoped fragment values and reset page on search/sort changes. Site-filtered requests retain exact site_id and existing sort API; picker-page and hostname-search values survive navigation. Inactive Site bookmark restores explicit reopen.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| Docs/DOMAIN-INVENTORY-UI.md | Document the v21 controls, route and reproduction steps. |
-| Docs/HOST-INVENTORY-UI.md | Document the v21 controls, route and reproduction steps. |
-| Docs/evidence/S0-003/build-v21.txt | Actual native ESM build output. |
-| Docs/evidence/S0-003/lint-v21.txt | Actual lint/schema output (93 modules; 22+2/114FK). |
-| Docs/evidence/S0-003/test-v21.txt | Actual complete test output (71 pass, 0 fail). |
-| Docs/evidence/S0-003/unassigned-sort-history-v21.png | Actual viewport screenshot for unassigned-sort-history-v21. |
-| Docs/evidence/S0-003/unassigned-sort-invalid-v21.png | Actual viewport screenshot for unassigned-sort-invalid-v21. |
-| Docs/evidence/S0-003/unassigned-sort-reload-v21.png | Actual viewport screenshot for unassigned-sort-reload-v21. |
-| Docs/evidence/S0-003/verification-v21.json | Actual structured v21 observations and limits. |
-| Docs/evidence/S0-004/build-v21.txt | Actual native ESM build output. |
-| Docs/evidence/S0-004/flagged-domains-sort-history-v21.png | Actual viewport screenshot for flagged-domains-sort-history-v21. |
-| Docs/evidence/S0-004/flagged-domains-sort-invalid-v21.png | Actual viewport screenshot for flagged-domains-sort-invalid-v21. |
-| Docs/evidence/S0-004/flagged-domains-sort-reload-v21.png | Actual viewport screenshot for flagged-domains-sort-reload-v21. |
-| Docs/evidence/S0-004/lint-v21.txt | Actual lint/schema output (93 modules; 22+2/114FK). |
-| Docs/evidence/S0-004/test-v21.txt | Actual complete test output (71 pass, 0 fail). |
-| Docs/evidence/S0-004/verification-v21.json | Actual structured v21 observations and limits. |
-| frontend/src/domain-navigation.mjs | Validate scoped sort keys and preserve Flagged Domains bookmarks and owner child-page state. |
-| frontend/src/flagged-domains.mjs | Add hostname/direction controls; retain search and owner child-page behavior. |
-| frontend/src/host-navigation.mjs | Validate scoped sort keys and serialize active/saved Unassigned routes through parent navigation. |
-| frontend/src/site-hosts.mjs | Add Unassigned-only hostname/OS/version and direction controls; bind API sort and restore controls. |
-| frontend/test/flagged-navigation.test.mjs | Add flagged-owner HTTP sort combinations and saved state regression including list/detail returns. |
-| frontend/test/unassigned-navigation.test.mjs | Add real HTTP/PostgreSQL sort combinations, fresh DOM reload, list/detail returns, native-history fixture and invalid-view isolation. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v21 report; original and historical AC evidence retained; current criteria separate. |
+| Docs/DOMAIN-INVENTORY-API.md | Document v22 controls, parameters and exact reproduction route. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document v22 controls, parameters and exact reproduction route. |
+| Docs/HOST-INVENTORY-UI.md | Document v22 controls, parameters and exact reproduction route. |
+| Docs/evidence/S0-003/build-v22.txt | Actual ESM build output. |
+| Docs/evidence/S0-003/lint-v22.txt | Actual lint/schema parity output. |
+| Docs/evidence/S0-003/site-sort-history-v22.png | Actual viewport screenshot for site-sort-history-v22. |
+| Docs/evidence/S0-003/site-sort-invalid-v22.png | Actual viewport screenshot for site-sort-invalid-v22. |
+| Docs/evidence/S0-003/site-sort-reload-v22.png | Actual viewport screenshot for site-sort-reload-v22. |
+| Docs/evidence/S0-003/test-v22.txt | Actual complete 73-test passing output. |
+| Docs/evidence/S0-003/verification-v22.json | Actual structured observations, failure resolution and limits. |
+| Docs/evidence/S0-004/build-v22.txt | Actual ESM build output. |
+| Docs/evidence/S0-004/detail-dns-sort-history-v22.png | Actual viewport screenshot for detail-dns-sort-history-v22. |
+| Docs/evidence/S0-004/detail-dns-sort-invalid-v22.png | Actual viewport screenshot for detail-dns-sort-invalid-v22. |
+| Docs/evidence/S0-004/detail-dns-sort-reload-v22.png | Actual viewport screenshot for detail-dns-sort-reload-v22. |
+| Docs/evidence/S0-004/lint-v22.txt | Actual lint/schema parity output. |
+| Docs/evidence/S0-004/test-v22.txt | Actual complete 73-test passing output. |
+| Docs/evidence/S0-004/verification-v22.json | Actual structured observations, failure resolution and limits. |
+| backend/src/inventory/exact-reader.mjs | Accept whitelisted type/value sort and direction plus bound type/value search in exact-owner DNS relation; order page and JSON identically. |
+| backend/test/domain-exact.test.mjs | Verify all four DNS sort combinations, exact-owner trap exclusion, matching seed-inclusive search count and invalid/duplicate query rejection. |
+| frontend/src/domain-navigation.mjs | Parse/validate Domain detail DNS search/sort/direction, preserve scoped state across detail page navigation and history. |
+| frontend/src/host-navigation.mjs | Parse/validate Site sort parameters, serialize combined Site/search/sort/page state and saved parent bookmark. |
+| frontend/src/inventory-detail.mjs | Add Domain DNS search and sort controls; isolate invalid sort to DNS list while retaining fetched Domain provenance. |
+| frontend/src/site-hosts.mjs | Show Site-host sort controls, bind existing API sort params and restore selected sort; preserve picker/search/page state. |
+| frontend/test/detail-dns-navigation.test.mjs | Add actual exact-owner search/sort/page reload/history and four invalid sorts preserving Domain provenance. |
+| frontend/test/site-navigation.test.mjs | Add six actual Site-filtered sort combinations, reload, saved return, history and invalid-view isolation regression. |
+| Docs/RESULT-TASK-S0-003.md | Canonical v22 report; original and historical AC evidence retained, current criteria separate. |
 
 ## 5. Run and verify
 
-From repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Focused: `node --test frontend/test/unassigned-navigation.test.mjs frontend/test/flagged-navigation.test.mjs`. Start browser labs with `node scripts/inventory-ui-lab.mjs --hosts` and `node scripts/inventory-ui-lab.mjs --flagged`; append the v21 fragment in the corresponding UI guide to the printed URL.
+From repository root: `npm ci`; `npm test`; `npm run lint`; `npm run build`. Focused: `node --test frontend/test/site-navigation.test.mjs frontend/test/detail-dns-navigation.test.mjs backend/test/domain-exact.test.mjs`. Browser labs: `node scripts/inventory-ui-lab.mjs --sites` (use /inventory/hosts) and `node scripts/inventory-ui-lab.mjs --detail-dns` (use /inventory/domains). Append the exact v22 fragment from the corresponding UI guide to the printed origin.
 
 ## 6. Tests and actual results
 
-71 tests passed, zero failures. Lint passed for 93 modules; schema parity passed for 22 entities + 2 junctions / 114 native FKs; build passed. Real local HTTP/PostgreSQL tests cover six Host or two Domain sort combinations and parent list/detail return. Fresh DOM reload and history regressions plus actual built-in browser reload/native Back/Forward checks passed. Evidence: `Docs/evidence/S0-003/verification-v21.json`, `test-v21.txt`, `lint-v21.txt`, `build-v21.txt`, and three sort screenshots (reload/history/invalid). Browser screenshots are viewport captures.
+73 tests passed, zero failures; lint 93 modules; schema 22 entities + 2 junctions / 114 native FKs unchanged; build PASS. Actual local HTTP/PostgreSQL tests execute in READ ONLY transactions after synthetic setup. Six Site Host and four Domain DNS sort combinations are checked; exact owner scope excludes overlapping-domain trap records. Fresh DOM reload, history, combined routes and four invalid sorts per view pass. Built-in browser reload and native Back/Forward verified with settled-render checks. Actual logs, structured counts and three viewport screenshots are in `Docs/evidence/S0-003/` under v22 filenames.
 
 ## 7. Issues and implementation decisions
 
-No v21 test failures. Existing API already enforces allowed sort identifiers, NULLS LAST and stable id-ascending ties; reuse it without schema changes. The new scoped sort parameters are independent of full-list sorting. Saved bookmarks use `unassigned_saved=1` to prevent immediate child reopening on parent return. Search remains bound through the existing API. OS/version sorting is lexical; stored flags are not recalculated. Nullable sorting is inherited from the tested reader; this round does not add a nullable fixture. ClickUp connector recovered; actual attachment upload will be attempted before submission. Earlier filechooser failures remain historical, not a current upload claim.
+Technical self-resolution: Site sorting reuses the existing inventory API. Exact Domain DNS relation needed whitelisted type/value sorting and bound literal search, retaining owner existence/FK join/count in one read statement. Defaults remain type/asc; text sorting is lexical, not numeric IP or semantic version ordering. NULLS LAST is explicit; stable id ties are verified. This round adds no nullable fixture. A new DNS search assertion initially expected 11 matches; actual 12 included the existing matching seed record. Corrected the expectation, then reran the full suite successfully. An initial replacement-script assertion stopped before writing files; removed the duplicate replacement and applied the implementation. No remaining test errors. Existing style/components retained; no schema/entity/tag/collector changes.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic local inventory only. No production auth/RBAC/scale/CVE/native Linux/live Cloudflare/credential evidence. No schema/entity/collector/tag-algorithm changes. Inventory updates can change pagination between requests. Original AC1/3/4 remain unverified. The accepted actual 600010 ms outage proof is retained, not rerun.
+Synthetic local inventory only; no production auth/RBAC/scale/CVE/native Linux/live Cloudflare/credential evidence. Inventory updates can change pages between requests. Browser screenshots are viewport captures. Original native AC1/3/4 remain unverified. Accepted actual 600010 ms outage proof is retained, not rerun; overall PARTIAL.
 
 ## 9. Blockers and decisions required
 
-No new missing input, security or specification decision. Q-01..Q-05 remain unanswered. QA approval is required before merge; Dev will not merge.
+No new missing input, specification/security/production decision or hard blocker. Q-01..Q-05 remain unanswered. QA approval remains required before merge; Dev does not merge.
 
 ## 10. Next step and self-check
 
-Push to the existing feature branch and PR, verify live CI, attach this canonical RESULT and evidence to the exact task and publish one submission. Await Lead/QA review.
+Push existing feature branch/PR, verify current-head CI, attach canonical RESULT and v22 evidence to the exact task, publish one submission and verify it in the UI. Await Lead/QA review.
 
 - [x] Exact ten sections; historical and current AC rows separate.
-- [x] Exact source commit, preparation time, files, commands, outputs and three screenshots.
-- [x] Limits, decisions and read-only boundaries explicit.
+- [x] Exact source commit/time, file changes, reproduction, actual outputs and three screenshots.
+- [x] Failures and fixes, limits, read-only/native boundaries explicit.
 - [x] No schema/entity/production changes.
 
-History: v20 submitted and accepted in live Lead comment 1100390000161152; v21 assigned in that same comment, implemented and verified in this cycle.
+History: v21 submitted with actual attachments and accepted in Lead comment 1100390000161217; v22 assigned in the same comment, implemented and verified this cycle.
