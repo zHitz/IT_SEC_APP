@@ -178,3 +178,12 @@ Independent new tabs have separate sessionStorage. Open complete saved Host/Doma
 Three new tests in the existing file cover two independent stores with distinct journeys, explicit saved URLs in fresh stores plus two round trips, and fresh invalid URL/explicit repair followed by a new clean session. The test harness models independent stores; actual browser tabs separately verify isolation, reload/history, fresh-invalid errors and clean defaults after close. No runtime change was needed. Full suite92/92;lint96.
 
 A fresh independent tab is not a duplicated/opener-created tab: browsers may clone initial sessionStorage for those cases. This evidence claims only independently created tabs without an opener. Existing storage-denial, fragment bound and synthetic/native limits remain.
+
+
+### v31 filtered journeys in isolated tabs
+
+Site-filtered and Unassigned Host rows open detail with distinct explicit origins. Unassigned selection uses host_origin=unassigned and a saved Unassigned search/sort/page bookmark; detail Back returns that exact view. Flagged Domains/detail DNS and Flagged DNS records/record detail preserve their independent list states.
+
+Run `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. The isolated --filtered-tabs fixture makes synthetic Host13..24 unassigned while preserving assigned Host11. Site uses searchhost-/hostname-desc/page1,pickername-desc/searchSite/page2;Unassigned uses searchhost-/hostname-desc/page1 andHost20. Domain uses Flagged searchsample-/hostname-desc/page2 plusSample04 DNSsearch192.0.2/value-desc/page2;record-level uses search198.51.100/value-desc/page2. Full fragments and canonical saved routes are exercised in view-bookmarks.test.mjs.
+
+Exactly3newtests cover paired-tab isolation, fresh0entry saved URLs with2exact list/detail roundtrips and4invalid-filter/repair paths;full95/95,lint96. Actual browser separately checks all four routes and captures3screenshots per task. Existing synthetic/native/storage/opener limitations remain.

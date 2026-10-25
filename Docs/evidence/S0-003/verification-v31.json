@@ -1,0 +1,75 @@
+{
+  "task": "TASK-S0-003",
+  "version": 31,
+  "verifiedAt": "2026-10-25T21:36:12.764325+07:00",
+  "tests": {
+    "total": 95,
+    "passed": 95,
+    "failed": 0,
+    "newTargeted": 3,
+    "sameFile": "frontend/test/view-bookmarks.test.mjs",
+    "actualHttpPostgres": true,
+    "readOnly": true,
+    "proofMarkers": [
+      "V31_FILTERED_TABS",
+      "V31_FRESH_FILTER",
+      "V31_INVALID_FILTER"
+    ]
+  },
+  "lint": {
+    "modules": 96,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "criteria": {
+    "V31-1": "Independent Site/Unassigned Host and Flagged Domain/Flagged record tab pairs;no cross overwrite",
+    "V31-2": "All four filtered saved routes restored from0entry fresh modeled stores;2 exact list/detail roundtrips each;actual fresh browser routes separately verified",
+    "V31-3": "All four invalid filtered routes0affectedrows;healthy main rows retained;explicitrepair;newtabafterclose default",
+    "V31-4": "95/95;lint96;schema22+2/114FK;buildPASS;three actual screenshots"
+  },
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "twoIndependentTabPairs": true,
+    "exactRoundTrips": 2,
+    "freshSavedUrls": true,
+    "invalidAllFourRoutes": true,
+    "healthyMainRowsRetained": true,
+    "explicitRepair": true,
+    "newTabDefaults": true,
+    "screenshots": [
+      "host-filtered-reload-v31.png",
+      "host-filtered-history-v31.png",
+      "host-filtered-invalid-v31.png"
+    ]
+  },
+  "runtimeFix": "Host selection from Unassigned view now serializes host_origin=unassigned and unassigned_saved;detailBack restores that list rather than Site picker",
+  "fixture": "--filtered-tabs is isolated lab option:syntheticHost13..24 unassigned;Host1..12 assigned;existingfixtures unchanged",
+  "issuesResolved": [
+    "Browser origin approval failed due usage-limit review;no bypass. Resumed after reported reset using same normal browser tool.",
+    "App/browser session reset lost old bindings;reopened exact assigned tasks and reread live Lead correction.",
+    "Lead19:33 consolidation instruction explicitly withdrawn19:34;original18:11 filtered-feature assignment remains active."
+  ],
+  "limits": [
+    "Synthetic/local only",
+    "Integration models independent tab stores;actual browser separately verifies UI",
+    "Independent tabs without opener;duplicate/opener cloning not claimed",
+    "Native evidence/security/storage limits retained",
+    "No schema/entity/API/production/CVE change",
+    "QAapproval required beforemerge"
+  ],
+  "overall": "PARTIAL",
+  "nativeAC1_3_4": "unverified",
+  "acceptedOutageMs": 600010,
+  "outageRerun": false,
+  "leadAssignmentCommentId": "1100390000161626",
+  "startCommentId": "1100390000161632"
+}
