@@ -21,7 +21,7 @@ export function inventoryQuery(resource, params) {
     return Number(raw);
   }
   const page = integer('page', 1, 100000), pageSize = integer('page_size', 25, 100);
-  const sorts={hosts:{hostname:'hostname',os:'os',os_version:'os_version'},domains:{hostname:'fqdn'},'dns-records':{owner:'domain',value:'value',type:'type'},packages:{name:'name',version:'version'},'listening-ports':{port:'port',pid:'pid'}};
+  const sorts={hosts:{hostname:'hostname',os:'os',os_version:'os_version'},domains:{hostname:'fqdn'},'dns-records':{owner:'domain',value:'value',type:'type'},packages:{name:'name',version:'version'},'listening-ports':{port:'port',pid:'pid',hostname:'hostname',process:'process'}};
   const requestedSort=params.get('sort'),direction=params.get('direction')??'asc',map=sorts[resource];if((requestedSort!==null&&(!map||!Object.hasOwn(map,requestedSort)))||!['asc','desc'].includes(direction))throw new InventoryError('INVALID_QUERY');const order=requestedSort!==null?map[requestedSort]+' '+direction+' NULLS LAST, id asc':resource==='hosts'?'hostname '+direction+' NULLS LAST, id asc':resource==='domains'?'fqdn '+direction+' NULLS LAST, id asc':spec.order;
   const values = [], where = spec.predicate ? [spec.predicate] : [];
   const search = params.get('search');

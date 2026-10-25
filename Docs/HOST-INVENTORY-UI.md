@@ -118,3 +118,8 @@ Run `node scripts/inventory-ui-lab.mjs --hosts`; append `#list=1&unassigned=1&un
 ## v22 Site-filtered Hosts sorting
 
 Run `node scripts/inventory-ui-lab.mjs --sites`, then append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Site filters retain exact site_id and existing API sort parameters. Parent return saves an inactive Site bookmark for explicit reopen.
+
+
+## v23 Port/process result sorting
+
+Run `node scripts/inventory-ui-lab.mjs --hosts` and append `#list=1&port_search=1&process_search=synthetic-listener&port_page=2&result_sort=hostname&result_direction=desc` to the printed inventory URL. Sort results by hostname/port/process/pid with result_sort and result_direction; port/process inputs and parent context remain on invalid sort. Existing sort parameter whitelist adds hostname/process; port and PID are numeric. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.

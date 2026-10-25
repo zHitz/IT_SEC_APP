@@ -124,3 +124,8 @@ Run `node scripts/inventory-ui-lab.mjs --flagged`; append `#list=1&flagged=1&fla
 ## v22 Domain detail DNS sorting
 
 Run `node scripts/inventory-ui-lab.mjs --detail-dns`, then append `#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_search=192.0.2&search=sample-&page=2&page_size=10` to the Domain inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Detail search matches type or value, case-insensitively and literally. Exact Domain UUID-to-fqdn owner join is retained. Parameters: search, sort=type|value, direction=asc|desc, page and page_size. SQL identifiers are whitelisted, user search is bound, NULLS LAST and id ascending ties apply.
+
+
+## v23 Flagged owner child DNS sorting
+
+Run `node scripts/inventory-ui-lab.mjs --flagged-child` and append `#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2` to the printed inventory URL. Child sort/search parameters apply to flagged_owner only: child_sort=type|value, child_direction=asc|desc, child_search literal type/value match, child_page. The exact-owner DNS endpoint is reused. Invalid child sort/search empties only that owner child table while retaining owner ID/source/confidence and healthy siblings. One routed child owner is supported at a time. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.

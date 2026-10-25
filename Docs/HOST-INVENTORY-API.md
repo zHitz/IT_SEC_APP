@@ -91,3 +91,8 @@ GET packages accepts sort=name|version; listening-ports accepts sort=port|pid; b
 ## v20 sorted related views
 
 Exact GET /api/v1/inventory/packages/<UUID>/hosts accepts sort=hostname|version and direction=asc|desc (defaults hostname/asc),existing search/page/page_size. SQL whitelist, NULLS LAST,id ascending ties. Invalid/duplicate400;GETonly;scope exact package name/ecosystem unchanged. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v23 port/process result ordering
+
+The existing `GET /api/v1/inventory/listening-ports` sort parameter accepts hostname, port, process or pid; direction asc/desc. Existing exact port/process_search filters and AND semantics remain bound. Sort uses explicit NULLS LAST and stable id ascending ties. No endpoint or schema added.

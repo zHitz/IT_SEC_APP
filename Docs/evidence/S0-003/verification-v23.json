@@ -1,0 +1,38 @@
+{
+  "version": 23,
+  "recordedAt": "2026-10-25T08:11:52.526717+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM; no native or production claim",
+  "tests": 75,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "view": "Port/process results",
+  "records": 24,
+  "searchedRecords": 24,
+  "page2Rows": 10,
+  "apiSortCombinations": 8,
+  "route": "#list=1&port_search=1&process_search=synthetic-listener&port_page=2&result_sort=hostname&result_direction=desc",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "invalidSortCases": 4,
+  "invalidScopedListEmpty": true,
+  "inputsAndParentPreserved": true,
+  "healthySiblingsPreserved": false,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "stableIdTies": true,
+  "nullsLast": "Explicit SQL NULLS LAST; no new nullable fixture this round.",
+  "failures": [],
+  "limits": [
+    "Text sorting is lexical; port and PID numeric.",
+    "Native Linux/osquery AC1/3/4 remain unverified; accepted 600010ms outage proof retained, not rerun.",
+    "Viewport screenshots; synthetic local inventory only."
+  ]
+}
