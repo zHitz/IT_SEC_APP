@@ -69,3 +69,12 @@ Direct link: `/inventory/domains#value_search=192.0.2.25&dns_page=2&search=sampl
 ## v11 Flagged domains
 
 View flagged domains from list/detail uses accepted `domains?outside_known_range=true` (exact stored DNS tag),10domains/page with domain total and hostname search. Each Domain card shows its exact-owner DNS records, child total and10-record independent child pagination; includes both flagged and unflagged records belonging to that flagged Domain. No tag/algorithm recalculation. Back restores entry list/detail and context. Empty/error clears all cards. One parent request plus at most10child-page requests per load, bounded8second timeout; child pages explicit, never silently truncate. Temporary view is not URL-persisted; reload returns original route. Synthetic `--flagged` lab uses48domains/12flagged for2parent pages; integration adds12records to one owner to prove child pagination. No liveCloudflare/schema/osquery change.
+
+
+### v12: flagged view links and browser history
+
+Open `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged=1&flagged_search=sample-&flagged_page=2` in the `--flagged` synthetic lab. Reload retains the flagged view, search and parent page. Searches and parent page buttons push browser history; Back/Forward replay them. Return restores the origin list/detail and parent context. Existing owner DNS type/value/proxied/TTL/tags and child paging remain. Child pages reset to 1 when restoring a route; child paging itself stays local.
+
+`flagged=1` is required and unique. Optional flagged_search is unique, at most 200 characters without controls; flagged_page is a unique integer 1..100000. Invalid values, duplicates or combining flagged view with value_search show an explicit error and zero cards. Parent list page/search parameters retain their existing meaning. No schema, tag algorithm, osquery or Cloudflare changes.
+
+Reproduce: `node --test frontend/test/flagged-navigation.test.mjs frontend/test/flagged-domains.test.mjs`, then `npm test`, `npm run lint`, `npm run build`. Actual HTTP/PostgreSQL and browser evidence is under `Docs/evidence/S0-004/*v12*`.
