@@ -1,18 +1,18 @@
-# Result — TASK-S0-004: v31 Isolated filtered inventory journeys
+# Result — TASK-S0-004: v32 Filtered journeys across inventory views
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v31 |
+| Result version | v32 |
 | Status | DONE (assigned synthetic/local scope) |
-| Spec version followed | SRS v1.0; TASK-S0-004; Lead18:11 assignment comment 1100390000161627, reaffirmed19:34 |
+| Spec version followed | SRS v1.0; TASK-S0-004; live Lead21:41 ACCEPTv31 and V32-1..4 assignment |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T21:37:39.719570+07:00 |
-| Source/evidence commit | afc9ea03d9d8a427095c7eab96e1ac7ba4ef24f5 |
+| Prepared at | 2026-10-25T21:51:13.078147+07:00 |
+| Source/evidence commit | 0278789d142a8c17a5ddeb426a241825f023b8b4 |
 
 ## 1. Summary
 
-Independent tabs retain Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record detail. Both filtered list states preserve search/sort/flag/page through fresh saved URLs and list/detail returns. Fresh saved URLs restore all four journeys, and two exact list/detail round trips preserve context. Invalid filtered URLs clear only affected rows; healthy main inventory remains retained and explicit repair works. Full95/95 tests pass, lint96, schema22+2/114FK unchanged and buildPASS. DONE is limited to assigned synthetic/local scope.
+Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record retain search/sort/flag/page across Domain/Host switches. Record Back restores child DNS page2 with5rows; detail Back restores actual Domain or Flagged origin. Exact fragments and healthy state survive both directions. Invalid filtered destination repair preserves source. Full98/98tests pass,lint96,schema unchanged,buildPASS. DONE only in assigned synthetic/local scope.
 
 ## 2. Acceptance criteria
 
@@ -190,54 +190,61 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V31-3 | Invalid fresh filtered URL, zero affected rows, healthy sibling, repair and clean new tab | PASS: Site/Unassigned/Flagged Domain/Flagged record invalid sort paths clear affected rows0, retain healthy main inventory rows, and repair with explicit valid URL. New independent tab after close remains default. |
 | V31-4 | Exactly three new tests,95/95,lint96,schema/build and actual screenshots | PASS:95tests,0fail;lint96;schema22entities+2junctions/114nativeFK unchanged;buildPASS. verification-v31.json,test/lint/build-v31.txt and three real screenshots. |
 
+
+| ID | v32 criterion | Result / actual evidence |
+|---|---|---|
+| V32-1 | Filtered journeys survive opposite-view switch with exact fragment | PASS: Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record retain search/sort/flag/page across Domain/Host switches. Record Back restores child DNS page2 with5rows; detail Back restores actual Domain or Flagged origin. Two cross-view round trips per journey; other view remains exact. |
+| V32-2 | Direct/reload/native history and correct origin return/reopen | PASS: fresh-document integration and actual browser reload/Back/Forward;Site/Unassigned origins distinct;bothHostscopedlists6rows;recordBackchildDNS5rows;mainDomainandFlaggedorigins separate. |
+| V32-3 | Invalid filtered destination only clears affected rows;repair and newtabdefault | PASS: all4filteredinvalidsortpaths afterswitch clear affectedrows0,retainhealthy main rows and exactsource;explicitvalidURLrepairs;freshindependenttabafterclose default. |
+| V32-4 | Exactly3newtests,98/98,lint96,schema/build,evidence | PASS:98tests0fail;3newtests in existingfile;lint96;schema22+2/114FKunchanged;buildPASS;verification-v32.json,test/lint/build-v32.txt and3actualscreenshots. |
+
 ## 3. Work completed
 
-Independent tabs retain Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record detail. Both filtered list states preserve search/sort/flag/page through fresh saved URLs and list/detail returns. Added exactly three tests in the existing file and one isolated synthetic fixture option. Reused accepted GET APIs, schema and Atlas styling. Actual built-in browser verifies independent filtered tabs, all four fresh saved routes, two exact list/detail round trips, native history, all four invalid filters and explicit repairs. One START18:27 (comment 1100390000161633) published before implementation; no new START on resume. No task status, description or dependency changed; the18:27 task activity was the START comment only.
+Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record retain search/sort/flag/page across Domain/Host switches. Record Back restores child DNS page2 with5rows; detail Back restores actual Domain or Flagged origin. Added exactly3tests in the existing module and extended only the opt-in synthetic Host20 fixture for requested page2 evidence. Existing runtime navigation already satisfies v32; no runtime,API,schema,entity,collector orstylechange. One START21:44 published on each exact task beforeimplementation;no status/description/dependency mutation.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Serialize host_origin=unassigned and unassigned_saved when selecting an Unassigned Host. Detail Back restores that filtered list and its saved search/sort/page; Site origin remains separate. |
-| frontend/test/view-bookmarks.test.mjs | Exactly three new tests: paired filtered-tab isolation; fresh saved URLs with two exact list/detail trips for all four journeys; invalid-filter isolation/repair and fresh defaults after close. Opt-in mixed fixture only for v31 tests. |
-| scripts/inventory-ui-lab.mjs | Add isolated --filtered-tabs fixture: synthetic Host13..24 unassigned, Host1..12 assigned; old fixtures unchanged. |
-| Docs/HOST-INVENTORY-UI.md | Document filtered Host origin, mixed fixture and full reproduction flow. |
-| Docs/DOMAIN-INVENTORY-UI.md | Document independent Flagged Domain versus Flagged record journeys and test scope. |
-| Docs/evidence/S0-004/verification-v31.json | Record exact checks, per-criterion proof, actual browser observations and resolved interruption. |
-| Docs/evidence/S0-004/{test,lint,build}-v31.txt | Actual full-suite95pass,lint96/schema22+2/114FK and build output. |
-| Docs/evidence/S0-004/domain-filtered-{reload,history,invalid}-v31.png | Three real settled built-in browser screenshots covering filtered detail reload/history and invalid filter. |
-| Docs/RESULT-TASK-S0-004.md | Canonical ten-section v31 report; preserve original/history and separate V31 rows. |
+| frontend/test/view-bookmarks.test.mjs | Exactly3newtests:all4filteredcross-viewjourneys;post-switchdirect/reload/history/originreturns;invaliddestination/sourcepreservation/repair/newdefault. Uses actualHTTP/PostgreSQL READONLY. |
+| scripts/inventory-ui-lab.mjs | Only filteredTabsFixtures+hostDetailFixtures adds30syntheticpackages/ports forHost20;31total yields6rows onpage2. No defaultfixture/runtime/APIchange. |
+| Docs/HOST-INVENTORY-UI.md | Document filteredHostcross-viewstate,Host20fixture and reproduction. |
+| Docs/DOMAIN-INVENTORY-UI.md | Document cross-viewFlaggedDomain/record origins and childDNSreturn. |
+| Docs/evidence/S0-004/verification-v32.json | Actual per-criterion98pass/lint96/schema/build/browserchecks and limits. |
+| Docs/evidence/S0-004/{test,lint,build}-v32.txt | Actual full98pass/0fail,lint96/schema22+2/114FK and build output. |
+| Docs/evidence/S0-004/domain-filter-switch-{reload,history,invalid}-v32.png | Three real settled screenshots after filtered cross-view switching. |
+| Docs/RESULT-TASK-S0-004.md | Canonical ten-section v32 report;preserveoriginal/historyAC andaddseparateV32rows. |
 
 ## 5. Run and verify
 
-Repository root: `npm ci`, `npm test`, `npm run lint`, `npm run build`.
-Focused: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs` (12 tests, exactly3 newv31).
-Browser lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`.
-Use filtered31.site/unassigned/flagged/records from the test. In two independent tabs open Site Host11 and Unassigned Host20; Back/reopen twice and compare complete canonical detail URLs. Repeat with Flagged Domains/Sample04 DNS and Flagged DNS records/first page2 record. Save each complete detail URL, independently create a fresh tab, restore and repeat two trips. Set the corresponding site_sort/unassigned_sort/flagged_sort/record_sort to bad in a fresh list URL, verify zero affected rows and retained healthy main rows, then explicitly restore the valid URL. Close and open a new default tab. Fixture setup precedes BEGIN READ ONLY.
+Repository root:`npm ci`;`npm test`;`npm run lint`;`npm run build`.
+Focused:`node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs` (15tests,3newv32).
+Lab:`node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`.
+Use filtered32 routes in the test. In tabA open Site Host11 then Flagged Domains/Sample04detail;tabB open UnassignedHost20 then FlaggedDNSrecord. Save canonical URLs,perform2sidebarcross-viewtrips each andcompareexactfragments. Reload,use nativeBack/Forward,detailBack/reopen;Hostscopedpage2each6rows,childDNSpage2five. Forall4filteredlistURLs set site_sort/unassigned_sort/flagged_sort/record_sort=bad,establishoppositeviewsource,returntodestinationandverify0affectedrows/healthymain;repairbyexplicitURLandreturnsourceexact. Independentnewtabafterclose default. Syntheticsetup precedes BEGIN READ ONLY.
 
 ## 6. Tests and actual results
 
-Full95/95 passed,0failed;12 targeted passed;exactly3new tests in existing view-bookmarks.test.mjs. Lint96modules;schema22entities+2junctions/114nativeFK unchanged;buildPASS. V31_FILTERED_TABS proves both independent pairs and2trips;V31_FRESH_FILTER proves0initial entries/fullsavedURL/2exacttrips for all4journeys;V31_INVALID_FILTER proves all4 errors,0affectedrows,healthy main rows and repair. Actual HTTP/PostgreSQL17.5WASM runs inside READ ONLY after synthetic setup. Actual browser independently verifies all four routes and captures three settled screenshots per task. Cloudflare requests0.
+Full98/98passed,0failed;15targetedpassed;exactly3newtestsinexistingfile. Lint96modules;schema22entities+2junctions/114nativeFKunchanged;buildPASS. V32_FILTERED_SWITCH provesall4journeys,2exactcross-viewtrips,nocrossclear;V32_ORIGIN_HISTORY provesdirect/reload/history/correctorigin/reopen;V32_INVALID_DESTINATION proves0affectedrows/healthysibling/sourceexact/repair. ActualHTTP/PostgreSQL17.5WASM READONLY aftersetup. Actualbuilt-inbrowser separately verifies2tabpairs,all4invaliddestinations,6rows perHostscopedlist,recordBack5childDNSrows,bothDomainorigins,explicitrepair/newtabdefault. Threeactualscreenshots per task. Cloudflare0requests.
 
 ## 7. Issues and implementation decisions
 
-Fixed the observed Unassigned Host selection path, which previously serialized the Site origin. Explicit Unassigned origin and saved fields now survive every detail change and Back. Mixed assigned/unassigned lab data is a separate opt-in fixture so older acceptance evidence is unchanged. Integration tab stores are models; real independent browser tabs separately supply UI evidence. Automatic approval review initially rejected loopback browser access because of a usage limit; no bypass or alternate browser was used. Resumed through the same normal browser after the reported reset, reopened exact assigned task tabs after app reset, and reread live instructions. Lead19:33 consolidation comments1100390000161726/1727 were explicitly withdrawn19:34 due incomplete comment-window reading; original18:11 filtered-feature assignment remains the only effective v31 assignment. Thus no consolidation scope change was applied. No targeted/full test failures. Python console encoding issue on reading logs was resolved with explicit UTF-8; saved logs were intact.
+Lead requests6rows onHost20package/portpage2;its priorfixture had1record each. Added30syntheticrecords only when both existingfilteredTabsFixtures andhostDetailFixtures are enabled. No productiondata,defaultfixture orruntimecontractchange. Exactly3newtests stayinexistingfile so lint remains96. Independenttab/historyfixtures are modeled integration evidence;realbrowser checks separatelyverifyUI. No targeted/fulltest failures. Reused accepted v31 origin implementation without unnecessary source changes.
 
 ## 8. Not done, limitations and technical debt
 
-Synthetic/local only;no production/RBAC/scale/CVE/native Linux/live Cloudflare evidence. Independent fresh tabs without opener are verified; duplicated/opener session cloning is not claimed. Existing storage-denial/clearing/fragment16384 limits remain. Healthy sibling main rows in invalid filtered views are retained in DOM/state but hidden while filtered panel is active; no claim that all panels are simultaneously visible. DONE applies only to the assigned synthetic/local criteria. Actual upload outcome and exact immutable fallback recorded in task submission/checkpoint;quota boundary honored.
+Synthetic/local only;no production/RBAC/scale/CVE/nativeLinux/liveCloudflareproof. Existing sessionstorage denial/clearing/fragment16384limits remain. Independentfresh tabs withoutopener verified;duplicate/openerstoragecloning notclaimed. Healthy main sibling rows are retained but hidden whilefilteredpanelactive;no simultaneousvisibilityclaim. DONE limited to assigned synthetic/local criteria. Uploadactualoutcome/exactattachmentIDs recordedinsubmission/checkpoint;quota boundary honored.
 
 ## 9. Blockers and decisions required
 
-No new missing-input/spec/security/production decision. Browser review interruption resolved after reset. Q-01..Q-05 untouched. Separate QA approval required before merge;Dev does not merge. Lead19:34 reaffirms original assignment and authorizes immutable GitHub fallback if actual RESULT upload fails.
+No new missinginput/spec/security/productiondecision orhardblocker. Q-01..Q-05untouched. QAapprovalrequired beforemerge;Devdoesnotmerge. Routinecomments/RESULT/evidenceuploads authorized onexactassignedtasks only.
 
 ## 10. Next step and self-check
 
-Push existing feature branch/update PR1;verify live current-headCI. Attempt RESULT/evidence upload and publish exactly one [DEV][SUBMISSION] per task with honest outcome and exact fallback if needed. Verify published UI/checkpoint;continue valid Lead/QA work without duplicates.
+Push existingfeaturebranch/updatePR1;verifylivecurrent-headCI. UploadRESULT/evidenceusing browsemenu->Uploadfile->chooser;verifylinks,thenpublish exactlyone [DEV][SUBMISSION] pertask. Savecheckpoint andcontinuevalidLead/QAworkwithoutduplicates.
 
-- [x] Exact ten sections;original/historical/current AC separate.
-- [x] Exact source/time,specific files,commands and actual output.
-- [x] Exactly3newtests,95fullsuite,lint96,unchanged schema/build,3actualscreenshots.
-- [x] Modeled versus browser evidence and native/storage/security limits explicit;no selfaccept/statuschange/merge.
+- [x] Exacttensections;original/historical/currentACseparate.
+- [x] Exactsource/time,eachfile,commands,realoutput.
+- [x] Three newtests,98fullsuite,lint96,unchangedschema/build,3actualscreenshots.
+- [x] Fixture/model/browser/native/securitylimits explicit;no selfaccept/statuschange/merge.
 
-History:v30 accepted by Lead18:11, comment1100390000161627;v31 START18:27 comment1100390000161633. Invalid19:33 consolidation instruction withdrawn19:34. v31 filtered work resumed after automatic-review reset and completed against exact source above.
+History:v31accepted byliveLead21:41basedonactualClickUpattachments;v32START21:44verifiedbeforeimplementation. Exacttestedsource/evidencecommit above.
