@@ -114,3 +114,8 @@ Sort Domains hostname/direction controls combine sort/direction with search,outs
 ## v20 sorted related views
 
 Flagged records sort owner/value/type with independent direction;fragment flagged_records=1,record_flag=true,record_search,record_sort,record_direction,record_page. Example --flagged: /inventory/domains#flagged_records=1&record_flag=true&record_search=198.51.100.25&record_sort=owner&record_direction=desc&record_page=2 ->sample08/sample04 of12flagged. Sort resets page1;records_saved bookmark preserves search/flag/sort/page through parent list/detail and reopening. Invalidsort/flag clears rows. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v21 scoped view sorting
+
+Run `node scripts/inventory-ui-lab.mjs --flagged`; append `#list=1&flagged=1&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.

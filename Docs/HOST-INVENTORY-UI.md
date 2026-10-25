@@ -108,3 +108,8 @@ Host detail package sort name/version and ports sort port/pid with independent d
 ## v20 sorted related views
 
 Package hosts controls retain package_hosts_sort/package_hosts_direction with package UUID/package_search/package_page. Example --packages: /inventory/hosts#host=20000000-0000-4000-8000-000000000011&package=20000000-0000-4000-8000-000000000111&package_search=2.0&package_hosts_sort=hostname&package_hosts_direction=desc&package_page=2 ->host03/host01 of12matching. Sort resets page1. Parent return stores package_saved bookmark;reopen same package restores search/sort/page;different package resets. Invalidsort clears only Packagehosts view. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v21 scoped view sorting
+
+Run `node scripts/inventory-ui-lab.mjs --hosts`; append `#list=1&unassigned=1&unassigned_search=host-&unassigned_page=2&unassigned_sort=hostname&unassigned_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.
