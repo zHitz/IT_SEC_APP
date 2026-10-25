@@ -1,20 +1,21 @@
-# Result — TASK-S0-004: Flagged Domain route persistence
+# Result — TASK-S0-004: Flagged child DNS route persistence
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v12 |
+| Result version | v13 |
 | Status | DONE |
-| Spec version followed | SRS v1.0; TASK-S0-004; Lead09:06 ACCEPT v11 and assign v12 |
+| Spec version followed | SRSv1.0; TASK-S0-004; Lead09:34 ACCEPTv12 and assignv13 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T09:27:09.332458+07:00 |
-| Source/evidence commit | fa8b4aa21d32f47f270130053da857fdbfd9fed0 |
+| Submitted at | 2026-10-25T09:51:54.346153+07:00 |
+| Source/evidence commit | 603e74e664d6e6cad9b291f5c50a31c3396f18e9 |
 
 ## 1. Summary
 
-DONE in approved synthetic v12 scope. Flagged view/search/parent page persist in fragments and reload; browser Back/Forward replay state. Invalid state fails closed with explicit error and zero cards. Existing owner DNS and origin return preserved. 52/52 tests, lint79/schema22+2/114FK unchanged, buildPASS. No production claim.
+DONE in approved synthetic v13 scope. Flagged owner/child DNS page persist in fragments, reload and Back/Forward. Invalid/missing/offpage owner and out-of-range child pages clear all cards. Full55/55tests,lint82/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 Original AC and V4–V6 rows below retain their previously accepted scope. V7 replaces the historical candidate-search implementation with an explicitly assigned API.
@@ -73,58 +74,62 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V12-4 | Owner DNS fields/return/style/boundaries | PASS: existing parent/child owner paging and both return regressions pass; browser type/value/proxied/TTL/tags intact; no schema/algorithm changes. |
 | V12-5 | Full checks/docs/current exact source | PASS:52tests,79lintmodules,22+2/114FK,build; exact source above and v12 guides/proof/logs/screenshots. |
 
+
+| V13-1 | Direct fragment and reload restore | PASS: actual HTTP/PostgreSQL freshDOM and real browser preserve selected flagged sample04owner/DNS2of2/2rows. |
+| V13-2 | Native Back/Forward and origin return | PASS: real browser/history fixture replay; previous both-return regressions pass. |
+| V13-3 | Invalid state explicit/no partial | PASS: 6child invalid cases;0rows/cards; real browser error screenshot. |
+| V13-4 | Fields/style/boundaries and complete checks | PASS:55tests,lint82/schema22+2/114FK unchanged,build; existing OS/version or ownerDNS fields retained. |
+
 ## 3. Work completed
 
-Added explicit flagged route parsing/validation and history-driven panel restore. Search and parent paging push state; return removes flagged parameters while retaining origin list/detail context. Duplicate route events no longer hide the current panel. Child DNS paging stays local and exact-owner scoped. DNS value routes remain independent and tested.
+Added flagged_owner/child_page validation/history callbacks and exact-owner restore. Existing parent flagged search/page remains; changing parent context clears child selection. Optional fixture supplies12DNS forsample04 across2pages.
 
 ## 4. Files changed
 
-| File | Purpose |
+| File | Specific change |
 |---|---|
-| frontend/src/domain-navigation.mjs | Parse/validate flagged fragment, restore, history callbacks and duplicate-event guard. |
-| frontend/src/flagged-domains.mjs | Restore panel search/page, invalid error clearing, routed parent interactions; preserve child paging. |
-| frontend/test/navigation-fixture.mjs | Shared URL/history event fixture with real stack semantics. |
-| frontend/test/flagged-domains.test.mjs | Adapt existing owner/child/search/failure/return regression to actual history semantics. |
-| frontend/test/flagged-navigation.test.mjs | HTTP/PostgreSQL direct/reload/history and7invalid route checks. |
-| Docs/DOMAIN-INVENTORY-UI.md | v12 route contract/reproduction/limits. |
-| Docs/evidence/S0-004/flagged-v12.json | Actual proof summary and honest limits. |
-| Docs/evidence/S0-004/test-v12.txt | Full52test output. |
-| Docs/evidence/S0-004/lint-v12.txt | Actual79module and schema parity output. |
-| Docs/evidence/S0-004/build-v12.txt | Successful build output. |
-| Docs/evidence/S0-004/flagged-reload-v12.png | Real browser reload page2/owners44+48. |
-| Docs/evidence/S0-004/flagged-history-v12.png | Real browser Forward sample12/search/page1/DNS fields. |
-| Docs/evidence/S0-004/flagged-invalid-v12.png | Real browser page0 error/zero cards. |
-| Docs/RESULT-TASK-S0-004.md | Canonical10-section current v12 report. |
+| frontend/src/domain-navigation.mjs | Child UUID/page parse, validation and history encoding |
+| frontend/src/flagged-domains.mjs | Route child paging, owner membership and page-bound validation, fail-closed cards |
+| frontend/test/flagged-child-navigation.test.mjs | Actual READ ONLY direct/reload/history and6invalid cases |
+| scripts/inventory-ui-lab.mjs | Optional11extra synthetic DNS;12sample04records/2childpages |
+| Docs/DOMAIN-INVENTORY-UI.md | v13 route contract/reproduction/limits |
+| Docs/evidence/S0-004/child-v13.json | Actual proof and limits |
+| Docs/evidence/S0-004/test-v13.txt | Full55test output |
+| Docs/evidence/S0-004/lint-v13.txt | 82module/schema parity output |
+| Docs/evidence/S0-004/build-v13.txt | Successful build |
+| Docs/evidence/S0-004/child-reload-v13.png | Real browser reload evidence |
+| Docs/evidence/S0-004/child-history-v13.png | Real browser history evidence |
+| Docs/evidence/S0-004/child-invalid-v13.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-004.md | Canonical v13 tensection report |
 
 ## 5. Run and verify
 
-From repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Focused: `node --test frontend/test/flagged-navigation.test.mjs frontend/test/flagged-domains.test.mjs frontend/test/dns-value-navigation.test.mjs`.
-Run `node scripts/inventory-ui-lab.mjs --flagged`; open emitted origin plus `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged=1&flagged_search=sample-&flagged_page=2`. Reload; search sample-12; Back/Forward. Change flagged_page to0 to see explicit error. No production inputs.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --flagged-child`; exact fragment in `Docs/DOMAIN-INVENTORY-UI.md` v13 section. Focused test `node --test frontend/test/flagged-child-navigation.test.mjs frontend/test/flagged-domains.test.mjs`. Use synthetic local origin only.
 
 ## 6. Tests and actual results
 
-52/52tests pass,0failures. Lint79modules, unchanged22entities+2junctions/114FK, buildPASS. New integration uses actual loopback HTTP/PostgreSQL17.5WASM; fresh DOM models reload; real browser confirms reload and native history. Existing READ ONLY parent/child ownership and list/detail return suite passes. Seven malformed routes clear all cards. DNS value navigation regression remains green.0Cloudflare requests. No failed task tests.
+55/55tests pass,0failures in final full suite; lint82modules,22entities+2junctions/114FK parity; buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM reload/history and real browser reload/Back/Forward/error screenshots. sample04 flagged owner12DNS/2pages,child2 has2rows;6invalid cases. No failed child-task tests. Previous inventory/collector/return regressions pass.0Cloudflare requests; no production data.
 
 ## 7. Issues and implementation decisions
 
-Use flagged=1, flagged_search and flagged_page independently of origin list search/page/outside_known_range. Unique valid page1..100000 and search<=200/no controls required. Invalid flagged marker, duplicate parameters or value_search conflict errors before panel requests. Child pages reset to1 on route restore, while local child paging is preserved. This avoids silently encoding extra unassigned scope. A duplicate popstate/hashchange must not hide an unchanged panel; guard precedes hide. No backend changes needed.
+Encoded owner must occur on encoded flagged parent page; this verifies existing accepted tag membership without scanning unrelated pages or adding backend paths. One selected child per fragment; other owners defaultpage1. Parent changes clear child selection. Malformed/duplicate params fail before panel requests; missing/offpage owner and out-of-range actual page fail closed.
 
 ## 8. Not done, limitations and technical debt
 
-No production/token/liveCloudflare/native/scale/RBAC evidence or changes. No flag algorithm/schema/entity/osquery changes. Child page state is local, not reload-persisted; parent page/search are persisted. Separate parent/child snapshots can change under concurrent updates; fan-out remains bounded at10owners. No exact viewport/reduced-motion claim. Original approved synthetic PoC scope and separate native follow-ups retained.
+No production/token/liveCloudflare/native/scale/RBAC claim. Owner must belong to encoded parent page; one child selection encoded. Separate parent/child snapshots may change concurrently; fan-out<=10. No schema/entity/osquery/flagalgorithm changes. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker or new scope/security/PO decision for v12; Q01–05 untouched.
+No hard blocker for assigned synthetic v13. No new PO/security/spec/credential decision; Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push source/report to existing QA PR; attach canonical RESULT, guide/proof/logs/screenshots once; await concrete review and execute new valid Lead assignment. Do not merge or self-accept.
+Push to existing QA PR, attach canonical RESULT/guide/proof/logs/screenshots once and await concrete review; execute next valid Lead assignment. Never self-accept/merge.
 
-- [x] Exact ten sections; original/historical/new AC separately mapped.
-- [x] Actual source hash/current time/Summary and all changed files.
-- [x] Commands, real outputs, assumptions and remaining limits.
-- [x] Read-only/local/no-secret boundaries preserved.
-- [x] Canonical version incremented; prior accepted history retained in Git/ClickUp.
+- [x] Exact10sections; original/historical/new AC separately mapped.
+- [x] Exact current source/time/Summary and each changed file.
+- [x] Actual commands/logs/browser evidence; errors/assumptions/limits disclosed.
+- [x] Local/read-only/no-secret/native boundaries retained.
+- [x] Canonical increment; prior reports/history retained in Git/ClickUp.
 
-History: v10 and v11 accepted; v12 assigned by Lead09:06, implemented with actual HTTP/PostgreSQL/browser evidence. Historical AC rows describe their original evidence, not new native runs.
+History: v12 ACCEPT live 09:34; v13 assigned in same comment and completed in this execution cycle.

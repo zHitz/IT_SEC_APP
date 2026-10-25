@@ -1,20 +1,21 @@
-# Result — TASK-S0-003: Unassigned Host route persistence
+# Result — TASK-S0-003: Site-picker route persistence
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v12 |
+| Result version | v13 |
 | Status | PARTIAL |
-| Spec version followed | SRSv1.0; TASK-S0-003; Lead09:25 ACCEPT v11 and v12 assignment |
+| Spec version followed | SRSv1.0; TASK-S0-003; Lead09:46 ACCEPTv12 and assignv13 |
 | Dev agent | Codex — Dev AI Agent |
-| Submitted at | 2026-10-25T09:34:32.810967+07:00 |
-| Source/evidence commit | 4deb45d8df11175c20fbfe1991d05a4c7d443344 |
+| Submitted at | 2026-10-25T09:51:54.346153+07:00 |
+| Source/evidence commit | 603e74e664d6e6cad9b291f5c50a31c3396f18e9 |
 
 ## 1. Summary
 
-PARTIAL overall: original nativeLinux/osquery AC1/3/4 remain unverified. Assigned v12 unassigned view/search/page deep links, reload and Back/Forward complete. Explicit malformed-state errors clear all rows. OS/version and origin list/detail retained.53/53tests,lint80/schema22+2/114FK unchanged,buildPASS. No Site/schema/Cloudflare/CVE/production changes.
+PARTIAL overall; nativeLinux/osquery AC1/3/4 remain unverified. All assigned v13 Site-picker navigation requirements complete. Selected Site/picker page/hostname search/Host page persist across direct link, reload and Back/Forward; invalid state clears rows. Full55/55tests,lint82/schema22+2/114FK unchanged,buildPASS.
 
 ## 2. Acceptance criteria
+
 
 
 Original and V4–V6/QA rows retain their previously accepted evidence boundaries. V7 below supersedes the old full-reload limitation.
@@ -75,57 +76,63 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 | V12-4 | OS/version and origin list/detail/style | PASS: Synthetic Linux12.3 shown; both original return regressions pass retaining Host11detail or host-/page2/size10. |
 | V12-5 | Full checks/docs/exact source/boundaries | PASS:53tests,80modules,22+2/114FK,build; exact source header; no Site writes or Cloudflare changes. |
 
+
+| V13-1 | Direct fragment and reload restore | PASS: actual HTTP/PostgreSQL freshDOM and real browser preserve selected Site/picker2/hostname/Host2. |
+| V13-2 | Native Back/Forward and origin return | PASS: real browser/history fixture replay; previous both-return regressions pass. |
+| V13-3 | Invalid state explicit/no partial | PASS: 7Site invalid cases;0rows/cards; real browser error screenshot. |
+| V13-4 | Fields/style/boundaries and complete checks | PASS:55tests,lint82/schema22+2/114FK unchanged,build; existing OS/version or ownerDNS fields retained. |
+
 ## 3. Work completed
 
-Added unassigned=1/unassigned_search/unassigned_page fragment parsing and fail-closed validation. Panel restore reuses accepted site_assigned=false GET, with history callbacks for search/page/return. Duplicate route events leave unchanged panel visible. Existing Site picker stays separate and retains behavior; no backend/schema changes.
+Implemented strict Site route parse/history, asynchronous selected-Site resolution using accepted GET, picker/Host restoration and origin list/detail return. Existing unassigned routes and Site FK behavior preserved.
 
 ## 4. Files changed
 
-| File | Purpose |
+| File | Specific change |
 |---|---|
-| frontend/src/host-navigation.mjs | Strict unassigned route parse/restore/history and duplicate-event guard. |
-| frontend/src/site-hosts.mjs | Routed unassigned open/search/page/return and invalid error clearing; preserve Site view. |
-| frontend/test/unassigned-hosts.test.mjs | Existing READ ONLY nullSite/search/pages/503/bothreturns regression uses actual history semantics. |
-| frontend/test/unassigned-navigation.test.mjs | Actual HTTP/PostgreSQL freshDOM reload, history and6invalid routes. |
-| Docs/HOST-INVENTORY-UI.md | Route contract, reproduction and limits. |
-| Docs/evidence/S0-003/unassigned-v12.json | Measured proof summary. |
-| Docs/evidence/S0-003/test-v12.txt | Complete53test output. |
-| Docs/evidence/S0-003/lint-v12.txt | Actual80module/schema parity. |
-| Docs/evidence/S0-003/build-v12.txt | Successful build. |
-| Docs/evidence/S0-003/unassigned-reload-v12.png | Browser24hosts/page2/OS12.3 after reload. |
-| Docs/evidence/S0-003/unassigned-history-v12.png | Browser Forward restores host11search/page1. |
-| Docs/evidence/S0-003/unassigned-invalid-v12.png | Browser page0 error without rows. |
-| Docs/RESULT-TASK-S0-003.md | Canonical v12 exact10section report. |
+| frontend/src/host-navigation.mjs | Site route parser, invalid state, navigation callbacks and restore |
+| frontend/src/site-hosts.mjs | Selected Site resolution, picker/search/Host pages, route callbacks,8second abort/stale guards and errors |
+| frontend/test/site-hosts.test.mjs | Adapt existing Site/Host/failure/both-return regression to history |
+| frontend/test/site-navigation.test.mjs | Actual READ ONLY direct/reload/history/7invalid route cases |
+| scripts/inventory-ui-lab.mjs | Optional11extra synthetic Sites for13Site/2page fixture |
+| Docs/HOST-INVENTORY-UI.md | v13 route contract/reproduction/limits |
+| Docs/evidence/S0-003/site-v13.json | Actual proof and limits |
+| Docs/evidence/S0-003/test-v13.txt | Full55test output |
+| Docs/evidence/S0-003/lint-v13.txt | 82module/schema parity output |
+| Docs/evidence/S0-003/build-v13.txt | Successful build |
+| Docs/evidence/S0-003/site-reload-v13.png | Real browser reload evidence |
+| Docs/evidence/S0-003/site-history-v13.png | Real browser history evidence |
+| Docs/evidence/S0-003/site-invalid-v13.png | Real browser invalid evidence |
+| Docs/RESULT-TASK-S0-003.md | Canonical v13 tensection report |
 
 ## 5. Run and verify
 
-Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Focused `node --test frontend/test/unassigned-navigation.test.mjs frontend/test/unassigned-hosts.test.mjs`.
-`node scripts/inventory-ui-lab.mjs --hosts`; use emitted origin + `/inventory/hosts#list=1&search=host-&page=2&page_size=10&unassigned=1&unassigned_search=host-&unassigned_page=2`. Reload, search host-11, Back/Forward; page0 shows error. No production inputs.
+Repo root: `npm ci`, `npm test`, `npm run lint`, `npm run build`. Lab: `node scripts/inventory-ui-lab.mjs --sites --hosts`; exact fragment in `Docs/HOST-INVENTORY-UI.md` v13 section. Focused test `node --test frontend/test/site-navigation.test.mjs frontend/test/site-hosts.test.mjs`. Use synthetic local origin only.
 
 ## 6. Tests and actual results
 
-53/53tests pass,0failures; lint80modules; schema22entities+2junctions/114FK unchanged; buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM, freshDOM reload/history fixture and real browser evidence prove route behavior. Existing BEGIN READ ONLY tests retain24nullSite/2assigned excluded/3pages, hostname search, OS/version, empty/503clearing and both return paths. Six invalid routes yield explicit error/zero cells. Full Domain/Site/package/collector regressions pass. No failed task tests. Accepted actual600010ms outage evidence retained and not rerun.
+55/55tests pass,0failures in final full suite; lint82modules,22entities+2junctions/114FK parity; buildPASS. Actual loopback HTTP/PostgreSQL17.5WASM BEGIN READ ONLY plus freshDOM reload/history and real browser reload/Back/Forward/error screenshots. 13Sites/2pickerpages,SampleSite16Hosts/2pages,host11search1;7invalid cases. Initial test expectation correction described below. Previous inventory/collector/return regressions pass.0Cloudflare requests; no production data.
 
 ## 7. Issues and implementation decisions
 
-Separate origin list search/page from unassigned_search/page. Require unique unassigned=1, search<=200/no controls, page1..100000; invalid marker/page/duplicates fail closed without panel data request. Route restores origin context before panel; return removes unassigned parameters. Existing temporary Site picker retains its behavior. Duplicate popstate/hashchange guard precedes hide. Synthetic Linux label is fixture data, never native proof.
+First Site route assertion expected14 host- matches; actual response correctly includes2sample-host seed names,16total. Corrected assertion and reran focused/full suite. Selected Site can be outside picker page; bounded100x100 GET lookup,8second timeout, abort/stale guards prevent obsolete route display. No new backend endpoint.
 
 ## 8. Not done, limitations and technical debt
 
-Native Linux/osquery AC1/3/4 remain unverified. No installation, production/RBAC/token/scale/CVE claim; no Site writes/schema/entity or Cloudflare changes. Existing bounded GET snapshots can change under concurrent inventory updates. Site picker itself is not reload-persisted. No exact viewport/reduced-motion measurement. Original600010ms accepted evidence remains historical, not simulated anew.
+Native AC1/3/4 unverified;600010ms accepted evidence retained/not rerun. Lookup capped10000Sites/8seconds; larger/unavailable/missing Site errors explicitly. No production/token/RBAC/scale/CVE/Cloudflare or Site mutation. No exact viewport/reduced-motion measurement. Historical AC rows retain original evidence scope.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for v12 synthetic UI scope. Native follow-ups require legitimately authorized environment inputs; no new credential/production access inferred. Q01–05 untouched.
+No hard blocker for assigned synthetic v13. No new PO/security/spec/credential decision; Q01–05 untouched.
 
 ## 10. Next step and self-check
 
-Push source/report to existing QA PR and attach canonical RESULT/guide/proof/logs/screenshots once. Await concrete Lead/QA review; execute next valid assignment. No self-accept or merge.
+Push to existing QA PR, attach canonical RESULT/guide/proof/logs/screenshots once and await concrete review; execute next valid Lead assignment. Never self-accept/merge.
 
-- [x] Ten numbered sections in order; original/historical/new AC separately mapped.
-- [x] Exact current source/time/Summary; every changed file and reproduction commands.
-- [x] Actual outputs, browser evidence, assumptions and remaining limits.
-- [x] Native gaps and600010ms evidence preserved; no production/security overclaim.
-- [x] One canonical report increment; prior accepted history retained in Git/ClickUp.
+- [x] Exact10sections; original/historical/new AC separately mapped.
+- [x] Exact current source/time/Summary and each changed file.
+- [x] Actual commands/logs/browser evidence; errors/assumptions/limits disclosed.
+- [x] Local/read-only/no-secret/native boundaries retained.
+- [x] Canonical increment; prior reports/history retained in Git/ClickUp.
 
-History: v10accepted09:06; v11accepted09:25; v12assigned09:25 and implemented. Historical rows retain original evidence dates/scope.
+History: v12 ACCEPT live 09:46; v13 assigned in same comment and completed in this execution cycle.
