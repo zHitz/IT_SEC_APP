@@ -11,6 +11,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
   const inventoryFiles = new Map([
     ['/inventory/hosts', ['hosts.html', 'text/html; charset=utf-8']],
     ['/dns-value-search.mjs', ['dns-value-search.mjs', 'text/javascript; charset=utf-8']],
+    ['/flagged-domains.mjs', ['flagged-domains.mjs', 'text/javascript; charset=utf-8']],
     ['/domain-navigation.mjs', ['domain-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/package-hosts.mjs', ['package-hosts.mjs', 'text/javascript; charset=utf-8']],
     ['/port-search.mjs', ['port-search.mjs', 'text/javascript; charset=utf-8']],

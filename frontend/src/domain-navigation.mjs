@@ -1,3 +1,4 @@
+import {mountFlaggedDomains} from './flagged-domains.mjs';
 import {mountDnsValueSearch} from './dns-value-search.mjs';
 import {mountInventoryDetail} from './inventory-detail.mjs';
 export function parseDomainRoute(location){
@@ -11,7 +12,7 @@ export function parseDomainRoute(location){
 export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
  const nav=navigation??{history:view.history,location:view.location,events:view};
- const route=parseDomainRoute(nav.location);let valueView,core,lastRoute=null,routePending=Promise.resolve();
+ const route=parseDomainRoute(nav.location);let flaggedView,valueView,core,lastRoute=null,routePending=Promise.resolve();
  const get=id=>document.getElementById(id);
  const context=()=>({resource:'domains',search:core.list.state.search,flag:core.list.state.flag,page:core.list.state.page,pageSize:core.list.state.pageSize});
  function fragment(id,ctx){const p=new URLSearchParams(id===null?{list:'1'}:{domain:id});if(ctx.search)p.set('search',ctx.search);if(ctx.flag)p.set('outside_known_range',ctx.flag);p.set('page',String(ctx.page));p.set('page_size',String(ctx.pageSize));return'#'+p;}
@@ -22,7 +23,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
   return changed?core.list.reload():Promise.resolve();
  }
  async function sync(){
-  valueView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
+  flaggedView?.hide();valueView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseDomainRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,fqdn:'Domain details',source:null,confidence:null,tags:[],first_seen_at:null,last_seen_at:null},{recordHistory:false});
   await pending;if(next.valueSearch!==null)await valueView.restore(next.valueSearch,next.dnsPage);
  }
@@ -44,6 +45,7 @@ export function mountDomainNavigation(document,{fetcher=fetch,navigation}={}){
  }
  function valueBack(){const parsed=parseDomainRoute(nav.location);nav.history?.pushState(null,'',nav.location.pathname+fragment(parsed.id,context()));lastRoute=null;return routePending=sync();}
  valueView=mountDnsValueSearch(document,{onNavigate:valueNavigate,onBack:valueBack});valueView.setFetcher(fetcher);
+ flaggedView=mountFlaggedDomains(document,{fetcher});
  const ready=Promise.all([core.ready,sync()]);
- return{ready,core,valueView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);valueView.destroy();core.destroy();}};
+ return{ready,core,valueView,flaggedView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);flaggedView.destroy();valueView.destroy();core.destroy();}};
 }

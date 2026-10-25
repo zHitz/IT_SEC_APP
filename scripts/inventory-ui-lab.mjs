@@ -6,9 +6,9 @@ import {createInventoryReader} from '../backend/src/inventory/reader.mjs';
 import {createFrontend} from '../frontend/server.mjs';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
-export async function startInventoryUiLab({hostFixtures=false,packageFixtures=false}={}){
+export async function startInventoryUiLab({hostFixtures=false,packageFixtures=false,domainFixtures=24}={}){
  const db=new PGlite();await migrate(db,'up');await seed(db);
- for(let index=1;index<=24;index++){
+ for(let index=1;index<=domainFixtures;index++){
   const fqdn=`sample-${String(index).padStart(2,'0')}.test`,id=n=>`10000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
   await db.query(`INSERT INTO asset_inventory.domain(id,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment,tags,fqdn,is_internal)
    SELECT $1::uuid,'cloudflare',first_seen_at,last_seen_at,observed_at,'confirmed','seed://ui-v5','synthetic-test',ARRAY['synthetic'],$2,false FROM asset_inventory.domain WHERE fqdn='sample.test'`,[id(index),fqdn]);
@@ -30,6 +30,6 @@ export async function startInventoryUiLab({hostFixtures=false,packageFixtures=fa
  return {origin:`http://127.0.0.1:${app.address().port}`,db,async close(){await new Promise(resolve=>app.close(resolve));await new Promise(resolve=>api.close(resolve));await db.close();}};
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- const lab=await startInventoryUiLab({hostFixtures:process.argv.includes('--hosts')||process.argv.includes('--packages'),packageFixtures:process.argv.includes('--packages')});console.log(JSON.stringify({event:'inventory_ui_lab_ready',url:lab.origin+(process.argv.includes('--hosts')?'/inventory/hosts':'/inventory/domains'),synthetic:true,engine:'PostgreSQL17.5WASM',domains:25,dnsRecords:25,flaggedRecords:6,cloudflareRequests:0}));
+ const lab=await startInventoryUiLab({hostFixtures:process.argv.includes('--hosts')||process.argv.includes('--packages'),packageFixtures:process.argv.includes('--packages'),domainFixtures:process.argv.includes('--flagged')?48:24});console.log(JSON.stringify({event:'inventory_ui_lab_ready',url:lab.origin+(process.argv.includes('--hosts')?'/inventory/hosts':'/inventory/domains'),synthetic:true,engine:'PostgreSQL17.5WASM',domains:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.domain')).rows[0].total),dnsRecords:Number((await lab.db.query('SELECT count(*) AS total FROM asset_inventory.dns_record')).rows[0].total),flaggedRecords:Number((await lab.db.query("SELECT count(*) AS total FROM asset_inventory.dns_record WHERE 'cloudflare:outside-known-range'=ANY(tags)")).rows[0].total),cloudflareRequests:0}));
  for(const signal of ['SIGINT','SIGTERM'])process.once(signal,async()=>{await lab.close();process.exit(0);});
 }

@@ -64,3 +64,8 @@ Choose Search DNS values from either Domain/DNS list or Domain detail. Enter an 
 ## v10 Reloadable DNS search routes
 
 Direct link: `/inventory/domains#value_search=192.0.2.25&dns_page=2&search=sample-&page=2&page_size=10`. Optional `domain=<UUID>` preserves the originating detail; list search/filter/page use existing keys, while `dns_page` is independent. Reload fetches fresh results through accepted value_search GET. Submitting a new value or changing DNS page creates a native history entry; Back/Forward restores the value and result page. The explicit return button navigates to the origin list/detail route without value_search. Empty/control/duplicate values show an error with zero result rows. DNS page defaults1 and is bounded100000. Value length1–200 and literal matching unchanged. Previous v9 non-persistent panel limitation is superseded. No live DNS/Cloudflare/schema/osquery change.
+
+
+## v11 Flagged domains
+
+View flagged domains from list/detail uses accepted `domains?outside_known_range=true` (exact stored DNS tag),10domains/page with domain total and hostname search. Each Domain card shows its exact-owner DNS records, child total and10-record independent child pagination; includes both flagged and unflagged records belonging to that flagged Domain. No tag/algorithm recalculation. Back restores entry list/detail and context. Empty/error clears all cards. One parent request plus at most10child-page requests per load, bounded8second timeout; child pages explicit, never silently truncate. Temporary view is not URL-persisted; reload returns original route. Synthetic `--flagged` lab uses48domains/12flagged for2parent pages; integration adds12records to one owner to prove child pagination. No liveCloudflare/schema/osquery change.
