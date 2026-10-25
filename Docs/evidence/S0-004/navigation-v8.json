@@ -1,0 +1,20 @@
+{
+  "synthetic": true,
+  "engine": "PostgreSQL17.5 WASM",
+  "tests": "44/44",
+  "browser": {
+    "reload": "sample-12.test cloudflare/confirmed A198.51.100.25 false TTL300 Flagged",
+    "back": "search sample-, flagged filter, page1, size10 retained",
+    "nativeHistory": "Back/Forward restored sample-16.test",
+    "missing": "Domain not found; metadata and DNS empty"
+  },
+  "cloudflareRequests": 0,
+  "failuresResolved": [
+    "test generation path replacement corrected",
+    "Linkedom select.value/selected emulation assertion replaced with state and real request assertions; actual browser selected Flagged verified"
+  ],
+  "limits": [
+    "No live production/native/scale evidence",
+    "UUID fragment supported; fqdn alias not promised"
+  ]
+}

@@ -47,3 +47,10 @@ Detail now re-reads GET /api/v1/inventory/domains/:id for authoritative current 
 Unknown owner returns Domain not found and clears metadata/related rows; other failures expose Retry/Back with no previous-owner partial data. This version does not add Domain standalone deep-link/reload persistence; context navigation remains as documented. No backend/schema or live data capability beyond the exact read-only lookup assigned by Lead.
 
 Run `node --test backend/test/domain-exact.test.mjs frontend/test/domain-detail.test.mjs frontend/test/domain-proxy.test.mjs`; full lint/test/build. Actual SQL/HTTP tests prove exact-owner equality with overlapping trap, server pages/counts,32owned records, missing404 and disabled gates. Frontend tests retain31record/2childpage/back proof and verify10001server-count metadata without scanning; no claim that10001fixture records were inserted. Explicit synthetic lab remains the same command; no token required.
+
+
+## v8 Domain navigation
+
+Direct local links use `/inventory/domains#domain=<UUID>&search=sample-&outside_known_range=true&page=1&page_size=10`. UUID identity is sufficient for the assigned UUID-or-fqdn alternative. Legacy `#detail=<UUID>` remains supported. Only identity and validated list context enter history, never a saved entity snapshot. Reload resolves the parent and exact-owner DNS page anew through the v7 GET API. Native Back/Forward restores selection; the Back button returns to the prior list, or reconstructs list context for a direct entry. Missing and malformed identities clear metadata and DNS rows before showing an explicit error. Search/filter/page/page-size survive a detail round trip. No production auth or external API access is enabled.
+
+Regression: `node --test frontend/test/domain-navigation.test.mjs`. Uses actual synthetic HTTP/PostgreSQL WASM with fresh DOM remount for reload and an injected browser-history model; it is not native Linux or scale evidence.

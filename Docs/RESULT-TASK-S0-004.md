@@ -3,9 +3,9 @@
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v7 |
+| Result version | v8 |
 | Status | DONE |
-| Spec version followed | SRSv1.0; TASK-S0-004; latest Lead03:53 v7assignment; v6ACCEPT retained |
+| Spec version followed | SRSv1.0; TASK-S0-004; latest Lead04:13 v8 assignment; v7 ACCEPT retained |
 | Dev agent | Codex — Dev AI Agent |
 | Submitted at | 2026-10-25T04:03:28.889810+07:00 |
 | Source/evidence commit | 9e2974742cd46a2feb55e26d0a34235c5b91eb4b |
@@ -44,65 +44,59 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V7-3 | Exact owner, overlapping-name trap, pagination and not-found tests | Pass: actual PostgreSQL/HTTP read-only test with 32 owned records and excluded trap, stable pages/counts, missing parent404, malformed/query400, GET-only/disabled gates. |
 | V7-4 | Docs, local opt-in, no schema/osquery/live Cloudflare expansion; complete checks | Pass: API/UI guides updated; 39/39 tests, lint60/schema22+2/114FK and build pass. No osquery or Cloudflare collector files changed. |
 
-## 3. Work completed
+| V8-1 | Direct Domain UUID link and reload | PASS: validated UUID fragment, fresh exact-parent/DNS lookup; fresh-DOM integration and real browser reload sample-12.test. |
+| V8-2 | Native Back/Forward and retained list context | PASS: history stores identity/context; browser restores sample-16.test; Back retains sample- search, Flagged filter, page1/size10; test page2 context retained. |
+| V8-3 | Missing/invalid ID without stale data | PASS: real HTTP 404/400 integration clears info/related; actual missing browser error screenshot. |
+| V8-4 | Style, local opt-in, docs and complete checks | PASS: existing Atlas frame and gates;44/44 tests, lint65 modules, unchanged22+2/114FK, buildPASS. No schema/osquery/collector changes. |
 
-Read STATE, live task assignments, git branch/status/log and current GitHub PR/CI/reviews before execution. Lead accepted v6 and explicitly assigned the exact-owner API. Added lookup/owned-DNS reader and gated REST/proxy wiring, replaced frontend candidate collection, retained fields and Back state, and added tests/docs. Posted [DEV][START] with real code and targeted6/6passing tests. Ran full checks and actual browser walkthrough, saved evidence, scanned source and committed.
+## 3. Work completed
+Added Domain route controller, identity-only history and validated search/filter/page context. Bootstrap uses exact-owner v7 API for direct/reloaded links. Parent and DNS data are cleared on failed lookup. Existing v7 backend/Cloudflare ingestion are unchanged.
 
 ## 4. Files changed
 
-Source commit9e29747 contains these18files. The canonical RESULT is a separate report update.
-
-| File | Specific change |
+| File | Purpose |
 |---|---|
-| Docs/DOMAIN-INVENTORY-API.md | Methods, paths, fields, pagination, errors, missing-vs-empty and read-only boundary. |
-| Docs/DOMAIN-INVENTORY-UI.md | Marks v6candidate method historical; explains current exact API, errors and reproducible checks. |
-| Docs/evidence/S0-004/back-v7.png | Actual returned list with search/page retained. |
-| Docs/evidence/S0-004/build-v7.txt | Actual ESM/database packaging output. |
-| Docs/evidence/S0-004/exact-v7.json | Observed SQL/UI/browser proof, limits and source/log hashes. |
-| Docs/evidence/S0-004/exact-v7.png | Actual Domain detail browser screenshot. |
-| Docs/evidence/S0-004/lint-v7.txt | Actual60module/schema parity output. |
-| Docs/evidence/S0-004/secret-scan-v7.json | Actual tracked-text known-pattern scan; binary artifacts excluded. |
-| Docs/evidence/S0-004/test-v7.txt | Complete actual39test output. |
-| backend/src/app.mjs | Optional exact REST route dispatch, GET-only methods and sanitized400/404/503 envelopes. |
-| backend/src/inventory/exact-reader.mjs | New fixed Domain UUID lookup and exact-owner DNS reader; parameter validation, missing-parent distinction, single-statement existence/count/page. |
-| backend/src/server.mjs | Wires exact reader into the existing opt-in read-only inventory pool. |
-| backend/test/domain-exact.test.mjs | Actual SQL/HTTP owner isolation, trap/pagination/not-found/input/method/gate and sanitized failure tests. |
-| frontend/server.mjs | Adds only Domain UUID and owned-DNS paths to fixed loopback GET proxy. |
-| frontend/src/inventory-detail.mjs | Uses authoritative parent GET and one exact child page; removes candidate scanning; validates scope and clears metadata on failure. |
-| frontend/test/domain-detail.test.mjs | Retains exact-owner/Back assertions with new API; replaces obsolete candidate-cap test with server-count/no-scan and not-found clearing test. |
-| frontend/test/domain-proxy.test.mjs | Tests exact route proxy and default-disabled gates. |
-| scripts/inventory-ui-lab.mjs | Wires exact reader into the disposable synthetic lab backend. |
-| Docs/RESULT-TASK-S0-004.md | This canonical v7 report, preserving prior scope/acceptance history. |
+| frontend/src/domain-navigation.mjs | UUID fragment parser, list context, reload/history and safe Back. |
+| frontend/src/inventory-page.mjs | Boot Domain route controller with existing theme. |
+| frontend/server.mjs | Serve only the new fixed navigation module. |
+| frontend/test/domain-navigation.test.mjs | Actual HTTP/PostgreSQL direct/reload/history/missing/invalid/filter assertions. |
+| Docs/DOMAIN-INVENTORY-UI.md | v8 route contract and reproduction. |
+| Docs/evidence/S0-004/navigation-v8.json | Actual proof, resolved test issues and limitations. |
+| Docs/evidence/S0-004/test-v8.txt | Complete44-test output. |
+| Docs/evidence/S0-004/lint-v8.txt | Actual65-module and schema checks. |
+| Docs/evidence/S0-004/build-v8.txt | Actual successful build output. |
+| Docs/evidence/S0-004/reload-v8.png | Real local reload restores Domain and DNS. |
+| Docs/evidence/S0-004/history-v8.png | Native Forward restores another selected Domain. |
+| Docs/evidence/S0-004/missing-v8.png | Clear missing identity error without stale rows. |
+| Docs/RESULT-TASK-S0-004.md | Canonical v8 report, prior AC evidence retained above. |
 
 ## 5. Run and verify
 
-Node24 in IT_SEC_APP: `npm ci`; `node scripts/inventory-ui-lab.mjs --hosts`; open the printed origin at /inventory/domains. Search sample-, choose10rows, Next, open sample-12.test; verify provenance and DNSA/value/proxiedfalse/TTL300/Flagged. Back retains search and page2. Run `node --test backend/test/domain-exact.test.mjs frontend/test/domain-detail.test.mjs frontend/test/domain-proxy.test.mjs`; then `npm run lint`, `npm test`, `npm run build`. API examples: GET /api/v1/inventory/domains/:uuid and /:uuid/dns-records?page=2&page_size=25. Use only approved local synthetic DB with existing explicit opt-in flags.
+From repo root: `npm ci`, `npm run lint`, `npm test`, `npm run build`. Run `node scripts/inventory-ui-lab.mjs` for synthetic local UI; use emitted origin with `/inventory/domains#domain=10000000-0000-4000-8000-000000000012&search=sample-&outside_known_range=true&page=1&page_size=10`. Reload; Back to list retains context; select another Domain then browser Back/Forward. Missing UUID `ffffffff-ffff-ffff-ffff-ffffffffffff` shows no prior data. Lab is opt-in loopback synthetic only.
 
 ## 6. Tests and actual results
 
-Targeted6/6 passed, including Host detail regression. Full sequence all exit0:39tests/pass39/fail0/duration8853.2287ms; lint60modules; schema22business+2junctions/114nativeFK unchanged; build backend/frontend ESM/database packaging PASS. Backend tests execute inside BEGIN READ ONLY and prove32owned records, overlapping trap exclusion, deterministic pages/counts, unknown404, invalid400 and GET-only/disabled/sanitized failures. Frontend actual HTTP test retains31record/2childpage proof and Back search/filter/page. A separate mocked metadata test declares10001total with one requested child page to prove no full scan; it does not claim10001inserted rows. Browser sample-12.test shows current parent provenance and A/198.51.100.25/proxiedfalse/TTL300/Flagged; Back retains sample- and page2. No final test failure. Native/live evidence is not claimed.
+44/44 tests pass; lint65 modules; schema22entities+2junctions/114FK unchanged; buildPASS. Full output attached. Domain test uses real synthetic HTTP/PostgreSQL and fresh DOM remount with injected history, supplemented by actual browser reload/Back/Forward/filter/error screenshots. Existing read-only Cloudflare and Host regressions pass; no new real Cloudflare calls.
 
 ## 7. Issues and implementation decisions
 
-Chose UUID canonical paths; no fqdn lookup alias is needed because the assignment permits id lookup. DNS schema still stores domain fqdn, so the server joins through the existing native FK instead of adding domain_id. Count/page/parent existence share one SQL snapshot. Missing owner differs from existing empty owner. Frontend parent re-read prevents relying on stale list metadata, and returned child owners are validated. All visible v6fields and local/session Back behavior remain; only the exact read API is new as explicitly assigned. No schema change or security-policy decision.
+UUID fragment satisfies UUID-or-fqdn alternative; no hostname/fqdn resolution alias added. Legacy detail fragment works. URL contains only validated context, no stale row snapshot. Test generation initially referenced an incorrect filename; corrected before passing. Linkedom select.value/selected emulation assertions failed; changed them to actual state/request assertions and independently verified selected Flagged in the real browser. These were test issues, not hidden passes. No spec/schema change.
 
 ## 8. Not done, limitations and technical debt
 
-No live Cloudflare/production/token, native PostgreSQL/Docker, auth/RBAC or schema/entity change. Domain standalone deep-link/reload persistence is not assigned in v7 and remains separate. Pagination is server-bounded and cross-request mutation is not an immutable snapshot guarantee. No huge-record performance benchmark; mocked high-count metadata is clearly separated from actual32record SQL proof. Exact viewport/reduced-motion runtime emulation remains unavailable, not claimed. Prior accepted PoC/native follow-ups remain preserved.
+No live Cloudflare/production/token/native PostgreSQL/Docker/auth/RBAC/scale benchmark. Existing historical AC proofs remain scoped synthetic PoC. Exact viewport and reduced-motion emulation not claimed. Cross-request data is not a frozen DB snapshot. Domain v7 reload limitation is superseded by v8.
 
 ## 9. Blockers and decisions required
 
-No hard blocker for this assignment; all v7criteria pass within approved synthetic scope. No new scope/security/priority question or Q01–05 answer was introduced.
+No hard blocker for assigned v8 scope. No new policy/security/priority decision or Q01–05 answer.
 
 ## 10. Next step and self-check
 
-Commit and push to the recorded feature branch, update the existing open QA PR without merge, upload this actual RESULT plus guide/proof/logs/screenshots, publish one [DEV][SUBMISSION]DONEcomment and verify links. Continue the separately assigned Host deep-link work afterward.
+Submit this actual file and evidence to assigned task and update existing QA PR; do not merge or self-ACCEPT. Act on concrete review/new assignments.
 
-- [x] Ten ordered sections, exact task/version/status/spec.
-- [x] Original/historical accepted criteria and each V7requirement mapped separately.
-- [x] Every changed file, actual command/output and limit recorded.
-- [x] No secrets, real infrastructure or unsupported native/live claims.
-- [x] One canonical RESULT; prior accepted versions preserved.
+- [x] Ten numbered sections, all original and new criteria mapped separately.
+- [x] Every changed file, commands, real outputs, failures, assumptions and limits listed.
+- [x] No production data or credentials; local opt-in and read-only boundaries retained.
+- [x] Canonical RESULT version incremented; evidence prepared for actual attachment.
 
-History: v2synthetic PoC accepted; v3readiness accepted; v4API accepted; v5frontend accepted; v6detail accepted by latest Lead03:53; v7exact-owner API and integrated detail complete. Earlier canonical reports remain in Git/ClickUp.
-
+History: v2–v6 accepted in their recorded synthetic scopes; v7 exact-owner accepted by Lead04:13; v8 Domain deep-link/reload/history complete. Prior reports retained in Git/ClickUp.

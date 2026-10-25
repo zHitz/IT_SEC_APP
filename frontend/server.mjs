@@ -10,6 +10,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
   if (inventoryEnabled && !['127.0.0.1', '[::1]'].includes(upstream.hostname)) throw Error('Inventory requires loopback backend');
   const inventoryFiles = new Map([
     ['/inventory/hosts', ['hosts.html', 'text/html; charset=utf-8']],
+    ['/domain-navigation.mjs', ['domain-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/host-navigation.mjs', ['host-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/inventory-detail.mjs', ['inventory-detail.mjs', 'text/javascript; charset=utf-8']],
     ['/host-page.mjs', ['host-page.mjs', 'text/javascript; charset=utf-8']],

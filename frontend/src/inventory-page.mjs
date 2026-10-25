@@ -1,7 +1,7 @@
-import {mountInventoryDetail} from './inventory-detail.mjs';
+import {mountDomainNavigation} from './domain-navigation.mjs';
 try { document.documentElement.dataset.theme=localStorage.getItem('atlas.theme')==='light'?'light':'dark'; } catch { /* Theme remains usable without storage. */ }
 document.getElementById('theme').addEventListener('click',()=>{
  const theme=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=theme;
  try { localStorage.setItem('atlas.theme',theme); } catch { /* Optional persistence. */ }
 });
-mountInventoryDetail(document,{mode:'domain'});
+mountDomainNavigation(document);
