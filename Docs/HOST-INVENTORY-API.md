@@ -64,3 +64,8 @@ The lookup is the technical identity source for direct/reloaded Host details; it
 ## v8 Package-to-hosts GET
 
 `GET /api/v1/inventory/packages/:packageUuid/hosts?page=1&page_size=10&search=2.0` is opt-in, loopback-only and read-only. The selected host-sourced package identifies exact name plus null-safe ecosystem; all stored versions across hosts are included. Search is a literal, case-insensitive substring over package name OR version, within that exact identity. UUID and strict unique query keys are validated; values are bound. One SQL statement returns package identity, page/count and existence. Response includes `package:{name,ecosystem}`, `data:[{id,name,version,ecosystem,host_id,hostname}]` and standard `meta`. Stable hostname/version/id order. Count represents host/version observation rows, not unique hosts when multiple versions coexist. Missing/non-host package404, invalid400, nonGET405; gate disabled404. No schema change or CVE inference.
+
+
+## v9 Listening port/process search
+
+Existing `GET /api/v1/inventory/listening-ports?port=8011&process_search=synthetic&page=1&page_size=10` now supports optional exact integer port1–65535 and case-insensitive literal process substring1–200characters. Both combine with AND, including existing host_id scope. Unknown/duplicate/control/empty/malformed filters reject400; other resources reject these keys. A read-only host join adds hostname to existing fields; no schema change. Standard data/meta and stable port/protocol/id paging remain. Counts are listening records, not distinct hosts. Query is stored inventory, not a live scan or CVE inference.

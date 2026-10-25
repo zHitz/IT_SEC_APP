@@ -1,0 +1,32 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "exactPort8011": "Host11/PID111/synthetic-listener",
+  "processSearch": "case-insensitive24records/3pages",
+  "bothFilters": "AND",
+  "tests": [
+    "empty/invalid/control/duplicates/page/error400",
+    "literal injection zero matches",
+    "return detail/list context"
+  ],
+  "browser": [
+    "Host11/8011/PID111",
+    "24processrecords/page2/3",
+    "returnHost11 then list host-/page2/size10"
+  ],
+  "checks": {
+    "tests": 48,
+    "pass": 48,
+    "lintModules": 72,
+    "schema": "22+2/114FK",
+    "build": "PASS"
+  },
+  "limits": [
+    "No native Linux/osquery",
+    "No CVE inference or live scan",
+    "Count is listening records not distinct hosts",
+    "Temporary panel reload returns origin"
+  ],
+  "taskFailures": []
+}

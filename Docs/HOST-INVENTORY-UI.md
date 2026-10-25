@@ -48,3 +48,8 @@ Verify with `node --test frontend/test/host-navigation.test.mjs backend/test/hos
 ## v8 Package hosts
 
 From Host details select a package name to view matching hosts and their stored versions. Search package name/version, use Previous/Next (10 records/page), read the total, then Back to host details or Back to host list. Exact identity is name+ecosystem, with all versions. Counts are host/version rows, not CVEs or vulnerability conclusions. Context remains on the originating Host link; a reload while viewing packages restores Host detail, not package subview. Browser navigation exits the package panel safely. Requests time out after8seconds; errors clear rows and permit search retry. Existing Atlas tokens/layout, local opt-in and synthetic boundaries are retained. `node scripts/inventory-ui-lab.mjs --packages` creates24synthetic host records for one package/two versions. Test: `node --test frontend/test/package-hosts.test.mjs`.
+
+
+## v9 Search port/process
+
+From Host inventory or detail choose Search port or process. Enter an exact port or process substring (both means AND), then Find listening hosts. Results show hostname/HostID/protocol/port/process/PID/bind address, total and10rows/page. Empty/invalid input guidance and cleared failure/empty states prevent stale results. Back restores entry list/detail and list search/page context. Search is global stored inventory independent of origin list search. Temporary search panel is not persisted; reload restores originating Host/list route. `node scripts/inventory-ui-lab.mjs --hosts`:8011 ->Host11/PID111,synthetic-listener ->24records/3pages. No Cloudflare access, scan or CVE conclusions.

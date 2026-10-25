@@ -6,13 +6,13 @@ const resources = Object.freeze({
     flagPredicate: "'cloudflare:outside-known-range' = ANY(tags)" },
   hosts: { table: 'host', columns: 'id, hostname, os, os_version, first_seen_at, last_seen_at', search: 'hostname', order: 'hostname, id', hostScope: false },
   packages: { table: 'package', columns: 'id, name, version, ecosystem, source_host_or_image AS host_id, first_seen_at, last_seen_at', search: 'name', order: 'name, version, id', hostScope: true, predicate: "source_kind = 'host'" },
-  'listening-ports': { table: 'listening_port', columns: 'id, host_id, protocol, port, bind_address, process, pid, first_seen_at, last_seen_at', order: 'port, protocol, id', hostScope: true, predicate: 'host_id IS NOT NULL' }
+  'listening-ports': { table: 'listening_port', from: 'listening_port p JOIN asset_inventory.host h ON h.id=p.host_id', columns: 'p.id, p.host_id, h.hostname, p.protocol, p.port, p.bind_address, p.process, p.pid, p.first_seen_at, p.last_seen_at', order: 'port, protocol, id', hostScope: true, predicate: 'p.host_id IS NOT NULL' }
 });
 export class InventoryError extends Error { constructor(code, status = 400) { super(code); this.code = code; this.status = status; } }
 export function inventoryQuery(resource, params) {
   const spec = resources[resource];
   if (!spec) throw new InventoryError('NOT_FOUND', 404);
-  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
+  const allowed = new Set(['page', 'page_size', ...(spec.search ? ['search'] : []), ...(resource === 'listening-ports' ? ['port','process_search'] : []), ...(resource === 'dns-records' ? ['value_search'] : []), ...(spec.hostScope ? ['host_id'] : []), ...(spec.flagPredicate ? ['outside_known_range'] : [])]);
   for (const key of params.keys()) if (!allowed.has(key) || params.getAll(key).length !== 1) throw new InventoryError('INVALID_QUERY');
   function integer(key, fallback, max) {
     const raw = params.get(key); if (raw === null) return fallback;
@@ -26,6 +26,9 @@ export function inventoryQuery(resource, params) {
     if (!search.trim() || search.length > 200 || /[\u0000-\u001f\u007f]/.test(search)) throw new InventoryError('INVALID_QUERY');
     values.push(search.trim()); where.push(`strpos(lower(${spec.search}), lower($${values.length}::text)) > 0`);
   }
+  const requestedPort=params.get('port'),processSearch=params.get('process_search');
+  if(requestedPort!==null){if(!/^[1-9]\d{0,4}$/.test(requestedPort)||Number(requestedPort)>65535)throw new InventoryError('INVALID_QUERY');values.push(Number(requestedPort));where.push(`p.port=$${values.length}::int`);}
+  if(processSearch!==null){if(!processSearch.trim()||processSearch.length>200||/[\u0000-\u001f\u007f]/.test(processSearch))throw new InventoryError('INVALID_QUERY');values.push(processSearch.trim());where.push(`strpos(lower(p.process),lower($${values.length}::text))>0`);}
   const valueSearch = params.get('value_search');
   if(valueSearch!==null){
     if(!valueSearch.trim()||valueSearch.length>200||/[\u0000-\u001f\u007f]/.test(valueSearch))throw new InventoryError('INVALID_QUERY');
@@ -43,7 +46,7 @@ export function inventoryQuery(resource, params) {
   }
   values.push(pageSize, (page - 1) * pageSize);
   // Only whitelisted identifiers enter SQL; all caller data is bound. One statement gives consistent count/page.
-  const sql = `WITH filtered AS (SELECT ${spec.columns} FROM asset_inventory.${spec.table}${where.length ? ` WHERE ${where.join(' AND ')}` : ''}),
+  const sql = `WITH filtered AS (SELECT ${spec.columns} FROM asset_inventory.${spec.from ?? spec.table}${where.length ? ` WHERE ${where.join(' AND ')}` : ''}),
     page_rows AS (SELECT * FROM filtered ORDER BY ${spec.order} LIMIT $${values.length - 1} OFFSET $${values.length})
     SELECT (SELECT count(*)::int FROM filtered) AS total,
       COALESCE((SELECT json_agg(page_rows ORDER BY ${spec.order}) FROM page_rows), '[]'::json) AS data`;

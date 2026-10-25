@@ -13,6 +13,7 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     ['/dns-value-search.mjs', ['dns-value-search.mjs', 'text/javascript; charset=utf-8']],
     ['/domain-navigation.mjs', ['domain-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/package-hosts.mjs', ['package-hosts.mjs', 'text/javascript; charset=utf-8']],
+    ['/port-search.mjs', ['port-search.mjs', 'text/javascript; charset=utf-8']],
     ['/host-navigation.mjs', ['host-navigation.mjs', 'text/javascript; charset=utf-8']],
     ['/inventory-detail.mjs', ['inventory-detail.mjs', 'text/javascript; charset=utf-8']],
     ['/host-page.mjs', ['host-page.mjs', 'text/javascript; charset=utf-8']],

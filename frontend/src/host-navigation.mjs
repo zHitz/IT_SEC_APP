@@ -1,3 +1,4 @@
+import {mountPortSearch} from './port-search.mjs';
 import {mountPackageHosts} from './package-hosts.mjs';
 import {mountInventoryDetail} from './inventory-detail.mjs';
 export function parseHostRoute(location){
@@ -11,7 +12,7 @@ export function parseHostRoute(location){
 export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  const view=document.defaultView;
  const nav=navigation??{history:view.history,location:view.location,events:view};
- const route=parseHostRoute(nav.location);let packageView,core,lastRoute=null,routePending=Promise.resolve();
+ const route=parseHostRoute(nav.location);let portView,packageView,core,lastRoute=null,routePending=Promise.resolve();
  const get=id=>document.getElementById(id);
  const context=()=>({resource:'hosts',search:core.list.state.search,page:core.list.state.page,pageSize:core.list.state.pageSize});
  function fragment(id,ctx){const p=new URLSearchParams(id===null?{list:'1'}:{host:id});if(ctx.search)p.set('search',ctx.search);p.set('page',String(ctx.page));p.set('page_size',String(ctx.pageSize));return'#'+p;}
@@ -22,7 +23,7 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
   return changed?core.list.reload():Promise.resolve();
  }
  async function sync(){
-  packageView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
+  portView?.hide();packageView?.hide();const key=nav.location?.hash??'';if(lastRoute===key)return;lastRoute=key;const next=parseHostRoute(nav.location),pending=applyContext(next.context);
   if(next.id===null)core.back();else await core.open({id:next.id,hostname:'Host details',os:null,os_version:null,first_seen_at:null,last_seen_at:null},{recordHistory:false});
   await pending;
  }
@@ -39,6 +40,7 @@ export function mountHostNavigation(document,{fetcher=fetch,navigation}={}){
  packageView=mountPackageHosts(document,{fetcher,onHost:host=>{packageView.hide();return core.open(host,{recordHistory:false});},onList:()=>{packageView.hide();back();}});
  get('domain-search').value=route.context.search;for(const option of get('page-size').querySelectorAll('option'))option.selected=option.value===String(route.context.pageSize);
  const onRoute=()=>{routePending=sync();};nav.events?.addEventListener('popstate',onRoute);nav.events?.addEventListener('hashchange',onRoute);
+ portView=mountPortSearch(document,{fetcher});
  const ready=Promise.all([core.ready,sync()]);
- return{ready,core,packageView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);packageView.destroy();core.destroy();}};
+ return{ready,core,packageView,portView,navigate,back,settled:()=>routePending,destroy(){nav.events?.removeEventListener('popstate',onRoute);nav.events?.removeEventListener('hashchange',onRoute);portView.destroy();packageView.destroy();core.destroy();}};
 }
