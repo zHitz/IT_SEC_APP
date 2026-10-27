@@ -1,28 +1,20 @@
-# Result — TASK-S0-004: v34 Duplicate/opener isolation (partial native evidence)
+# Result — TASK-S0-004: v35 native evidence gaps and bounded-retry PARTIAL
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-004 |
-| Result version | v34 |
+| Result version | v35 |
 | Status | PARTIAL |
-| Spec version followed | SRS v1.0; TASK-S0-004; live Lead22:32 ACCEPTv33 and V34-1..4 assignment |
+| Spec version followed | SRS v1.0; TASK-S0-004; live Lead decision 1100390000172266 |
 | Dev agent | Codex — Dev AI Agent |
-| Prepared at | 2026-10-25T23:08:12.493811+07:00 |
-| Source/evidence commit | 396f985ab8cd013ba45d3da498ac7edb91bc69a5 |
+| Submission package prepared at | 2026-10-27T20:47:01.422166+07:00 |
+| Source/evidence commit | be26e51d2bafc9ece65d78dbeb412f4243fd1438 |
 
 ## 1. Summary
 
-Added exactly three integration tests modeling duplicate/opener copied-store isolation for all four filtered journeys. Full104/104, lint96, unchanged schema and build pass. Added opt-in lab-only real opener controls and corrected a stale-fragment link. Actual Chrome screenshots are retained, but the final native acceptance trace is incomplete after browser safety/user-input interruptions. Overall PARTIAL; modeled evidence is not native proof. Prior v33 DONE applied only to its synthetic/local assignment; v34 is PARTIAL because new native-browser acceptance evidence is incomplete.
+PARTIAL per the latest Lead decision 1100390000172266. Recovered the interrupted bounded native retry and the full test process. All four native journeys remain NOT PROVEN, including Flagged-record opener and original saved-bookmark cross-view return after child closure. All gaps remain OPEN. Current full suite:104/104 pass,0fail; lint96; unchanged schema22+2/114FK; buildPASS. Previously accepted synthetic/local Domain evidence remains historical evidence; it does not prove the new native-browser acceptance requirements.
 
 ## 2. Acceptance criteria
-
-
-
-
-
-
-
-
 
 Original AC and V4–V6 rows below retain their previously accepted scope. V7 replaces the historical candidate-search implementation with an explicitly assigned API.
 
@@ -212,67 +204,92 @@ Original AC and V4–V6 rows below retain their previously accepted scope. V7 re
 | V34-3 | Invalid duplicate clears affected rows only, repairs explicitly, parent unaffected | PARTIAL: V34_INVALID_CLONE passes all4journeys with0affected rows, retained healthy main, explicit repair and exact unchanged parent store. Actual error screenshots retained; complete final native traces remain pending. |
 | V34-4 | Exactly3newtests, checks and artifacts | PASS for requested deliverables: full104/104pass,0fail; lint96; unchanged22+2/114FK; buildPASS; verification-v34.json,3actuallogs and3actualscreenshots per task. These outputs do not remove V34-1..3 native gaps. |
 
+
+
+### v35 native journey evidence (latest Lead decision)
+
+| Journey | Native Duplicate | Native opener | Native invalid duplicate | Original saved bookmark after child closure + cross-view return | Gap |
+|---|---|---|---|---|---|
+| Site Host | NOT PROVEN | NOT PROVEN | NOT PROVEN | NOT PROVEN | OPEN; bounded retry interrupted before verified native load; native-retry-v35.json |
+| Unassigned Host | NOT PROVEN | NOT PROVEN | NOT PROVEN | NOT PROVEN | OPEN; bounded retry interrupted before verified native load; native-retry-v35.json |
+| Flagged Domain | NOT PROVEN | NOT PROVEN | NOT PROVEN | NOT PROVEN | OPEN; bounded retry interrupted before verified native load; native-retry-v35.json |
+| Flagged record | NOT PROVEN | NOT PROVEN | NOT PROVEN | NOT PROVEN | OPEN; bounded retry interrupted before verified native load; native-retry-v35.json |
+
+| ID | Current acceptance requirement | Result and evidence |
+|---|---|---|
+| V35-1 | Native Duplicate complete for all four filtered journeys, original preserved | NOT PROVEN for each journey above. No complete new native trace; existing V34_DUPLICATE_MODEL rerun is modeled evidence only. |
+| V35-2 | Native opener complete, especially Flagged record; saved bookmark verified after child closure via cross-view return | NOT PROVEN for every journey. Flagged-record opener and original saved-bookmark return remain explicit OPEN gaps. Existing V34_OPENER_MODEL rerun is not native proof. |
+| V35-3 | Invalid native duplicate isolates affected rows, explicit repair, original unaffected | NOT PROVEN for every journey. V34_INVALID_CLONE rerun supplies model assertions only; native trace remains OPEN. |
+| V35-4 | Honest PARTIAL report, bounded native retry record and actual full checks/evidence | PASS for local artifacts: 104/104 tests, 0 fail, lint96, schema22+2/114FK unchanged, buildPASS; five evidence files. New screenshots: 0. Upload/publication is recorded separately in STATE after actual completion. |
+
 ## 3. Work completed
 
-Implemented three tests in the existing view-bookmarks module, using actual HTTP/PostgreSQL READ ONLY after synthetic setup. Separate Maps copy an initial snapshot to model session cloning. Child explicit URLs win over inherited bookmarks; original store/hash stay unchanged after child navigation/teardown. The lab flag --opener-tabs injects a synthetic control and external script only in that opt-in lab. Production frontend/API/schema/style/collectors are unchanged. One START per task was verified22:44; no duplicate START during resume.
+Read the live task/Lead decision and live Git/PR state. Reused the existing START; no duplicate START. Ran lint/schema, all tests and build on the recorded source commit. The one bounded retry entered the approved lab URL, then the turn was interrupted before navigation. On resume a fresh address-bar observation differed from the last verified entry, so no navigation/corrective input or second attempt was issued. Recorded that bounded outcome and prior gate-stop separately; created the per-journey evidence matrix. No inventory implementation changed.
 
 ## 4. Files changed
 
 | File | Specific change |
 |---|---|
-| frontend/test/view-bookmarks.test.mjs | Exactly3newtests: copied-store duplicate restoration/isolation; opener-model explicit URL precedence/close; invalid cloned destination0rows/repair/unchanged parent. Added clone34 helper with distinct-Map assertion. |
-| scripts/inventory-ui-lab.mjs | Opt-in openerFixtures/--opener-tabs wraps only lab responses with a visible opener-status panel and target=_blank rel=opener link. href updates at click time; panel is scoped to main. No production server change. |
-| Docs/HOST-INVENTORY-UI.md | v34 native reproduction and model/native distinction; remaining checks. |
-| Docs/DOMAIN-INVENTORY-UI.md | Same for Flagged Domain/record journeys, with incomplete opener case explicit. |
-| Docs/evidence/S0-003/verification-v34.json | Actual104pass/lint/schema/build outputs, partial native scope, remaining checks and screenshot hashes. |
-| Docs/evidence/S0-003/test-v34.txt | Final actual104pass/0fail log with V34 proof markers. |
-| Docs/evidence/S0-003/lint-v34.txt | Actual96module syntax/safety and unchanged22+2/114FK output. |
-| Docs/evidence/S0-003/build-v34.txt | Actual backend/frontend/migration build output. |
-| Docs/evidence/S0-003/host-duplicate-v34.png | Actual Chrome duplicate with restored synthetic detail; partial evidence only. |
-| Docs/evidence/S0-003/host-opener-v34.png | Actual Chrome child showing opener=true; partial evidence only. |
-| Docs/evidence/S0-003/host-invalid-duplicate-v34.png | Actual invalid synthetic child route/error; partial evidence only. |
-| Docs/evidence/S0-004/verification-v34.json | Actual104pass/lint/schema/build outputs, partial native scope, remaining checks and screenshot hashes. |
-| Docs/evidence/S0-004/test-v34.txt | Final actual104pass/0fail log with V34 proof markers. |
-| Docs/evidence/S0-004/lint-v34.txt | Actual96module syntax/safety and unchanged22+2/114FK output. |
-| Docs/evidence/S0-004/build-v34.txt | Actual backend/frontend/migration build output. |
-| Docs/evidence/S0-004/domain-duplicate-v34.png | Actual Chrome duplicate with restored synthetic detail; partial evidence only. |
-| Docs/evidence/S0-004/domain-opener-v34.png | Actual Chrome child showing opener=true; partial evidence only. |
-| Docs/evidence/S0-004/domain-invalid-duplicate-v34.png | Actual invalid synthetic child route/error; partial evidence only. |
-| Docs/RESULT-TASK-S0-004.md | Canonical ten-section v34 PARTIAL report; preserve prior AC/history and append distinct V34 rows. |
+| Docs/RESULT-TASK-S0-004.md | Canonical report incremented to v35; preserves original/historical AC mapping and adds explicit per-journey OPEN native gaps. |
+| Docs/evidence/S0-004/verification-v35.json | Actual source/check totals, model/native separation, zero new screenshots and evidence SHA-256 references. |
+| Docs/evidence/S0-004/native-retry-v35.json | One bounded retry chronology, prior mandatory gate record, interrupted turn and later address mismatch; no inference of who changed it. |
+| Docs/evidence/S0-004/test-v35.txt | Actual complete current-source suite output:104pass/0fail; existing model markers retained. |
+| Docs/evidence/S0-004/lint-v35.txt | Actual lint96 and schema22+2/114FK output. |
+| Docs/evidence/S0-004/build-v35.txt | Actual backend/frontend and migration-asset build output. |
 
 ## 5. Run and verify
 
-Repository root: `npm ci`; `npm test`; `npm run lint`; `npm run build`. Focused: `node --test frontend/test/view-bookmarks.test.mjs` (21tests total, exactly3newv34; all included in full suite). Lab: `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged --opener-tabs`.
+From the IT_SEC_APP root on Node24:
 
-For Site Host11, Unassigned Host20, Flagged Domain/Sample04 and exact Flagged record, save complete filtered URLs. Use actual Chrome tab context menu > Duplicate. Compare complete URL and detail; navigate only child, return to original and verify original bookmark via a cross-view round trip. In duplicate, open invalid site_sort/unassigned_sort/flagged_sort/record_sort, require0affected rows and healthy sibling, repair by explicit valid URL, then check original again. Use the lab target=_blank rel=opener link; require visible opener=true and child own URL, close child, recheck original bookmark. Repeat final checks after any lab correction. Remaining native steps are explicitly pending, not claimed executed.
+```powershell
+npm run lint
+npm test
+npm run build
+```
+
+Match outputs to the source commit in the header and the hashes in verification-v35.json. Read native-retry-v35.json and the four-journey matrix separately from automated model outputs. Reproduction commands above are local verification, not instructions to bypass a Computer Use safety stop. Do not repeat the bounded retry just to obtain a more favorable result. Complete the remaining native traces through the normal approved setup only after capture is restored.
 
 ## 6. Tests and actual results
 
-Final retained npm test:104tests,104pass,0fail. Exactly3newtests. Lint PASS96modules. Schema PASS22entities+2junctions/114nativeFK unchanged. Build PASS backend/frontend/migration assets. V34_DUPLICATE_MODEL, V34_OPENER_MODEL and V34_INVALID_CLONE each cover all4filtered journeys against actual HTTP/PostgreSQL; copied initial store semantics are modeled with separate Maps. Three real Chrome screenshots per task have SHA256 entries in verification-v34.json. Native screenshot observations are partial; they are not a complete all-journey trace. Cloudflare0requests. Full suite/lint/build rerun after the lab-link lifecycle fix passed.
+| Check | Actual result | Evidence |
+|---|---|---|
+| Full existing suite | 104 tests,104 pass,0 fail;0 new tests | test-v35.txt |
+| Lint | PASS,96 modules | lint-v35.txt |
+| Schema | PASS,22 entities+2 junctions,114 native FKs; no schema source edit | lint-v35.txt |
+| Build | PASS backend/frontend/migration assets | build-v35.txt |
+| Existing clone/opener/invalid models | All four journeys asserted in V34 model markers rerun | test-v35.txt; modeled, not native |
+| Bounded native retry | Interrupted before verified native page load | native-retry-v35.json |
+| Native four-journey acceptance | 0 newly PROVEN; all remain NOT PROVEN/OPEN | Per-journey matrix |
+
+Live Cloudflare requests:0. Synthetic test log includes loopback mock traffic; that is not a real provider request. No new native screenshot was captured or relabeled from an older version.
 
 ## 7. Issues and implementation decisions
 
-In-app browser exposes no native Duplicate capability; clicking the opener link created no child tab there. Used a dedicated native Chrome window and observed actual Duplicate and real opener=true. Found the initial lab-only opener link retained the initial URL after hash-only navigation; fixed href refresh on click and moved the panel into main. This was a fixture issue, not an inventory runtime defect. Repeated full checks after correction.
+Correction to the prior BLOCKED-and-wait posture: Lead comment 1100390000172266 explicitly directs PARTIAL submission regardless of retry outcome. The capture interruption is handled within the assignment; no AC, scope, security or SRS change is requested. The existing START remains valid.
 
-Prior turn Computer Use stopped because it could not determine the Windows browser URL confidently enough to enforce policy. On this resume, native address-field input reported user input in that window. No further native actions were taken; no policy weakening or bypass. Preserve partial actual screenshots and label unverified acceptance evidence honestly. Windows AX timing/position issues were not treated as app regressions. A checkpoint print encountered cp1258 encoding failure after the checkpoint write; this was console-only and not a test failure.
+The bounded retry began in the interrupted previous turn. Its exact URL entry was observed; the turn ended before Return/navigation. On resume the fresh native address bar contained a trailing character absent from the last verified entry. That observation does not establish its cause. The attempt was stopped rather than navigating an unexpected URL or starting a second retry. The earlier URL-confidence gate-stop is retained with its actual prior timestamp; it is not falsely claimed as a fresh stop during this retry.
+
+The background test process finished successfully; its complete output was recovered, so tests were not duplicated after interruption. No implementation defect was inferred from desktop input behavior. No model result substitutes for native proof. No policy weakening, alternate input path or production access occurred.
 
 ## 8. Not done, limitations and technical debt
 
-Final native duplicate/opener/invalid traces for all4journeys remain incomplete, including corrected Flagged-record opener and original saved bookmark verified through cross-view return after child closure. Integration Map snapshots do not prove browser storage cloning. Browser sessionStorage is not enumerated. Domain screenshots include earlier partial lab observations; Site captures include the corrected lab. Synthetic/local only; no production/RBAC/scale/CVE/live Cloudflare/native Linux proof. Prior v33 DONE applied only to its synthetic/local assignment; v34 is PARTIAL because new native-browser acceptance evidence is incomplete. Existing storage denial/clearing and fragment-length limits remain. Healthy sibling rows may be retained hidden in DOM; no simultaneous-visibility claim.
+Every native Duplicate/opener/invalid trace and original saved-bookmark cross-view return after child closure remains OPEN for Site Host, Unassigned Host, Flagged Domain and Flagged record. Corrected Flagged-record opener is specifically NOT PROVEN. No native evidence gap is closed or waived. Previously accepted synthetic/local Domain evidence remains historical evidence; it does not prove the new native-browser acceptance requirements. Synthetic/local scope only; no production/RBAC/scale/CVE/live Cloudflare/native Linux proof. Existing storage denial/clearing and size limits remain.
 
 ## 9. Blockers and decisions required
 
-Native UI verification currently limited by browser-control safety/user-input interruption. No spec/AC change requested or assumed; no new production/security/credential access needed. Continue remaining browser evidence when that surface is available. Do not treat routine fixture issues as Lead blockers. Q-01..Q-05 untouched. QA approval remains required before merge; Dev does not merge.
+No new PO-level decision is required for this PARTIAL submission. The environment capture limitation remains an execution gap to resolve through the normal approved setup; it does not gate submission under the latest Lead decision. QA approval is still required before any merge. No task status, description or dependency was changed; no self-ACCEPT, no merge, Q-01..Q-05 untouched.
 
 ## 10. Next step and self-check
 
-Push assigned feature branch/update existing PR1; verify live head/CI. Submit this honest PARTIAL RESULT with7evidence files per task and exactly1submission comment after duplicate check. Record actual uploaded IDs and published fingerprints in STATE. Next executable work: resume final corrected-lab native traces for all4journeys and original saved-bookmark checks; resubmit an incremented report only with new evidence. Do not claim DONE or stop permanently at modeled evidence.
+Commit these report/evidence changes on the assigned feature branch, push to update the existing PR, verify current-head CI/reviews, attach the actual report plus five evidence files to this exact task, and post one [DEV][SUBMISSION] PARTIAL summary after the live duplicate check. Record actual attachment IDs and submission comment in STATE; do not claim upload success from this prepared report alone.
 
-- [x] Exact ten sections; original/history/current AC separate.
-- [x] Exact source/time, specific files, reproduction and actual outputs.
-- [x] Exactly3newtests;104pass;lint96;schema unchanged;buildPASS;3actualscreenshots per task.
-- [x] Model/native distinction, fixture correction, interruption and remaining evidence explicit.
-- [ ] Complete all native V34-1..3 traces and parent-bookmark verification.
-- [x] No selfaccept/status change/production access/merge.
+After native capture is restored, complete the OPEN journeys under the Lead's stated follow-up assignment; do not wait for another ACCEPT merely to resume. Do not create an incremented report without new evidence or a new explicit reporting instruction.
 
-History: v33 accepted by live Lead22:32; same comment assigned v34. One v34 START per task22:44. v34 implementation resumed after interruption; no v34 submission existed at the start of this run. Source/evidence commit is above; this report follows in a separate commit.
+- [x] Exact ten sections; original/historical/current AC mappings kept separate.
+- [x] Real source commit, preparation time, actual check output and evidence hashes.
+- [x] All four journeys explicitly NOT PROVEN, especially Flagged-record opener and saved bookmark after child close.
+- [x] Prior gate-stop distinguished from this interrupted bounded retry;0 new screenshots; no native claim from model tests.
+- [x] No code/schema/API/collector change, policy bypass, task mutation, self-acceptance or merge.
+- [ ] Complete all OPEN native journeys through the normal approved capture path.
+
+History: v34 is retained in section2 as previously reported/accepted PARTIAL history. v35 follows the live Lead decision 1100390000172266; capture capability restoration is not a submission prerequisite.

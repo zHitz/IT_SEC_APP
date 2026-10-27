@@ -1,0 +1,75 @@
+{
+  "recordedAt": "2026-10-27T20:47:01.422166+07:00",
+  "scope": "synthetic local native-browser retry only",
+  "attemptCount": 1,
+  "dedicatedWindowId": 1509514,
+  "approvedUrl": "http://127.0.0.1:57360/inventory/hosts",
+  "stages": [
+    {
+      "event": "retry-window-observed",
+      "observation": "Dedicated existing Chrome window was New Tab; address-bar focus verified."
+    },
+    {
+      "event": "retry-url-entered",
+      "observation": "Computer Use type_text entered the exact approved synthetic lab URL; subsequent focus observation showed that exact URL."
+    },
+    {
+      "event": "turn-interrupted",
+      "observation": "Turn was intentionally interrupted before navigation was issued. The tests continued and completed in the background."
+    },
+    {
+      "event": "resume-observation",
+      "observation": "Fresh native AX state showed New Tab, with http://127.0.0.1:57360/inventory/hosts5 in the address bar. This differs from the last verified entry. No navigation, corrective input or second retry was issued."
+    }
+  ],
+  "outcome": "INTERRUPTED_BEFORE_VERIFIED_PAGE_LOAD",
+  "priorGateStop": {
+    "source": "reports/clickup-monitor/STATE.json v35Execution.latestAttempt (re-read before this run)",
+    "observedAt": "2026-10-27T12:01:27.253901+00:00",
+    "message": "Computer Use has been stopped for this turn because it could not determine the current browser URL on Windows with enough confidence to enforce policy."
+  },
+  "newGateStopClaimed": false,
+  "nativeJourneyCompleted": false,
+  "newScreenshots": [],
+  "interpretation": "One bounded retry began and was interrupted. The later address mismatch is an observation, not proof of who changed it. No native journey or bookmark assertion was reached. Prior URL-confidence stop remains recorded separately, not claimed as a new stop in this retry.",
+  "noAlternateInputPath": true,
+  "noPolicyBypass": true,
+  "journeys": [
+    {
+      "name": "Site Host",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Unassigned Host",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Flagged Domain",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Flagged record",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    }
+  ]
+}
