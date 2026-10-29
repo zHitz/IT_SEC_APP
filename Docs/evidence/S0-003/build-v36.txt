@@ -1,0 +1,3 @@
+build PASS: backend/src -> backend/dist (native ESM, no transpilation)
+build PASS: frontend/src -> frontend/dist (native ESM, no transpilation)
+build PASS: database migration assets packaged

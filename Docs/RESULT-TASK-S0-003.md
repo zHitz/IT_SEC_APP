@@ -1,20 +1,24 @@
-# Result — TASK-S0-003: v35 native evidence gaps and bounded-retry PARTIAL
+# Result — TASK-S0-003: v36 durable queue concurrency fix; overall PARTIAL
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v35 |
+| Result version | v36 |
 | Status | PARTIAL |
 | Spec version followed | SRS v1.0; TASK-S0-003; live Lead decision 1100390000172265 |
 | Dev agent | Codex — Dev AI Agent |
-| Submission package prepared at | 2026-10-27T20:47:01.422166+07:00 |
-| Source/evidence commit | be26e51d2bafc9ece65d78dbeb412f4243fd1438 |
+| Submission package prepared at | 2026-10-29T14:16:57.890516+00:00 |
+| Source/evidence commit | f3cb824adc44332041a7189b2a7a084dce2c3bf8 |
 
 ## 1. Summary
+
+CURRENT v36: LOCAL-QUEUE-CONCURRENCY-001 reproduced/fixed acknowledged flush deletion racing enqueue capacity stat. Only ENOENT is tolerated; other errors propagate. Overall PARTIAL. All v35 statements below are historical, not current run claims.
 
 PARTIAL per the latest Lead decision 1100390000172265. Recovered the interrupted bounded native retry and the full test process. All four native journeys remain NOT PROVEN, including Flagged-record opener and original saved-bookmark cross-view return after child closure. All gaps remain OPEN. Current full suite:104/104 pass,0fail; lint96; unchanged schema22+2/114FK; buildPASS. Original native Host AC-1/AC-3/AC-4 remain unverified; previously accepted simulator/outage evidence is retained as historical evidence and was not rerun or reclassified as native.
 
 ## 2. Acceptance criteria
+
+V36 AC-2 follow-up supported: deterministic regression1fail before fix,1pass after; new batch retained then delivered, overflow rejected. Original AC rows below retain accepted lab scope and unverified native limits. AC-5 follows S0-002 mapping; no Process table/waiver.
 
 Original and V4–V6/QA rows retain their previously accepted evidence boundaries. V7 below supersedes the old full-reload limitation.
 
@@ -230,6 +234,8 @@ Read the live task/Lead decision and live Git/PR state. Reused the existing STAR
 
 ## 4. Files changed
 
+V36 files: collectors/osquery/queue.mjs (ENOENT-only handling); backend/test/osquery-queue-concurrency.test.mjs (ordered real filesystem/HTTP regression); this RESULT; verification-v36.json and baseline/targeted/test/lint/schema/build-v36.txt under Docs/evidence/S0-003. No other TASK RESULT change.
+
 | File | Specific change |
 |---|---|
 | Docs/RESULT-TASK-S0-003.md | Canonical report incremented to v35; preserves original/historical AC mapping and adds explicit per-journey OPEN native gaps. |
@@ -253,6 +259,8 @@ Match outputs to the source commit in the header and the hashes in verification-
 
 ## 6. Tests and actual results
 
+V36 actual commands: node --test backend/test/osquery-queue-concurrency.test.mjs (baseline1fail ENOENT; fixed1pass); node --test backend/test/*.test.mjs frontend/test/*.test.mjs (105pass,0fail); node scripts/check.mjs; node scripts/generate-schema.mjs --check; node scripts/build.mjs (all pass). Logs attached locally. No ten-minute outage rerun.
+
 | Check | Actual result | Evidence |
 |---|---|---|
 | Full existing suite | 104 tests,104 pass,0 fail;0 new tests | test-v35.txt |
@@ -267,6 +275,8 @@ Live Cloudflare requests:0. Synthetic test log includes loopback mock traffic; t
 
 ## 7. Issues and implementation decisions
 
+V36 new defect established by ordering acknowledged flush after real enumeration before stat via test subclass. No timing loop/production hook. The earlier audit established no defect; this new regression supplies the missing reproduction. UTF-8 console error interrupted packaging after source commit; resumed packaging without duplicate commit/test execution.
+
 Correction to the prior BLOCKED-and-wait posture: Lead comment 1100390000172265 explicitly directs PARTIAL submission regardless of retry outcome. The capture interruption is handled within the assignment; no AC, scope, security or SRS change is requested. The existing START remains valid.
 
 The bounded retry began in the interrupted previous turn. Its exact URL entry was observed; the turn ended before Return/navigation. On resume the fresh native address bar contained a trailing character absent from the last verified entry. That observation does not establish its cause. The attempt was stopped rather than navigating an unexpected URL or starting a second retry. The earlier URL-confidence gate-stop is retained with its actual prior timestamp; it is not falsely claimed as a fresh stop during this retry.
@@ -275,13 +285,19 @@ The background test process finished successfully; its complete output was recov
 
 ## 8. Not done, limitations and technical debt
 
+V36 synthetic/local only; deterministic concurrency is not native browser/Linux evidence. Original native/integration limits and four UI native gaps remain OPEN/NOT PROVEN. Existing accepted lab scope preserved.
+
 Every native Duplicate/opener/invalid trace and original saved-bookmark cross-view return after child closure remains OPEN for Site Host, Unassigned Host, Flagged Domain and Flagged record. Corrected Flagged-record opener is specifically NOT PROVEN. No native evidence gap is closed or waived. Original native Host AC-1/AC-3/AC-4 remain unverified; previously accepted simulator/outage evidence is retained as historical evidence and was not rerun or reclassified as native. Synthetic/local scope only; no production/RBAC/scale/CVE/live Cloudflare/native Linux proof. Existing storage denial/clearing and size limits remain.
 
 ## 9. Blockers and decisions required
 
+V36 requires independent current-head QA approval before merge. Local coordinator replaces historical ClickUp delivery directions. No new PO scope or security decision requested.
+
 No new PO-level decision is required for this PARTIAL submission. The environment capture limitation remains an execution gap to resolve through the normal approved setup; it does not gate submission under the latest Lead decision. QA approval is still required before any merge. No task status, description or dependency was changed; no self-ACCEPT, no merge, Q-01..Q-05 untouched.
 
 ## 10. Next step and self-check
+
+V36 next: Lead reviews local submission with actual new queue proof and current PR/CI status. Do not merge. Historical v35 text/checklist below applies only to v35, including its old no-code-change statement.
 
 Commit these report/evidence changes on the assigned feature branch, push to update the existing PR, verify current-head CI/reviews, attach the actual report plus five evidence files to this exact task, and post one [DEV][SUBMISSION] PARTIAL summary after the live duplicate check. Record actual attachment IDs and submission comment in STATE; do not claim upload success from this prepared report alone.
 
@@ -295,3 +311,5 @@ After native capture is restored, complete the OPEN journeys under the Lead's st
 - [ ] Complete all OPEN native journeys through the normal approved capture path.
 
 History: v34 is retained in section2 as previously reported/accepted PARTIAL history. v35 follows the live Lead decision 1100390000172265; capture capability restoration is not a submission prerequisite.
+
+History: v36 adds queue concurrency fix/evidence. v35 PARTIAL history and all native gaps retained; zero new screenshots.

@@ -1,0 +1,12 @@
+{
+  "assignment_id": "LOCAL-QUEUE-CONCURRENCY-001",
+  "source_commit": "f3cb824adc44332041a7189b2a7a084dce2c3bf8",
+  "type": "Real isolated filesystem and loopback HTTP; deterministic ordering by subclassing existing files(); no production test hooks. Not native/Linux proof.",
+  "baseline": "1 failure ENOENT during capacity stat after acknowledged flush unlink; new enqueue aborted.",
+  "fixed": "1 pass: acknowledged old batch deleted, fresh batch pending then delivered; overflow still rejected. Ignore only ENOENT, propagate other I/O errors.",
+  "full_tests": 105,
+  "failed": 0,
+  "lint_schema_build": "PASS",
+  "outage": "Existing accepted600010ms historical outage retained, not rerun.",
+  "limits": "No native UI/Linux/live provider evidence; original six AC and later UI follow-ups remain separate."
+}
