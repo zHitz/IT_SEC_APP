@@ -9,7 +9,14 @@ export class DurableQueue {
   async enqueue(batch) {
     validateBatch(batch);
     const files = await this.files(), bytes = Buffer.from(JSON.stringify(batch));
-    let total = 0; for (const file of files) total += (await stat(resolve(this.directory, file))).size;
+    let total = 0;
+    for (const file of files) {
+      try { total += (await stat(resolve(this.directory, file))).size; }
+      catch (error) {
+        // Delivery may acknowledge and remove a file after enumeration.
+        if (error.code !== 'ENOENT') throw error;
+      }
+    }
     if (total + bytes.length > this.maxBytes) throw Error('QUEUE_FULL_BACKPRESSURE');
     const name = `${Date.parse(batch.collected_at)}-${batch.batch_id}.json`, path = resolve(this.directory, name);
     const handle = await open(`${path}.tmp`, 'wx', 0o600);
