@@ -21,6 +21,12 @@ The example timestamp must be replaced with collection time; future>5min or olde
 
 HTTP200 returns `{ "batch_id":"...", "host_id":"...", "accepted":true, "packages":1, "listening_ports":1, "non_listening_evidence":1 }`. This acknowledges a complete transaction. Collector removes a queue file only for accepted=true with the exact batch_id. Non-listening process records are retained in raw evidence only, not a Process entity/table.
 
+## Acceptance mapping: S0-003 AC-5 and accepted S0-002 schema
+
+[TASK-S0-003 AC-5](../../Docs/TASK-S0-003.md) literally names four entities, Host / Package / Port / Process. That wording conflicts with the accepted schema in [TASK-S0-002 §5.3](../../Docs/TASK-S0-002.md), which explicitly prohibits a separate Process entity/table. The implemented mapping is Host → `host`, Package → `package`, and Port → `listening_port`; listener process name and `pid` are attributes of `listening_port`. Non-listening process `pid`/name records remain sanitized raw evidence referenced by `raw_ref`, not a fourth business entity. See `readSource`/`buildBatches` in `source.mjs` and `createOsqueryStore` in `backend/src/ingest/osquery-store.mjs`.
+
+This note documents the accepted mapping and the unresolved literal wording conflict. It does not demonstrate four separate business entities, rewrite AC-5, waive acceptance gaps, or supply native/live evidence. Existing declared simulator/lab evidence retains its accepted scope; native Linux installation/nonmutation proof and later native UI follow-ups remain separate evidence limits. No schema change is implied.
+
 ## Errors
 
 Errors are JSON `{ "error": { "code":"...", "message":"Batch was not accepted", "request_id":"..." } }`; request_id matches X-Request-Id. No SQL errors/payload/token are returned.

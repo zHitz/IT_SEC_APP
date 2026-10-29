@@ -31,6 +31,8 @@ SRS v1.0 §8/8.1, TASK-S0-002 and TL decision **A, 2026-10-24 21:44**. Task rema
 
 Fields retain their SRS names; arrays remove the notation [] from the column identifier but keep PostgreSQL array type. `references` and all column/table names are quoted identifiers. `schema.json` defines entity-specific columns and required common columns. Source, timestamps, confidence, raw_ref, tags and environment are non-null; owner/site are nullable with real FK when present. Site/Owner source is **manual**, also in seed; seed tags and raw_ref identify their synthetic origin without contradicting the SRS manual-source rule.
 
+The osquery-specific [S0-003 AC-5 acceptance-mapping note](../collectors/osquery/API.md#acceptance-mapping-s0-003-ac-5-and-accepted-s0-002-schema) records the original Process wording conflict and the implemented listener-attribute/raw-evidence mapping. It does not change the original AC or add a business entity.
+
 ## Technical junctions and source projections
 
 | Table | Native FKs | Purpose |
