@@ -27,6 +27,7 @@
     "osquery:native-check": "node collectors/osquery/native-readiness.mjs"
   },
   "dependencies": {
+    "jose": "6.2.14",
     "pg": "8.23.1"
   },
   "devDependencies": {

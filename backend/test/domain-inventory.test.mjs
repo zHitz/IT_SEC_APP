@@ -19,7 +19,7 @@ test('Domain/DNS GET inventory: provenance, domain search, exact outside-range f
   }
   const before = JSON.stringify((await db.query('SELECT id,tags FROM asset_inventory.dns_record ORDER BY id')).rows);
   await db.exec('BEGIN READ ONLY');
-  app=createApp({readInventory:createInventoryReader({db})}); app.listen(0,'127.0.0.1');await once(app,'listening');
+  app=createApp({authorizeInventory:async()=>({subject:'synthetic-reader-test'}),readInventory:createInventoryReader({db})}); app.listen(0,'127.0.0.1');await once(app,'listening');
   const base=`http://127.0.0.1:${app.address().port}/api/v1/inventory/`;
   const get=async path=>{const r=await fetch(base+path);assert.equal(r.status,200,path);return r.json();};
   for(const resource of ['domains','dns-records']){

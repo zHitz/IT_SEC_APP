@@ -1,0 +1,18 @@
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (92.7318ms)
+✔ configuration fails closed for missing or invalid ports (0.9169ms)
+OIDC_HTTP_PROOF {"authorization":"[REDACTED]","validRoles":["Admin","Security Analyst","Infra Engineer","Viewer","Auditor"],"status200":6,"status401":["missing","malformed","expired","issuer","audience","tampered","unsigned","algorithm-confusion","ID-token-type","collector"],"status403":["absent","empty","unmapped","Service Owner"],"userIngest401":true,"health200":true,"jwksGets":1,"fixtureResponse":{"data":[{"hostname":"synthetic.test"}]}}
+✔ HTTP inventory enforces signed access tokens and deny-by-default roles without leaking credentials (290.7083ms)
+✔ inventory without verifier fails closed while health remains public (13.1243ms)
+OIDC_INITIAL_PROOF {"synthetic":true,"jwksGets":1,"validViewer":true,"missing401":true,"serviceOwner403":true}
+✔ synthetic OIDC verifier uses configured HTTP JWKS and denies missing token and unsupported role (188.3719ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (16.2551ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (20.6415ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.298ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 597.7573

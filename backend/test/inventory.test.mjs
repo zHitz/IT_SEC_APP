@@ -28,7 +28,7 @@ test('inventory GET prototype: real PostgreSQL synthetic host/package/port searc
     const observedSql = [];
     await db.exec('BEGIN READ ONLY');
     const reader = createInventoryReader({ db: { query: (sql, values) => { observedSql.push(sql); return db.query(sql, values); } } });
-    app = createApp({ readInventory: reader }); app.listen(0, '127.0.0.1'); await once(app, 'listening');
+    app = createApp({authorizeInventory:async()=>({subject:'synthetic-reader-test'}), readInventory: reader }); app.listen(0, '127.0.0.1'); await once(app, 'listening');
     const origin = `http://127.0.0.1:${app.address().port}/api/v1/inventory/`;
     const get = async path => { const response = await fetch(origin + path); assert.equal(response.status, 200); return response.json(); };
     const hosts = await get('hosts?page_size=1');
@@ -62,7 +62,7 @@ test('inventory GET prototype: real PostgreSQL synthetic host/package/port searc
 });
 test('inventory query bounds and sanitized unavailable errors', async () => {
   for (const query of ['page=100001','page_size=1.2','page=1e2',`search=${'a'.repeat(201)}`]) assert.throws(() => inventoryQuery('hosts', new URLSearchParams(query)));
-  const app = createApp({ readInventory: async () => { throw Error('postgres://secret-password@example/private'); } });
+  const app = createApp({authorizeInventory:async()=>({subject:'synthetic-reader-test'}), readInventory: async () => { throw Error('postgres://secret-password@example/private'); } });
   app.listen(0, '127.0.0.1'); await once(app, 'listening');
   try {
     const response = await fetch(`http://127.0.0.1:${app.address().port}/api/v1/inventory/hosts`);

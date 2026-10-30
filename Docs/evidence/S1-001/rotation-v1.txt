@@ -1,0 +1,11 @@
+OIDC_ROTATION_PROOF {"synthetic":true,"clock":"isolated Date mock; no real elapsed claim","jwksGets":4,"rotation":true,"unknownKey401":true,"expiredCacheProviderFailure401":true,"failureCooldown":true,"untrustedUrlRequests":0}
+✔ actual JWKS rotation, unknown key, bounded failure cache and token URL isolation (228.5841ms)
+✔ OIDC configuration rejects unsafe URLs, cross-origin JWKS, absent audience and symmetric algorithms (0.7832ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 572.5916

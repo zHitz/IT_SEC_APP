@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 
 // Liveness only. No claim about database, collectors or production readiness.
-export function createApp({ ingestOsquery, readInventory, readExactInventory } = {}) {
+export function createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory } = {}) {
   const app = createServer(async (request, response) => {
     const requestId = randomUUID();
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -20,6 +20,18 @@ export function createApp({ ingestOsquery, readInventory, readExactInventory } =
         response.writeHead(status).end(JSON.stringify({ error: { code: status === 503 ? 'INGEST_UNAVAILABLE' : error.code, message: 'Batch was not accepted', request_id: requestId } }));
       }
       return;
+    }
+    // All enabled inventory endpoints share this fail-closed authorization boundary.
+    if (request.url.startsWith('/api/v1/inventory/') && (readInventory || readExactInventory)) {
+      try {
+        if (typeof authorizeInventory !== 'function') throw Object.assign(Error(), {status:401});
+        await authorizeInventory(request);
+      } catch (error) {
+        const status=error.status===403?403:401;
+        if(status===401)response.setHeader('WWW-Authenticate','Bearer');
+        response.writeHead(status).end(JSON.stringify({error:{code:status===403?'FORBIDDEN':'UNAUTHORIZED',message:'Access denied',request_id:requestId}}));
+        return;
+      }
     }
     const exactMatch=/^\/api\/v1\/inventory\/(domains|hosts|packages|dns-records)\/([^/?]+)(?:\/(dns-records|hosts))?(?:\?|$)/.exec(request.url);
     if(exactMatch&&readExactInventory){
