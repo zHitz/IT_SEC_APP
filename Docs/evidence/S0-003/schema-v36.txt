@@ -1,0 +1,1 @@
+schema check PASS: 22 entities, 2 junctions, 114 native FKs

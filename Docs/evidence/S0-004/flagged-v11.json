@@ -1,0 +1,30 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "flaggedDomains": 12,
+  "parentPages": 2,
+  "childPagination": "12ownedrecords/2pages in integration fixture; all DNS for flagged owner",
+  "search": "sample12 ->1domain; sample05 excluded",
+  "browser": [
+    "page2 sample44/48 with exact DNS fields",
+    "sample12 search",
+    "detail and full list return search/page2 retained"
+  ],
+  "checks": {
+    "tests": 49,
+    "pass": 49,
+    "lintModules": 74,
+    "schema": "22+2/114FK",
+    "build": "PASS"
+  },
+  "failuresResolved": [
+    "lab startup had fixed counts for default24fixture; replaced with actual database counts for --flagged fixture"
+  ],
+  "cloudflareRequests": 0,
+  "flagAlgorithmChanged": false,
+  "limits": [
+    "No live/native/scale claim",
+    "Temporary panel reload returns origin"
+  ]
+}

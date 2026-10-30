@@ -1,0 +1,41 @@
+{
+  "version": 25,
+  "recordedAt": "2026-10-25T09:00:56.065400+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM",
+  "tests": 79,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "route": "#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "independentIsolation": true,
+  "observations": {
+    "pickerSearch": "Site",
+    "pickerSort": "name desc",
+    "pickerPage": 2,
+    "selectedSite": "Sample Site",
+    "hostSearch": "host-",
+    "hostSort": "hostname desc",
+    "hostPage": 2,
+    "hosts": 16,
+    "hostPageRows": 6,
+    "parentReturns": 2,
+    "invalidPickerCases": 4,
+    "invalidHostCases": 4
+  },
+  "failures": [],
+  "limits": [
+    "Viewport screenshots; synthetic local only.",
+    "Native Linux/osquery AC1/3/4 remain unverified;accepted600010msoutage retained,notrerun."
+  ]
+}

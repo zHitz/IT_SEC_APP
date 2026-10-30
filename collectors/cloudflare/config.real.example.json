@@ -1,0 +1,10 @@
+{
+  "synthetic": false,
+  "baseUrl": "https://api.cloudflare.com/client/v4",
+  "zoneIds": [],
+  "knownCidrs": [],
+  "cidrVersion": "REPLACE_WITH_APPROVED_CIDR_VERSION",
+  "intervalMs": 60000,
+  "rawDirectory": "var/cloudflare/raw",
+  "environment": "REPLACE_WITH_APPROVED_ENVIRONMENT"
+}

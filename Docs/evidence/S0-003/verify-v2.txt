@@ -1,0 +1,17 @@
+
+> it-asset-security@0.1.0 osquery:verify
+> node scripts/verify-osquery.mjs
+
+(node:31244) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"event":"offline_cycle","elapsedMs":1060,"cycles":1,"at":"2026-10-24T18:01:08.259Z"}
+{"event":"offline_cycle","elapsedMs":62140,"cycles":2,"at":"2026-10-24T18:02:09.339Z"}
+{"event":"offline_cycle","elapsedMs":123227,"cycles":3,"at":"2026-10-24T18:03:10.426Z"}
+{"event":"offline_cycle","elapsedMs":184297,"cycles":4,"at":"2026-10-24T18:04:11.496Z"}
+{"event":"offline_cycle","elapsedMs":245400,"cycles":5,"at":"2026-10-24T18:05:12.599Z"}
+{"event":"offline_cycle","elapsedMs":306518,"cycles":6,"at":"2026-10-24T18:06:13.717Z"}
+{"event":"offline_cycle","elapsedMs":367628,"cycles":7,"at":"2026-10-24T18:07:14.827Z"}
+{"event":"offline_cycle","elapsedMs":428688,"cycles":8,"at":"2026-10-24T18:08:15.887Z"}
+{"event":"offline_cycle","elapsedMs":489830,"cycles":9,"at":"2026-10-24T18:09:17.029Z"}
+{"event":"offline_cycle","elapsedMs":550937,"cycles":10,"at":"2026-10-24T18:10:18.136Z"}
+{"synthetic":true,"nativeLinux":false,"nativeOsquery":false,"hosts":3,"offline":{"requestedMs":600000,"actualMs":600010,"offlineStartedAt":"2026-10-24T18:01:07.199Z","offlineFinishedAt":"2026-10-24T18:11:07.209Z","cycles":10,"batchesQueued":60,"allDelivered":true,"pending":0},"firstSeenPreserved":true,"noDuplicatePackages":true,"payloadSensitiveFieldsExcluded":true,"checklists":3,"freshInstallSteps":5}

@@ -1,6 +1,6 @@
 # Atlas — IT Asset & Security
 
-Skeleton TASK-S0-001, chỉ chạy local. SRS v1.0 trong `Docs/it-asset-security-srs.pdf` là nguồn nghiệp vụ; `docs/adr/ADR-001-tech-stack.md` là đề xuất stack chờ Team Lead xác nhận. Không có inventory, collector hay dữ liệu hạ tầng thật. UI kế thừa màu sắc, typography, layout từ IT_ASSET_MAP; không copy model/store/logic cũ.
+Skeleton TASK-S0-001 và schema TASK-S0-002, chỉ chạy local. SRS v1.0 trong `Docs/it-asset-security-srs.pdf` là nguồn nghiệp vụ; `Docs/adr/ADR-001-tech-stack.md` là đề xuất stack được Lead cho dùng tạm cho S0-002. Không có API inventory, collector hay dữ liệu hạ tầng thật. UI kế thừa màu sắc, typography, layout từ IT_ASSET_MAP; không copy model/store/logic cũ.
 
 ## Repo và mapping tài liệu
 
@@ -16,7 +16,7 @@ Windows không phân biệt `Docs/` và `docs/`: giữ nguyên tên `Docs/` đan
 
 ## Chạy local (PowerShell, từ root repo)
 
-Sau khi nhận checkout repo local (chưa có remote GitHub):
+From a fresh clone of https://github.com/zHitz/IT_SEC_APP.git, enter the repository root:
 
 ```powershell
 Copy-Item .env.example .env
@@ -35,9 +35,10 @@ Frontend hiển thị shell Atlas tiếng Việt; nút Kiểm tra kết nối ba
 
 ## Lint, unit-test và build
 
-Máy có Node.js 24 (không cần npm install, không có dependency npm):
+Máy có Node.js 24: từ S0-002, cài đúng lockfile trước khi kiểm tra. `pg` là client PostgreSQL; PGlite 0.3.16 là dev dependency PostgreSQL 17.5 WASM để test SQL local, không thay server đích.
 
 ```powershell
+npm ci
 npm run lint
 npm test
 npm run build
@@ -48,12 +49,17 @@ Thứ tự trên giống workflow `.github/workflows/ci.yml`. Lint hiện kiểm
 Nếu chỉ có Docker:
 
 ```powershell
+docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm ci
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm run lint
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm test
 docker run --rm -v "${PWD}:/app" -w /app node:24-alpine npm run build
 ```
 
 Chạy không Docker cho kiểm tra Dev: sao `.env.example` sang `.env`, đổi BACKEND_HOST/FRONTEND_HOST thành `127.0.0.1`, BACKEND_ORIGIN thành `http://127.0.0.1:4100`, build rồi mở hai terminal `npm run start:backend` và `npm run start:frontend`. Cách này không thay AC Compose.
+
+## Schema S0-002
+
+Xem `backend/db/README.md` và `Docs/DATA_MODEL.md`. `npm run db:verify` chạy migration up → seed → inspect → down trên database PostgreSQL 17.5 nhúng trống và ghi bằng chứng; không dùng DATABASE_URL. Server PostgreSQL 17: điền DATABASE_URL cho database test riêng trong `.env`, rồi `npm run db:up`, `npm run db:seed`, `npm run db:inspect`, `npm run db:down`. Down xóa schema do chính migration tạo, bao gồm seed; chỉ dùng database disposable của task. Không tự migrate khi khởi động web.
 
 ## Dừng và reset
 
@@ -71,4 +77,14 @@ Chỉ khi chủ động muốn xóa dữ liệu database **local của project n
 
 ## Ranh giới mở rộng
 
-Không bắt đầu S0-002/003/004 trước khi được Team Lead mở task. SSO/RBAC, model 22 entity, ingest, migrations, CVE, search, scanner chưa triển khai. API nghiệp vụ tương lai theo SRS §20 `/api/v1/` và lỗi có request_id; mọi thay đổi phạm vi qua Team Lead. Tham khảo `Docs/adr/ADR-001-tech-stack.md`, không coi đề xuất ADR là quyết định đã được duyệt.
+S0-002 v2 was ACCEPTED by the Lead on 2026-10-24 at22:19; S0-003 and S0-004 were then opened separately. S0-004 now has a GET-only DNS ingestion worker with synthetic acceptance tests. Run `npm run cloudflare:verify`; see `collectors/cloudflare/README.md` for configuration, scope and evidence. This is a separate worker, with no DNS inventory UI or DNS mutation API. SSO/RBAC, CVE matching, search and discovery scanners remain outside this work. Future business APIs follow SRS §20 `/api/v1/`; do not change project scope implicitly.
+
+## Osquery ingest PoC (S0-003)
+
+The optional authenticated endpoint, SELECT-only collector, durable queue and isolated simulator lab are documented in `collectors/osquery/README.md` and `API.md`. `npm run osquery:verify` performs a real ten-minute queue/restart experiment using explicitly simulated Linux inventory sources; it is not evidence of native Linux/osquery deployment. See `INSTALL-LAB.md` for exactly five reproducible fresh simulator steps. Existing UI/UX is preserved.
+
+## Disposable CI Docker acceptance capture
+
+The `compose-acceptance` workflow starts its timer before checkout, creates a private temporary env from `.env.example` with a generated disposable database password, and runs the documented `docker compose --env-file PRIVATE up --build -d` path under a unique project name. It requires Engine24+ and Compose2.20.3+, uses loopback ephemeral published ports, checks backend `/health` and the Atlas frontend HTML shell, then removes only its own project containers/volumes. No host npm installation/build is used.
+
+On an existing Docker-capable Linux runner with Python3, reproduce with `python3 scripts/verify-compose.py --output /tmp/atlas-compose-acceptance.json`. Python is capture tooling for CI, not a new prerequisite for the manual Docker instructions above. Only the sanitized JSON report is uploaded; private env and raw build logs are withheld. A fresh hosted checkout may have cached base images/tools and is not proof of a pristine physical machine. HTTP HTML success does not prove browser rendering. Read actual run evidence before claiming the ten-minute AC passed.

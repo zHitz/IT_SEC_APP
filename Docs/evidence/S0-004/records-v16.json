@@ -1,0 +1,21 @@
+{
+  "scope": "synthetic local v16",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "61/61",
+  "lintModules": 88,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "realBrowser": "reload/Back/Forward/error",
+  "recordSearch": "198.51.100.25",
+  "records": 12,
+  "page": 2,
+  "owners": [
+    "sample44",
+    "sample48"
+  ],
+  "invalidCases": 6,
+  "exactTag": true,
+  "initialRegression": "return now async; old test must await recordView.settled",
+  "originReturns": true
+}

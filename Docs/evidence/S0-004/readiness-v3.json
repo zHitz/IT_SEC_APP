@@ -1,0 +1,83 @@
+{
+  "source": "Actual test-v3.txt stdout; public synthetic fixtures only",
+  "cases": [
+    {
+      "case": "READINESS_NO_NETWORK",
+      "entry": "collectors/cloudflare/preflight.mjs",
+      "mode": "--dry-run",
+      "status": 0,
+      "audit": [
+        {
+          "event": "cloudflare_readiness",
+          "mode": "dry-run",
+          "status": "pass",
+          "synthetic": false,
+          "zoneCount": 1,
+          "cidrCount": 2,
+          "cidrVersion": "synthetic-readiness-v3",
+          "credentialPresenceChecked": false,
+          "networkRequests": 0,
+          "databaseWrites": 0,
+          "limitation": "Local validation only; does not verify token permissions, zone authorization or live API reachability"
+        },
+        {
+          "event": "network_sentinel",
+          "attempts": 0
+        }
+      ]
+    },
+    {
+      "case": "READINESS_NO_NETWORK",
+      "entry": "collectors/cloudflare/main.mjs",
+      "mode": "--dry-run",
+      "status": 0,
+      "audit": [
+        {
+          "event": "cloudflare_readiness",
+          "mode": "dry-run",
+          "status": "pass",
+          "synthetic": false,
+          "zoneCount": 1,
+          "cidrCount": 2,
+          "cidrVersion": "synthetic-readiness-v3",
+          "credentialPresenceChecked": false,
+          "networkRequests": 0,
+          "databaseWrites": 0,
+          "limitation": "Local validation only; does not verify token permissions, zone authorization or live API reachability"
+        },
+        {
+          "event": "network_sentinel",
+          "attempts": 0
+        }
+      ]
+    },
+    {
+      "case": "READINESS_CREDENTIAL_CHECK",
+      "hasToken": false,
+      "status": 1,
+      "networkAttempts": 0,
+      "error": "CLOUDFLARE_API_TOKEN_REQUIRED"
+    },
+    {
+      "case": "READINESS_CREDENTIAL_CHECK",
+      "hasToken": true,
+      "status": 0,
+      "networkAttempts": 0,
+      "error": null
+    },
+    {
+      "case": "READINESS_INPUT_REJECTED",
+      "code": "ZONE_IDS_REQUIRED",
+      "status": 1,
+      "networkAttempts": 0
+    },
+    {
+      "case": "READINESS_INPUT_REJECTED",
+      "code": "KNOWN_CIDRS_REQUIRED",
+      "status": 1,
+      "networkAttempts": 0
+    }
+  ],
+  "liveCloudflareRequests": 0,
+  "actualTokenUsed": false
+}

@@ -1,0 +1,47 @@
+{
+  "observedAt": "2026-10-25T12:26:00.054427+07:00",
+  "scope": "synthetic local HTTP/PostgreSQL17.5WASM and Linkedom DOM/history fixture",
+  "nativeBrowserVerified": true,
+  "browserFailure": "Earlier Work access disabled; resolved after app restart, actual built-in browser verified this run",
+  "tests": 65,
+  "lintModules": 93,
+  "schema": "22 entities + 2 junctions / 114 native FKs unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "productionAccess": false,
+  "submissionState": "Prepared for immediate exact-task submission; upload retry follows live attachment check",
+  "exactRecordUUID": true,
+  "fields": [
+    "id",
+    "domain",
+    "type",
+    "value",
+    "proxied",
+    "ttl",
+    "tags",
+    "source",
+    "first_seen_at",
+    "last_seen_at",
+    "confidence",
+    "flag"
+  ],
+  "reloadFreshDom": true,
+  "historyFixtureBackForward": true,
+  "originReturn": true,
+  "invalidMissingDuplicate": 3,
+  "zeroPartial": true,
+  "POST": 405,
+  "unknownQuery": 400,
+  "browserVerifiedAt": "2026-10-25T13:05:33.092425+07:00",
+  "browserProof": {
+    "directAndReload": true,
+    "nativeBackForward": true,
+    "originReturn": true,
+    "invalidZeroFieldsOrRows": true,
+    "screenshots": [
+      "dns-record-reload-v18.png",
+      "dns-record-history-v18.png",
+      "dns-record-invalid-v18.png"
+    ]
+  }
+}

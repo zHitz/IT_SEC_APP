@@ -1,0 +1,16 @@
+{
+  "scope": "synthetic local v15",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "59/59",
+  "lintModules": 86,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "records": 24,
+  "page": 2,
+  "port8011": "host11/PID111",
+  "reloadHistory": true,
+  "invalidCases": 6,
+  "initialFailure": "old test expected Enter port; new route explicitly says Invalid port/process route; updated assertion",
+  "nativeAC134": "unverified"
+}

@@ -1,0 +1,22 @@
+{
+  "task": "S0-004",
+  "version": "v4",
+  "tests": 27,
+  "failures": 0,
+  "lintModules": 47,
+  "schema": "22 business + 2 junction / 114 FK unchanged",
+  "build": "PASS",
+  "engine": "PostgreSQL17.5 WASM",
+  "synthetic": true,
+  "readOnlyTransaction": true,
+  "actualProof": "DOMAIN_INVENTORY_V4_PROOF {\"engine\":\"PostgreSQL17.5 WASM\",\"synthetic\":true,\"readOnlyTransaction\":true,\"domains\":3,\"dnsRecords\":3,\"flaggedRecords\":1,\"flaggedDomains\":1,\"unflagged\":2,\"provenance\":true,\"literalSearch\":true,\"combinedFilters\":true,\"stablePages\":true,\"counts\":true,\"dnsStateUnchanged\":true,\"cloudflareRequests\":0}",
+  "sha256": {
+    "backend/src/inventory/reader.mjs": "d8a24f9f32809035a06cbb93a7e7e34fea986adb4138618a741a3b98f3a2061e",
+    "backend/src/app.mjs": "2a180e112b15b71981ceb2d7cf1c562d77fa03501a3c664a80a0f4f83166751f",
+    "backend/test/domain-inventory.test.mjs": "334c4340c2c5c821349ec5c79f63770ed0fadf5e295323d933144f4d0cf25540",
+    "Docs/DOMAIN-INVENTORY-API.md": "28d694c070eed341db329529816400c64e6fe693f17f6741149972d30e2d3943",
+    "Docs/evidence/S0-004/test-v4.txt": "8f2ee3b0bba3d56033b81b269885973b36a6b52e451cf7f77ca1e21e3cf11727",
+    "Docs/evidence/S0-004/lint-v4.txt": "c7a42f89bee1db5499b486ad6bb15050de130d090d13d579358218e06112a4e3",
+    "Docs/evidence/S0-004/build-v4.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298"
+  }
+}

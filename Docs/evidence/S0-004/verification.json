@@ -1,0 +1,1023 @@
+{
+  "synthetic": true,
+  "engine": "PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "tables": 24,
+  "intervalMs": 25,
+  "knownCidrs": [
+    "192.0.2.0/24",
+    "2001:db8:1::/48"
+  ],
+  "cidrVersion": "synthetic-v1",
+  "rounds": [
+    [
+      {
+        "id": "852def6a-8830-8e03-b19c-84482ddc3cc8",
+        "domain": "alias.first.test",
+        "type": "CNAME",
+        "value": "known.first.test",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json#00000000000000000000000000000068",
+        "tags": []
+      },
+      {
+        "id": "7d9ae640-3dfd-882c-a122-0855216d99ad",
+        "domain": "known.first.test",
+        "type": "A",
+        "value": "192.0.2.10",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json#00000000000000000000000000000065",
+        "tags": []
+      },
+      {
+        "id": "83dd4bec-1db3-836a-9195-d26ba3ab9115",
+        "domain": "known.second.test",
+        "type": "AAAA",
+        "value": "2001:db8:1::20",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json#000000000000000000000000000000c9",
+        "tags": []
+      },
+      {
+        "id": "186e0067-220d-8353-b420-789b9c645fde",
+        "domain": "note.second.test",
+        "type": "TXT",
+        "value": "synthetic fixture only",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json#000000000000000000000000000000cb",
+        "tags": []
+      },
+      {
+        "id": "2cf9145b-e82d-846c-bbb8-4fa33729d03a",
+        "domain": "outside.first.test",
+        "type": "A",
+        "value": "198.51.100.20",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json#00000000000000000000000000000066",
+        "tags": [
+          "cloudflare:outside-known-range"
+        ]
+      },
+      {
+        "id": "8f576d4e-3367-80c3-8d66-53086a3fcab4",
+        "domain": "second.test",
+        "type": "MX",
+        "value": "mail.second.test",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json#000000000000000000000000000000ca",
+        "tags": []
+      },
+      {
+        "id": "123b0680-6f61-8ee6-86b0-2407279f01e5",
+        "domain": "v6.first.test",
+        "type": "AAAA",
+        "value": "2001:db8:2::10",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.096Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json#00000000000000000000000000000067",
+        "tags": [
+          "cloudflare:outside-known-range"
+        ]
+      }
+    ],
+    [
+      {
+        "id": "852def6a-8830-8e03-b19c-84482ddc3cc8",
+        "domain": "alias.first.test",
+        "type": "CNAME",
+        "value": "known.first.test",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json#00000000000000000000000000000068",
+        "tags": []
+      },
+      {
+        "id": "7d9ae640-3dfd-882c-a122-0855216d99ad",
+        "domain": "known.first.test",
+        "type": "A",
+        "value": "192.0.2.10",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json#00000000000000000000000000000065",
+        "tags": []
+      },
+      {
+        "id": "83dd4bec-1db3-836a-9195-d26ba3ab9115",
+        "domain": "known.second.test",
+        "type": "AAAA",
+        "value": "2001:db8:1::20",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json#000000000000000000000000000000c9",
+        "tags": []
+      },
+      {
+        "id": "186e0067-220d-8353-b420-789b9c645fde",
+        "domain": "note.second.test",
+        "type": "TXT",
+        "value": "synthetic fixture only",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json#000000000000000000000000000000cb",
+        "tags": []
+      },
+      {
+        "id": "2cf9145b-e82d-846c-bbb8-4fa33729d03a",
+        "domain": "outside.first.test",
+        "type": "A",
+        "value": "198.51.100.20",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json#00000000000000000000000000000066",
+        "tags": [
+          "cloudflare:outside-known-range"
+        ]
+      },
+      {
+        "id": "8f576d4e-3367-80c3-8d66-53086a3fcab4",
+        "domain": "second.test",
+        "type": "MX",
+        "value": "mail.second.test",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json#000000000000000000000000000000ca",
+        "tags": []
+      },
+      {
+        "id": "123b0680-6f61-8ee6-86b0-2407279f01e5",
+        "domain": "v6.first.test",
+        "type": "AAAA",
+        "value": "2001:db8:2::10",
+        "source": "cloudflare",
+        "first_seen_at": "2026-10-24T17:47:13.096Z",
+        "last_seen_at": "2026-10-24T17:47:13.251Z",
+        "confidence": "confirmed",
+        "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json#00000000000000000000000000000067",
+        "tags": [
+          "cloudflare:outside-known-range"
+        ]
+      }
+    ]
+  ],
+  "reports": [
+    {
+      "runId": "ff23958c-e358-4860-9c87-1a44ce6f127b",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.096Z",
+      "finishedAt": "2026-10-24T17:47:13.208Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.147Z",
+          "finishedAt": "2026-10-24T17:47:13.192Z",
+          "fetched": 4,
+          "created": 4,
+          "updated": 0,
+          "flagged": 2,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.152Z",
+          "finishedAt": "2026-10-24T17:47:13.208Z",
+          "fetched": 3,
+          "created": 3,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "success"
+    },
+    {
+      "runId": "7315db91-b8db-4480-b89a-92a6db96aa48",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.251Z",
+      "finishedAt": "2026-10-24T17:47:13.303Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.255Z",
+          "finishedAt": "2026-10-24T17:47:13.287Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 4,
+          "flagged": 2,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.259Z",
+          "finishedAt": "2026-10-24T17:47:13.303Z",
+          "fetched": 3,
+          "created": 0,
+          "updated": 3,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "success"
+    }
+  ],
+  "changed": {
+    "id": "2cf9145b-e82d-846c-bbb8-4fa33729d03a",
+    "domain": "outside.first.test",
+    "type": "A",
+    "value": "192.0.2.200",
+    "source": "cloudflare",
+    "first_seen_at": "2026-10-24T17:47:13.096Z",
+    "last_seen_at": "2026-10-24T17:47:13.306Z",
+    "confidence": "confirmed",
+    "raw_ref": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/1e5fa0ed-49b6-4087-99f1-f1786d7bf35c-00000000000000000000000000000001.json#00000000000000000000000000000066",
+    "tags": [
+      "user:review"
+    ]
+  },
+  "snapshot": {
+    "synthetic": true,
+    "runId": "1e5fa0ed-49b6-4087-99f1-f1786d7bf35c",
+    "zoneId": "00000000000000000000000000000001",
+    "zoneName": "first.test",
+    "observedAt": "2026-10-24T17:47:13.306Z",
+    "cidrVersion": "synthetic-v1",
+    "knownCidrs": [
+      "192.0.2.0/24",
+      "2001:db8:1::/48"
+    ],
+    "records": [
+      {
+        "id": "7d9ae640-3dfd-882c-a122-0855216d99ad",
+        "externalId": "00000000000000000000000000000065",
+        "fqdn": "known.first.test",
+        "type": "A",
+        "value": "192.0.2.10",
+        "ttl": 300,
+        "proxied": false,
+        "data": null,
+        "priority": null,
+        "outsideKnownRange": false,
+        "reason": "IP is inside a configured known CIDR",
+        "cidrVersion": "synthetic-v1"
+      },
+      {
+        "id": "2cf9145b-e82d-846c-bbb8-4fa33729d03a",
+        "externalId": "00000000000000000000000000000066",
+        "fqdn": "outside.first.test",
+        "type": "A",
+        "value": "192.0.2.200",
+        "ttl": 120,
+        "proxied": true,
+        "data": null,
+        "priority": null,
+        "outsideKnownRange": false,
+        "reason": "IP is inside a configured known CIDR",
+        "cidrVersion": "synthetic-v1"
+      },
+      {
+        "id": "123b0680-6f61-8ee6-86b0-2407279f01e5",
+        "externalId": "00000000000000000000000000000067",
+        "fqdn": "v6.first.test",
+        "type": "AAAA",
+        "value": "2001:db8:2::10",
+        "ttl": 300,
+        "proxied": false,
+        "data": null,
+        "priority": null,
+        "outsideKnownRange": true,
+        "reason": "IP is outside every configured known CIDR",
+        "cidrVersion": "synthetic-v1"
+      },
+      {
+        "id": "852def6a-8830-8e03-b19c-84482ddc3cc8",
+        "externalId": "00000000000000000000000000000068",
+        "fqdn": "alias.first.test",
+        "type": "CNAME",
+        "value": "known.first.test",
+        "ttl": 300,
+        "proxied": false,
+        "data": null,
+        "priority": null,
+        "outsideKnownRange": false,
+        "reason": "Not an address record; CNAME resolution is outside this PoC",
+        "cidrVersion": "synthetic-v1"
+      }
+    ],
+    "skipped": []
+  },
+  "denied": {
+    "runId": "62b71cd0-e8d2-4e40-a852-315194be48f8",
+    "synthetic": true,
+    "startedAt": "2026-10-24T17:47:13.355Z",
+    "finishedAt": "2026-10-24T17:47:13.362Z",
+    "zones": [
+      {
+        "zoneId": "00000000000000000000000000000001",
+        "startedAt": "2026-10-24T17:47:13.358Z",
+        "finishedAt": "2026-10-24T17:47:13.362Z",
+        "fetched": 4,
+        "created": 0,
+        "updated": 0,
+        "flagged": 0,
+        "skipped": 0,
+        "error": "JOB_ABORTED_AUTH"
+      },
+      {
+        "zoneId": "00000000000000000000000000000002",
+        "startedAt": "2026-10-24T17:47:13.360Z",
+        "finishedAt": "2026-10-24T17:47:13.362Z",
+        "fetched": 0,
+        "created": 0,
+        "updated": 0,
+        "flagged": 0,
+        "skipped": 0,
+        "error": "AUTH_OR_PERMISSION"
+      }
+    ],
+    "status": "failed"
+  },
+  "partial": {
+    "runId": "cd37570d-3e5e-4889-b584-8f95e8cf652c",
+    "synthetic": true,
+    "startedAt": "2026-10-24T17:47:13.364Z",
+    "finishedAt": "2026-10-24T17:47:13.390Z",
+    "zones": [
+      {
+        "zoneId": "00000000000000000000000000000001",
+        "startedAt": "2026-10-24T17:47:13.366Z",
+        "finishedAt": "2026-10-24T17:47:13.390Z",
+        "fetched": 4,
+        "created": 0,
+        "updated": 4,
+        "flagged": 1,
+        "skipped": 0,
+        "error": null,
+        "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/cd37570d-3e5e-4889-b584-8f95e8cf652c-00000000000000000000000000000001.json"
+      },
+      {
+        "zoneId": "00000000000000000000000000000002",
+        "startedAt": "2026-10-24T17:47:13.369Z",
+        "finishedAt": "2026-10-24T17:47:13.390Z",
+        "fetched": 0,
+        "created": 0,
+        "updated": 0,
+        "flagged": 0,
+        "skipped": 0,
+        "error": "UPSTREAM_UNAVAILABLE"
+      }
+    ],
+    "status": "partial"
+  },
+  "rollback": {
+    "runId": "3d9599c1-d4a4-4d40-9616-7f9c271b8c9b",
+    "synthetic": true,
+    "startedAt": "2026-10-24T17:47:13.391Z",
+    "finishedAt": "2026-10-24T17:47:13.427Z",
+    "zones": [
+      {
+        "zoneId": "00000000000000000000000000000001",
+        "startedAt": "2026-10-24T17:47:13.395Z",
+        "finishedAt": "2026-10-24T17:47:13.413Z",
+        "fetched": 4,
+        "created": 0,
+        "updated": 0,
+        "flagged": 0,
+        "skipped": 0,
+        "error": "ZONE_PROCESSING_FAILED"
+      },
+      {
+        "zoneId": "00000000000000000000000000000002",
+        "startedAt": "2026-10-24T17:47:13.397Z",
+        "finishedAt": "2026-10-24T17:47:13.427Z",
+        "fetched": 3,
+        "created": 0,
+        "updated": 3,
+        "flagged": 0,
+        "skipped": 0,
+        "error": null,
+        "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/3d9599c1-d4a4-4d40-9616-7f9c271b8c9b-00000000000000000000000000000002.json"
+      }
+    ],
+    "status": "partial"
+  },
+  "logs": [
+    {
+      "event": "sync_started",
+      "runId": "ff23958c-e358-4860-9c87-1a44ce6f127b",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.096Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "ff23958c-e358-4860-9c87-1a44ce6f127b",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.147Z",
+      "finishedAt": "2026-10-24T17:47:13.192Z",
+      "fetched": 4,
+      "created": 4,
+      "updated": 0,
+      "flagged": 2,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "ff23958c-e358-4860-9c87-1a44ce6f127b",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.152Z",
+      "finishedAt": "2026-10-24T17:47:13.208Z",
+      "fetched": 3,
+      "created": 3,
+      "updated": 0,
+      "flagged": 0,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "ff23958c-e358-4860-9c87-1a44ce6f127b",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.096Z",
+      "finishedAt": "2026-10-24T17:47:13.208Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.147Z",
+          "finishedAt": "2026-10-24T17:47:13.192Z",
+          "fetched": 4,
+          "created": 4,
+          "updated": 0,
+          "flagged": 2,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.152Z",
+          "finishedAt": "2026-10-24T17:47:13.208Z",
+          "fetched": 3,
+          "created": 3,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/ff23958c-e358-4860-9c87-1a44ce6f127b-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "success"
+    },
+    {
+      "event": "sync_started",
+      "runId": "7315db91-b8db-4480-b89a-92a6db96aa48",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.251Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "7315db91-b8db-4480-b89a-92a6db96aa48",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.255Z",
+      "finishedAt": "2026-10-24T17:47:13.287Z",
+      "fetched": 4,
+      "created": 0,
+      "updated": 4,
+      "flagged": 2,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "7315db91-b8db-4480-b89a-92a6db96aa48",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.259Z",
+      "finishedAt": "2026-10-24T17:47:13.303Z",
+      "fetched": 3,
+      "created": 0,
+      "updated": 3,
+      "flagged": 0,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "7315db91-b8db-4480-b89a-92a6db96aa48",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.251Z",
+      "finishedAt": "2026-10-24T17:47:13.303Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.255Z",
+          "finishedAt": "2026-10-24T17:47:13.287Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 4,
+          "flagged": 2,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.259Z",
+          "finishedAt": "2026-10-24T17:47:13.303Z",
+          "fetched": 3,
+          "created": 0,
+          "updated": 3,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/7315db91-b8db-4480-b89a-92a6db96aa48-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "success"
+    },
+    {
+      "event": "sync_started",
+      "runId": "1e5fa0ed-49b6-4087-99f1-f1786d7bf35c",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.306Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "1e5fa0ed-49b6-4087-99f1-f1786d7bf35c",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.309Z",
+      "finishedAt": "2026-10-24T17:47:13.335Z",
+      "fetched": 4,
+      "created": 0,
+      "updated": 4,
+      "flagged": 1,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/1e5fa0ed-49b6-4087-99f1-f1786d7bf35c-00000000000000000000000000000001.json"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "1e5fa0ed-49b6-4087-99f1-f1786d7bf35c",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.311Z",
+      "finishedAt": "2026-10-24T17:47:13.349Z",
+      "fetched": 3,
+      "created": 0,
+      "updated": 3,
+      "flagged": 0,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/1e5fa0ed-49b6-4087-99f1-f1786d7bf35c-00000000000000000000000000000002.json"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "1e5fa0ed-49b6-4087-99f1-f1786d7bf35c",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.306Z",
+      "finishedAt": "2026-10-24T17:47:13.349Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.309Z",
+          "finishedAt": "2026-10-24T17:47:13.335Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 4,
+          "flagged": 1,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/1e5fa0ed-49b6-4087-99f1-f1786d7bf35c-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.311Z",
+          "finishedAt": "2026-10-24T17:47:13.349Z",
+          "fetched": 3,
+          "created": 0,
+          "updated": 3,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/1e5fa0ed-49b6-4087-99f1-f1786d7bf35c-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "success"
+    },
+    {
+      "event": "sync_started",
+      "runId": "62b71cd0-e8d2-4e40-a852-315194be48f8",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.355Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "62b71cd0-e8d2-4e40-a852-315194be48f8",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.358Z",
+      "finishedAt": "2026-10-24T17:47:13.362Z",
+      "fetched": 4,
+      "created": 0,
+      "updated": 0,
+      "flagged": 0,
+      "skipped": 0,
+      "error": "JOB_ABORTED_AUTH"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "62b71cd0-e8d2-4e40-a852-315194be48f8",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.360Z",
+      "finishedAt": "2026-10-24T17:47:13.362Z",
+      "fetched": 0,
+      "created": 0,
+      "updated": 0,
+      "flagged": 0,
+      "skipped": 0,
+      "error": "AUTH_OR_PERMISSION"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "62b71cd0-e8d2-4e40-a852-315194be48f8",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.355Z",
+      "finishedAt": "2026-10-24T17:47:13.362Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.358Z",
+          "finishedAt": "2026-10-24T17:47:13.362Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": "JOB_ABORTED_AUTH"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.360Z",
+          "finishedAt": "2026-10-24T17:47:13.362Z",
+          "fetched": 0,
+          "created": 0,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": "AUTH_OR_PERMISSION"
+        }
+      ],
+      "status": "failed"
+    },
+    {
+      "event": "sync_started",
+      "runId": "cd37570d-3e5e-4889-b584-8f95e8cf652c",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.364Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "cd37570d-3e5e-4889-b584-8f95e8cf652c",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.366Z",
+      "finishedAt": "2026-10-24T17:47:13.390Z",
+      "fetched": 4,
+      "created": 0,
+      "updated": 4,
+      "flagged": 1,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/cd37570d-3e5e-4889-b584-8f95e8cf652c-00000000000000000000000000000001.json"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "cd37570d-3e5e-4889-b584-8f95e8cf652c",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.369Z",
+      "finishedAt": "2026-10-24T17:47:13.390Z",
+      "fetched": 0,
+      "created": 0,
+      "updated": 0,
+      "flagged": 0,
+      "skipped": 0,
+      "error": "UPSTREAM_UNAVAILABLE"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "cd37570d-3e5e-4889-b584-8f95e8cf652c",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.364Z",
+      "finishedAt": "2026-10-24T17:47:13.390Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.366Z",
+          "finishedAt": "2026-10-24T17:47:13.390Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 4,
+          "flagged": 1,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/cd37570d-3e5e-4889-b584-8f95e8cf652c-00000000000000000000000000000001.json"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.369Z",
+          "finishedAt": "2026-10-24T17:47:13.390Z",
+          "fetched": 0,
+          "created": 0,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": "UPSTREAM_UNAVAILABLE"
+        }
+      ],
+      "status": "partial"
+    },
+    {
+      "event": "sync_started",
+      "runId": "3d9599c1-d4a4-4d40-9616-7f9c271b8c9b",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.391Z"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "3d9599c1-d4a4-4d40-9616-7f9c271b8c9b",
+      "zoneId": "00000000000000000000000000000001",
+      "startedAt": "2026-10-24T17:47:13.395Z",
+      "finishedAt": "2026-10-24T17:47:13.413Z",
+      "fetched": 4,
+      "created": 0,
+      "updated": 0,
+      "flagged": 0,
+      "skipped": 0,
+      "error": "ZONE_PROCESSING_FAILED"
+    },
+    {
+      "event": "zone_finished",
+      "runId": "3d9599c1-d4a4-4d40-9616-7f9c271b8c9b",
+      "zoneId": "00000000000000000000000000000002",
+      "startedAt": "2026-10-24T17:47:13.397Z",
+      "finishedAt": "2026-10-24T17:47:13.427Z",
+      "fetched": 3,
+      "created": 0,
+      "updated": 3,
+      "flagged": 0,
+      "skipped": 0,
+      "error": null,
+      "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/3d9599c1-d4a4-4d40-9616-7f9c271b8c9b-00000000000000000000000000000002.json"
+    },
+    {
+      "event": "sync_finished",
+      "runId": "3d9599c1-d4a4-4d40-9616-7f9c271b8c9b",
+      "synthetic": true,
+      "startedAt": "2026-10-24T17:47:13.391Z",
+      "finishedAt": "2026-10-24T17:47:13.427Z",
+      "zones": [
+        {
+          "zoneId": "00000000000000000000000000000001",
+          "startedAt": "2026-10-24T17:47:13.395Z",
+          "finishedAt": "2026-10-24T17:47:13.413Z",
+          "fetched": 4,
+          "created": 0,
+          "updated": 0,
+          "flagged": 0,
+          "skipped": 0,
+          "error": "ZONE_PROCESSING_FAILED"
+        },
+        {
+          "zoneId": "00000000000000000000000000000002",
+          "startedAt": "2026-10-24T17:47:13.397Z",
+          "finishedAt": "2026-10-24T17:47:13.427Z",
+          "fetched": 3,
+          "created": 0,
+          "updated": 3,
+          "flagged": 0,
+          "skipped": 0,
+          "error": null,
+          "rawRef": "file:///C:/Users/16lem/AppData/Local/Temp/atlas-cloudflare-lgYpi5/3d9599c1-d4a4-4d40-9616-7f9c271b8c9b-00000000000000000000000000000002.json"
+        }
+      ],
+      "status": "partial"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000001/dns_records",
+      "page": 2
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 1
+    },
+    {
+      "method": "GET",
+      "path": "/client/v4/zones/00000000000000000000000000000002/dns_records",
+      "page": 2
+    }
+  ],
+  "assertions": [
+    "AC1 seven records, A/AAAA/CNAME/MX/TXT and complete provenance",
+    "AC2 7 -> 7, first_seen_at unchanged, last_seen_at advanced, 0 created/7 updated",
+    "AC3 real loopback HTTP mock received only GET",
+    "AC4 known IPv4/IPv6 unflagged, outside IPv4/IPv6 flagged; flag cleared after content update, user tag retained",
+    "AC5 actual interval scheduler completed two sequential runs with full logs",
+    "Late403 no inventory writes;503 isolates one zone;database failure rolls back zone transaction;24tables unchanged"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "version": 25,
+  "recordedAt": "2026-10-25T09:00:56.093617+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM",
+  "tests": 79,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "route": "#flagged=1&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2&record=30000000-0000-4000-8000-000000000011",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "independentIsolation": true,
+  "observations": {
+    "flaggedSearch": "sample-",
+    "flaggedSort": "hostname desc",
+    "flaggedPage": 2,
+    "flaggedOwners": 12,
+    "owner": "sample-04.test",
+    "childSearch": "192.0.2",
+    "childSort": "value desc",
+    "childPage": 2,
+    "childRows": 1,
+    "invalidRecordCases": 3,
+    "invalidChildCases": 4,
+    "invalidFlaggedListCases": 4,
+    "completeHistoryChain": true
+  },
+  "failures": [],
+  "limits": [
+    "Viewport screenshots; synthetic local only.",
+    "On invalid list sort only selected flagged owner child is retained; invalid list does not display sibling list cards. Stored-flag guard checks up to100 literal-name candidates; no large-scale claim."
+  ]
+}

@@ -1,0 +1,2467 @@
+{
+  "synthetic": true,
+  "nativeLinux": false,
+  "nativeOsquery": false,
+  "environment": "Windows Node24 + three distinct read-only SQLite Linux inventory simulations; real HTTP backend + PostgreSQL17.5 WASM",
+  "engine": "PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "tables": 24,
+  "hosts": [
+    {
+      "hostname": "linux-simulator-1",
+      "uuid": "synthetic-host-1",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "os_version": "12.1"
+    },
+    {
+      "hostname": "linux-simulator-2",
+      "uuid": "synthetic-host-2",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "os_version": "12.2"
+    },
+    {
+      "hostname": "linux-simulator-3",
+      "uuid": "synthetic-host-3",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "os_version": "12.3"
+    }
+  ],
+  "before": [
+    {
+      "host_uuid": "synthetic-host-1",
+      "hostname": "linux-simulator-1",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.1",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:05.911Z",
+      "last_seen_at": "2026-10-24T18:01:05.911Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    },
+    {
+      "host_uuid": "synthetic-host-2",
+      "hostname": "linux-simulator-2",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.2",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.410Z",
+      "last_seen_at": "2026-10-24T18:01:06.410Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    },
+    {
+      "host_uuid": "synthetic-host-3",
+      "hostname": "linux-simulator-3",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.3",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.873Z",
+      "last_seen_at": "2026-10-24T18:01:06.873Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    }
+  ],
+  "after": [
+    {
+      "host_uuid": "synthetic-host-1",
+      "hostname": "linux-simulator-1",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.1",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:05.911Z",
+      "last_seen_at": "2026-10-24T18:10:17.162Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    },
+    {
+      "host_uuid": "synthetic-host-2",
+      "hostname": "linux-simulator-2",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.2",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.410Z",
+      "last_seen_at": "2026-10-24T18:10:17.530Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    },
+    {
+      "host_uuid": "synthetic-host-3",
+      "hostname": "linux-simulator-3",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.3",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.873Z",
+      "last_seen_at": "2026-10-24T18:10:17.895Z",
+      "confidence": "confirmed",
+      "packages": 2,
+      "listening_ports": 1
+    }
+  ],
+  "packages": [
+    {
+      "name": "synthetic-php-1",
+      "version": "8.1.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:05.911Z",
+      "last_seen_at": "2026-10-24T18:10:17.162Z",
+      "confidence": "confirmed"
+    },
+    {
+      "name": "synthetic-php-2",
+      "version": "8.2.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.410Z",
+      "last_seen_at": "2026-10-24T18:10:17.530Z",
+      "confidence": "confirmed"
+    },
+    {
+      "name": "synthetic-php-3",
+      "version": "8.3.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.873Z",
+      "last_seen_at": "2026-10-24T18:10:17.895Z",
+      "confidence": "confirmed"
+    },
+    {
+      "name": "synthetic-web-1",
+      "version": "1.1.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:05.911Z",
+      "last_seen_at": "2026-10-24T18:10:17.162Z",
+      "confidence": "confirmed"
+    },
+    {
+      "name": "synthetic-web-2",
+      "version": "1.2.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.410Z",
+      "last_seen_at": "2026-10-24T18:10:17.530Z",
+      "confidence": "confirmed"
+    },
+    {
+      "name": "synthetic-web-3",
+      "version": "1.3.0",
+      "source": "osquery",
+      "first_seen_at": "2026-10-24T18:01:06.873Z",
+      "last_seen_at": "2026-10-24T18:10:17.895Z",
+      "confidence": "confirmed"
+    }
+  ],
+  "ports": [
+    {
+      "port": 8001,
+      "pid": 101,
+      "process": "synthetic-web-1",
+      "source": "osquery"
+    },
+    {
+      "port": 8002,
+      "pid": 102,
+      "process": "synthetic-web-2",
+      "source": "osquery"
+    },
+    {
+      "port": 8003,
+      "pid": 103,
+      "process": "synthetic-web-3",
+      "source": "osquery"
+    }
+  ],
+  "offline": {
+    "requestedMs": 600000,
+    "actualMs": 600010,
+    "offlineStartedAt": "2026-10-24T18:01:07.199Z",
+    "offlineFinishedAt": "2026-10-24T18:11:07.209Z",
+    "cycles": 10,
+    "batchesQueued": 60,
+    "allDelivered": true,
+    "pending": 0
+  },
+  "processRuns": [
+    {
+      "pid": 16732,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:05.943Z"
+    },
+    {
+      "pid": 11508,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:06.274Z"
+    },
+    {
+      "pid": 8400,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:06.441Z"
+    },
+    {
+      "pid": 19936,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:06.745Z"
+    },
+    {
+      "pid": 23448,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:06.904Z"
+    },
+    {
+      "pid": 18984,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:07.196Z"
+    },
+    {
+      "pid": 32300,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:07.357Z"
+    },
+    {
+      "pid": 22624,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:07.544Z"
+    },
+    {
+      "pid": 8140,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:07.700Z"
+    },
+    {
+      "pid": 5204,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:07.903Z"
+    },
+    {
+      "pid": 24092,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:08.056Z"
+    },
+    {
+      "pid": 23120,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:01:08.259Z"
+    },
+    {
+      "pid": 4048,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:08.421Z"
+    },
+    {
+      "pid": 11668,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:08.621Z"
+    },
+    {
+      "pid": 10848,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:08.777Z"
+    },
+    {
+      "pid": 21300,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:08.980Z"
+    },
+    {
+      "pid": 12212,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:09.137Z"
+    },
+    {
+      "pid": 22424,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:02:09.339Z"
+    },
+    {
+      "pid": 11504,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:09.511Z"
+    },
+    {
+      "pid": 12696,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:09.713Z"
+    },
+    {
+      "pid": 15088,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:09.866Z"
+    },
+    {
+      "pid": 33316,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:10.065Z"
+    },
+    {
+      "pid": 32428,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:10.218Z"
+    },
+    {
+      "pid": 37672,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:03:10.426Z"
+    },
+    {
+      "pid": 16572,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:10.581Z"
+    },
+    {
+      "pid": 19556,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:10.783Z"
+    },
+    {
+      "pid": 22156,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:10.937Z"
+    },
+    {
+      "pid": 24264,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:11.144Z"
+    },
+    {
+      "pid": 31648,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:11.301Z"
+    },
+    {
+      "pid": 13012,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:04:11.496Z"
+    },
+    {
+      "pid": 29784,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:11.664Z"
+    },
+    {
+      "pid": 15976,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:11.874Z"
+    },
+    {
+      "pid": 24544,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:12.030Z"
+    },
+    {
+      "pid": 35568,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:12.236Z"
+    },
+    {
+      "pid": 38428,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:12.393Z"
+    },
+    {
+      "pid": 9128,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:05:12.599Z"
+    },
+    {
+      "pid": 26980,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:12.781Z"
+    },
+    {
+      "pid": 4664,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:12.986Z"
+    },
+    {
+      "pid": 38364,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:13.147Z"
+    },
+    {
+      "pid": 23616,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:13.353Z"
+    },
+    {
+      "pid": 3944,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:13.512Z"
+    },
+    {
+      "pid": 15620,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:06:13.717Z"
+    },
+    {
+      "pid": 9636,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:13.885Z"
+    },
+    {
+      "pid": 12160,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:14.094Z"
+    },
+    {
+      "pid": 3472,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:14.259Z"
+    },
+    {
+      "pid": 31504,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:14.464Z"
+    },
+    {
+      "pid": 10900,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:14.621Z"
+    },
+    {
+      "pid": 19520,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:07:14.827Z"
+    },
+    {
+      "pid": 17572,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.011Z"
+    },
+    {
+      "pid": 9020,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.195Z"
+    },
+    {
+      "pid": 14560,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.353Z"
+    },
+    {
+      "pid": 14764,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.548Z"
+    },
+    {
+      "pid": 36056,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.705Z"
+    },
+    {
+      "pid": 31640,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:08:15.887Z"
+    },
+    {
+      "pid": 26144,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:16.085Z"
+    },
+    {
+      "pid": 25808,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:16.293Z"
+    },
+    {
+      "pid": 35396,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:16.455Z"
+    },
+    {
+      "pid": 35420,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:16.663Z"
+    },
+    {
+      "pid": 19380,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:16.826Z"
+    },
+    {
+      "pid": 22272,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:09:17.029Z"
+    },
+    {
+      "pid": 32816,
+      "host": "synthetic-host-1",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:17.200Z"
+    },
+    {
+      "pid": 14860,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:17.405Z"
+    },
+    {
+      "pid": 37924,
+      "host": "synthetic-host-2",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:17.566Z"
+    },
+    {
+      "pid": 7976,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:17.772Z"
+    },
+    {
+      "pid": 38260,
+      "host": "synthetic-host-3",
+      "mode": "--collect-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:17.933Z"
+    },
+    {
+      "pid": 28432,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:10:18.136Z"
+    },
+    {
+      "pid": 24388,
+      "host": "synthetic-host-1",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:11:07.721Z"
+    },
+    {
+      "pid": 18192,
+      "host": "synthetic-host-2",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:11:08.176Z"
+    },
+    {
+      "pid": 36216,
+      "host": "synthetic-host-3",
+      "mode": "--flush-once",
+      "code": 0,
+      "at": "2026-10-24T18:11:08.629Z"
+    }
+  ],
+  "queries": [
+    {
+      "host": "synthetic-host-1",
+      "table": "system_info",
+      "sql": "SELECT hostname, uuid FROM system_info"
+    },
+    {
+      "host": "synthetic-host-1",
+      "table": "os_version",
+      "sql": "SELECT name, version FROM os_version"
+    },
+    {
+      "host": "synthetic-host-1",
+      "table": "packages",
+      "sql": "SELECT name, version FROM packages"
+    },
+    {
+      "host": "synthetic-host-1",
+      "table": "listening_ports",
+      "sql": "SELECT port, protocol, address, pid FROM listening_ports"
+    },
+    {
+      "host": "synthetic-host-1",
+      "table": "processes",
+      "sql": "SELECT pid, name FROM processes"
+    },
+    {
+      "host": "synthetic-host-2",
+      "table": "system_info",
+      "sql": "SELECT hostname, uuid FROM system_info"
+    },
+    {
+      "host": "synthetic-host-2",
+      "table": "os_version",
+      "sql": "SELECT name, version FROM os_version"
+    },
+    {
+      "host": "synthetic-host-2",
+      "table": "packages",
+      "sql": "SELECT name, version FROM packages"
+    },
+    {
+      "host": "synthetic-host-2",
+      "table": "listening_ports",
+      "sql": "SELECT port, protocol, address, pid FROM listening_ports"
+    },
+    {
+      "host": "synthetic-host-2",
+      "table": "processes",
+      "sql": "SELECT pid, name FROM processes"
+    },
+    {
+      "host": "synthetic-host-3",
+      "table": "system_info",
+      "sql": "SELECT hostname, uuid FROM system_info"
+    },
+    {
+      "host": "synthetic-host-3",
+      "table": "os_version",
+      "sql": "SELECT name, version FROM os_version"
+    },
+    {
+      "host": "synthetic-host-3",
+      "table": "packages",
+      "sql": "SELECT name, version FROM packages"
+    },
+    {
+      "host": "synthetic-host-3",
+      "table": "listening_ports",
+      "sql": "SELECT port, protocol, address, pid FROM listening_ports"
+    },
+    {
+      "host": "synthetic-host-3",
+      "table": "processes",
+      "sql": "SELECT pid, name FROM processes"
+    }
+  ],
+  "excluded": [
+    "environment variables",
+    "process command line",
+    "file contents",
+    "shell history",
+    "passwords",
+    "tokens",
+    "private keys",
+    "cookies"
+  ],
+  "payloadSample": {
+    "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+    "collected_at": "2026-10-24T18:01:07.326Z",
+    "host": {
+      "hostname": "linux-simulator-1",
+      "host_uuid": "synthetic-host-1",
+      "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+      "os_version": "12.1"
+    },
+    "packages": [
+      {
+        "name": "synthetic-php-1",
+        "version": "8.1.0",
+        "ecosystem": "deb"
+      },
+      {
+        "name": "synthetic-web-1",
+        "version": "1.1.0",
+        "ecosystem": "deb"
+      }
+    ],
+    "listening_ports": [],
+    "process_evidence": {
+      "non_listening_count": 0,
+      "records": []
+    }
+  },
+  "checklist": [
+    {
+      "host": "linux-simulator-1",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "before": "1e45cd6720fbaba0a5f9998b13e5d4c2958d00ab5304e29d2471621947dd4823",
+      "after": "1e45cd6720fbaba0a5f9998b13e5d4c2958d00ab5304e29d2471621947dd4823",
+      "unchanged": true,
+      "scope": "Entire immutable simulator database, including packages/services/network/firewall/system_config; NOT real Linux state"
+    },
+    {
+      "host": "linux-simulator-2",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "before": "2bb61ae118276d58a9fb90d228166d0951c86f82ddf194d24ffd0c994087f616",
+      "after": "2bb61ae118276d58a9fb90d228166d0951c86f82ddf194d24ffd0c994087f616",
+      "unchanged": true,
+      "scope": "Entire immutable simulator database, including packages/services/network/firewall/system_config; NOT real Linux state"
+    },
+    {
+      "host": "linux-simulator-3",
+      "type": "SQLite Linux inventory simulator on Windows; not real Linux/osquery",
+      "before": "6ec8cd85d09e123ca64d4f1ddf0ff04c69d541edd7ba2bf17a63d32a211531f2",
+      "after": "6ec8cd85d09e123ca64d4f1ddf0ff04c69d541edd7ba2bf17a63d32a211531f2",
+      "unchanged": true,
+      "scope": "Entire immutable simulator database, including packages/services/network/firewall/system_config; NOT real Linux state"
+    }
+  ],
+  "freshInstallSteps": [
+    {
+      "step": 1,
+      "result": "Created distinct fresh simulator; no agent/queue",
+      "host": "linux-simulator-4"
+    },
+    {
+      "step": 2,
+      "result": "Captured baseline immutable simulated host state",
+      "sha256": "b6fcfe55ceace7bc6a138d171b776d2b2f858c2aab6af8e5a93fe46a24ac7c3d"
+    },
+    {
+      "step": 3,
+      "result": "Configured own queue, authenticated test identity, batch/interval limits"
+    },
+    {
+      "step": 4,
+      "result": "Ran SELECT-only source, queued and delivered real HTTP batches"
+    },
+    {
+      "step": 5,
+      "result": "Fresh host appears with2packages/1port; simulated host fingerprint unchanged",
+      "inventory": {
+        "host_uuid": "synthetic-host-4",
+        "hostname": "linux-simulator-4",
+        "os": "Synthetic Debian Linux lab (not a Linux kernel)",
+        "os_version": "12.4",
+        "source": "osquery",
+        "first_seen_at": "2026-10-24T18:11:08.789Z",
+        "last_seen_at": "2026-10-24T18:11:08.789Z",
+        "confidence": "confirmed",
+        "packages": 2,
+        "listening_ports": 1
+      }
+    }
+  ],
+  "logs": [
+    {
+      "at": "2026-10-24T18:01:05.930Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "2d0ad936-dda9-4f97-85d4-833287615443",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:01:05.911Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "441b386e-b25d-4e1a-a946-4de41ceb749a",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:01:05.911Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:01:06.167Z",
+      "event": "batch_delivered",
+      "batch_id": "2d0ad936-dda9-4f97-85d4-833287615443",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:01:06.182Z",
+      "event": "batch_delivered",
+      "batch_id": "441b386e-b25d-4e1a-a946-4de41ceb749a",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "at": "2026-10-24T18:01:06.429Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "6d489b62-8a9e-4b83-befd-d15bf424a90e",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:01:06.410Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "93652a9f-2164-44ef-a12e-0bc5aec7c907",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:01:06.410Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:01:06.639Z",
+      "event": "batch_delivered",
+      "batch_id": "6d489b62-8a9e-4b83-befd-d15bf424a90e",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:01:06.652Z",
+      "event": "batch_delivered",
+      "batch_id": "93652a9f-2164-44ef-a12e-0bc5aec7c907",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "at": "2026-10-24T18:01:06.892Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "6e7ecd75-cf2f-4dda-ac03-a0689a4dd6d2",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:01:06.873Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "92adf0b8-f7fe-4c95-8ff8-71eaf514f9d8",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:01:06.873Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "at": "2026-10-24T18:01:07.093Z",
+      "event": "batch_delivered",
+      "batch_id": "6e7ecd75-cf2f-4dda-ac03-a0689a4dd6d2",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:01:07.107Z",
+      "event": "batch_delivered",
+      "batch_id": "92adf0b8-f7fe-4c95-8ff8-71eaf514f9d8",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "at": "2026-10-24T18:01:07.345Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:01:07.529Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:01:07.687Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:01:07.886Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:01:08.045Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 2,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:01:08.243Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:02:08.408Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 4,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:02:08.606Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:02:08.764Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 4,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:02:08.962Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:02:09.125Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 4,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:02:09.322Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:03:09.499Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 6,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:03:09.697Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:03:09.854Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 6,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:03:10.049Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:03:10.207Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 6,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:03:10.409Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:04:10.568Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 8,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:04:10.768Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:04:10.926Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 8,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:04:11.127Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:04:11.287Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 8,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:04:11.481Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:05:11.651Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 10,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:05:11.855Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:05:12.018Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 10,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:05:12.220Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:05:12.381Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 10,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:05:12.582Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:06:12.768Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 12,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:06:12.968Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:06:13.135Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 12,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:06:13.337Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:06:13.498Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 12,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:06:13.700Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:07:13.871Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 14,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:07:14.076Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:07:14.246Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 14,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:07:14.446Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:07:14.607Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 14,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:07:14.811Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:08:14.998Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 16,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:08:15.179Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:08:15.341Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 16,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:08:15.532Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:08:15.692Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 16,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:08:15.871Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:09:16.071Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 18,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:09:16.276Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:09:16.443Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 18,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:09:16.647Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:09:16.813Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 18,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:09:17.012Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:10:17.189Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 20,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:10:17.388Z",
+      "event": "batch_retry",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 20
+    },
+    {
+      "at": "2026-10-24T18:10:17.555Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 20,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:10:17.755Z",
+      "event": "batch_retry",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 20
+    },
+    {
+      "at": "2026-10-24T18:10:17.920Z",
+      "event": "collected",
+      "batches": 2,
+      "queued": 20,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:10:18.120Z",
+      "event": "batch_retry",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "HTTP_503",
+      "queued": 20
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:01:07.326Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "8b1f2db4-c907-462a-9b49-d7d1e0bf0d54",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:01:07.326Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "64645cc0-af55-4c69-ba72-74b2ef9a0e28",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:02:08.389Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "9c205d18-6a45-4f01-9cc2-3ad18059a7e7",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:02:08.389Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "ac0bdc34-5533-4b31-a5fc-eac17094512e",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:03:09.480Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e064b8ef-fb0d-4746-b196-30dd46a1619c",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:03:09.480Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "9b0ede91-166c-47f8-8dd3-8cc0aa603727",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:04:10.549Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e14dea58-7a6b-460f-8425-f129005dc010",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:04:10.549Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "8c21d15b-0e69-4a34-86fa-4e95e2a859d4",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:05:11.628Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "f5a824b8-2f2f-47c9-a3c4-b426dec31b54",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:05:11.628Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "00ac725c-70cc-441f-963e-d4ed2fd667b9",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:06:12.741Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "c335edda-4fa4-4f13-9476-bd36cdb3bf1f",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:06:12.741Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "443cff48-185b-4ae9-b46d-682e7f88ba7c",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:07:13.848Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "b4e1ca98-d39d-4846-a871-9c2f573963d2",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:07:13.848Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "874e3176-3368-49fc-8993-443b04da4131",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:08:14.974Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "f624c743-aa36-4c55-a921-72e2766c1af2",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:08:14.974Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "1b322d65-aa02-426e-ba31-2a037a3119f6",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:09:16.043Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "2613953f-7b9f-46e4-84b2-06736676c0ec",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:09:16.043Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "898e3b68-7f14-4f89-a798-16e3f5856420",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:10:17.162Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "b2d91706-6f4f-4471-a5f3-d279b7d9d7c5",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:10:17.162Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:11:07.464Z",
+      "event": "batch_delivered",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 19
+    },
+    {
+      "at": "2026-10-24T18:11:07.483Z",
+      "event": "batch_delivered",
+      "batch_id": "8b1f2db4-c907-462a-9b49-d7d1e0bf0d54",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:11:07.497Z",
+      "event": "batch_delivered",
+      "batch_id": "64645cc0-af55-4c69-ba72-74b2ef9a0e28",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 17
+    },
+    {
+      "at": "2026-10-24T18:11:07.510Z",
+      "event": "batch_delivered",
+      "batch_id": "9c205d18-6a45-4f01-9cc2-3ad18059a7e7",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:11:07.523Z",
+      "event": "batch_delivered",
+      "batch_id": "ac0bdc34-5533-4b31-a5fc-eac17094512e",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 15
+    },
+    {
+      "at": "2026-10-24T18:11:07.537Z",
+      "event": "batch_delivered",
+      "batch_id": "e064b8ef-fb0d-4746-b196-30dd46a1619c",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:11:07.550Z",
+      "event": "batch_delivered",
+      "batch_id": "9b0ede91-166c-47f8-8dd3-8cc0aa603727",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 13
+    },
+    {
+      "at": "2026-10-24T18:11:07.561Z",
+      "event": "batch_delivered",
+      "batch_id": "e14dea58-7a6b-460f-8425-f129005dc010",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:11:07.574Z",
+      "event": "batch_delivered",
+      "batch_id": "8c21d15b-0e69-4a34-86fa-4e95e2a859d4",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 11
+    },
+    {
+      "at": "2026-10-24T18:11:07.589Z",
+      "event": "batch_delivered",
+      "batch_id": "f5a824b8-2f2f-47c9-a3c4-b426dec31b54",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:11:07.602Z",
+      "event": "batch_delivered",
+      "batch_id": "00ac725c-70cc-441f-963e-d4ed2fd667b9",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 9
+    },
+    {
+      "at": "2026-10-24T18:11:07.612Z",
+      "event": "batch_delivered",
+      "batch_id": "c335edda-4fa4-4f13-9476-bd36cdb3bf1f",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:11:07.627Z",
+      "event": "batch_delivered",
+      "batch_id": "443cff48-185b-4ae9-b46d-682e7f88ba7c",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 7
+    },
+    {
+      "at": "2026-10-24T18:11:07.637Z",
+      "event": "batch_delivered",
+      "batch_id": "b4e1ca98-d39d-4846-a871-9c2f573963d2",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:11:07.647Z",
+      "event": "batch_delivered",
+      "batch_id": "874e3176-3368-49fc-8993-443b04da4131",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 5
+    },
+    {
+      "at": "2026-10-24T18:11:07.658Z",
+      "event": "batch_delivered",
+      "batch_id": "f624c743-aa36-4c55-a921-72e2766c1af2",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:11:07.669Z",
+      "event": "batch_delivered",
+      "batch_id": "1b322d65-aa02-426e-ba31-2a037a3119f6",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 3
+    },
+    {
+      "at": "2026-10-24T18:11:07.682Z",
+      "event": "batch_delivered",
+      "batch_id": "2613953f-7b9f-46e4-84b2-06736676c0ec",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:11:07.696Z",
+      "event": "batch_delivered",
+      "batch_id": "898e3b68-7f14-4f89-a798-16e3f5856420",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:11:07.707Z",
+      "event": "batch_delivered",
+      "batch_id": "b2d91706-6f4f-4471-a5f3-d279b7d9d7c5",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:01:07.669Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "736d2dcc-d1d1-4ac7-b3b5-dc6a8501ed40",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:01:07.669Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "8b419f88-98e8-4489-a8fc-dc1e23347b37",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:02:08.744Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "ac18905b-d579-4fad-ba16-dfb4fbdef664",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:02:08.744Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "3edc9c80-4eb4-4d4f-9392-d8ed37fc4819",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:03:09.835Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "679276cb-bc13-47b2-aa6e-177390ef1378",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:03:09.835Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "67f1e1a6-65f6-497b-97e0-6b22c3396138",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:04:10.905Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "87b11478-f903-46e7-9c7a-e91c4c9b7a08",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:04:10.905Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "5b14b9e4-37f9-4676-af96-045bfe1e9bdb",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:05:11.997Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "82e35475-001e-4a98-a54d-4e844bbdd279",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:05:11.997Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "c0921dac-74bd-4b78-a5a0-1bb0d51c2651",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:06:13.112Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "cbc12b9f-18b4-4f38-85de-3e853e230dc1",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:06:13.112Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "13438aa2-5136-421f-b56b-7e348e602c66",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:07:14.222Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "705f79b9-3320-4d9b-8da1-2682437a95dc",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:07:14.222Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "bcd6539e-7e3f-4634-8859-37fac427b298",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:08:15.319Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "d2b9cb61-17f4-4f2f-a8cd-c3c5ed121bf1",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:08:15.319Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "2abb86d2-e7dc-4924-8334-c57c6e8bedff",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:09:16.419Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e80a6645-9fc7-4e8e-ba8b-6eb309f6cf7d",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:09:16.419Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "a3f9c376-0a55-4be9-94fd-1fb850ee077c",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:10:17.530Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e81e2f92-44a8-487a-859c-aa9dd706a921",
+      "host_id": "2dcd1917-4aae-89e8-80f2-12471820c7e8",
+      "collected_at": "2026-10-24T18:10:17.530Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "at": "2026-10-24T18:11:07.920Z",
+      "event": "batch_delivered",
+      "batch_id": "59ac2088-d1a0-4923-8a0a-0179b78b11fd",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 19
+    },
+    {
+      "at": "2026-10-24T18:11:07.934Z",
+      "event": "batch_delivered",
+      "batch_id": "736d2dcc-d1d1-4ac7-b3b5-dc6a8501ed40",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:11:07.947Z",
+      "event": "batch_delivered",
+      "batch_id": "8b419f88-98e8-4489-a8fc-dc1e23347b37",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 17
+    },
+    {
+      "at": "2026-10-24T18:11:07.963Z",
+      "event": "batch_delivered",
+      "batch_id": "ac18905b-d579-4fad-ba16-dfb4fbdef664",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:11:07.979Z",
+      "event": "batch_delivered",
+      "batch_id": "3edc9c80-4eb4-4d4f-9392-d8ed37fc4819",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 15
+    },
+    {
+      "at": "2026-10-24T18:11:07.990Z",
+      "event": "batch_delivered",
+      "batch_id": "679276cb-bc13-47b2-aa6e-177390ef1378",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:11:08.004Z",
+      "event": "batch_delivered",
+      "batch_id": "67f1e1a6-65f6-497b-97e0-6b22c3396138",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 13
+    },
+    {
+      "at": "2026-10-24T18:11:08.019Z",
+      "event": "batch_delivered",
+      "batch_id": "87b11478-f903-46e7-9c7a-e91c4c9b7a08",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:11:08.032Z",
+      "event": "batch_delivered",
+      "batch_id": "5b14b9e4-37f9-4676-af96-045bfe1e9bdb",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 11
+    },
+    {
+      "at": "2026-10-24T18:11:08.043Z",
+      "event": "batch_delivered",
+      "batch_id": "82e35475-001e-4a98-a54d-4e844bbdd279",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:11:08.054Z",
+      "event": "batch_delivered",
+      "batch_id": "c0921dac-74bd-4b78-a5a0-1bb0d51c2651",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 9
+    },
+    {
+      "at": "2026-10-24T18:11:08.066Z",
+      "event": "batch_delivered",
+      "batch_id": "cbc12b9f-18b4-4f38-85de-3e853e230dc1",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:11:08.076Z",
+      "event": "batch_delivered",
+      "batch_id": "13438aa2-5136-421f-b56b-7e348e602c66",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 7
+    },
+    {
+      "at": "2026-10-24T18:11:08.089Z",
+      "event": "batch_delivered",
+      "batch_id": "705f79b9-3320-4d9b-8da1-2682437a95dc",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:11:08.102Z",
+      "event": "batch_delivered",
+      "batch_id": "bcd6539e-7e3f-4634-8859-37fac427b298",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 5
+    },
+    {
+      "at": "2026-10-24T18:11:08.113Z",
+      "event": "batch_delivered",
+      "batch_id": "d2b9cb61-17f4-4f2f-a8cd-c3c5ed121bf1",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:11:08.124Z",
+      "event": "batch_delivered",
+      "batch_id": "2abb86d2-e7dc-4924-8334-c57c6e8bedff",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 3
+    },
+    {
+      "at": "2026-10-24T18:11:08.139Z",
+      "event": "batch_delivered",
+      "batch_id": "e80a6645-9fc7-4e8e-ba8b-6eb309f6cf7d",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:11:08.148Z",
+      "event": "batch_delivered",
+      "batch_id": "a3f9c376-0a55-4be9-94fd-1fb850ee077c",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:11:08.161Z",
+      "event": "batch_delivered",
+      "batch_id": "e81e2f92-44a8-487a-859c-aa9dd706a921",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:01:08.027Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "f6ea1196-2360-4fea-bdb3-eae099863187",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:01:08.027Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "32a4f3df-fe10-4542-9f9d-d8b9e08b237a",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:02:09.105Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "c76a7e9f-57a9-418d-9129-647b50851f67",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:02:09.105Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "0709499c-8f02-4d3a-88e0-0a5396eb0bc3",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:03:10.188Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "abee5bf9-2455-45a5-8988-87b6b98cdac5",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:03:10.188Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "6c63b832-3e8d-42d3-bb35-24d8efcc67a8",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:04:11.266Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "72806883-ee12-478c-83e1-eb8d1f4b4f8a",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:04:11.266Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "cd123b13-cdd6-4332-b353-1fc2dd0366c1",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:05:12.360Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "d3cc7a99-008d-4fd8-b494-31d99207ab4d",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:05:12.360Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "ccaed1c1-a357-41df-983a-8ef42571bb2e",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:06:13.477Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "fa55e1e3-0308-4672-bf68-fac3f44906b2",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:06:13.477Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "4cc97778-4b5f-4336-8494-54428b90255a",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:07:14.583Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "cc4a2c26-f800-4e5e-8f8d-cc200c52d3ae",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:07:14.583Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "263d44b9-f71c-40c0-8f47-09f6ad09d2bd",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:08:15.669Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e0610961-48a9-441b-9f2a-64bc10e1b86b",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:08:15.669Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "6c19dcf8-df9f-451d-ae0a-e5de6a8d7960",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:09:16.788Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e8297c04-d87c-44d6-8d77-4346057f7f7c",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:09:16.788Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "7ae2af4a-e73d-4cd3-82de-5bb9959f57a0",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:10:17.895Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "97996171-c98a-4fa6-9390-68038a299e32",
+      "host_id": "1f7893c4-fea2-8194-9db0-c61d4d95a3f0",
+      "collected_at": "2026-10-24T18:10:17.895Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    },
+    {
+      "at": "2026-10-24T18:11:08.375Z",
+      "event": "batch_delivered",
+      "batch_id": "c1e74530-b54b-4714-ad07-fef279253734",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 19
+    },
+    {
+      "at": "2026-10-24T18:11:08.390Z",
+      "event": "batch_delivered",
+      "batch_id": "f6ea1196-2360-4fea-bdb3-eae099863187",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 18
+    },
+    {
+      "at": "2026-10-24T18:11:08.403Z",
+      "event": "batch_delivered",
+      "batch_id": "32a4f3df-fe10-4542-9f9d-d8b9e08b237a",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 17
+    },
+    {
+      "at": "2026-10-24T18:11:08.418Z",
+      "event": "batch_delivered",
+      "batch_id": "c76a7e9f-57a9-418d-9129-647b50851f67",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 16
+    },
+    {
+      "at": "2026-10-24T18:11:08.432Z",
+      "event": "batch_delivered",
+      "batch_id": "0709499c-8f02-4d3a-88e0-0a5396eb0bc3",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 15
+    },
+    {
+      "at": "2026-10-24T18:11:08.442Z",
+      "event": "batch_delivered",
+      "batch_id": "abee5bf9-2455-45a5-8988-87b6b98cdac5",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 14
+    },
+    {
+      "at": "2026-10-24T18:11:08.455Z",
+      "event": "batch_delivered",
+      "batch_id": "6c63b832-3e8d-42d3-bb35-24d8efcc67a8",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 13
+    },
+    {
+      "at": "2026-10-24T18:11:08.468Z",
+      "event": "batch_delivered",
+      "batch_id": "72806883-ee12-478c-83e1-eb8d1f4b4f8a",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 12
+    },
+    {
+      "at": "2026-10-24T18:11:08.479Z",
+      "event": "batch_delivered",
+      "batch_id": "cd123b13-cdd6-4332-b353-1fc2dd0366c1",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 11
+    },
+    {
+      "at": "2026-10-24T18:11:08.492Z",
+      "event": "batch_delivered",
+      "batch_id": "d3cc7a99-008d-4fd8-b494-31d99207ab4d",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 10
+    },
+    {
+      "at": "2026-10-24T18:11:08.504Z",
+      "event": "batch_delivered",
+      "batch_id": "ccaed1c1-a357-41df-983a-8ef42571bb2e",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 9
+    },
+    {
+      "at": "2026-10-24T18:11:08.516Z",
+      "event": "batch_delivered",
+      "batch_id": "fa55e1e3-0308-4672-bf68-fac3f44906b2",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 8
+    },
+    {
+      "at": "2026-10-24T18:11:08.528Z",
+      "event": "batch_delivered",
+      "batch_id": "4cc97778-4b5f-4336-8494-54428b90255a",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 7
+    },
+    {
+      "at": "2026-10-24T18:11:08.540Z",
+      "event": "batch_delivered",
+      "batch_id": "cc4a2c26-f800-4e5e-8f8d-cc200c52d3ae",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 6
+    },
+    {
+      "at": "2026-10-24T18:11:08.555Z",
+      "event": "batch_delivered",
+      "batch_id": "263d44b9-f71c-40c0-8f47-09f6ad09d2bd",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 5
+    },
+    {
+      "at": "2026-10-24T18:11:08.567Z",
+      "event": "batch_delivered",
+      "batch_id": "e0610961-48a9-441b-9f2a-64bc10e1b86b",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 4
+    },
+    {
+      "at": "2026-10-24T18:11:08.577Z",
+      "event": "batch_delivered",
+      "batch_id": "6c19dcf8-df9f-451d-ae0a-e5de6a8d7960",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 3
+    },
+    {
+      "at": "2026-10-24T18:11:08.591Z",
+      "event": "batch_delivered",
+      "batch_id": "e8297c04-d87c-44d6-8d77-4346057f7f7c",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 2
+    },
+    {
+      "at": "2026-10-24T18:11:08.604Z",
+      "event": "batch_delivered",
+      "batch_id": "7ae2af4a-e73d-4cd3-82de-5bb9959f57a0",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 1
+    },
+    {
+      "at": "2026-10-24T18:11:08.614Z",
+      "event": "batch_delivered",
+      "batch_id": "97996171-c98a-4fa6-9390-68038a299e32",
+      "attempt": 1,
+      "status": "ACK",
+      "queued": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "4c7b7f8b-ae2d-4889-a3d6-137c94fdd0fb",
+      "host_id": "5a5031b7-a4a5-8461-9971-548fe2cea79c",
+      "collected_at": "2026-10-24T18:01:07.326Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "897db681-1d42-4629-bd7b-81275b57cb50",
+      "host_id": "feffc1d8-0f29-8f81-a6a4-237542372f04",
+      "collected_at": "2026-10-24T18:11:08.789Z",
+      "packages": 2,
+      "listening_ports": 0,
+      "non_listening_evidence": 0
+    },
+    {
+      "event": "osquery_batch_accepted",
+      "batch_id": "e9d8c96b-faca-40b0-be32-8e51d581e5d2",
+      "host_id": "feffc1d8-0f29-8f81-a6a4-237542372f04",
+      "collected_at": "2026-10-24T18:11:08.789Z",
+      "packages": 0,
+      "listening_ports": 1,
+      "non_listening_evidence": 1
+    }
+  ]
+}

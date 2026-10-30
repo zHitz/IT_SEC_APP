@@ -1,0 +1,17 @@
+{
+  "scope": "synthetic local v13",
+  "actualHttpPostgreSQL": "17.5WASM BEGIN READ ONLY",
+  "realBrowser": "direct,reload,Back/Forward,error verified",
+  "tests": "55/55",
+  "lintModules": 82,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "siteMutations": 0,
+  "owner": "sample-04.test",
+  "ownerDnsRecords": 12,
+  "childPage": 2,
+  "childRows": 2,
+  "invalidCases": 6,
+  "limit": "selected owner must belong to encoded flagged parent page; one child selection encoded"
+}

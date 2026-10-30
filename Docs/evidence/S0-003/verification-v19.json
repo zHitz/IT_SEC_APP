@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-10-25T13:30:11.177816+07:00",
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "engine": "PostgreSQL17.5WASM",
+  "readOnlyTransaction": true,
+  "actualBuiltInBrowser": true,
+  "tests": 67,
+  "lintModules": 93,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "productionAccess": false,
+  "proof": {
+    "packageRows": 31,
+    "portRows": 31,
+    "fields": [
+      "package.name",
+      "package.version",
+      "port.port",
+      "port.pid"
+    ],
+    "directions": [
+      "asc",
+      "desc"
+    ],
+    "stableIdTies": true,
+    "nullsLast": "explicit PostgreSQL ordering",
+    "reloadBothPage2Rows": 6,
+    "nativeHistory": true,
+    "returnSortPreserved": true,
+    "invalidSortCases": 4,
+    "onlyAffectedListCleared": true,
+    "parentOSPreserved": true,
+    "nativeAC134": "unverified;accepted600010msoutageretained"
+  },
+  "screenshots": [
+    "host-scoped-sort-reload-v19.png",
+    "host-scoped-sort-history-v19.png",
+    "host-scoped-sort-invalid-v19.png"
+  ],
+  "errorsResolved": [
+    "Actual browser found detail-to-list-to-detail lost child sorts; route context now carries scoped sort values; regression added and fullchecks rerun"
+  ],
+  "limits": [
+    "Local synthetic snapshots only;no auth/RBAC/scale/CVE claim",
+    "Text versions sort lexically;not semantic version ordering"
+  ]
+}

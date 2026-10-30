@@ -1,0 +1,6 @@
+
+> it-asset-security@0.1.0 lint
+> node scripts/check.mjs && node scripts/generate-schema.mjs --check
+
+lint PASS: 94 modules; syntax and unsafe-code rules
+schema check PASS: 22 entities, 2 junctions, 114 native FKs

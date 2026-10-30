@@ -1,0 +1,19 @@
+{
+  "scope": "synthetic local v16",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "61/61",
+  "lintModules": 88,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "realBrowser": "reload/Back/Forward/error",
+  "site": "Sample Site UUID",
+  "hostnameSearch": "host-",
+  "records": 16,
+  "page": 2,
+  "host11Search": 1,
+  "invalidCases": 5,
+  "detailReturn": true,
+  "nativeAC134": "unverified",
+  "limit": "well-formed nonexistent Site UUID returns valid empty filtered result"
+}

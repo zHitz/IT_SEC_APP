@@ -1,0 +1,49 @@
+{
+  "task": "S0-003",
+  "version": "v6",
+  "tests": 35,
+  "lintModules": 57,
+  "build": "PASS",
+  "schema": "22+2/114FK unchanged",
+  "actualBrowser": {
+    "selected": "host-11.test",
+    "osVersion": "12.3",
+    "package": "sample-package-11 /1.2.3",
+    "port": 8011,
+    "process": "synthetic-listener",
+    "pid": 111,
+    "backListPage": "2of3",
+    "backSearch": "host-"
+  },
+  "qaReview": {
+    "id": 4368355476,
+    "change": "package raw_ref only updates for >=observed_at",
+    "regression": "Actual rawJSON for Host/Package/ListeningPort after latest/repeat/stale replay matches latest observation"
+  },
+  "proofLines": [
+    "OSQUERY_ALL_ENTITY_TIMESTAMPS {\"syntheticObservationTimes\":true,\"repeatedAndStaleBatches\":4,\"rows\":[{\"entity\":\"Host\",\"first_seen_at\":\"2026-10-24T20:40:54.965Z\",\"last_seen_at\":\"2026-10-24T20:41:54.965Z\"},{\"entity\":\"ListeningPort\",\"first_seen_at\":\"2026-10-24T20:40:54.965Z\",\"last_seen_at\":\"2026-10-24T20:41:54.965Z\"},{\"entity\":\"Package\",\"first_seen_at\":\"2026-10-24T20:40:54.965Z\",\"last_seen_at\":\"2026-10-24T20:41:54.965Z\"}],\"latestRawEvidencePreserved\":true}",
+    "HOST_DETAIL_V6_PROOF {\"synthetic\":true,\"actualHttpPostgres\":true,\"scopedRequests\":2,\"hostMetadata\":true,\"packageVersion\":true,\"processPid\":true,\"backPreservesSearchPage\":true}"
+  ],
+  "limits": [
+    "Synthetic/PostgreSQL17.5WASM; no nativeLinux/production",
+    "Detail fragment not standalone deep-link; Back retains list in current session",
+    "No exact viewport/reducedMotion emulation"
+  ],
+  "sha256": {
+    "backend/src/ingest/osquery-store.mjs": "c5b454845316d0682b2d300cfe4c31638f84d674b56321485289ba046bdc431f",
+    "backend/test/osquery.test.mjs": "a1997c5ca259d7695263bd3f67294102c6725ec387439c9f9e55ef25f53b52d2",
+    "frontend/src/inventory-table.mjs": "d482dacf28f2bb18c70c6c8096a5722c3d2b55629554627c80463a6ab91641a4",
+    "frontend/src/inventory-detail.mjs": "9bd6b9e51a85dfa5110b5dcc5c3b31f3789cc72b1b86e123155024e87ddc0665",
+    "frontend/src/hosts.html": "41e68732e7b095d244340414ffe7b77325cfa9749b3b1ec94054323c59e0231e",
+    "frontend/src/host-page.mjs": "4082531e9ddc9edbd333579a37401aa9c60b940af8f1622dfce8ec3c6aa4485d",
+    "frontend/src/style.css": "faa4461a21ba649fecedabca1a9f8274c6508567b2afca9716bee18bd0bfecf9",
+    "frontend/server.mjs": "de0d2419bca2fcabf1cd8746424b4f648064a4e9a5f1fd3f3d105a8f948aa8bf",
+    "frontend/test/host-detail.test.mjs": "774abebe57585f3b82c5cc32c6fb9412dd9f3229252e955c94044fec2b7a1d3a",
+    "Docs/HOST-INVENTORY-UI.md": "eb0003871bf38adc7765f3fc7a2d7b79d83a108ce883e0b127304e2c337b2349",
+    "Docs/evidence/S0-003/test-v6.txt": "c12cffd07a4353230b51afa5d1bb4888abaa544e3c48069765dea9773d9c8c26",
+    "Docs/evidence/S0-003/lint-v6.txt": "4f2c976b410e84fc954b57bc9155d6103f92df9ca41d4c1a25773197c568ba60",
+    "Docs/evidence/S0-003/build-v6.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-003/detail-v6.png": "945afa2cf381b0edf4c5c20094536ce75da4a5c9357de191535b25fb06a08c8f",
+    "Docs/evidence/S0-003/back-v6.png": "8a97aa65d325baad302bfd28d81a36574262899f32d60eea80575c14947e940d"
+  }
+}

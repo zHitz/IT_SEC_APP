@@ -1,0 +1,31 @@
+{
+  "scope": "synthetic local Domain flagged navigation v12",
+  "actualHttpPostgreSQL": "17.5WASM",
+  "flaggedOwners": 12,
+  "parentPages": 2,
+  "freshDomReload": true,
+  "realBrowserReloadBackForward": true,
+  "invalidRoutes": 7,
+  "invalidCards": 0,
+  "fields": [
+    "owner",
+    "type",
+    "value",
+    "proxied",
+    "ttl",
+    "tags"
+  ],
+  "childPages": "local; reset on route restore",
+  "checks": {
+    "tests": "52/52",
+    "lintModules": 79,
+    "schema": "22+2/114FK unchanged",
+    "build": "PASS"
+  },
+  "cloudflareRequests": 0,
+  "limits": [
+    "no production/native/scale claim",
+    "separate parent/child snapshots",
+    "no viewport or reduced-motion measurement"
+  ]
+}

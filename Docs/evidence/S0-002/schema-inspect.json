@@ -1,0 +1,3582 @@
+{
+  "start": "2026-10-24T15:03:01.958Z",
+  "end": "2026-10-24T15:03:04.278Z",
+  "engine": "PostgreSQL WASM (PGlite), not Docker/native daemon",
+  "version": [
+    {
+      "version": "PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit"
+    }
+  ],
+  "before": [
+    {
+      "tables": 0
+    }
+  ],
+  "inspection": [
+    [
+      {
+        "postgres_version": "17.5"
+      }
+    ],
+    [
+      {
+        "table_name": "access_policy",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "system",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "route_ref",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "service_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "allowed_groups",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "allowed_domains",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "mfa_required",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy",
+        "column_name": "public_allowed",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy_identity_group",
+        "column_name": "policy_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "access_policy_identity_group",
+        "column_name": "identity_group_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "domain",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "issuer",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "subject",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "san",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "not_before",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "not_after",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "certificate",
+        "column_name": "fingerprint",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "collector",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "started_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "finished_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "records_seen",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "errors",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "collection_run",
+        "column_name": "scope",
+        "data_type": "jsonb",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "container_id",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "image",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "image_digest",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "runtime",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "deployment_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "ports",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "mounts",
+        "data_type": "jsonb",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "privileged",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "container",
+        "column_name": "run_as_user",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "container",
+        "column_name": "restart_count",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "service_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "cluster_id",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "namespace",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "replicas",
+        "data_type": "integer",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "image_ref",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "image_digest",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "started_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "deployment",
+        "column_name": "version_label",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "domain",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "value",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "proxied",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "ttl",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "dns_record",
+        "column_name": "network_interface_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "fqdn",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "registrar_note",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "is_internal",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "domain",
+        "column_name": "primary_service_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_ref",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_type",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "vulnerability_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "severity",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "risk_score",
+        "data_type": "integer",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "first_found",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "last_found",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "evidence_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_host_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_workstation_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_service_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_deployment_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_container_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_image_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_package_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_runtime_stack_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_network_interface_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_listening_port_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_firewall_rule_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_domain_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_dns_record_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_certificate_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_route_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_access_policy_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_identity_group_role_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_vulnerability_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_owner_team_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "finding",
+        "column_name": "entity_collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "source_system",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "action",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "src_cidr",
+        "data_type": "cidr",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "dst",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "ports",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "firewall_rule",
+        "column_name": "direction",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "hostname",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "host_uuid",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "ip_addresses",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "host",
+        "column_name": "mac",
+        "data_type": "macaddr",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "os",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "os_version",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "kernel",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "cpu",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "ram",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "disk",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "virtualization",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "cloud_provider",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "agent_status",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "host",
+        "column_name": "last_boot",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "idp",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "realm",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "client_id",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "groups",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "roles",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "identity_group_role",
+        "column_name": "user_count",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "repository",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "tag",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "digest",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "image",
+        "column_name": "os_base",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "size",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "known_vuln_summary",
+        "data_type": "jsonb",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "image",
+        "column_name": "last_scanned_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "container_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "protocol",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "port",
+        "data_type": "integer",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "bind_address",
+        "data_type": "inet",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "process",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "pid",
+        "data_type": "bigint",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "listening_port",
+        "column_name": "is_exposed",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "interface",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "ip",
+        "data_type": "inet",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "cidr",
+        "data_type": "cidr",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "is_public",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "network_interface",
+        "column_name": "mac",
+        "data_type": "macaddr",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "team_name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "members",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "contact_channel",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "owner_team",
+        "column_name": "escalation",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "version",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "normalized_version",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "ecosystem",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "source_host_or_image",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "source_kind",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "runtime_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "license",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "is_eol",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package",
+        "column_name": "source_host_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package",
+        "column_name": "source_image_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "package_vulnerability",
+        "column_name": "package_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "package_vulnerability",
+        "column_name": "vulnerability_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "host_id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "router_name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "rule_host",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "rule_path",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "service_target",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "middlewares",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "tls",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "route",
+        "column_name": "entrypoint",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "route",
+        "column_name": "source_config",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "type",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "version",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "eol_date",
+        "data_type": "date",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "support_status",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "runtime_stack",
+        "column_name": "service_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "display_name",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "criticality",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "service",
+        "column_name": "repo_url",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "lifecycle",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "service",
+        "column_name": "description",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "name",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "address_summary",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "contact",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "site",
+        "column_name": "workstation_count",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "site",
+        "column_name": "server_count",
+        "data_type": "bigint",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "cve_id",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "aliases",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "cvss",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "severity",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "kev_listed",
+        "data_type": "boolean",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "epss",
+        "data_type": "numeric",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "published_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "fixed_versions",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "vulnerability",
+        "column_name": "references",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "id",
+        "data_type": "uuid",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "source",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "first_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "last_seen_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "observed_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "confidence",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "raw_ref",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "tags",
+        "data_type": "ARRAY",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "owner_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "environment",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "site_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "record_status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "collection_run_id",
+        "data_type": "uuid",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "hostname",
+        "data_type": "text",
+        "is_nullable": "NO"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "os",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "os_major_version",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "assigned_user",
+        "data_type": "text",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "last_checkin_at",
+        "data_type": "timestamp with time zone",
+        "is_nullable": "YES"
+      },
+      {
+        "table_name": "workstation",
+        "column_name": "status",
+        "data_type": "text",
+        "is_nullable": "NO"
+      }
+    ],
+    [
+      {
+        "conname": "fk_access_policy_collection_run_id",
+        "source": "asset_inventory.access_policy",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_owner_id",
+        "source": "asset_inventory.access_policy",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_route_ref",
+        "source": "asset_inventory.access_policy",
+        "definition": "FOREIGN KEY (route_ref) REFERENCES asset_inventory.route(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_service_id",
+        "source": "asset_inventory.access_policy",
+        "definition": "FOREIGN KEY (service_id) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_site_id",
+        "source": "asset_inventory.access_policy",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_identity_group_identity_group_id",
+        "source": "asset_inventory.access_policy_identity_group",
+        "definition": "FOREIGN KEY (identity_group_id) REFERENCES asset_inventory.identity_group_role(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_access_policy_identity_group_policy_id",
+        "source": "asset_inventory.access_policy_identity_group",
+        "definition": "FOREIGN KEY (policy_id) REFERENCES asset_inventory.access_policy(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_certificate_collection_run_id",
+        "source": "asset_inventory.certificate",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_certificate_domain",
+        "source": "asset_inventory.certificate",
+        "definition": "FOREIGN KEY (domain) REFERENCES asset_inventory.domain(fqdn) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_certificate_owner_id",
+        "source": "asset_inventory.certificate",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_certificate_site_id",
+        "source": "asset_inventory.certificate",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_collection_run_collection_run_id",
+        "source": "asset_inventory.collection_run",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_collection_run_owner_id",
+        "source": "asset_inventory.collection_run",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_collection_run_site_id",
+        "source": "asset_inventory.collection_run",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_collection_run_id",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_deployment_id",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (deployment_id) REFERENCES asset_inventory.deployment(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_host_id",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_image_digest",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (image_digest) REFERENCES asset_inventory.image(digest) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_owner_id",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_container_site_id",
+        "source": "asset_inventory.container",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_collection_run_id",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_host_id",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_image_digest",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (image_digest) REFERENCES asset_inventory.image(digest) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_owner_id",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_service_id",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (service_id) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_deployment_site_id",
+        "source": "asset_inventory.deployment",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_dns_record_collection_run_id",
+        "source": "asset_inventory.dns_record",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_dns_record_domain",
+        "source": "asset_inventory.dns_record",
+        "definition": "FOREIGN KEY (domain) REFERENCES asset_inventory.domain(fqdn) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_dns_record_network_interface_id",
+        "source": "asset_inventory.dns_record",
+        "definition": "FOREIGN KEY (network_interface_id) REFERENCES asset_inventory.network_interface(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_dns_record_owner_id",
+        "source": "asset_inventory.dns_record",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_dns_record_site_id",
+        "source": "asset_inventory.dns_record",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_domain_collection_run_id",
+        "source": "asset_inventory.domain",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_domain_owner_id",
+        "source": "asset_inventory.domain",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_domain_primary_service_id",
+        "source": "asset_inventory.domain",
+        "definition": "FOREIGN KEY (primary_service_id) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_domain_site_id",
+        "source": "asset_inventory.domain",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_collection_run_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_access_policy_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_access_policy_id) REFERENCES asset_inventory.access_policy(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_certificate_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_certificate_id) REFERENCES asset_inventory.certificate(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_collection_run_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_container_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_container_id) REFERENCES asset_inventory.container(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_deployment_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_deployment_id) REFERENCES asset_inventory.deployment(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_dns_record_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_dns_record_id) REFERENCES asset_inventory.dns_record(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_domain_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_domain_id) REFERENCES asset_inventory.domain(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_firewall_rule_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_firewall_rule_id) REFERENCES asset_inventory.firewall_rule(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_host_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_identity_group_role_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_identity_group_role_id) REFERENCES asset_inventory.identity_group_role(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_image_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_image_id) REFERENCES asset_inventory.image(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_listening_port_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_listening_port_id) REFERENCES asset_inventory.listening_port(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_network_interface_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_network_interface_id) REFERENCES asset_inventory.network_interface(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_owner_team_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_owner_team_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_package_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_package_id) REFERENCES asset_inventory.package(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_route_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_route_id) REFERENCES asset_inventory.route(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_runtime_stack_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_runtime_stack_id) REFERENCES asset_inventory.runtime_stack(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_service_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_service_id) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_site_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_vulnerability_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_vulnerability_id) REFERENCES asset_inventory.vulnerability(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_entity_workstation_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (entity_workstation_id) REFERENCES asset_inventory.workstation(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_owner_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_site_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_finding_vulnerability_id",
+        "source": "asset_inventory.finding",
+        "definition": "FOREIGN KEY (vulnerability_id) REFERENCES asset_inventory.vulnerability(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_firewall_rule_collection_run_id",
+        "source": "asset_inventory.firewall_rule",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_firewall_rule_host_id",
+        "source": "asset_inventory.firewall_rule",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_firewall_rule_owner_id",
+        "source": "asset_inventory.firewall_rule",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_firewall_rule_site_id",
+        "source": "asset_inventory.firewall_rule",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_host_collection_run_id",
+        "source": "asset_inventory.host",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_host_owner_id",
+        "source": "asset_inventory.host",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_host_site_id",
+        "source": "asset_inventory.host",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_identity_group_role_collection_run_id",
+        "source": "asset_inventory.identity_group_role",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_identity_group_role_owner_id",
+        "source": "asset_inventory.identity_group_role",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_identity_group_role_site_id",
+        "source": "asset_inventory.identity_group_role",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_image_collection_run_id",
+        "source": "asset_inventory.image",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_image_owner_id",
+        "source": "asset_inventory.image",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_image_site_id",
+        "source": "asset_inventory.image",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_listening_port_collection_run_id",
+        "source": "asset_inventory.listening_port",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_listening_port_container_id",
+        "source": "asset_inventory.listening_port",
+        "definition": "FOREIGN KEY (container_id) REFERENCES asset_inventory.container(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_listening_port_host_id",
+        "source": "asset_inventory.listening_port",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_listening_port_owner_id",
+        "source": "asset_inventory.listening_port",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_listening_port_site_id",
+        "source": "asset_inventory.listening_port",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_network_interface_collection_run_id",
+        "source": "asset_inventory.network_interface",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_network_interface_host_id",
+        "source": "asset_inventory.network_interface",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_network_interface_owner_id",
+        "source": "asset_inventory.network_interface",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_network_interface_site_id",
+        "source": "asset_inventory.network_interface",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_owner_team_collection_run_id",
+        "source": "asset_inventory.owner_team",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_owner_team_owner_id",
+        "source": "asset_inventory.owner_team",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_owner_team_site_id",
+        "source": "asset_inventory.owner_team",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_collection_run_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_owner_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_runtime_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (runtime_id) REFERENCES asset_inventory.runtime_stack(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_site_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_source_host_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (source_host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_source_image_id",
+        "source": "asset_inventory.package",
+        "definition": "FOREIGN KEY (source_image_id) REFERENCES asset_inventory.image(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_vulnerability_package_id",
+        "source": "asset_inventory.package_vulnerability",
+        "definition": "FOREIGN KEY (package_id) REFERENCES asset_inventory.package(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_package_vulnerability_vulnerability_id",
+        "source": "asset_inventory.package_vulnerability",
+        "definition": "FOREIGN KEY (vulnerability_id) REFERENCES asset_inventory.vulnerability(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_route_collection_run_id",
+        "source": "asset_inventory.route",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_route_host_id",
+        "source": "asset_inventory.route",
+        "definition": "FOREIGN KEY (host_id) REFERENCES asset_inventory.host(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_route_owner_id",
+        "source": "asset_inventory.route",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_route_service_target",
+        "source": "asset_inventory.route",
+        "definition": "FOREIGN KEY (service_target) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_route_site_id",
+        "source": "asset_inventory.route",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_runtime_stack_collection_run_id",
+        "source": "asset_inventory.runtime_stack",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_runtime_stack_owner_id",
+        "source": "asset_inventory.runtime_stack",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_runtime_stack_service_id",
+        "source": "asset_inventory.runtime_stack",
+        "definition": "FOREIGN KEY (service_id) REFERENCES asset_inventory.service(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_runtime_stack_site_id",
+        "source": "asset_inventory.runtime_stack",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_service_collection_run_id",
+        "source": "asset_inventory.service",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_service_owner_id",
+        "source": "asset_inventory.service",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_service_site_id",
+        "source": "asset_inventory.service",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_site_collection_run_id",
+        "source": "asset_inventory.site",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_site_owner_id",
+        "source": "asset_inventory.site",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_site_site_id",
+        "source": "asset_inventory.site",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_vulnerability_collection_run_id",
+        "source": "asset_inventory.vulnerability",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_vulnerability_owner_id",
+        "source": "asset_inventory.vulnerability",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_vulnerability_site_id",
+        "source": "asset_inventory.vulnerability",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_workstation_collection_run_id",
+        "source": "asset_inventory.workstation",
+        "definition": "FOREIGN KEY (collection_run_id) REFERENCES asset_inventory.collection_run(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_workstation_owner_id",
+        "source": "asset_inventory.workstation",
+        "definition": "FOREIGN KEY (owner_id) REFERENCES asset_inventory.owner_team(id) ON DELETE RESTRICT DEFERRABLE"
+      },
+      {
+        "conname": "fk_workstation_site_id",
+        "source": "asset_inventory.workstation",
+        "definition": "FOREIGN KEY (site_id) REFERENCES asset_inventory.site(id) ON DELETE RESTRICT DEFERRABLE"
+      }
+    ],
+    [
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "access_policy"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "access_policy_identity_group"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "certificate"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "collection_run"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "container"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "deployment"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "dns_record"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "domain"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "finding"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "firewall_rule"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "host"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "identity_group_role"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "image"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "listening_port"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "network_interface"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "owner_team"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "package"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "package_vulnerability"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "route"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "runtime_stack"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "service"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "site"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "vulnerability"
+      },
+      {
+        "schemaname": "asset_inventory",
+        "tablename": "workstation"
+      }
+    ]
+  ],
+  "seedCounts": [
+    {
+      "hosts": 2,
+      "containers": 1,
+      "domains": 1,
+      "cve_findings": 1
+    }
+  ],
+  "syntheticAccessPath": [
+    {
+      "fqdn": "sample.test",
+      "hostname": "sample-host-a",
+      "router_name": "sample-route",
+      "service": "sample-web",
+      "container_id": "sample-container",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "package": "sample-package",
+      "cve_id": "CVE-2099-00001",
+      "finding": "cve"
+    }
+  ],
+  "after": [
+    {
+      "tables": 0
+    }
+  ]
+}

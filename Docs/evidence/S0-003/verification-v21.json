@@ -1,0 +1,35 @@
+{
+  "version": 21,
+  "recordedAt": "2026-10-25T07:20:29.221094+00:00",
+  "scope": "synthetic loopback PostgreSQL17.5WASM; no native/production claim",
+  "tests": 71,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "view": "Unassigned Hosts",
+  "rows": 24,
+  "route": "#list=1&unassigned=1&unassigned_search=host-&unassigned_page=2&unassigned_sort=hostname&unassigned_direction=desc",
+  "apiSortCombinations": 6,
+  "stableIdTies": true,
+  "nullsLast": "existing API whitelist implementation retained; no new nullable fixture added",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "parentListReturnAndReopen": true,
+  "invalidSortCases": 4,
+  "invalidViewEmpty": true,
+  "parentListRetained": true,
+  "cloudflareRequests": 0,
+  "limits": [
+    "Browser screenshots are viewport captures.",
+    "Native Linux/osquery AC1/3/4 remain unverified.",
+    "Original accepted 600010ms outage proof retained, not rerun."
+  ],
+  "parentDetailReturnAndReopen": true
+}

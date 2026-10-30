@@ -1,0 +1,88 @@
+{
+  "task": "TASK-S0-003",
+  "version": 35,
+  "status": "PARTIAL",
+  "sourceCommit": "be26e51d2bafc9ece65d78dbeb412f4243fd1438",
+  "preparedAt": "2026-10-27T20:47:01.422166+07:00",
+  "leadDecisionCommentId": "1100390000172265",
+  "tests": {
+    "total": 104,
+    "passed": 104,
+    "failed": 0,
+    "newTests": 0,
+    "markers": [
+      "V34_DUPLICATE_MODEL",
+      "V34_OPENER_MODEL",
+      "V34_INVALID_CLONE"
+    ],
+    "interpretation": "Existing model tests rerun; no new native proof and no new implementation tests were required by the latest Lead decision."
+  },
+  "lintModules": 96,
+  "schema": "22 entities + 2 junctions / 114 native FKs; unchanged",
+  "build": "PASS",
+  "automatedScope": "Existing actual HTTP/embedded PostgreSQL and DOM tests with synthetic fixtures; copied Map stores model clone semantics. Model outputs do not prove native Duplicate, opener or bookmark isolation.",
+  "nativeRetryFile": "native-retry-v35.json",
+  "nativeRetryOutcome": "INTERRUPTED_BEFORE_VERIFIED_PAGE_LOAD",
+  "journeys": [
+    {
+      "name": "Site Host",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Unassigned Host",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Flagged Domain",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    },
+    {
+      "name": "Flagged record",
+      "duplicate": "NOT PROVEN",
+      "opener": "NOT PROVEN",
+      "invalidDuplicate": "NOT PROVEN",
+      "originalBookmarkCrossViewAfterChildClose": "NOT PROVEN",
+      "gapStatus": "OPEN",
+      "reason": "Retry interrupted before verified native lab load; prior policy gate record retained."
+    }
+  ],
+  "nativeProvenJourneys": 0,
+  "openNativeGaps": true,
+  "newScreenshots": [],
+  "cloudflareLiveRequests": 0,
+  "cloudflareTestTraffic": "Loopback mocks only, GET-only; see test log. No real Cloudflare calls.",
+  "limits": "No production access, real tokens, CVE conclusion, policy bypass or schema change. QA approval required before merge.",
+  "evidenceFiles": [
+    {
+      "file": "test-v35.txt",
+      "sha256": "166d59dd34e4bf5ae3904c5a14b4dbd44d3acdf45e9c47c7d6770ac2034a6690"
+    },
+    {
+      "file": "lint-v35.txt",
+      "sha256": "6f0940b5d220c85c123988db709e55d4844701dc07f13421dbaaea52e5184559"
+    },
+    {
+      "file": "build-v35.txt",
+      "sha256": "8e1361186087325fd2b87c7ee14995aa9daa0c9ff4676bc6781db9920fe06b5b"
+    },
+    {
+      "file": "native-retry-v35.json",
+      "sha256": "8374269f4f42031071c69d2ee86146dca9f4263b50f686eff67292326b8101dd"
+    }
+  ]
+}

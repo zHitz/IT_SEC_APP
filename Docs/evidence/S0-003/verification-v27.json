@@ -1,0 +1,62 @@
+{
+  "task": "TASK-S0-003",
+  "version": 27,
+  "verifiedAt": "2026-10-25T16:47:08.600540+07:00",
+  "tests": {
+    "total": 83,
+    "passed": 83,
+    "failed": 0,
+    "actualHttpPostgres": true,
+    "readOnlyTransactions": true,
+    "targetedProof": "HOST_JOURNEY_V27_PROOF",
+    "invalidCases": 6
+  },
+  "lint": {
+    "modules": 94,
+    "exitCode": 0
+  },
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "cloudflareRequests": 0,
+  "browser": {
+    "actualBuiltInBrowser": true,
+    "directReload": true,
+    "nativeBackForward": true,
+    "originReturnReopen": true,
+    "invalidIsolation": true,
+    "screenshots": [
+      "host-combined-reload-v27.png",
+      "host-combined-history-v27.png",
+      "host-combined-invalid-v27.png"
+    ]
+  },
+  "limits": [
+    "Synthetic local only",
+    "No schema/entity/API/collector change",
+    "QA approval required before merge"
+  ],
+  "failuresResolved": [
+    "Initial Host assertion used old Site fixture count; separate synthetic Site-journey fixture now places Host11 on required descending page2",
+    "Python console cp1258 could not print test checkmark; test exit0/log saved, lint and build subsequently completed",
+    "Browser exact-text selector matched hidden detail rows; scoped to actual record panel and verified final state",
+    "Site picker return now bookmarks selected Site via site_resume and retains Host page on reopening same Site; strengthened regression and actual browser verified after loading updated module"
+  ],
+  "combined": "Site picker searchSite/name-desc/page2 + Site Hosts searchhost-/hostname-desc/page2 + Host11 packages searchpackage/version-desc/page2 + ports searchsynthetic/pid-desc/page2",
+  "rows": {
+    "siteHostsPage2": 10,
+    "pickerPage2": 3,
+    "packagesPage2": 6,
+    "portsPage2": 6
+  },
+  "overall": "PARTIAL",
+  "nativeAC1_3_4": "unverified",
+  "acceptedOutageMs": 600010,
+  "outageRerun": false
+}

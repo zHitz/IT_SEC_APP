@@ -1,0 +1,25 @@
+name: compose-acceptance
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  compose-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - name: Start checkout-to-readiness clock
+        run: echo "ACCEPTANCE_START_EPOCH=$(date +%s)" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - name: Build and verify disposable Compose project
+        run: python3 scripts/verify-compose.py --output "$RUNNER_TEMP/compose-proof/acceptance.json"
+      - name: Publish allowlisted measured notice
+        if: always()
+        run: python3 scripts/compose-proof-notice.py "$RUNNER_TEMP/compose-proof/acceptance.json"
+      - name: Upload narrow sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compose-acceptance-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/compose-proof/acceptance.json
+          if-no-files-found: error
+          retention-days: 7

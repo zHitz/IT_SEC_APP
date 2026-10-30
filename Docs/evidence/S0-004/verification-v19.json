@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-10-25T13:30:11.177816+07:00",
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "engine": "PostgreSQL17.5WASM",
+  "readOnlyTransaction": true,
+  "actualBuiltInBrowser": true,
+  "tests": 67,
+  "lintModules": 93,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "productionAccess": false,
+  "proof": {
+    "field": "hostname maps stored fqdn",
+    "directions": [
+      "asc",
+      "desc"
+    ],
+    "nullsLast": "explicit PostgreSQL ordering",
+    "combinedSearch": "sample-",
+    "flag": "true",
+    "total": 12,
+    "descPage": 2,
+    "descRows": [
+      "sample-08.test",
+      "sample-04.test"
+    ],
+    "nativeHistory": true,
+    "detailReturn": true,
+    "invalidCases": 4,
+    "zeroRowsOnInvalid": true
+  },
+  "screenshots": [
+    "domain-sort-reload-v19.png",
+    "domain-sort-history-v19.png",
+    "domain-sort-invalid-v19.png"
+  ],
+  "errorsResolved": [],
+  "limits": [
+    "Local synthetic snapshots only;no auth/RBAC/scale/CVE claim",
+    "Text versions sort lexically;not semantic version ordering"
+  ]
+}

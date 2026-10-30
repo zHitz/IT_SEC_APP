@@ -1,0 +1,90 @@
+
+> it-asset-security@0.1.0 test
+> node --test backend/test/*.test.mjs frontend/test/*.test.mjs
+
+CLOUDFLARE_SYNTHETIC {"tables":24,"intervalMs":25,"requests":34,"onlyGET":true,"assertions":["AC1 seven records, A/AAAA/CNAME/MX/TXT and complete provenance","AC2 7 -> 7, first_seen_at unchanged, last_seen_at advanced, 0 created/7 updated","AC3 real loopback HTTP mock received only GET","AC4 known IPv4/IPv6 unflagged, outside IPv4/IPv6 flagged; flag cleared after content update, user tag retained","AC5 actual interval scheduler completed two sequential runs with full logs","Late403 no inventory writes;503 isolates one zone;database failure rolls back zone transaction;24tables unchanged"]}
+✔ Cloudflare HTTP mock -> PostgreSQL: all ACs, idempotency, flag provenance, scheduling and rollback (3597.2352ms)
+✔ worker configuration and transport fail closed; scheduler aborts without overlap (4.2689ms)
+✔ readiness fails closed for missing token/zone/CIDR and invalid real configuration (7.3894ms)
+READINESS_NO_NETWORK {"entry":"collectors/cloudflare/preflight.mjs","mode":"--dry-run","status":0,"audit":[{"event":"cloudflare_readiness","mode":"dry-run","status":"pass","synthetic":false,"zoneCount":1,"cidrCount":2,"cidrVersion":"synthetic-readiness-v3","credentialPresenceChecked":false,"networkRequests":0,"databaseWrites":0,"limitation":"Local validation only; does not verify token permissions, zone authorization or live API reachability"},{"event":"network_sentinel","attempts":0}]}
+READINESS_NO_NETWORK {"entry":"collectors/cloudflare/main.mjs","mode":"--dry-run","status":0,"audit":[{"event":"cloudflare_readiness","mode":"dry-run","status":"pass","synthetic":false,"zoneCount":1,"cidrCount":2,"cidrVersion":"synthetic-readiness-v3","credentialPresenceChecked":false,"networkRequests":0,"databaseWrites":0,"limitation":"Local validation only; does not verify token permissions, zone authorization or live API reachability"},{"event":"network_sentinel","attempts":0}]}
+READINESS_CREDENTIAL_CHECK {"hasToken":false,"status":1,"networkAttempts":0,"error":"CLOUDFLARE_API_TOKEN_REQUIRED"}
+READINESS_CREDENTIAL_CHECK {"hasToken":true,"status":0,"networkAttempts":0,"error":null}
+READINESS_INPUT_REJECTED {"code":"ZONE_IDS_REQUIRED","status":1,"networkAttempts":0}
+READINESS_INPUT_REJECTED {"code":"KNOWN_CIDRS_REQUIRED","status":1,"networkAttempts":0}
+✔ standalone preflight and actual worker dry-run/check never attempt network or DB (3383.6557ms)
+C-01: 5 mocked calls, all GET; 2 zone pages + 3 record pages; no live credentials/network
+✔ Cloudflare GET-only client reads paginated zones and A/AAAA/CNAME without mutations (40.9743ms)
+✔ late permission failure exposes no partial scope or token/error body (1.5661ms)
+✔ rate limit/network retry is bounded and honors capped delay (1.7276ms)
+✔ pagination drift, duplicate IDs and malformed envelopes fail closed (1.8075ms)
+✔ explicit test scope and zone path validation prevent accidental broad collection (0.4442ms)
+C-01 source audit PASS: one transport, fixed origin, GET only; no DNS mutation interface
+✔ C-01 source audit: all collector transport sites hardcode GET; no write client exists (10.6252ms)
+DOMAIN_EXACT_V7_PROOF {"synthetic":true,"engine":"PostgreSQL17.5WASM","readOnlyTransaction":true,"owned":32,"trapExcluded":true,"pagination":true,"missing404":true,"invalid400":true,"getOnly":true,"schemaChanged":false,"cloudflareRequests":0}
+✔ exact Domain/DNS GET: native FK owner equality, overlapping trap, pagination and not-found in read-only SQL (3560.1231ms)
+✔ exact Domain routes remain disabled by default and sanitize database failures (17.4335ms)
+DOMAIN_INVENTORY_V4_PROOF {"engine":"PostgreSQL17.5 WASM","synthetic":true,"readOnlyTransaction":true,"domains":3,"dnsRecords":3,"flaggedRecords":1,"flaggedDomains":1,"unflagged":2,"provenance":true,"literalSearch":true,"combinedFilters":true,"stablePages":true,"counts":true,"dnsStateUnchanged":true,"cloudflareRequests":0}
+✔ Domain/DNS GET inventory: provenance, domain search, exact outside-range filters, pagination/counts, read-only SQL (3407.6764ms)
+✔ Domain/DNS flags use exact boolean values and are not accepted by host resources (2.4536ms)
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (59.0832ms)
+✔ configuration fails closed for missing or invalid ports (1.2609ms)
+HOST_EXACT_V7_PROOF {"synthetic":true,"readOnlyTransaction":true,"uuidLookup":true,"osVersion":true,"missing404":true,"invalid400":true,"noSchemaChange":true}
+✔ Host UUID GET lookup supports deep-link identity and unknown/invalid cases inside read-only transaction (3555.8475ms)
+INVENTORY_V4_PROOF {"engine":"PostgreSQL17.5 WASM","synthetic":true,"readOnlyTransaction":true,"hosts":3,"hostPackages":2,"hostPorts":2,"searchLiteral":true,"stablePages":true,"pageCountsConsistent":true,"getOnly":true,"sqlStatements":12,"schemaChanged":false,"nativeLinux":false}
+✔ inventory GET prototype: real PostgreSQL synthetic host/package/port search, pages, counts, safe errors and no writes (3506.0149ms)
+✔ inventory query bounds and sanitized unavailable errors (20.3706ms)
+✔ inventory startup refuses non-loopback binding before opening a database (162.0879ms)
+POSTGRES PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit
+UP: 0 -> 24 tables (22 entities + 2 technical junctions), common and entity columns verified
+SEED {"hosts":2,"containers":1,"domains":1,"cve_findings":1}
+FK/validation: orphan owner, group, CVE and polymorphic finding rejected; confidence/port/projection rejected; soft state retains rows
+DOWN: 24 -> 0 tables
+REAPPLY: up -> down PASS
+✔ migration, seed, FK contracts and down on fresh embedded PostgreSQL (4452.6939ms)
+✔ both native osquery configs validate strictly; unsafe view/options/content fail closed (7.9224ms)
+NATIVE_READINESS_ACTUAL {"exitCode":2,"report":{"event":"osquery_native_readiness","platform":"win32","configs":[{"ecosystem":"deb","packagesView":"SELECT name, version FROM deb_packages","eventsDisabled":true,"logicalTableCount":5},{"ecosystem":"rpm","packagesView":"SELECT name, version FROM rpm_packages","eventsDisabled":true,"logicalTableCount":5}],"nativeExecuted":false,"binaryExecuted":false,"networkRequests":0,"tokenRead":false,"distributionInstalled":false,"status":"NATIVE_NOT_AVAILABLE","reason":"PLATFORM_NOT_LINUX"},"audit":{"event":"network_sentinel","attempts":0}}
+✔ native availability never pretends execution and current-platform CLI is network-free (174.3153ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (16.7874ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (24.0453ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.8528ms)
+(node:9492) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+OSQUERY_LAB_FAST {"synthetic":true,"nativeLinux":false,"nativeOsquery":false,"hosts":3,"offlineMs":1131,"queued":6,"allDelivered":true}
+✔ three isolated lab sources -> authenticated HTTP ingest; disk retry/restart, idempotency, safe five-table projection (7596.3511ms)
+OSQUERY_ALL_ENTITY_TIMESTAMPS {"syntheticObservationTimes":true,"repeatedAndStaleBatches":4,"rows":[{"entity":"Host","first_seen_at":"2026-10-25T01:18:14.076Z","last_seen_at":"2026-10-25T01:19:14.076Z"},{"entity":"ListeningPort","first_seen_at":"2026-10-25T01:18:14.076Z","last_seen_at":"2026-10-25T01:19:14.076Z"},{"entity":"Package","first_seen_at":"2026-10-25T01:18:14.076Z","last_seen_at":"2026-10-25T01:19:14.076Z"}],"latestRawEvidencePreserved":true}
+✔ Host, Package and ListeningPort preserve first_seen and monotonic last_seen across repeats and stale replay (1667.9071ms)
+DNS_VALUE_V9_PROOF {"actualHttpPostgres":true,"readOnlyTransaction":true,"value192":18,"pages":2,"value198":6,"domainRecordFields":true,"literalInjectionNoMatch":true,"emptyAndInvalid400":true,"returnDetail":true,"returnListContext":true,"cloudflareRequests":0}
+✔ DNS value search uses actual read-only SQL, literal filtering, counts/pages and safe return to Domain detail/list (3418.9601ms)
+DOMAIN_DETAIL_V7_PROOF {"synthetic":true,"actualHttpPostgres":true,"exactOwnerApi":true,"substringTrapExcluded":true,"records":31,"childPages":2,"provenance":true,"typeValueProxiedTtlTagsFlag":true,"backSearchFilterPage":true,"cloudflareRequests":0}
+✔ Domain detail renders exact-domain DNS fields/provenance/flag, pages through children and Back retains list search/filter/page (4006.6887ms)
+✔ Domain exact-owner detail handles large server totals without candidate scanning and clears not-found data (10.5685ms)
+✔ domain frontend renders provenance, literal search/filter, page requests, resource switch and resets (37.8879ms)
+✔ domain frontend renders untrusted text safely, empty/error/retry and rejects malformed API responses (12.9503ms)
+✔ domain frontend suppresses stale in-flight results when selection changes (3.7191ms)
+DOMAIN_NAVIGATION_V8_PROOF {"synthetic":true,"actualHttpPostgres":true,"directLink":true,"reloadNewDocument":true,"exactLookup":true,"backForward":true,"searchPageRetained":true,"missing404NoPartial":true,"invalid400NoPartial":true,"nativeLinux":false}
+✔ Domain direct fragment/reload resolves exact entity; Back/Forward preserves list context; missing/invalid IDs clear all data (3475.7981ms)
+✔ Domain fragment parser bounds list context and accepts legacy detail IDs (0.4087ms)
+DOMAIN_UI_V5_HTTP_PROOF {"synthetic":true,"domains":25,"dnsRecords":25,"flagged":6,"proxySearch":true,"proxyPagination":true,"disabled404":true,"readOnlyGet":true,"cloudflareRequests":0}
+✔ opt-in frontend page/proxy uses accepted API over real HTTP/PostgreSQL; disabled paths fail closed (3559.6548ms)
+HOST_DETAIL_V6_PROOF {"synthetic":true,"actualHttpPostgres":true,"scopedRequests":2,"hostMetadata":true,"packageVersion":true,"processPid":true,"backPreservesSearchPage":true}
+✔ Host row opens scoped detail; package/version and process/PID render; back preserves list search/pages (3496.3341ms)
+✔ Host detail rejects cross-host responses and safely exposes retry/back (5.3518ms)
+✔ Host frontend render/search/page and Package/version plus Port/process/PID (43.37ms)
+HOST_UI_V5_HTTP_PROOF {"synthetic":true,"hosts":26,"hostPackages":24,"hostPorts":25,"search":true,"pages":true,"osVersion":true,"packageVersion":true,"processPid":true,"optIn404":true,"nativeLinux":false}
+✔ Host page and three proxies use accepted v4 API, actual synthetic database; opt-in defaults remain closed (3804.4092ms)
+HOST_NAVIGATION_V7_PROOF {"synthetic":true,"actualHttpPostgres":true,"directLink":true,"reloadNewDocument":true,"exactLookup":true,"backForward":true,"searchPageRetained":true,"missing404NoPartial":true,"invalid400NoPartial":true,"nativeLinux":false}
+✔ Host direct fragment/reload resolves exact entity; Back/Forward preserves list context; missing/invalid IDs clear all data (3368.0537ms)
+✔ Host fragment parser bounds list context and accepts legacy detail IDs (0.3277ms)
+PACKAGE_HOSTS_V8_PROOF {"actualHttpPostgres":true,"readOnlyTransaction":true,"hosts":24,"versions":2,"searchVersion":true,"exactName":true,"pages":3,"returnHost":true,"listContext":true,"missing404":true,"invalid400":true,"noCveInference":true}
+✔ Package selection lists exact name/ecosystem host versions with read-only search/count/page and returns to original host/list (3551.5363ms)
+✔ frontend serves shell and proxies real backend health without exposing saved source (171.4108ms)
+✔ health UI rejects HTTP failures and malformed successful payloads (1.6506ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9664.9598

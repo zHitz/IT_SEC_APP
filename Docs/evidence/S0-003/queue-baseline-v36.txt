@@ -1,0 +1,25 @@
+âœ– enqueue survives acknowledged flush between enumeration and capacity stat without losing new batch (112.4661ms)
+â„¹ tests 1
+â„¹ suites 0
+â„¹ pass 0
+â„¹ fail 1
+â„¹ cancelled 0
+â„¹ skipped 0
+â„¹ todo 0
+â„¹ duration_ms 308.3193
+
+âœ– failing tests:
+
+test at backend\test\osquery-queue-concurrency.test.mjs:10:1
+âœ– enqueue survives acknowledged flush between enumeration and capacity stat without losing new batch (112.4661ms)
+  Error: ENOENT: no such file or directory, stat 'C:\Users\16lem\AppData\Local\Temp\atlas-queue-race-d2awrP\1793283118491-a526b646-6ec0-412a-b0ba-a3a7df3b6369.json'
+      at async stat (node:internal/fs/promises:1040:18)
+      at async OrderedQueue.enqueue (file:///F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP/collectors/osquery/queue.mjs:12:56)
+      at async TestContext.<anonymous> (file:///F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP/backend/test/osquery-queue-concurrency.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'stat',
+    path: 'C:\\Users\\16lem\\AppData\\Local\\Temp\\atlas-queue-race-d2awrP\\1793283118491-a526b646-6ec0-412a-b0ba-a3a7df3b6369.json'
+  }

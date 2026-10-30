@@ -1,0 +1,42 @@
+{
+  "version": 26,
+  "recordedAt": "2026-10-25T09:20:50.907468+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM",
+  "tests": 81,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "route": "#host=20000000-0000-4000-8000-000000000011&search=host-&sort=hostname&direction=desc&page=2&page_size=10&package_sort=version&package_direction=desc&package_detail_search=package&package_detail_page=2&port_sort=pid&port_direction=desc&port_detail_search=synthetic&port_detail_page=2",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "independentIsolation": true,
+  "invalidCases": 6,
+  "observations": {
+    "host": "host-11.test",
+    "packageSearch": "package",
+    "packageSort": "version desc",
+    "packagePage": 2,
+    "packageRows": 6,
+    "portSearch": "synthetic",
+    "portSort": "pid desc",
+    "portPage": 2,
+    "portRows": 6,
+    "returnReopen": true
+  },
+  "failuresAndResolution": [
+    "First full run:80/81 passed; default Domain detail page1 parameter incorrectly invalidated older flagged-record route. Omit default page1 in bookmark serialization; final full rerun81/81 passed."
+  ],
+  "limits": [
+    "Viewport screenshots; synthetic local only.",
+    "NativeAC1/3/4unverified;accepted600010msoutage retained/notrerun."
+  ]
+}

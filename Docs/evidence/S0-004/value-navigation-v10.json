@@ -1,0 +1,28 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "tests": 47,
+  "lintModules": 70,
+  "schema": "22+2/114FK",
+  "build": "PASS",
+  "browser": [
+    "direct192.0.2.25/page2 ->18records/8rows",
+    "real reload retains query/page2",
+    "nativeBack192page2/Forward198.51.100.25 ->6records",
+    "control value error and no rows"
+  ],
+  "test": [
+    "freshDOM reload",
+    "native history model",
+    "invalidcontrol/duplicate clearing",
+    "priorlist/detail return regression"
+  ],
+  "failuresResolved": [
+    "old DNS test had no-op history stub; upgraded to actual URL/history model for routed behavior"
+  ],
+  "cloudflareRequests": 0,
+  "limits": [
+    "No scale/native/production claim",
+    "dns_page bounded/defaulted, list page separate"
+  ]
+}

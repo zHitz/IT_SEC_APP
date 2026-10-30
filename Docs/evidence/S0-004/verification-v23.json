@@ -1,0 +1,38 @@
+{
+  "version": 23,
+  "recordedAt": "2026-10-25T08:11:52.541268+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM; no native or production claim",
+  "tests": 75,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "view": "Flagged owner child DNS",
+  "records": 12,
+  "searchedRecords": 11,
+  "page2Rows": 1,
+  "apiSortCombinations": 4,
+  "route": "#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "invalidSortCases": 4,
+  "invalidScopedListEmpty": true,
+  "inputsAndParentPreserved": true,
+  "healthySiblingsPreserved": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "stableIdTies": true,
+  "nullsLast": "Explicit SQL NULLS LAST; no new nullable fixture this round.",
+  "failures": [],
+  "limits": [
+    "Text sorting is lexical; port and PID numeric.",
+    "Only one flagged owner child state is routed at a time; other cards retain default child queries.",
+    "Viewport screenshots; synthetic local inventory only."
+  ]
+}

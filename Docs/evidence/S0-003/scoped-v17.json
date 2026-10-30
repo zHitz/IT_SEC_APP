@@ -1,0 +1,18 @@
+{
+  "scope": "synthetic v17",
+  "engine": "PostgreSQL17.5WASM BEGIN READ ONLY",
+  "tests": "63/63",
+  "lintModules": 90,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "browser": "reload/Back/Forward/error viewport screenshots",
+  "cloudflareRequests": 0,
+  "host": "host11",
+  "packages": 31,
+  "ports": 31,
+  "bothPages": 2,
+  "eachRows": 6,
+  "invalidCases": 4,
+  "nativeAC134": "unverified",
+  "captureIssue": "fullPage failed once;viewport screenshots succeeded"
+}

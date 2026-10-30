@@ -1,0 +1,31 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "existingFk": "Host.site_id -> Site.id",
+  "sampleSiteHosts": 16,
+  "secondarySiteHosts": 10,
+  "integrationSitePicker": "13sites/2pages",
+  "hostPages": 2,
+  "search": "host11 ->1; host15 excluded from Sample and included Secondary",
+  "browser": [
+    "Sample16hosts/page2 OS/version",
+    "hostname host11 single row",
+    "Secondary10hosts",
+    "detail and full list return host-/page2/size10"
+  ],
+  "checks": {
+    "tests": 50,
+    "pass": 50,
+    "lintModules": 76,
+    "schema": "22+2/114FK",
+    "build": "PASS"
+  },
+  "failures": [],
+  "limits": [
+    "No native Linux/osquery",
+    "No production/CVE/Cloudflare",
+    "Temporary panel reload returns origin",
+    "Null Site Hosts available in full list"
+  ]
+}

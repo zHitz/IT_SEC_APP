@@ -1,0 +1,204 @@
+# Host inventory page — S0-003
+
+Current V7 supports direct links and reload. The V6 reload limitation below is historical and superseded.
+
+## Explicit synthetic lab
+
+Node24: `npm ci`, then `node scripts/inventory-ui-lab.mjs --hosts`. Open the printed loopback `/inventory/hosts` URL. Lab creates disposable PostgreSQL17.5WASM using accepted schema/seed and synthetic rows:26hosts,24host packages (image seed package excluded by API),25host listening ports. This is declared fixture data, not a native Linux/osquery deployment. No credential/production target/Cloudflare connection. Ctrl+C stops servers/database. Plain lab command without--hosts preserves the Domain-only fixture profile.
+
+## Existing local database
+
+Same opt-in flags as Domain page: INVENTORY_READ_ENABLED=true on backend, INVENTORY_UI_ENABLED=true on frontend; explicit numeric loopback BACKEND_HOST/FRONTEND_HOST and BACKEND_ORIGIN, local synthetic DATABASE_URL/ports. `npm run build` then existing backend/frontend start scripts. See HOST-INVENTORY-API.md for API contract and DOMAIN-INVENTORY-UI.md for shared proxy setup. Default disabled pages/modules/proxy404; no exposure through public proxy/tunnel. Local-only unauthenticated prototype is not production RBAC or authorization.
+
+## UI and behavior
+
+One page with Hosts/Packages/Listening ports resource buttons, existing Atlas sidebar/header/design tokens/dark-light behavior. Host rows show hostname,OS/version and first/last times. Packages show name/version/ecosystem/host ID. Listening ports show host ID/protocol/port/bind address/process/PID. Data is fetched solely from the accepted v4 GET endpoints; no frontend fixture fallback or schema copy. Package image rows/container-only listeners follow the existing host-only API scope.
+
+Search hostname or package name using literal case-insensitive substring; Enter/Search applies and resets page1. Switching resources resets search/page to prevent interpreting a hostname as a package name. Listener search is disabled because the accepted v4 API has no such search field; no unsupported API query invented. Page size10/25/50/100, Previous/Next, filtered totals and page count. Clear removes search; loading/error/empty/retry states and stale-response protection are shared. Tags/flag filter is absent on Host page. All displayed stored values are inserted as text; process/PID is inventory, no command lines/env or Process entity.
+
+The reusable implementation is frontend/src/inventory-table.mjs; Domain entry remains a compatibility wrapper and original Domain tests stay green. This shares UI behavior, not domain schema or business logic. Both pages have working navigation; the skeleton adds links only when explicitly enabled. Host resource paths were added to the same fixed GET-only loopback proxy allowlist; no arbitrary paths, user credentials/cookies or write requests forwarded.
+
+## Verification
+
+`node --test frontend/test/host-inventory.test.mjs`; `npm run lint`; `npm test`; `npm run build`. DOM test asserts OS/version, Host/Package search, page reset/next/total and process/PID. Actual HTTP/PostgreSQL test asserts accepted API responses through frontend proxy and disabled404. Shared Domain tests prove safe text/error/empty/retry/stale-response behavior remains intact. Actual browser proof/screenshots:26host count,10rows/page->page2,HOST-01 search->1host,package-01 search->1package/version1.2.3,listener tab->25ports/process/PID. Native Linux/osquery=false. Exact mobile/tablet viewport override and reduced-motion emulation unavailable, so not claimed; responsive CSS/focus/labels/reduced-motion rules retained.
+
+Original native AC1/3/4 follow-ups and actual600010ms queue experiment evidence are unchanged. This UI work does not close those native gaps and does not repeat the outage run. See RESULT-TASK-S0-003.md for truthful overall PARTIAL status.
+
+
+## V6 Host details and QA fix
+
+Click a hostname link to open its detail view within the local page. Header uses the selected row's API observation (hostname, OS/version, host ID); related Package and ListeningPort lists are fetched from the accepted GET APIs with exact host_id. Each related list has independent25-row paging/counts, full package versions and listener process/PID. No new backend endpoint/schema or fixture fallback. The page validates child host IDs before rendering, clears stale rows on failures, exposes Retry details and Back to list. Back preserves the existing list controller/DOM/search/page/page-size; browser Back is also supported via popstate. Focus moves to the detail heading and returns to the selected list link. A detail URL fragment is navigation context, not a standalone deep link: full reload starts the list; retention guarantee is within current page session/Back, not cross-reload persistence.
+
+Reproduce: explicit synthetic lab --hosts; choose10rows/page, search host-, go Next, click host-11.test, verify OS12.3, package version1.2.3 and listenerPID111, then Back and confirm list query/page2. Actual integration test repeats this over real HTTP/PostgreSQLWASM. No nativeLinux/osquery claim. Detail implementation is shared frontend/src/inventory-detail.mjs with Host mode; table onSelect is only wired for Host/Domain identity columns.
+
+QA PR comment4368355476 additionally identified package raw_ref stale replay mismatch. The accepted upsert still preserves observation timestamps, and now raw_ref changes only for an incoming observation at least as recent. Regression opens the actual referenced raw JSON for Host/Package/ListeningPort after new/repeat/stale batches and asserts it matches the latest collected_at. No schema/source query/privacy expansion and no repeat of the real ten-minute experiment.
+
+
+## V7 direct links, reload and browser history
+
+Canonical example: /inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10. UUID is the identity; hostname aliases are not needed for the assigned id-or-name alternative. Legacy #detail=:uuid links also resolve. The fragment carries only identity and validated list context, never credentials or copied Host metadata. A fresh GET /api/v1/inventory/hosts/:id resolves current Host details after direct navigation/reload, followed by accepted exact-host Package/Port requests. No full-list scan or fixture fallback.
+
+Opening a row records the list URL/context then pushes the detail entry. Native browser Back/Forward follows those entries; reload reconstructs selected Host and list search/page/page-size from the URL, not stale history rows. Back to list uses browser history for an app-created entry; a directly opened detail safely returns to the encoded list context instead of leaving the app. List data is retained when its context already matches, otherwise reloaded. URL page bounds1..100000; supported page sizes10/25/50/100; invalid list context falls back safely. Search trimmed/max200/no controls. Location/history logic is isolated in host-navigation.mjs; shared detail controller validates fresh parent and matching child IDs.
+
+Unknown UUID shows Host not found and clears metadata/related records; malformed identity shows Invalid host link. Retry/Back remain available; no other Host detail is rendered as a partial fallback. Synthetic unknown UUID can be tested with ffffffff-ffff-ffff-ffff-ffffffffffff. No global storage/state policy, auth/RBAC, schema or Cloudflare behavior changes.
+
+Verify with `node --test frontend/test/host-navigation.test.mjs backend/test/host-exact.test.mjs`; full lint/test/build. DOM+actual HTTP/PostgreSQL tests open a direct link, mount a fresh document to model reload, traverse Back/Forward, retain search/page and reject unknown/invalid IDs without partial data. Actual browser reload/Back/Forward/error checks are separately recorded in navigation-v7.json/screenshots. Native Linux/osquery and exact responsive viewport/reduced-motion runtime verification remain unclaimed.
+
+
+## v8 Package hosts
+
+From Host details select a package name to view matching hosts and their stored versions. Search package name/version, use Previous/Next (10 records/page), read the total, then Back to host details or Back to host list. Exact identity is name+ecosystem, with all versions. Counts are host/version rows, not CVEs or vulnerability conclusions. Context remains on the originating Host link; a reload while viewing packages restores Host detail, not package subview. Browser navigation exits the package panel safely. Requests time out after8seconds; errors clear rows and permit search retry. Existing Atlas tokens/layout, local opt-in and synthetic boundaries are retained. `node scripts/inventory-ui-lab.mjs --packages` creates24synthetic host records for one package/two versions. Test: `node --test frontend/test/package-hosts.test.mjs`.
+
+
+## v9 Search port/process
+
+From Host inventory or detail choose Search port or process. Enter an exact port or process substring (both means AND), then Find listening hosts. Results show hostname/HostID/protocol/port/process/PID/bind address, total and10rows/page. Empty/invalid input guidance and cleared failure/empty states prevent stale results. Back restores entry list/detail and list search/page context. Search is global stored inventory independent of origin list search. Temporary search panel is not persisted; reload restores originating Host/list route. `node scripts/inventory-ui-lab.mjs --hosts`:8011 ->Host11/PID111,synthetic-listener ->24records/3pages. No Cloudflare access, scan or CVE conclusions.
+
+
+## v10 Hosts by Site
+
+Filter hosts by Site from full list/detail. Paged Site buttons avoid silently truncating choices; select Site, search hostname, use Host page controls and read OS/version and total. Site page controls are independent of Host result pages. Return restores original full list/detail and search/page. Site choices come from existing Site inventory; no Site creation/editing. Unknown Site membership filter returns0rows; errors clear Hosts. Search panel is temporary; reload restores origin. Null Site Hosts remain available in full list but no assigned-Site filter. `node scripts/inventory-ui-lab.mjs --sites` gives Sample Site16Hosts and Secondary Test Site10Hosts; integration adds11emptySites to verify picker pages. Local synthetic only; no Cloudflare/CVE/native claim.
+
+
+## v11 Unassigned Hosts
+
+View unassigned hosts from Host list/detail reuses Site panel in null-membership mode: hides Site picker, shows exact null-Site Hosts with OS/version, hostname search/count and10-row paging. Assigned Hosts excluded. Return restores original full list/detail and context. Empty/error clears rows. No Site mutation. Temporary panel reload returns original route. `node scripts/inventory-ui-lab.mjs --hosts` has24null-Site Hosts/3pages and2assigned seed Hosts; hostname host-11 yields1. No nativeLinux/CVE/production claim.
+
+
+### v12: unassigned Host links and history
+
+In the `--hosts` local synthetic lab, open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&unassigned=1&unassigned_search=host-&unassigned_page=2`. Reload restores the unassigned view, hostname search and parent page. Search/page changes push history; browser Back/Forward restores them. Return preserves origin list/detail and full-list search/page/size. OS/version remain declared inventory, not native verification.
+
+Require unique unassigned=1. Optional unassigned_search is unique, <=200 characters without controls; unassigned_page is unique integer1..100000. Invalid marker, duplicates, controls or invalid page show explicit error and zero rows. Site picker remains a separate temporary view; no Site changes. Existing accepted GET site_assigned=false stays exact site_id IS NULL.
+
+Reproduce: `node --test frontend/test/unassigned-navigation.test.mjs frontend/test/unassigned-hosts.test.mjs`; full `npm test`, `npm run lint`, `npm run build`. No production or credential inputs.
+
+
+### v13 Site-picker routes (supersedes temporary picker limitation)
+Run `node scripts/inventory-ui-lab.mjs --sites --hosts`; open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2`. Reload retains selected Sample Site, picker2/2, hostname search and Host2/2. Search, Site selection, picker/Host pages push browser history; return restores origin context. Existing unassigned routes remain separate.
+Unique site_picker=1, optional UUID selected_site, positive picker_page/site_host_page<=100000, site_search<=200/no controls required. Invalid/duplicate/missing Site/out-of-range picker error clears all rows. Site resolution uses accepted Sites GET, bounded100pages of100 and8second timeout; selected Site may be off displayed picker page. No Site mutations. Test `node --test frontend/test/site-navigation.test.mjs frontend/test/site-hosts.test.mjs`. Synthetic substring host- also matches sample-host-a/b, giving16SampleSite Hosts.
+
+
+### v14 package-to-host routes
+Run `node scripts/inventory-ui-lab.mjs --packages --hosts`; open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&search=host-&page=2&page_size=10&package=20000000-0000-4000-8000-000000000111&package_search=2.0&package_page=2`. Reload restores shared-runtime/deb,2.0search,12matching observations/page2/2rows. Search/page changes push history; Back/Forward replay. Return restores Host detail or explicit full list context.
+Require unique package UUID, unique package_page integer1..100000 and package_search<=200/no controls. Missing/invalid package, duplicates, bad/out-of-range page or conflicting Site/unassigned view clear rows with explicit error. Identity name/ecosystem resolved from accepted exact Package-hosts GET; no API/schema changes. Search remains package name/version, not hostname. No CVE conclusion. Test `node --test frontend/test/package-navigation.test.mjs frontend/test/package-hosts.test.mjs`.
+
+
+### v15 port/process search route
+`node scripts/inventory-ui-lab.mjs --hosts`; open `/inventory/hosts#list=1&search=host-&page=2&page_size=10&port_search=1&process_search=synthetic-listener&port_page=2`. Reload restores24matches/page2. Port8011 plus process ->host11/PID111; native Back/Forward replay. Return restores origin list/detail. Unique port_search=1, optional exact port1..65535, process_search<=200/no controls, port_page1..100000. At least one search required; invalid/duplicate/conflicting/out-of-range state clears all rows. Existing GET AND filters only, no scans/CVE. `node --test frontend/test/port-navigation.test.mjs frontend/test/port-search.test.mjs`.
+
+
+### v16 combined main-list filters
+`node scripts/inventory-ui-lab.mjs --hosts --sites`; open `/inventory/hosts#list=1&site_id=00000000-0000-4000-8000-000000000002&search=host-&page=2&page_size=10`. Main-list Site ID filter uses accepted Site UUID alongside hostname. Reload restores Site/search/page together; search/page/clear push history; detail return retains filters. SampleSite16matches/page2;host-11 ->1. UUID can be obtained from existing Site picker/accepted Sites GET; no new selector data source.
+site_id/search/page/page_size must be unique when Site filtering is present; UUID format, hostname<=200/no controls, positive page<=100000 and allowed size10/25/50/100 required. Invalid combined state clears rows with error. Existing well-formed missing Site UUID returns valid empty result, as accepted API semantics; no existence claim. No Site mutation. `node --test frontend/test/combined-host-navigation.test.mjs`.
+
+
+### v17 Host scoped detail: run `node scripts/inventory-ui-lab.mjs --hosts --host-detail`; open `/inventory/hosts#host=20000000-0000-4000-8000-000000000011&package_detail_page=2&port_detail_page=2&search=host-&page=2&page_size=10`. Optional30extra packages+ports yield31each/2pages/6rowseachpage2. Reload/history restores both independently; change one retains other. Unique positive child pages1..100000 require Host identity; malformed/duplicate/conflicting/out-of-range clears all detail/child data. Return keeps parent context. No native claim.
+
+## v18 main Host sort
+
+Sort Hosts and Sort direction selectors apply server ordering and reset page1. Direct example after `node scripts/inventory-ui-lab.mjs --hosts`: `/inventory/hosts#list=1&sort=hostname&direction=desc&search=host-&page=2&page_size=10`. Sort/search/page persist through fresh DOM reload, history and detail return. Invalid sort/direction, duplicate keys, page0, invalid page size and control search clear all rows. OS/version columns remain. Run `node --test frontend/test/host-sort-navigation.test.mjs`. Full65tests/lint93/schema/build pass. Current run has DOM/history plus actual loopback HTTP/PostgreSQL evidence; browser verification/screenshots are pending because Work browser access is disabled. See evidence/S0-003/verification-v18.json.
+
+Browser follow-up 2026-10-25T13:05:33.092425+07:00: after app restart, actual built-in browser verified direct route/reload, native Back/Forward, selection/return and invalid-state clearing. Screenshots are in evidence/S0-003/host-sort-{reload,history,invalid}-v18.png. Prior browser access limitation is resolved; no production/native Linux claim.
+
+## v19 sorting contract
+
+Host detail package sort name/version and ports sort port/pid with independent direction selectors. Fragment package_sort,package_direction,port_sort,port_direction combines package_detail_page and port_detail_page. Changing one sort resets only its page;other scoped page retained. Invalid sort clears only affected list;parent and healthy list retained. Example --hosts --host-detail: /inventory/hosts#host=20000000-0000-4000-8000-000000000011&package_sort=name&package_direction=desc&port_sort=pid&port_direction=desc&package_detail_page=2&port_detail_page=2. Reload/native history and list/detail return preserve sorts. Test frontend/test/host-scoped-navigation.test.mjs. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.
+
+## v20 sorted related views
+
+Package hosts controls retain package_hosts_sort/package_hosts_direction with package UUID/package_search/package_page. Example --packages: /inventory/hosts#host=20000000-0000-4000-8000-000000000011&package=20000000-0000-4000-8000-000000000111&package_search=2.0&package_hosts_sort=hostname&package_hosts_direction=desc&package_page=2 ->host03/host01 of12matching. Sort resets page1. Parent return stores package_saved bookmark;reopen same package restores search/sort/page;different package resets. Invalidsort clears only Packagehosts view. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v21 scoped view sorting
+
+Run `node scripts/inventory-ui-lab.mjs --hosts`; append `#list=1&unassigned=1&unassigned_search=host-&unassigned_page=2&unassigned_sort=hostname&unassigned_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.
+
+
+## v22 Site-filtered Hosts sorting
+
+Run `node scripts/inventory-ui-lab.mjs --sites`, then append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Site filters retain exact site_id and existing API sort parameters. Parent return saves an inactive Site bookmark for explicit reopen.
+
+
+## v23 Port/process result sorting
+
+Run `node scripts/inventory-ui-lab.mjs --hosts` and append `#list=1&port_search=1&process_search=synthetic-listener&port_page=2&result_sort=hostname&result_direction=desc` to the printed inventory URL. Sort results by hostname/port/process/pid with result_sort and result_direction; port/process inputs and parent context remain on invalid sort. Existing sort parameter whitelist adds hostname/process; port and PID are numeric. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.
+
+
+## v24 Site picker sorting
+
+Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host /inventory/hosts URL on its printed origin. Picker uses picker_search (literal name substring), picker_sort=name, picker_direction=asc|desc and picker_page, separately from Site host search/sort/page. Invalid picker sorting clears picker options only. Parent list/detail return saves and reopens picker context and selected Site. No schema/entity/production changes.
+
+
+## v25 Combined picker/host state
+
+Run `node scripts/inventory-ui-lab.mjs --sites`; append `#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&picker_search=Site&picker_sort=name&picker_direction=desc&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc` to the Host inventory URL on the printed origin. Picker changes retain selectedSite and host search/sort/page; host changes retain picker search/sort/page. Each changed list resets only its own page. Both parent return paths retain the full bookmark. Invalid picker sort clears picker only; invalid host sort clears host rows only. Direct/reload/native history retain the complete fragment. No schema/entity/production changes.
+
+
+## v26 combined list/detail journey
+
+Run `node scripts/inventory-ui-lab.mjs --host-detail`; append `#host=20000000-0000-4000-8000-000000000011&search=host-&sort=hostname&direction=desc&page=2&page_size=10&package_sort=version&package_direction=desc&package_detail_search=package&package_detail_page=2&port_sort=pid&port_direction=desc&port_detail_search=synthetic&port_detail_page=2` to the Host inventory URL. Host list and independent package/port search/sort/page state share the route. package_detail_search filters package names;port_detail_search filters process names. Return saves host_saved and detail fields; selecting the Host again restores them. Saved detail pages do not activate unrelated views; default DNS page1 is omitted. No schema/entity/production changes.
+
+
+### v27 combined origin journey
+
+Site-filtered Host names now open exact Host detail. `host_origin=site` and saved Site picker/Host search-sort-page parameters retain the origin. Detail Back restores the selected Site Host list; Back to Site picker clears the selection while retaining picker search/sort/page. Package and port search-sort-page stay bookmarked through return/reopen. A full Host list selection keeps its own origin.
+
+Reproduce the Host11 page-2 journey with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey`. The separate synthetic Site-journey option assigns all 24 synthetic hosts to Sample Site; this intentionally extends the older 14-host fixture so hostname-desc page2 contains Host11. No persisted schema or API change.
+
+`node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs` runs actual HTTP/PostgreSQL READ ONLY regression for reload, history, origin return/reopen and six independently invalid levels per task. Existing Atlas layout/style and native-evidence limits remain. See verification-v27.json and three v27 screenshots in the task evidence directory.
+
+
+### v28 switching inventory views
+
+The Host and Domain sidebar links restore separate complete fragments from this tab's session storage. Switching away saves the current fragment, including changes made with pushState; switching back restores the exact nested list/detail/record context. Explicit direct URL fragments always win. Native Back/Forward and reload use their own URL; pageshow refreshes sidebar bookmarks after browser history restoration. No inventory rows or credentials are stored, and no server mutation is made.
+
+Reproduce with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`. Open the complete Host and Domain fragments from `frontend/test/view-bookmarks.test.mjs` once in the same tab, then switch using the sidebar. Host11 restores Site Host page2 and package/port page2; Sample04 restores DNS page2 and record or correct Domain/Flagged return origin.
+
+Focused proof: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs`. Both integration tests use actual HTTP/PostgreSQL READ ONLY and six invalid-level round trips per view; the third test checks unsafe saved values and storage denial. If sessionStorage is unavailable, cleared or the fragment exceeds16384 characters, explicit URLs still work but persistence is unavailable. Separate tabs are independent. See verification-v28.json and three actual v28 screenshots.
+
+
+### v29 repeated switching, invalid destination and clean tabs
+
+No-fragment defaults now remove only the current view bookmark; they do not invent #list=1 or copy the other view fragment. A journey created afterward persists normally. Existing invalid saved fragments are restored verbatim into the destination route parser, which shows its own clear error and no affected partial rows; the source bookmark stays exact. An explicit valid destination URL replaces that invalid destination bookmark and restores its journey without changing the source.
+
+The same view-bookmarks.test.mjs now adds exactly three tests: three consecutive round trips from each starting view with exact fragment equality, saved-invalid destination plus explicit repair in both directions, and clean default tabs/new journey creation in both directions. Full suite89/89, lint96modules. V29_ROUND_TRIPS, V29_INVALID_REPAIR and V29_CLEAN_TAB markers are in test-v29.txt. Reuse the combined v28 lab command and full hostRoute/domainRoute in that test. Three real v29 screenshots cover multi-round-trip reload/history/invalid states. Storage and native-evidence limits remain unchanged.
+
+
+### v30 independent tabs and saved URLs
+
+Independent new tabs have separate sessionStorage. Open complete saved Host/Domain fragments from view-bookmarks.test.mjs in a fresh independent tab: explicit URL restores all nested state before any prior bookmark exists. After establishing both views, two sidebar round trips retain exact fragments. Different tabs can hold different Host page and Domain DNS/record journeys without overwriting one another.
+
+Three new tests in the existing file cover two independent stores with distinct journeys, explicit saved URLs in fresh stores plus two round trips, and fresh invalid URL/explicit repair followed by a new clean session. The test harness models independent stores; actual browser tabs separately verify isolation, reload/history, fresh-invalid errors and clean defaults after close. No runtime change was needed. Full suite92/92;lint96.
+
+A fresh independent tab is not a duplicated/opener-created tab: browsers may clone initial sessionStorage for those cases. This evidence claims only independently created tabs without an opener. Existing storage-denial, fragment bound and synthetic/native limits remain.
+
+
+### v31 filtered journeys in isolated tabs
+
+Site-filtered and Unassigned Host rows open detail with distinct explicit origins. Unassigned selection uses host_origin=unassigned and a saved Unassigned search/sort/page bookmark; detail Back returns that exact view. Flagged Domains/detail DNS and Flagged DNS records/record detail preserve their independent list states.
+
+Run `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. The isolated --filtered-tabs fixture makes synthetic Host13..24 unassigned while preserving assigned Host11. Site uses searchhost-/hostname-desc/page1,pickername-desc/searchSite/page2;Unassigned uses searchhost-/hostname-desc/page1 andHost20. Domain uses Flagged searchsample-/hostname-desc/page2 plusSample04 DNSsearch192.0.2/value-desc/page2;record-level uses search198.51.100/value-desc/page2. Full fragments and canonical saved routes are exercised in view-bookmarks.test.mjs.
+
+Exactly3newtests cover paired-tab isolation, fresh0entry saved URLs with2exact list/detail roundtrips and4invalid-filter/repair paths;full95/95,lint96. Actual browser separately checks all four routes and captures3screenshots per task. Existing synthetic/native/storage/opener limitations remain.
+
+
+### v32 filtered journeys across inventory views
+
+Site Host11 and Unassigned Host20 details, Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record now have dedicated cross-view regression evidence. Save each full canonical detail URL, switch to the opposite inventory sidebar view and return twice: the fragment is exact and the other view retains its state. Detail/record Back and reopen preserve the original filtered list and child page; Domain main-list origin also stays distinct.
+
+Run the v31 combined lab command with --filtered-tabs. When combined with --host-detail, this synthetic-only option now adds30packages/ports toHost20 (31total) so searchpackage/version-desc/page2 and searchsynthetic/pid-desc/page2 each show6rows likeHost11. Existing default fixtures and runtime code are unchanged. filtered32 routes in view-bookmarks.test.mjs reproduce all contexts.
+
+Exactly3newtests cover4filteredcross-view journeys,post-switch origins/reload/history and4invaliddestination repairs with source preservation/newtabdefault. Full98/98;lint96;schema unchanged. Actual browser verifies both tabs,2exactcross-viewtrips,6rows/scopedHostlist,5childDNSrows and all4invaliddestinations. Evidence:verification-v32.json,test/lint/build-v32.txt,3actualscreenshots per task. Existing native/synthetic/storage/model limitations remain.
+
+
+## v33 independent filtered tabs and fresh saved URLs
+
+Run the existing filtered lab with `--host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. In independent tabs without opener, pair Site Host11 with Flagged Domain/Sample04, and Unassigned Host20 with Flagged DNS record. Navigate the other tab and compare complete URLs through two round trips per tab. Save the four URLs; close tabs and open each in a new independent session. Establish the opposite filtered view and repeat two exact cross-view round trips. Host scoped page2 has six package and six port rows; Sample04 child DNS page2 has five rows. Test invalid site_sort/unassigned_sort/flagged_sort/record_sort in fresh tabs: switch away/back, require zero affected rows and retained healthy main rows, return to exact source and repair with explicit valid URL. Close and open a no-fragment tab: both views default. Automated zero-entry assertions use Map stores; browser evidence does not enumerate sessionStorage. See verification-v33.json and the three new screenshots.
+
+
+## v34 duplicate and opener tabs (partial native verification)
+
+Use `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged --opener-tabs`. The extra control is opt-in lab HTML/script only; production pages are unchanged. Open each complete filtered URL from v33. In Chrome use tab context menu > Duplicate, compare the full URL, navigate only the child to an invalid filtered sort, verify the error and explicit valid-URL repair, then close only the child and check parent URL/bookmark through a cross-view return. The lab link uses target=_blank and rel=opener, refreshes href on click, and visibly reports Boolean(window.opener). Repeat for Site Host, Unassigned Host, Flagged Domain and Flagged record.
+
+Exactly three integration tests model the copied initial store with separate Maps and actual HTTP/PostgreSQL reads; this is distinct from native clone proof. Full104/104, lint96, unchanged22+2/114FK and build pass. Native evidence is PARTIAL because browser control was interrupted; verification-v34.json lists the remaining checks. Do not claim native completion from modeled evidence.

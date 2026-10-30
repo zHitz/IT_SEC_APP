@@ -1,0 +1,39 @@
+{
+  "version": 22,
+  "recordedAt": "2026-10-25T07:55:58.069066+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM; no native or production claim",
+  "tests": 73,
+  "failures": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "view": "Domain detail DNS",
+  "total": 31,
+  "searchedTotal": 30,
+  "page2Rows": 5,
+  "apiSortCombinations": 4,
+  "route": "#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_search=192.0.2&search=sample-&page=2&page_size=10",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "invalidSortCases": 4,
+  "invalidListEmpty": true,
+  "parentInformationRetained": true,
+  "stableIdTies": true,
+  "nullsLast": "Explicit SQL NULLS LAST retained/added; no new nullable fixture in this round.",
+  "cloudflareRequests": 0,
+  "readOnlyTransactionTests": true,
+  "failuresAndResolution": [
+    "New DNS search test initially expected 11 but actual was 12 because the existing seed also matched; corrected count, then full suite 73/73 passed.",
+    "Initial edit script assertion stopped before writing any source; duplicate replacement removed and implementation applied."
+  ],
+  "limits": [
+    "Viewport screenshots, not full-page captures.",
+    "Synthetic inventory only; no live Cloudflare, production, token, tag-algorithm or schema changes."
+  ]
+}

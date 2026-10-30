@@ -1,0 +1,50 @@
+{
+  "task": "S0-003",
+  "version": "v5",
+  "tests": 33,
+  "lintModules": 55,
+  "schema": "22+2/114FK unchanged",
+  "build": "PASS",
+  "actualBrowser": {
+    "hosts": 26,
+    "pageSize": 10,
+    "next": "page2/3",
+    "hostnameSearch": "HOST-01 =>1",
+    "packageSearch": "package-01 =>1/version1.2.3",
+    "ports": 25,
+    "process": "synthetic-listener",
+    "pid": "shown as integer",
+    "screenshots": [
+      "ui-v5-hosts.png",
+      "ui-v5-packages.png",
+      "ui-v5-ports.png"
+    ]
+  },
+  "httpProof": "HOST_UI_V5_HTTP_PROOF {\"synthetic\":true,\"hosts\":26,\"hostPackages\":24,\"hostPorts\":25,\"search\":true,\"pages\":true,\"osVersion\":true,\"packageVersion\":true,\"processPid\":true,\"optIn404\":true,\"nativeLinux\":false}",
+  "limits": [
+    "synthetic PostgreSQL17.5WASM, not nativeLinux/osquery",
+    "No exact viewport/reducedMotion emulation",
+    "No production/token/Cloudflare request"
+  ],
+  "failureResolved": "Initial host synthetic Package fixture lacked required normalized_version; fixed fixture to accepted schema, no schema change; final33tests allpass.",
+  "sha256": {
+    ".gitignore": "e73d4a3f02f979009cd5c98bf6ede638684b47b888c6a279e9253a1ee90ef17d",
+    "Docs/DOMAIN-INVENTORY-UI.md": "04aae9f98d051c766ff0f074814c7547087d6a27b6dd056fde3f538de0032013",
+    "Docs/HOST-INVENTORY-UI.md": "988581d707ae3f0c60689447e7892e195891d5396d5a1535425e034aa93af8d1",
+    "frontend/server.mjs": "2eb91272c932d6f344c475d50876845049399647347ab02bce9b13cc69d76aa0",
+    "frontend/src/domain-inventory.mjs": "9e10232a3edd8a6f0fa0d8c862292c3410e2f08869bca3f4423f0eef0a75e642",
+    "frontend/src/domains.html": "40979de3cf19b6ddbee9ec220509cf700d8714f7fdd48a1e553178c4b48dd63f",
+    "frontend/src/host-page.mjs": "c6433305b6bd5dd1bd7a5e3a728975122f10644edbb8f41025af0cd845254424",
+    "frontend/src/hosts.html": "0815025e2f82b8b3d125b6adbd5ee3dacdfc83789717d449a6df85a12039b726",
+    "frontend/src/inventory-table.mjs": "42d53c599e0b22dcb46fccda895148f27fe3f9571d8f7215a96e9f2fbb7b62e9",
+    "frontend/test/domain-proxy.test.mjs": "f64d201c1cd3a7a435a91c8013bf2043616c72eee48290d3923451bd51828f0c",
+    "frontend/test/host-inventory.test.mjs": "6a3e03fab1a9e9a51be1ee925e03c2d2b578a2be6d95b28e5ae84c16dab546b1",
+    "scripts/inventory-ui-lab.mjs": "c5211ce4a9926b0248f598abae617a807503809589ae9ce13cc6d73ab150948e",
+    "Docs/evidence/S0-003/build-v5.txt": "f8c646a9d84efe70cde7f20a1fb56b2f32b4032c11bbbedfc6f7d4ec5071f298",
+    "Docs/evidence/S0-003/lint-v5.txt": "a1b19dd47a2bc0f59007c31b6a1185d60b31db3f0e684e7f886dfcef36949b33",
+    "Docs/evidence/S0-003/test-v5.txt": "e699a95606e0ff910fde37ff017cdaa06c04cd932d559944c82ce6c51daad6fa",
+    "Docs/evidence/S0-003/ui-v5-hosts.png": "a0d33312fba58948b8059457b621c8bf5816dc78d1677f27911573f2b432b2fe",
+    "Docs/evidence/S0-003/ui-v5-packages.png": "2f21065f900946f7094f3969ecdf81ee19c12a11e2bc6e87f5f8ecc81e3441f0",
+    "Docs/evidence/S0-003/ui-v5-ports.png": "b32f49d617ffdc8d99ac91cf0ebeec0184b076cd940535ff9031d8901b54c05c"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "version": 26,
+  "recordedAt": "2026-10-25T09:20:50.921985+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM",
+  "tests": 81,
+  "failed": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "route": "#domain=10000000-0000-4000-8000-000000000004&search=sample-&outside_known_range=true&sort=hostname&direction=desc&page=1&page_size=10&detail_dns_search=192.0.2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_page=2&record=30000000-0000-4000-8000-000000000030",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "readOnlyTransactionTests": true,
+  "cloudflareRequests": 0,
+  "independentIsolation": true,
+  "invalidCases": 6,
+  "observations": {
+    "domain": "sample-04.test",
+    "listSearch": "sample-",
+    "listFlag": true,
+    "listSort": "hostname desc",
+    "listPage": 1,
+    "detailSearch": "192.0.2",
+    "detailSort": "value desc",
+    "detailPage": 2,
+    "detailRows": 5,
+    "record": "30000000-0000-4000-8000-000000000030",
+    "returnReopen": true
+  },
+  "failuresAndResolution": [
+    "First full run:80/81 passed; default Domain detail page1 parameter incorrectly invalidated older flagged-record route. Omit default page1 in bookmark serialization; final full rerun81/81 passed."
+  ],
+  "limits": [
+    "Viewport screenshots; synthetic local only.",
+    "Invalid record reveals retained Domain detail and its DNS list."
+  ]
+}

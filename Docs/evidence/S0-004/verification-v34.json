@@ -1,0 +1,47 @@
+{
+  "task": "TASK-S0-004",
+  "version": 34,
+  "status": "PARTIAL",
+  "tests": {
+    "total": 104,
+    "passed": 104,
+    "failed": 0,
+    "newTests": 3,
+    "module": "frontend/test/view-bookmarks.test.mjs",
+    "markers": [
+      "V34_DUPLICATE_MODEL",
+      "V34_OPENER_MODEL",
+      "V34_INVALID_CLONE"
+    ]
+  },
+  "lintModules": 96,
+  "schema": "22 entities + 2 junctions / 114 native foreign keys; unchanged",
+  "build": "PASS",
+  "cloudflareRequests": 0,
+  "automatedScope": "Actual HTTP/PostgreSQL READ ONLY after synthetic setup. Separate Map stores copy an initial snapshot to model duplicate/opener session cloning. Explicit child URL overrides copied bookmark; original Map and fragment remain exact after child navigation/teardown. All four journeys covered. This is not native browser session-cloning proof.",
+  "browserScope": "Actual native Chrome Duplicate and rel=opener were exercised; three screenshots retained. Final native trace remains incomplete. Corrected lab opener reads current location.href on click, rather than stale initial hash. Site screenshots use corrected loopback lab; Domain screenshots preserve earlier partial native observations.",
+  "nativeRemaining": [
+    "Complete final corrected-lab duplicate/opener/invalid traces for all four journeys",
+    "Verify original saved bookmark via cross-view return after child navigation/closure, not only visible URL",
+    "Complete corrected Flagged record opener check"
+  ],
+  "interruption": "Prior turn Computer Use ended because current Windows browser URL could not be determined confidently. Current run native address-field action reported user input in that window; no further native actions taken. No bypass or safety weakening.",
+  "screenshots": [
+    {
+      "file": "domain-duplicate-v34.png",
+      "sha256": "40019742949de5aad95afaff69c0b4a1721170120c329653570a2ed85c2f5e91",
+      "scope": "Actual Chrome screenshot; partial native evidence, not full end-to-end completion."
+    },
+    {
+      "file": "domain-opener-v34.png",
+      "sha256": "821ea987b14cb69751f3829af2e58220717878b2ff5a5e6f517914bdaf7548e7",
+      "scope": "Actual Chrome screenshot; partial native evidence, not full end-to-end completion."
+    },
+    {
+      "file": "domain-invalid-duplicate-v34.png",
+      "sha256": "31179ad585e9ace556ad9cf48ee2aa663963bb5aaafeaed9d09dbdc9df20f7fa",
+      "scope": "Actual Chrome screenshot; partial native evidence, not full end-to-end completion."
+    }
+  ],
+  "limits": "Synthetic/local only; no production, credentials, CVE conclusion or live Cloudflare requests. Native Host AC1/3/4 remain unverified; accepted 600010ms outage retained/not rerun."
+}

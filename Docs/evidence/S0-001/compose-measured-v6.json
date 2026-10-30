@@ -1,0 +1,106 @@
+{
+  "retrieved_at": "2026-10-30T13:01:24.330316+00:00",
+  "source_head": "08c5b5a55d681b196ad92f999a9417c4060234cc",
+  "proofs": [
+    {
+      "check_id": 124075576136,
+      "check_head_sha": "08c5b5a55d681b196ad92f999a9417c4060234cc",
+      "details_url": "https://github.com/zHitz/IT_SEC_APP/actions/runs/41059555517/job/124075576136",
+      "check_status": "completed",
+      "check_conclusion": "success",
+      "raw_annotation": {
+        "path": ".github",
+        "blob_href": "https://github.com/zHitz/IT_SEC_APP/blob/08c5b5a55d681b196ad92f999a9417c4060234cc/.github",
+        "start_line": 7,
+        "start_column": null,
+        "end_line": 7,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "ATLAS_COMPOSE_PROOF_V1",
+        "message": "{\"success\":true,\"limits\":[\"Hosted fresh checkout, not pristine physical hardware; base images/tools may be cached.\",\"HTTP shell only; browser rendering not observed.\"],\"checkout_sha\":\"08c5b5a55d681b196ad92f999a9417c4060234cc\",\"started_at\":\"2026-10-30T12:59:37+00:00\",\"finished_at\":\"2026-10-30T12:59:58.588243+00:00\",\"docker_version\":\"28.0.4\",\"compose_version\":\"2.38.2\",\"elapsed_seconds\":20.986,\"total_seconds\":21.588,\"initial_image_count\":6,\"cleanup\":\"success (own project only)\",\"health\":{\"status\":200,\"body\":{\"status\":\"ok\",\"service\":\"backend\",\"scope\":\"liveness\"}},\"frontend\":{\"status\":200,\"bytes\":2733,\"atlas_marker\":true,\"sha256\":\"af224c4ea1fb016d47a22770e6311973e71fb7350f0f0374c2639e25d3f44b6f\"}}",
+        "raw_details": ""
+      },
+      "parsed_summary": {
+        "success": true,
+        "limits": [
+          "Hosted fresh checkout, not pristine physical hardware; base images/tools may be cached.",
+          "HTTP shell only; browser rendering not observed."
+        ],
+        "checkout_sha": "08c5b5a55d681b196ad92f999a9417c4060234cc",
+        "started_at": "2026-10-30T12:59:37+00:00",
+        "finished_at": "2026-10-30T12:59:58.588243+00:00",
+        "docker_version": "28.0.4",
+        "compose_version": "2.38.2",
+        "elapsed_seconds": 20.986,
+        "total_seconds": 21.588,
+        "initial_image_count": 6,
+        "cleanup": "success (own project only)",
+        "health": {
+          "status": 200,
+          "body": {
+            "status": "ok",
+            "service": "backend",
+            "scope": "liveness"
+          }
+        },
+        "frontend": {
+          "status": 200,
+          "bytes": 2733,
+          "atlas_marker": true,
+          "sha256": "af224c4ea1fb016d47a22770e6311973e71fb7350f0f0374c2639e25d3f44b6f"
+        }
+      }
+    },
+    {
+      "check_id": 124075610395,
+      "check_head_sha": "08c5b5a55d681b196ad92f999a9417c4060234cc",
+      "details_url": "https://github.com/zHitz/IT_SEC_APP/actions/runs/41059565151/job/124075610395",
+      "check_status": "completed",
+      "check_conclusion": "success",
+      "raw_annotation": {
+        "path": ".github",
+        "blob_href": "https://github.com/zHitz/IT_SEC_APP/blob/08c5b5a55d681b196ad92f999a9417c4060234cc/.github",
+        "start_line": 7,
+        "start_column": null,
+        "end_line": 7,
+        "end_column": null,
+        "annotation_level": "notice",
+        "title": "ATLAS_COMPOSE_PROOF_V1",
+        "message": "{\"success\":true,\"limits\":[\"Hosted fresh checkout, not pristine physical hardware; base images/tools may be cached.\",\"HTTP shell only; browser rendering not observed.\"],\"checkout_sha\":\"31c561b6b188116043e1dba54d0a36081244b6fb\",\"started_at\":\"2026-10-30T12:59:42+00:00\",\"finished_at\":\"2026-10-30T13:00:00.445984+00:00\",\"docker_version\":\"28.0.4\",\"compose_version\":\"2.38.2\",\"elapsed_seconds\":18.012,\"total_seconds\":18.446,\"initial_image_count\":6,\"cleanup\":\"success (own project only)\",\"health\":{\"status\":200,\"body\":{\"status\":\"ok\",\"service\":\"backend\",\"scope\":\"liveness\"}},\"frontend\":{\"status\":200,\"bytes\":2733,\"atlas_marker\":true,\"sha256\":\"af224c4ea1fb016d47a22770e6311973e71fb7350f0f0374c2639e25d3f44b6f\"}}",
+        "raw_details": ""
+      },
+      "parsed_summary": {
+        "success": true,
+        "limits": [
+          "Hosted fresh checkout, not pristine physical hardware; base images/tools may be cached.",
+          "HTTP shell only; browser rendering not observed."
+        ],
+        "checkout_sha": "31c561b6b188116043e1dba54d0a36081244b6fb",
+        "started_at": "2026-10-30T12:59:42+00:00",
+        "finished_at": "2026-10-30T13:00:00.445984+00:00",
+        "docker_version": "28.0.4",
+        "compose_version": "2.38.2",
+        "elapsed_seconds": 18.012,
+        "total_seconds": 18.446,
+        "initial_image_count": 6,
+        "cleanup": "success (own project only)",
+        "health": {
+          "status": 200,
+          "body": {
+            "status": "ok",
+            "service": "backend",
+            "scope": "liveness"
+          }
+        },
+        "frontend": {
+          "status": 200,
+          "bytes": 2733,
+          "atlas_marker": true,
+          "sha256": "af224c4ea1fb016d47a22770e6311973e71fb7350f0f0374c2639e25d3f44b6f"
+        }
+      }
+    }
+  ],
+  "read_endpoint": "Public GET check-runs/{id}/annotations?per_page=100; HTTP200",
+  "limits": "Hosted fresh checkout only, not pristine physical machine; six initial cached images; HTTP not browser rendering. PR checkout merge SHA may differ from source head; both preserved."
+}

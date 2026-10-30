@@ -1,0 +1,30 @@
+{
+  "synthetic": true,
+  "actualHttpPostgres": true,
+  "readOnlyTransaction": true,
+  "value192": "18records/2pages",
+  "value198": "6records/1page",
+  "browser": [
+    "18matching page2of2 contains8rows",
+    "return sample12 detail unchanged",
+    "global value198search6records",
+    "return flagged list retains sample-/page1/size10"
+  ],
+  "query": "case-insensitive literal substring of stored value; no CIDR/wildcard/live lookup",
+  "invalid": "empty/control/duplicate/page0/unrelated-resource param400",
+  "injection": "literal quote payload zero rows",
+  "checks": {
+    "tests": 46,
+    "pass": 46,
+    "lintModules": 69,
+    "schema": "22+2/114FK unchanged",
+    "build": "PASS"
+  },
+  "cloudflareRequests": 0,
+  "limits": [
+    "No scale benchmark",
+    "Search panel route not persisted on reload",
+    "No production/native credentials"
+  ],
+  "taskFailures": []
+}

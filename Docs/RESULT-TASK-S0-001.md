@@ -3,144 +3,197 @@
 | Trường | Giá trị |
 |---|---|
 | Task ID | TASK-S0-001 |
-| Result version | v3 |
-| Trạng thái | BLOCKED |
-| Spec version đã làm theo | SRS v1.0 — `Docs/it-asset-security-srs.pdf` (32 trang); TASK-S0-001; HANDBOOK-TL v1.0; Quy chuẩn file result v1.0 |
+| Result version | v6 |
+| Trạng thái | PARTIAL |
+| Spec version đã làm theo | SRS v1.0; TASK-S0-001; HANDBOOK-TL v1.0; Quy chuẩn file result v1.0; quyết định Team Lead trên ClickUp |
 | Dev agent | Codex — Dev AI Agent |
-| Ngày nộp | 2026-10-24 14:29 +07:00 |
-| Thời gian thực hiện | Ba lượt kiểm tra đầu vào ngày 2026-10-24; lượt v3 đọc đầy đủ bộ docs theo kickoff và xác nhận ClickUp; chưa triển khai skeleton |
+| Ngày nộp | 2026-10-24 19:27 +07:00 |
+| Thời gian thực hiện | Lượt triển khai local 2026-10-24 khoảng 19:15–19:27 +07:00; trước đó v1–v3 kiểm tra đầu vào |
 
 ## 1. Tóm tắt kết quả
 
-Đã đọc đầy đủ năm tài liệu theo đúng thứ tự Team Lead ghi trong comment kickoff ClickUp, rồi đăng comment xác nhận và bắt đầu kiểm tra đầu vào TASK-S0-001. Chỉ giữ UI/UX/style/concept của IT_ASSET_MAP cho frontend skeleton; kiến trúc, repo và nghiệp vụ phải theo SRS v1.0 và TASK. Điểm chặn còn lại là chưa có repo đích được chỉ định/quyền push và CI: mô tả task, attachment và comment kickoff đều chưa cung cấp thông tin này. Theo mục 7.1 của task, đã báo BLOCKED trên đúng task ClickUp và chưa tự tạo repo khác thay thế. Chưa code, push, chạy CI hoặc chuyển sang task phụ thuộc.
+CURRENT v6: focused rework1 delivers actual measured Docker reports through supported public check annotations. At source08c5b5a, push check124075576136 measured20.986seconds checkout-to-readiness,21.588seconds including cleanup. Backend/front HTTP200, cleanup success; Engine28.0.4/Compose2.38.2. Hosted runner had6 initial images. Overall PARTIAL pending Lead/PO acceptance of clean-machine/browser limits; v5 and older text below is historical.
+
+CURRENT v5 (LOCAL-COMPOSE-ACCEPTANCE-001 / QA-EVID-01): implemented disposable Docker acceptance capture and executed two successful GitHub-hosted Compose jobs at a64b3f531e179b8f8fbfc649c26733a49c536bb8. Sanitized artifact download requires authentication (HTTP401); measured JSON has NOT been retrieved, so AC-1/AC-6 remain unverified and overall PARTIAL. All v4 text below is historical.
+
+Đã khởi tạo Git local tại IT_SEC_APP, tạo skeleton backend/frontend, Compose database rỗng, workflow GitHub Actions, env, README và ADR-001. Frontend chỉ giữ style/concept khung cũ, có dark/light và kiểm tra liveness backend, không chứa nghiệp vụ. Local lint → 4 test → build đã xanh, có ảnh browser và commit skeleton đầu tiên. Trạng thái PARTIAL vì chưa có Docker để kiểm chứng AC-1/AC-6 và ADR-001 còn là đề xuất chưa được Team Lead xác nhận. CI GitHub chưa chạy trên remote, sẽ kiểm chứng lại khi push lên GitHub.
 
 ## 2. Đối chiếu acceptance criteria
 
-| # | Acceptance criterion từ TASK-S0-001, giữ mã và tên | Đạt? | Bằng chứng / lý do |
-|---|---|---|---|
-| AC-1 | Chạy local được dưới 10 phút: Trên máy sạch chỉ có Docker và Git, làm đúng từng bước trong README thì `docker compose up` thành công, frontend mở được và endpoint `/health` của backend trả về trạng thái hoạt động. Tổng thời gian từ lúc clone đến lúc kiểm tra xong dưới 10 phút. Bằng chứng: ghi lại các lệnh đã chạy, thời gian bắt đầu và kết thúc, và kết quả gọi endpoint `/health`. | Chưa kiểm chứng | Chưa có repo đích/skeleton; chưa chạy Docker Compose, frontend hoặc `/health`; chưa có đo trên máy sạch. |
-| AC-2 | CI xanh trên commit đầu tiên: Push commit đầu tiên lên repo, CI chạy đủ 3 bước lint, unit test skeleton và build, và cả 3 đều đạt. Bằng chứng: đường dẫn tới lần chạy CI hoặc ảnh chụp kết quả CI, ghi rõ tên các job. | Chưa kiểm chứng | Chưa có remote repo được chỉ định, chưa push commit và chưa có CI run. Không dùng kết quả build UI local từ lượt trước thay CI của task này. |
-| AC-3 | ADR-001 đầy đủ: Tồn tại file `docs/adr/ADR-001-tech-stack.md` có đủ bối cảnh, quyết định cho backend, frontend và cơ sở dữ liệu, lý do chọn, ít nhất một phương án đã loại cho mỗi phần kèm lý do loại, và hệ quả. Nếu là đề xuất chưa được chốt trong SRS thì có dòng ghi rõ cần Team Lead xác nhận. | Chưa đạt | Đã có SRS v1.0; mục 7 mô tả kiến trúc logic, chưa tìm thấy lựa chọn framework cụ thể trong phần đã đối chiếu. Chưa tạo ADR ở repo đích chưa được chỉ định; không tự coi đề xuất stack là được Team Lead chấp nhận. |
-| AC-4 | Không có secret hard-code: Quét toàn bộ repo không thấy token, mật khẩu, khóa bí mật hoặc chuỗi kết nối thật được ghi cứng. Mọi cấu hình nhạy cảm đều đọc từ biến môi trường và đã liệt kê trong `.env.example`. Bằng chứng: ghi rõ công cụ hoặc cách đã dùng để quét và kết quả quét. | Chưa kiểm chứng | Chưa có repo triển khai để quét toàn bộ. Việc RESULT này không chứa secret không chứng minh AC-4 cho codebase chưa được dựng. |
-| AC-5 | Cấu trúc đúng chuẩn: Cây thư mục của repo khớp cấu trúc ở mục 5.1 và quy ước đặt tên trong Sổ tay Team Lead chương 3. Mọi thư mục con đều có README ngắn hoặc file giải thích. Bằng chứng: cây thư mục thực tế của repo tại thời điểm nộp. | Chưa đạt | Chưa có repo đích để dựng/đối chiếu cây source mục 5.1. Cây quản lý tài liệu của handbook được ghi riêng, không mặc định coi hai cây là mâu thuẫn loại trừ nhau. |
-| AC-6 | README đủ để tự chạy: README có đủ các mục liệt kê ở mục 5.3, các lệnh trong README copy ra chạy được nguyên văn, không phải sửa tay. Bằng chứng: đối chiếu từng mục bắt buộc của mục 5.3 với vị trí tương ứng trong README. | Chưa đạt | Chưa có README skeleton theo mục 5.3; README của IT_ASSET_MAP hiện tại chỉ hướng dẫn frontend local, không thay README backend/frontend/database Compose. |
+V6 AC-1: hosted-checkout <600seconds demonstrated (20.986s), exact pristine-machine/browser clause still unverified, no waiver. AC-6: documented Docker build/up path exercised with generated private env and loopback ports; health/frontend verified by HTTP, publication now delivered. Original six rows retained below; AC-2/3/4/5 historical evidence unchanged, no ADR or TASK edits.
 
-Mã/tên AC phía trên tương ứng từng tiêu chí ở mục 8 của TASK-S0-001; chưa có bằng chứng cho các điều kiện chi tiết của bất kỳ tiêu chí nào.
+V5 AC-1: UNVERIFIED: real runner jobs success, but measured report unavailable and hosted runner is not pristine physical machine. AC-6: PREPARATORY: documented Docker sequence exercised by harness with private env/unique project/loopback ports; raw output/measurement not retrieved, no browser rendering claim. AC-2/3/4/5 retain historical accepted evidence separately; no ADR status change or new secret scan claimed. See compose-ci-v5.json for exact source/run/artifact IDs.
+
+| # | Acceptance criterion (copy TASK mục 8) | Đạt? | Bằng chứng |
+|---|---|---|---|
+| AC-1 | Chạy local được dưới 10 phút: Trên máy sạch chỉ có Docker và Git, làm đúng từng bước trong README thì `docker compose up` thành công, frontend mở được và endpoint `/health` của backend trả về trạng thái hoạt động. Tổng thời gian từ lúc clone đến lúc kiểm tra xong dưới 10 phút. Bằng chứng: ghi lại các lệnh đã chạy, thời gian bắt đầu và kết thúc, và kết quả gọi endpoint `/health`. | Chưa kiểm chứng | Không có Docker trên máy Dev; chưa chạy Compose/đo clean-machine. HTTP local và browser đã pass nhưng không thay AC-1. |
+| AC-2 | CI xanh trên commit đầu tiên: Push commit đầu tiên lên repo, CI chạy đủ 3 bước lint, unit test skeleton và build, và cả 3 đều đạt. Bằng chứng: đường dẫn tới lần chạy CI hoặc ảnh chụp kết quả CI, ghi rõ tên các job. | Đạt | Quyết định TL comment 1100390000159464 đổi AC-2 sang local run; ci-local.txt ghi đủ lint → 4 test → build xanh và timestamp. Commit skeleton f7db71b07fa859d6c68a74f0f0969f1de0c61d18; workflow sẵn. Remote chưa chạy. |
+| AC-3 | ADR-001 đầy đủ: Tồn tại file `docs/adr/ADR-001-tech-stack.md` có đủ bối cảnh, quyết định cho backend, frontend và cơ sở dữ liệu, lý do chọn, ít nhất một phương án đã loại cho mỗi phần kèm lý do loại, và hệ quả. Nếu là đề xuất chưa được chốt trong SRS thì có dòng ghi rõ cần Team Lead xác nhận. | Đạt | Docs/adr/ADR-001-tech-stack.md đủ các phần; vẫn PROPOSED, chưa có xác nhận Team Lead nên trạng thái chung tối đa PARTIAL. |
+| AC-4 | Không có secret hard-code: Quét toàn bộ repo không thấy token, mật khẩu, khóa bí mật hoặc chuỗi kết nối thật được ghi cứng. Mọi cấu hình nhạy cảm đều đọc từ biến môi trường và đã liệt kê trong `.env.example`. Bằng chứng: ghi rõ công cụ hoặc cách đã dùng để quét và kết quả quét. | Đạt | scripts/scan-secrets.mjs quét tracked text với private-key/GitHub/AWS/credential URL patterns: findings []; đã rà source/config/env bằng tay. Không phải chứng minh tuyệt đối; PDF/ảnh loại khỏi heuristic. |
+| AC-5 | Cấu trúc đúng chuẩn: Cây thư mục của repo khớp cấu trúc ở mục 5.1 và quy ước đặt tên trong Sổ tay Team Lead chương 3. Mọi thư mục con đều có README ngắn hoặc file giải thích. Bằng chứng: cây thư mục thực tế của repo tại thời điểm nộp. | Đạt | Docs/evidence/S0-001/tree.txt; source tree theo TASK. Docs/ thay docs/ do Windows case-insensitive, mapping README; mỗi thư mục source có README. |
+| AC-6 | README đủ để tự chạy: README có đủ các mục liệt kê ở mục 5.3, các lệnh trong README copy ra chạy được nguyên văn, không phải sửa tay. Bằng chứng: đối chiếu từng mục bắt buộc của mục 5.3 với vị trí tương ứng trong README. | Chưa kiểm chứng | README đủ nội dung §5.3, xem mapping bên dưới; chưa chạy nguyên văn các lệnh Docker nên chưa khai AC đầy đủ đạt. |
+
+AC-2 áp dụng thay đổi đã được Team Lead chốt ở comment 1100390000159464, không tự bỏ điều kiện remote. AC-3 đạt nội dung ADR, không có nghĩa stack đã được chấp nhận. Chưa tự đóng/ACCEPT task.
 
 ## 3. Công việc đã làm
 
-1. Kiểm tra thư mục `Project_app/IT_SEC_APP/Docs` và xác nhận có `TASK-S0-001.md` đến `TASK-S0-004.md`, mẫu giao task và PDF handbook.
-2. Đọc TASK-S0-001, các mục liên quan của ba task phụ thuộc và nội dung ClickUp task `z8tj1hq1md`; chỉ đọc, không thay đổi assignee/status/comment trên ClickUp.
-3. Đọc PDF handbook bằng pypdf, tập trung chương 1–4 và phụ lục RESULT (trang 3–8, 17–18); xác nhận vai trò Dev, thứ tự review và yêu cầu ghi BLOCKED khi thiếu đầu vào.
-4. Đối chiếu hai Markdown `SEC_Atlas_Full_Spec_v0.1.md` và `SEC_Atlas_Full_Spec_v0.1 (1).md`; hai file có cùng SHA-256, cùng khai version 0.1 Draft. Không tự nâng nhãn thành SRS v1.0.
-5. Tìm SRS/RESULT/REVIEW trong phạm vi local đã kiểm tra và tìm tài liệu/attachment có từ khóa SRS trên ClickUp. Chưa tìm được SRS v1.0 hoặc chứng cứ nghiệm thu task nền.
-6. Kiểm tra `.git` tại workspace root, thư mục frontend hiện có và thư mục tài liệu; cả ba không có `.git`. Điều này chỉ chứng minh ba vị trí đó không có Git metadata, không khẳng định không tồn tại repo khác ngoài phạm vi kiểm tra.
-7. Ghi RESULT này để chuyển các điểm cần quyết định cho Team Lead/Product Owner.
-8. Lượt v2: tìm thấy PDF SRS v1.0 và chuẩn RESULT mới bổ sung; đọc metadata/mục lục và các trang 8–12, 29–30 của SRS để đối chiếu architecture, entity, relation, roadmap; xác nhận template đầy đủ giữ nguyên 10 mục đang dùng.
-9. Kiểm tra lại ClickUp TASK-S0-001: nội dung vẫn tham chiếu task local, chưa có attachment hoặc URL repo đích trong phản hồi đọc task. Không sửa task ClickUp.
-10. Lượt v3: đọc comment kickoff `1100390000159445` và mô tả cập nhật trên [TASK-S0-001](https://app.clickup.com/t/z8tj1hq1md). Phản hồi comments có đúng một comment kickoff, `reply_count: 0`; chưa có comment Dev xác nhận đọc trước lượt này.
-11. Đọc đầy đủ theo thứ tự: `it-asset-security-srs.pdf` trang 1–32 → `dev-ai-teamlead-handbook.pdf` trang 1–19 → `Quy chuan file result.md` → `Mau file giao task.md` → `TASK-S0-001.md`. Đọc lại trang 9 SRS riêng để bù phần output bị cắt; không coi output bị cắt là đã đọc đầy đủ. Không triển khai/đọc lại task 002–004 như nhiệm vụ được giao.
-12. Đăng comment `1100390000159460`: “Đã đọc docs. Bắt đầu TASK-S0-001”, tóm tắt phạm vi, giới hạn giữ UI cũ và BLOCKED tại mục 7.1; yêu cầu Team Lead chỉ định repo/quyền push/CI. Không đổi trạng thái task hoặc tự đóng task.
-13. Kiểm tra lại ba vị trí `.git` tại mục 5: đều trả `False`. Chỉ kết luận cho ba vị trí đó, không khẳng định đã tìm toàn máy.
+V6 added fixed-allowlist notice emitter, validated synthetic parsing/escaping/leak rejection, ran real Docker CI and retrieved two actual notices with raw metadata/parsed report. No credential use, artifact relay or runtime/schema change.
+
+V5 added Python-standard-library capture runner and separate Compose CI workflow. Real Docker jobs succeeded; no Docker/WSL/services installed locally. Generated throwaway DB password stays in private temp env, never report. Commands have finite deadline and only own-project volume cleanup.
+
+1. Tái kiểm tra comment task; nhận quyết định repo local và thực thi, đăng comment bắt đầu lại 1100390000159745. Bộ docs đã đọc đủ ở v3, không xác nhận lặp.
+2. Init Git ngay tại IT_SEC_APP; giữ nguyên artifacts của PO, loại HTML/downloaded assets khỏi Git và Docker context. Không chạy Rediver source.
+3. Dựng HTTP boundary, config validation và bootstrap riêng; GET /health chỉ liveness, 404 có request_id, không business API.
+4. Dựng shell tiếng Việt bằng HTML/CSS/native ESM, token màu/spacing/layout theo khung cũ; health module riêng, error/loading/retry, theme ghi nhớ có fallback khi storage bị chặn.
+5. Dựng Compose/Dockerfiles build trong image, config qua env, database không publish; collectors chỉ README. Workflow push/PR chạy tuần tự lint, unit-test, build.
+6. Viết ADR đề xuất, README chạy/test/reset/troubleshooting và mapping Docs/; kiểm tra local, ảnh browser, scan pattern; commit skeleton f7db71b07fa859d6c68a74f0f0969f1de0c61d18.
 
 ## 4. Files đã thay đổi
 
+V6 changed scripts/compose-proof-notice.py (bounded allowlist/escaping), scripts/test-compose-proof-notice.py (three synthetic emitter checks), .github/workflows/compose-acceptance.yml (always publish notice, preserve artifact), this RESULT, Docs/evidence/S0-001/compose-measured-v6.json (actual raw notices/provenance/measurements), compose-notice-tests-v6.txt (actual emitter test output). Other TASK RESULTs untouched.
+
+V5 files: scripts/verify-compose.py (version/deadline/env/HTTP/cleanup/report harness); .github/workflows/compose-acceptance.yml (fresh checkout timing and narrow JSON artifact); README.md (existing remote wording correction and capture reproduction/limits); Docs/evidence/S0-001/compose-ci-v5.json (actual run metadata/401 limitation); this canonical RESULT. Other TASK RESULTs untouched.
+
+Các đường dẫn dưới đây tương đối với F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP. Các tài liệu đầu vào đã có được đưa vào Git baseline, không sửa nội dung: SRS PDF, handbook PDF, Mẫu giao task, Quy chuẩn result, TASK-S0-001/002/003/004. Không triển khai các task đó.
+
 | Đường dẫn | Loại | Nội dung thay đổi |
 |---|---|---|
-| `Project_app/IT_SEC_APP/Docs/RESULT-TASK-S0-001.md` | Tạo ở v1, sửa tại v2/v3 | v3 ghi nhận kickoff, thứ tự đọc đủ docs, comment xác nhận/BLOCKED và kiểm tra lại repo. Bổ sung nguyên văn điều kiện từng AC. |
+| `.dockerignore` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `.env.example` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `.github/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `.github/workflows/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `.github/workflows/ci.yml` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `.gitignore` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/RESULT-TASK-S0-001.md` | Sửa | Báo cáo canonical v4, thay v3. |
+| `Docs/adr/ADR-001-tech-stack.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/adr/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/ci-local.txt` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/dark.png` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/light.png` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/secret-scan.json` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `Docs/evidence/S0-001/tree.txt` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/src/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/src/app.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/src/config.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/src/server.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/test/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `backend/test/health.test.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `collectors/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `collectors/docker/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `collectors/k8s/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `collectors/osquery/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `compose.yaml` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `deploy/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `deploy/docker/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `deploy/docker/backend.Dockerfile` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `deploy/docker/compose.yaml` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `deploy/docker/frontend.Dockerfile` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/server.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/src/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/src/app.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/src/health.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/src/index.html` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/src/style.css` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/test/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `frontend/test/skeleton.test.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `package.json` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `scripts/README.md` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `scripts/build.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `scripts/check.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
+| `scripts/scan-secrets.mjs` | Thêm mới | Source/tooling/tài liệu/bằng chứng skeleton TASK-S0-001; vai trò theo tên file và README thư mục. |
 
-Không sửa TASK, handbook, đặc tả nguồn, frontend IT_ASSET_MAP, cấu hình REA hoặc repository triển khai. Không tạo file giả cho CI/skeleton khi chưa có repo đích.
+Ngoài repo: reports/clickup-monitor/STATE.json cập nhật checkpoint thực thi/nộp. Git tạo metadata .git tại root được giao; generated backend/dist, frontend/dist bị ignore, không phải source bàn giao. Không sửa IT_ASSET_MAP, tài liệu TASK/SRS hay cấu hình REA.
 
 ## 5. Cách chạy và kiểm chứng
 
-Các lệnh sau chạy từ `F:\PROJECT\REVERSE_PROJECT` để kiểm chứng kết quả kiểm tra tài liệu, không phải để chạy skeleton:
+V6 emitter validation: python3 scripts/test-compose-proof-notice.py. Actual CI: existing compose-acceptance workflow; GET /repos/zHitz/IT_SEC_APP/check-runs/124075576136/annotations?per_page=100 (push) and124075610395 (PR). Match title ATLAS_COMPOSE_PROOF_V1 and parse message JSON. Reproduce isolated Docker path as v5; never upload env/raw logs.
 
-```powershell
-Get-ChildItem -LiteralPath 'Project_app/IT_SEC_APP/Docs' -File
-Get-Content -LiteralPath 'Project_app/IT_SEC_APP/Docs/TASK-S0-001.md'
-Get-Content -LiteralPath 'Project_app/IT_SEC_APP/SEC_Atlas_Full_Spec_v0.1.md' -TotalCount 16
-Get-FileHash -LiteralPath 'Project_app/IT_SEC_APP/SEC_Atlas_Full_Spec_v0.1.md','Project_app/IT_SEC_APP/SEC_Atlas_Full_Spec_v0.1 (1).md' -Algorithm SHA256
-Test-Path .git
-Test-Path Project_app/IT_ASSET_MAP/.git
-Test-Path Project_app/IT_SEC_APP/.git
-```
+V5 reproduce on existing Docker Linux runner: python3 scripts/verify-compose.py --output /tmp/atlas-compose-acceptance.json. Standard manual Docker path still requires only Docker/Git, not Python. Workflow measures from before checkout. Review only acceptance.json artifact; never upload private env or broad logs. Current actual source a64b3f5; report commit is recorded in coordinator submission.
 
-Lượt v2 bổ sung:
+Root: F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP. Node thực tế v24.11.1; không có npm dependencies. Chạy `npm run lint`, `npm test`, `npm run build` theo thứ tự. HTTP test chỉ dùng loopback ephemeral. Nếu sandbox chặn EACCES, dùng quyền chạy local phù hợp; không giảm chính sách toàn cục.
 
-```powershell
-Get-ChildItem -LiteralPath 'Project_app/IT_SEC_APP/Docs' -File
-Get-Content -LiteralPath 'Project_app/IT_SEC_APP/Docs/Quy chuan file result.md' -TotalCount 125
-Get-FileHash -LiteralPath 'Project_app/IT_SEC_APP/Docs/it-asset-security-srs.pdf' -Algorithm SHA256
-```
+README có các mục: Repo và mapping tài liệu; Yêu cầu; Chạy local (sao .env và biến bắt buộc, Compose, URL frontend và /health); Lint, unit-test và build; Dừng và reset; Xử lý sự cố (port, env/database volume, Compose/image). Đây là đối chiếu từng nhóm yêu cầu §5.3, chưa phải bằng chứng các lệnh Docker đã chạy.
 
-Mở `it-asset-security-srs.pdf`: trang 1 khai version 1.0, trang 2 có Mục 8 Data Model/Mục 20 API, trang 8–12 là kiến trúc và mô hình đúng hệ FR của task. Đối chiếu handbook PDF trang 6 về cấu trúc tài liệu, trang 8 và 17–18 về RESULT. Không có lệnh khởi chạy/backend health/CI hợp lệ để cung cấp ở giai đoạn này vì chưa triển khai.
+Compose cần Docker/Git, Compose >=2.20.3, không cần Node host. Copy .env.example thành .env, thay password local rồi `docker compose --env-file .env up --build -d`; `/health` mẫu tại port 4100, frontend 4200. Chưa có Docker trên máy Dev nên các bước này cần được chạy lại trên máy có Docker trước khi AC-1/AC-6 được đánh giá Đạt. Không dùng password mẫu vào môi trường thật.
+
+Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `node scripts/scan-secrets.mjs`. Xem output trong Docs/evidence/S0-001/secret-scan.json. Quét này là heuristic tracked text, cộng rà tay source/config/env; không chứng minh mọi loại secret không thể tồn tại.
 
 ## 6. Test và kết quả test
 
-Chỉ có kiểm tra đầu vào; chưa chạy lint/unit/build/Compose/secret scan của task. Không coi kiểm tra tài liệu là test nghiệm thu sản phẩm.
+V6 emitter3tests PASS (synthetic only); diff check PASS. Two actual compose checks SUCCESS; push measured20.986s readiness/21.588s total, Engine28.0.4, Compose2.38.2, image count6, backend200 exact liveness body, frontend200/2733bytes/Atlas marker/hash, cleanup success. PR measurement and distinct checkout/head provenance in compose-measured-v6.json. No arbitrary full-suite/outage rerun.
 
-| Test case / kiểm tra | Lệnh / cách test | Kết quả | Output thực tế rút gọn |
+V5 actual: Python ast.parse PASS; git diff --check PASS; Docker discovery absent locally. GitHub runs41057072469 and41057079771 completed SUCCESS at a64b3f5. Artifact archive GET returned401. No local Docker result, elapsed-time value, browser screenshot, full-suite rerun or new secret scan claimed.
+
+| Test / kiểm tra | Lệnh hoặc cách test | Kết quả | Output thật |
 |---|---|---|---|
-| PRE-01 — Có task local | `Get-ChildItem Project_app/IT_SEC_APP/Docs` | Pass cho kiểm tra đầu vào | Có TASK-S0-001/002/003/004, `Mau file giao task.md`, `dev-ai-teamlead-handbook.pdf`. |
-| PRE-02 — Định danh đặc tả có sẵn | `Get-Content ...SEC_Atlas_Full_Spec_v0.1.md -TotalCount 16` | Thiếu đầu vào bắt buộc | `Phiên bản: 0.1 - Draft để review với Product Owner và đội DEV`; chưa phải bản tự khai SRS v1.0. |
-| PRE-03 — So hai Markdown | `Get-FileHash ... -Algorithm SHA256` | Pass | Cùng hash `D0F49F1A96EE3FE33FA82802CB9B7E1F6597EAE796EB712A78E09A22A461B084`. |
-| PRE-04 — Git metadata tại ba vị trí đã kiểm tra | Ba lệnh `Test-Path` ở mục 5 | Chưa có repo đích để nghiệm thu | Output theo thứ tự: `False`, `False`, `False`. |
-| PRE-05 — Tìm SRS trên ClickUp | Search keyword `SRS`, asset types doc/attachment | Không tìm thấy trong phạm vi truy vấn | `Found 0 results`, `next_cursor: null`. Không kết luận không có tài liệu với tên khác hoặc ngoài quyền truy cập. |
-| PRE-06 — Đọc handbook | pypdf, 19 trang; trích trang 6/8/17/18 | Pass sau sửa encoding đầu ra | `PAGES: 19`; trích được chương 3 và template 10 mục. Lần đầu in ra console lỗi `UnicodeEncodeError` ở cp1258; đọc lại bằng stdout UTF-8 thành công. |
-| PRE-07 — Kiểm tra SRS mới tại v2 | pypdf đọc `Docs/it-asset-security-srs.pdf` | Pass cho nhận diện đầu vào | `TOTAL PAGES: 32`; trang 1: `Phien ban 1.0 - Ban giao cho doi phat trien (dev-ready)`; mục lục khớp Mục 8 Data Model/Mục 20 API. |
-| PRE-08 — Kiểm tra chuẩn RESULT đầy đủ | Đọc `Docs/Quy chuan file result.md`, mục 4 | Pass | Template header và 10 mục trùng handbook; bốn trạng thái DONE/PARTIAL/BLOCKED/FAILED. |
+| Lint | npm run lint | Pass | lint PASS: 10 modules; syntax and unsafe-code rules |
+| Unit/HTTP lần đầu | npm test trong sandbox | Fail do môi trường | 2 pass, 2 fail; fetch connect EACCES loopback. Không sửa test để che lỗi. |
+| Unit/HTTP chạy lại | npm test với quyền phù hợp | Pass | tests 4, pass 4, fail 0; health/404/write boundary, config invalid, frontend/proxy/data isolation, failure handling |
+| Build | npm run build | Pass | backend/src → backend/dist; frontend/src → frontend/dist, native ESM/static assets |
+| Local CI cuối | lint → test → build | Pass | Docs/evidence/S0-001/ci-local.txt có START/END, toàn chuỗi exit 0 |
+| Browser | IAB Chromium tại http://127.0.0.1:4200 | Pass trong phạm vi desktop | 1265×870; click Kiểm tra kết nối backend hiện Backend đang hoạt động; đổi theme hiển thị light. dark.png/light.png |
+| Preview lần đầu | IAB tới server sandbox | Fail do môi trường | ERR_CONNECTION_TIMED_OUT; chạy server loopback ngoài sandbox với quyền phù hợp, browser đọc và thao tác thành công |
+| Secret scan | node scripts/scan-secrets.mjs + rà tay source/env/config | Pass trong phạm vi heuristic | findings: []; không in giá trị env thật |
+| Docker | docker --version | Chưa kiểm chứng | docker: The term 'docker' is not recognized; chưa chạy Compose, chưa có clean-machine timing |
+| Remote CI | Chưa có remote | Chưa kiểm chứng | Thay bằng local run theo quyết định TL cho Sprint 0; không có CI URL |
 
-PRE-02/PRE-05 là kết quả tìm kiếm của lượt v1, được giữ như lịch sử; không còn là bằng chứng SRS thiếu sau PRE-07.
-
-| Kiểm tra bổ sung v3 | Cách kiểm tra | Kết quả | Output thật / tham chiếu |
-|---|---|---|---|
-| PRE-09 — Kickoff và xác nhận | `clickup_get_task_comments` task `z8tj1hq1md` | Pass | `count: 1`; kickoff `1100390000159445`, không có reply. `clickup_create_comment` trả `success: true`, `comment_id: 1100390000159460`. |
-| PRE-10 — Đọc đủ tài liệu | pypdf xuất UTF-8 theo từng nhóm trang; Get-Content ba Markdown theo thứ tự kickoff | Pass cho kiểm tra đầu vào | Đã đọc SRS 32/32 trang, handbook 19/19 trang và ba Markdown đầy đủ. SRS trang 9 đã đọc lại vì output nhóm đầu bị cắt. |
-| PRE-11 — Repo đích | Đọc mô tả/attachment/comment task; `Test-Path` tại ba vị trí mục 5 | Chưa có đầu vào bắt buộc | Task `attachments: []`; kickoff không chỉ định URL/checkout repo. Ba lệnh Test-Path lần lượt `False`, `False`, `False`. |
-
-PRE-09–11 là kiểm tra đầu vào, không thay bằng chứng lint/test/build/Compose/CI hoặc quét secret của repository triển khai.
+Ảnh là từ lần chạy thật, không dùng ảnh app cũ. Chưa kiểm tra mobile/tablet, keyboard traversal hay reload persistence bằng browser; CSS có breakpoint/focus/reduced-motion nhưng không khai đã nghiệm thu các tiêu chí đó.
 
 ## 7. Vấn đề gặp phải và quyết định tự xử lý
 
-- v3 không phải vòng REWORK: chưa nhận REVIEW/verdict; đây là cập nhật sau chỉ thị kickoff. So với v2, đã đọc đầy đủ bộ docs theo thứ tự, đăng xác nhận và báo BLOCKED qua đúng kênh ClickUp. Chưa thay đổi kết luận AC do chưa có source triển khai.
-- Kickoff đã chỉ rõ chỉ giữ UI/UX/style/concept từ khung cũ, đặt vào cấu trúc source mới. Không copy data model, CRUD, mô phỏng hoặc nghiệp vụ của app cũ. Đây là chỉ thị Team Lead/PO đã nhận, không phải giả định kiến trúc của Dev.
-- Mẫu giao task có template RESULT/tên phiên bản khác chuẩn đầy đủ; phụ lục TASK cũng rút gọn khác thứ tự. Kickoff và chính TASK quy định lấy Quy chuẩn file result v1.0 đầy đủ làm chuẩn cuối; áp dụng quy tắc đã chốt này, không tạo thêm blocker template.
-- Handbook chương 9 yêu cầu chốt Q-01..Q-05 trước Sprint 0, trong khi SRS mục 26 đặt hạn Sprint 5–8. Ghi nhận khác biệt thời điểm này cho Team Lead; không tự chọn đáp án, không triển khai chức năng phụ thuộc. Kickoff hiện giao riêng S0-001, các câu hỏi này không cần để dựng skeleton; repo tại B-02 vẫn là điểm chặn thực thi hiện tại.
+V6 resolved artifact401 delivery using documented Actions notice/public annotation GET; no broadened permissions or token search. Emitter uses fixed nested field allowlist, known health body, bounded JSON and percent/CR/LF escaping. Local fixture is explicitly not acceptance timing. Annotation report is sourced from actual runner output; start precedes checkout. Raw metadata distinguishes push source from PR merge checkout.
 
-- Recheck v2: SRS v1.0 mới đã giải quyết khác biệt version/requirement mapping; bản v0.1 Draft tiếp tục là tài liệu tham khảo riêng, không dùng thay SRS. SRS trang 1 vẫn in trạng thái `CHO PHE DUYET`; ghi nhận đúng metadata, không tự tuyên bố Product Owner đã ký duyệt và không tự tạo thêm approval gate ngoài chỉ thị/task.
-- Handbook trang 6 là cấu trúc quản lý tài liệu `00-spec/01-tasks/02-results/03-reviews/04-progress`; TASK-S0-001 mục 5.1 là cấu trúc source `backend/frontend/collectors/deploy/docs`. Hai cây không bắt buộc loại trừ nhau; sau khi có repo đích sẽ áp dụng cây source bắt buộc và giữ quản lý tài liệu tách bạch. Không dùng khác biệt này như blocker độc lập của task 001.
-- Bản `Quy chuan file result.md` mới xác nhận template đầy đủ đang dùng là đúng. Phụ lục rút gọn TASK-S0-001 không được dùng để thay template canonical; không cần chờ thêm xác nhận mẫu RESULT.
-- Frontend UI đã có ở IT_ASSET_MAP và SPEC 1.1.0 của frontend là tài sản tham chiếu riêng, không tự coi là backend/database repo mới hoặc SRS sản phẩm chính thức.
-- Chỉ sửa cách xuất UTF-8 để đọc PDF; không thay đổi PDF. Chưa đưa ra quyết định framework/database/scheduler/CI provider.
-- Rủi ro phụ thuộc đã phát hiện khi đọc task sau: TASK-S0-002 mục 5.3 cấm tạo entity/bảng Process riêng, trong khi TASK-S0-003 mục 4/5/AC-5 yêu cầu entity Process của chính TASK-S0-002. TASK-S0-002 dùng `first_seen_at`/`last_seen_at`, còn TASK-S0-003/004 yêu cầu `first_seen`/`last_seen`. Chưa tự thêm entity hoặc đổi tên field để hòa giải; cần Muse đồng bộ trước khi giao triển khai collector/ingest. Đây không phải phần code được thêm vào scope TASK-S0-001.
+V5 selected isolated existing GitHub-hosted Docker capability as assigned; no workstation changes. CI jobs repeat on push/PR as existing pipeline does. Timing includes checkout but not hosted runner provisioning/queue. Image cache initial count captured by harness, not yet read. Readiness polling bounded600seconds; failure/deadline returns nonzero and report; cleanup own unique project only. GitHub artifact authentication remains unavailable through current unauthenticated API; no credentials searched.
+
+- Lịch sử v1 → v2 → v3 → v4: v1 báo thiếu SRS/repo/chuẩn result; v2 nhận SRS và chuẩn result, chỉ còn thiếu repo; v3 đọc đủ docs theo kickoff và comment BLOCKED; v4 nhận repo local và bỏ blocker đó, triển khai skeleton, local CI/ảnh/scan/commit. Không có verdict REWORK chính thức, đây không phải vòng rework 1/3.
+- Quyết định TL 1100390000159464: IT_SEC_APP là root, init Git local, không chờ remote; CI local tạm thay AC-2 remote. TL 1100390000159463: SRS §26 quyết định hạn Q-01..Q-05, không chặn Sprint 0. TL 1100390000159468/1100390000159589: thực thi ngay, chỉ comment ba mốc, luôn đính kèm RESULT. Không cần ACCEPT v3 để bắt đầu.
+- Trên Windows Docs/docs trỏ cùng directory, giữ tên Docs và ghi mapping README để Linux không tạo hai cây song song. Không đổi tài liệu gốc, không dời/xóa artifacts PO.
+- SRS chưa khóa framework: đề xuất Node native ESM, frontend ESM/HTML/CSS và PostgreSQL, không coi là quyết định stack dài hạn đã duyệt. Native frontend giữ style cũ nhưng không kéo React/store/data model cũ; cần TL xác nhận hoặc yêu cầu thay stack trước task sau. Lint chỉ baseline syntax/unsafe patterns, chưa ESLint/type safety.
+- Test đầu lỗi EACCES thật; đã xin quyền chạy local theo observed failure và rerun pass, không tắt bảo vệ. Browser preview cũng đã thử lại với server loopback có quyền phù hợp.
+- Không tự cài Docker/virtualization hoặc thay chính sách máy chỉ để đạt AC; hoàn thiện phần source/local kiểm chứng được và khai giới hạn.
 
 ## 8. Chưa làm, giới hạn và nợ kỹ thuật
 
-- Chưa dựng backend/frontend skeleton, Dockerfile/Compose, database, env example, CI, ADR hoặc README mới.
-- Chưa tạo/push commit, chưa có CI evidence, chưa đo clean-machine setup dưới 10 phút, chưa quét secret của repo triển khai.
-- Chưa triển khai TASK-S0-002/003/004 vì phụ thuộc nền móng/ACCEPT. Không gộp chúng vào task đầu tiên.
-- Chưa có bằng chứng TASK-S0-001 được Team Lead nghiệm thu. Không tự chuyển PASS/ACCEPT hoặc đóng task trên ClickUp.
-- Đã nhận diện/đối chiếu SRS v1.0 nhưng chưa triển khai nghiệp vụ hay khẳng định đã hoàn tất mọi requirement của 32 trang. Chưa tìm repo ngoài phạm vi workspace hoặc tự đoán tài khoản/chủ sở hữu remote.
+V6 hosted runner starts with6 images and tooling; not proof of pristine physical hardware or uncached registry. Browser rendering unobserved. HTTP shell success and real Docker timing do not independently waive those original clauses. Old artifacts remain inaccessible401 but new real measurements delivered independently.
+
+V5 missing: retrieved sanitized measured report, independent evaluation of physical-clean-machine equivalence and native browser rendering. Hosted HTTP success must not be relabeled clean machine/browser proof. Historical v4 absent remote/collector statements below are superseded by later work, not current limitations.
+
+- AC-1 và AC-6 phần Docker chưa kiểm chứng, chưa đo clone → Compose <10 phút. Dockerfiles/Compose mới được đọc kiểm tra, chưa build image/config validation bằng Docker.
+- ADR-001 vẫn PROPOSED; stack native ESM không có type checker, cần TL quyết định trước module lớn. Không giả định đạt NFR quy mô/search/security từ skeleton.
+- Chưa remote/push/CI GitHub, chưa security image scan/pin immutable digest. Health không kiểm tra DB. Không có schema/migration/seed/SSO/auth; chưa dùng dữ liệu thật.
+- Chưa mobile/tablet E2E; mới desktop dark/light/health.
+- S0-002/003/004 không thực thi, chờ TL mở sau verdict phù hợp.
 
 ## 9. Điểm nghẽn và việc cần quyết định
 
-| ID | Nghẽn ở đâu | Đã thử gì | Cần ai quyết định/cung cấp điều gì |
-|---|---|---|---|
-| B-01 — đã giải quyết tại v2 | Đã có đúng SRS v1.0 | Đọc PDF 32 trang, metadata, mục lục và các trang kiến trúc/mô hình | Không còn yêu cầu cung cấp lại SRS. |
-| B-02 | Chưa chỉ định repo đích/quyền push và CI | Kiểm tra metadata Git tại ba vị trí liên quan; đọc task local/ClickUp, chưa có URL hoặc checkout đích | PO/Team Lead cấp URL/checkout repo đích và quyền cần thiết; nếu muốn tạo repo mới, chỉ định vị trí/chủ sở hữu và nền tảng. Theo mục 7.1, Dev chưa tự tạo repo thay thế. |
-| B-03 — chuẩn RESULT đã giải quyết; không còn blocker độc lập | Chuẩn RESULT mới đã có; cây source và cây quản lý tài liệu có vai trò khác nhau | Đọc file chuẩn mục 4 và so với handbook; giữ nguyên template đầy đủ | Không cần cấp lại template hoặc phê duyệt việc dùng template canonical. Vị trí source repo vẫn thuộc B-02. |
-| B-04 — cảnh báo cho task phụ thuộc | TASK-S0-002 không có/cấm entity Process riêng; TASK-S0-003 lại bắt buộc entity Process; tên field thời gian cũng khác giữa các task | Đọc mục 5.3 TASK-S0-002 và mục 4/5/AC-5 TASK-S0-003, đối chiếu field với TASK-S0-004 | Muse đồng bộ entity/field contract và AC trước TASK-S0-003/004. Không lấy cảnh báo này làm cớ triển khai hoặc sửa schema ngoài phạm vi TASK-S0-001. |
+V6 artifact-access blocker resolved for new run. Lead/PO must evaluate whether measured hosted checkout is acceptable for original AC-1 clean-machine evidence, or require separately authorized pristine target/browser observation. No new native permission assumed; independent current-head QA/CI and no-merge remain.
 
-Điểm chặn thực thi task 001 tại v3 vẫn là B-02, đã báo qua comment ClickUp `1100390000159460`. TASK-S0-001 mục 7.1 yêu cầu báo BLOCKED khi chưa được cấp repo và không tự tạo nơi khác thay thế. Đây là đầu vào đích triển khai còn thiếu, không phải yêu cầu người dùng cấp lại quyền cho thao tác đã được ủy quyền. B-04 chỉ là cảnh báo trước các task phụ thuộc. Đề nghị Team Lead ghi rõ URL/checkout repo và quyền push/CI; nếu muốn khởi tạo mới, chỉ định đường dẫn, chủ sở hữu và nền tảng. Cũng đề nghị ghi nhận/làm rõ khác biệt hạn Q-01..Q-05 ở mục 7, không yêu cầu PO tự trả lời trong chat này.
+V5 exact remaining input: authenticated access to the narrow GitHub acceptance.json artifact (IDs/URLs in compose-ci-v5.json), or reviewer retrieval through existing authorized GitHub session. Public metadata GET succeeds, artifact archive GET401. No new Docker install or production access required. Lead evaluates actual measurements and clean-machine limits before AC verdict.
+
+| ID | Nghẽn ở đâu | Đã thử gì | Cần ai quyết/cung cấp gì |
+|---|---|---|---|
+| B-02 cũ — đã gỡ | Repo local IT_SEC_APP đã được chỉ định | Init Git, commit skeleton, CI local xanh | Không hỏi lại repo hoặc SRS. |
+| V-01 | Thiếu Docker CLI/daemon để xác minh AC-1 và lệnh README | Get-Command/docker --version không có; hoàn tất test HTTP/build local thay vì giả output Compose | TL/PO cung cấp runner có Docker hoặc cho phép môi trường Docker phù hợp; Dev sẽ chạy nguyên văn README và đo timing. Không yêu cầu bỏ AC. |
+| D-01 | ADR chưa được xác nhận | Đã viết đầy đủ tradeoff/backend/frontend/DB trong ADR-001 | TL review/chốt đề xuất hoặc chỉ định chỉnh stack; trước đó không tự áp dụng cho task sau. |
+
+Không còn blocker repo/SRS/Q-01..Q-05. Phần source triển khai được đã làm; PARTIAL vì bằng chứng nghiệm thu còn thiếu và quyết định ADR, chưa tự khai DONE.
 
 ## 10. Đề xuất bước tiếp theo và tự kiểm tra
 
-1. PO/Team Lead chỉ định repo đích (URL remote hoặc checkout được giao, quyền push/CI tương ứng) để giải quyết B-02; không cần gửi lại SRS/chuẩn RESULT.
-2. Sau khi đủ đầu vào, tiếp tục đúng TASK-S0-001: dựng repo/Compose/CI/ADR/env/README, kiểm chứng từng AC và cập nhật cùng RESULT lên v4; không tự khai ACCEPT. ADR là đề xuất nếu chưa được Team Lead xác nhận theo mục 5.5; không tự áp dụng cho task sau.
-3. Chỉ nhận triển khai data model/collector/Cloudflare theo thứ tự phụ thuộc và phạm vi đã giao sau khi task nền được nghiệm thu.
+V6 next: Lead review raw measured notices/source provenance and decide remaining P0 exit conditions. Ten sections and six original AC rows retained; all modified files, synthetic/real distinctions and limits disclosed. History: v6 resolves v5 measurement delivery via supported public annotations; overall PARTIAL retained.
 
-- [x] Đã đối chiếu đủ AC-1 đến AC-6 ở mục 2, không khai tiêu chí chưa kiểm chứng là đạt.
-- [x] Các việc đã đọc/kiểm tra đều có đường dẫn, output hoặc phạm vi kiểm chứng ở mục 5–6.
-- [x] Đã khai thiếu đầu vào, phần chưa làm và khác biệt tài liệu; trạng thái BLOCKED.
-- [x] File không chứa token, mật khẩu, thông tin truy cập hoặc log hạ tầng thật.
-- [x] Chỉ có một RESULT cho TASK-S0-001; chưa ghi REVIEW hoặc tự nhận quyền nghiệm thu của Team Lead.
+V5 next: retrieve/verify narrow measured artifact, then Lead evaluates AC-1/AC-6 against actual output; independent current-head QA/required CI still apply, no merge. Checklist: ten original sections retained; six original AC rows retained; actual commands/errors/limits disclosed; no secret/other-task change. History: v5 adds real CI capture path and honest artifact-access limit after v4 local skeleton.
+
+TL review ADR và cấp runner Docker để Dev hoàn tất phần kiểm chứng AC-1/AC-6. Giữ ở S0-001, chỉ sửa theo feedback; chưa mở task phụ thuộc. CI GitHub chưa chạy trên remote, sẽ kiểm chứng lại khi push lên GitHub.
+
+- [x] Đã đối chiếu đủ từng AC-1..AC-6 ở mục 2, không gộp hoặc giấu AC chưa kiểm chứng.
+- [x] Mọi câu đã làm/đã test có file, lệnh hoặc output thật; đã khai cả test fail do môi trường.
+- [x] Đã liệt kê files thêm/sửa, mapping Docs và lịch sử v1 → v4; giữ một RESULT canonical.
+- [x] Đã rà không có secret/mật khẩu/token thật trong RESULT.
+- [x] Chưa tự ACCEPT/đóng task, chưa sửa status/mô tả/dependency ClickUp.

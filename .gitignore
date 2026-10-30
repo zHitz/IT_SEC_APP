@@ -8,9 +8,13 @@ coverage/
 .DS_Store
 Thumbs.db
 .npm-cache/
+var/
 # User-owned saved artifacts are references, never executable source or fixtures.
 *.html
 *_files/
 *.docx
 SEC_Atlas_*
 !frontend/src/index.html
+!frontend/src/domains.html
+
+!frontend/src/hosts.html

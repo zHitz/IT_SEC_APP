@@ -3,12 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24 <25" },
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
-    "lint": "node scripts/check.mjs",
+    "lint": "node scripts/check.mjs && node scripts/generate-schema.mjs --check",
     "test": "node --test backend/test/*.test.mjs frontend/test/*.test.mjs",
     "build": "node scripts/build.mjs",
     "start:backend": "node --env-file=.env backend/src/server.mjs",
-    "start:frontend": "node --env-file=.env frontend/server.mjs"
+    "start:frontend": "node --env-file=.env frontend/server.mjs",
+    "db:generate": "node scripts/generate-schema.mjs",
+    "db:up": "node --env-file=.env backend/db/migrate.mjs up",
+    "db:down": "node --env-file=.env backend/db/migrate.mjs down",
+    "db:seed": "node --env-file=.env backend/db/migrate.mjs seed",
+    "db:inspect": "node --env-file=.env backend/db/migrate.mjs inspect",
+    "db:verify": "node scripts/verify-db.mjs",
+    "cloudflare:verify": "node scripts/verify-cloudflare.mjs",
+    "start:cloudflare": "node --env-file=.env collectors/cloudflare/main.mjs",
+    "osquery:verify": "node scripts/verify-osquery.mjs",
+    "start:osquery": "node --env-file=.env collectors/osquery/main.mjs",
+    "cloudflare:dry-run": "node collectors/cloudflare/preflight.mjs --dry-run",
+    "cloudflare:check": "node collectors/cloudflare/preflight.mjs --check",
+    "osquery:native-check": "node collectors/osquery/native-readiness.mjs"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.16",
+    "linkedom": "0.18.12"
   }
 }

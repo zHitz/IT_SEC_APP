@@ -1,0 +1,210 @@
+# Domain/DNS inventory page — S0-004
+
+Current V7 detail uses exact-owner API. The V6 candidate-search description below is historical and superseded.
+
+## Local synthetic quick start
+
+Node24: `npm ci`, then `node scripts/inventory-ui-lab.mjs`. Open the printed loopback URL ending `/inventory/domains`. This explicit lab command creates a disposable PostgreSQL17.5WASM database, loads the accepted schema/seed, adds synthetic .test/documentation-range fixtures (25 domains/25 records,6flagged), and connects the existing v4 reader/API plus frontend proxy. It does not install an agent, use a token, contact Cloudflare or read production data. Ctrl+C closes servers/database; fixtures do not persist. This lab starts only when invoked; default frontend remains the existing skeleton.
+
+## Existing local database mode
+
+Use only an approved local synthetic database. Backend: BACKEND_HOST=127.0.0.1 (or::1), BACKEND_PORT, local DATABASE_URL, INVENTORY_READ_ENABLED=true. Frontend: FRONTEND_HOST=127.0.0.1 (or::1), FRONTEND_PORT, BACKEND_ORIGIN=http://127.0.0.1:<backend-port>, INVENTORY_UI_ENABLED=true. Run `npm run build`, then the existing start:backend/start:frontend scripts with the local `.env` configuration. Enabling backend API and frontend page are separate explicit flags. Do not put credentials in Git or URL parameters.
+
+Feature disabled: page/module/API proxy routes return404 and skeleton does not expose the inventory link. Enabled: frontend requires loopback CLI binding and numeric loopback backend; inventory requests must arrive on a loopback socket. This is a local unauthenticated prototype, not auth/RBAC or permission to expose a tunnel/proxy. No production deployment is included.
+
+## UI contract
+
+One page, two resource buttons (Domains/DNS records). Reuses Atlas shell,224pxsidebar,56pxheader, dark/light tokens, violet selection, subtle borders, spacing and typography; no architecture/model logic imported from old frame. All new UI prose is English. Tags and explicit labels distinguish flags. Domain flag filter follows API v4's associated-DNS semantics; Domain.tags itself is not changed.
+
+Search domain and submit/Enter; optional stored outside-known-range flag applies immediately. Search/filter/resource/rows-per-page changes reset page1. Clear removes search and flag. Pagination has bounded Previous/Next with filtered total, page count and10/25/50/100rows. Source, first/last timestamps (UTC), confidence and tags render on both resources; DNS also shows type/value. API contract remains Docs/DOMAIN-INVENTORY-API.md; no schema/API business logic changes.
+
+Loading status disables paging; latest-request-wins and abort prevent stale results overwriting current filters. Errors clear old rows/totals and expose Try again; empty data explains how to clear filters. Requests time out after8s; proxy upstream after5s. Response envelope/page metadata and visible row field types are validated. All stored values use textContent, never HTML insertion. Keyboard-focusable semantic table scroll region, labels, aria-pressed resource buttons, live status, focus outlines and existing reduced-motion styles retained. Narrow layouts stack form controls and scroll table horizontally; no virtualized/thousands-row claim.
+
+## Proxy boundary
+
+Only GET /api/v1/inventory/domains and /dns-records (with query) forward to the fixed numeric loopback backend. No user-supplied origin or cookie/auth forwarding, redirect following, write method or arbitrary path. Host/Package/ListeningPort GET routes were subsequently added under S0-003 v5, using the same opt-in boundary. Responses are JSON with no-store/CSP/nosniff. Unexpected/network/oversized upstream response becomes502. The known static page and two JS modules are an explicit route allowlist; source/env/docs are not served. No Cloudflare client or credentials imported.
+
+## Verification
+
+`node --test frontend/test/domain-inventory.test.mjs frontend/test/domain-proxy.test.mjs`; `npm run lint`; `npm test`; `npm run build`. DOM tests use pinned dev-only linkedom0.18.12; actual HTTP tests use PostgreSQLWASM and the accepted v4 API. Real browser checks recorded in Docs/evidence/S0-004/ui-v5.json: rendering25domains,10rows/page and Next ->page2, DNSresource, flag->6records, search sample-08+flag->1record, dark/light screenshots. Browser viewport override is unavailable; exact390/1024/1440responsive runs and reduced-motion runtime emulation are not claimed. CSS responsive/reduced-motion rules are provided; screenshots show the actual available browser size.
+
+Troubleshoot: page404 ->frontend flag off; API404 ->backend flag off; unavailable ->check local backend/port/flags. No automatic fallback to fixture data hides errors. The explicit lab is separate from actual local database mode.
+
+
+## V6 Domain details
+
+Click a Domain name on the Domains resource to open an in-page detail view in the existing Atlas frame. Header shows the selected API observation: fqdn/id/source/first_seen_at/last_seen_at/confidence/tags. Related DNS table includes type/value/proxied/TTL/tags and exact stored outside-known-range flag status (Flagged/Not flagged). False is explicitly displayed, null is an em dash. No live DNS/CIDR recomputation. Back preserves the existing list DOM/controller search, flag, page and page size; browser popstate also returns to the list, with focus restoration. Full reload starts the list; fragment is session navigation context, not a standalone deep-link promise.
+
+Uses only the accepted v4/v5 GET list APIs, with no new backend contract/schema. Because DNS search is literal substring rather than exact equality, detail reads all bounded candidate pages for the selected fqdn (up to100pages x100candidates), then enforces row.domain===selected.fqdn before rendering/local25-rowpaging and exact-owner counts. For fqdn longer than200characters, existing API search uses the first200 as candidate prefix while full equality remains mandatory. Overlapping names such as api.sample-12.test cannot leak into sample-12.test detail. More than100candidate pages or any error yields explicit unavailable/limit state with no partial records; timeout8seconds and Retry/Back remain. No claimed support for unbounded inventory; narrow exact-owner API can be separately assigned later. Candidate snapshots can change between requests; no new cross-page transaction guarantee.
+
+Reproduce in explicit lab: search sample-, select10rows, Next, click sample-12.test. Verify sourcecloudflare/confidenceconfirmed/observationtimestamps, DNSA/198.51.100.25/proxiedfalse/TTL300/tags/Flagged; Back keeps sample- and page2. Apply Flagged, open sample-08.test and Back; filtertrue retained. Automated DOM+actual HTTP/PostgreSQL test additionally creates31records for one exact owner plus one overlapping-name trap; detail shows31/2childpages and excludes trap, then confirms Backsearch/filter/page. Above100candidatepages fails closed. No real Cloudflare request or osquery change.
+
+
+## V7 exact-owner detail
+
+Detail now re-reads GET /api/v1/inventory/domains/:id for authoritative current metadata, then GET /domains/:id/dns-records?page=N&page_size=25. One parent and one requested child page; no substring candidate collection or100-page candidate cap. Counts/page bounds are supplied by exact-owner SQL. Returned child domains are validated against current parent fqdn before rendering. All existing visible fields, stored flag semantics, Atlas style, Back/search/filter/page retention remain.
+
+Unknown owner returns Domain not found and clears metadata/related rows; other failures expose Retry/Back with no previous-owner partial data. This version does not add Domain standalone deep-link/reload persistence; context navigation remains as documented. No backend/schema or live data capability beyond the exact read-only lookup assigned by Lead.
+
+Run `node --test backend/test/domain-exact.test.mjs frontend/test/domain-detail.test.mjs frontend/test/domain-proxy.test.mjs`; full lint/test/build. Actual SQL/HTTP tests prove exact-owner equality with overlapping trap, server pages/counts,32owned records, missing404 and disabled gates. Frontend tests retain31record/2childpage/back proof and verify10001server-count metadata without scanning; no claim that10001fixture records were inserted. Explicit synthetic lab remains the same command; no token required.
+
+
+## v8 Domain navigation
+
+Direct local links use `/inventory/domains#domain=<UUID>&search=sample-&outside_known_range=true&page=1&page_size=10`. UUID identity is sufficient for the assigned UUID-or-fqdn alternative. Legacy `#detail=<UUID>` remains supported. Only identity and validated list context enter history, never a saved entity snapshot. Reload resolves the parent and exact-owner DNS page anew through the v7 GET API. Native Back/Forward restores selection; the Back button returns to the prior list, or reconstructs list context for a direct entry. Missing and malformed identities clear metadata and DNS rows before showing an explicit error. Search/filter/page/page-size survive a detail round trip. No production auth or external API access is enabled.
+
+Regression: `node --test frontend/test/domain-navigation.test.mjs`. Uses actual synthetic HTTP/PostgreSQL WASM with fresh DOM remount for reload and an injected browser-history model; it is not native Linux or scale evidence.
+
+
+## v9 Search DNS values
+
+Choose Search DNS values from either Domain/DNS list or Domain detail. Enter an IP, hostname or other stored value; Find DNS records displays Domain, type, value, proxied,TTL,tags with10rows/page and total. Matching is a case-insensitive literal substring, not CIDR or wildcard. Back to previous list or detail restores the entry view and its existing list search/filter/page state. Search is global stored DNS inventory, independent of the list filter; that filter remains retained on return. Empty input shows guidance; errors clear rows and can be retried by searching. Browser route navigation closes this temporary panel; reload restores original Domain/list route, not search results. No external DNS/Cloudflare calls. Synthetic lab: `node scripts/inventory-ui-lab.mjs`;192.0.2.25 yields18records/2pages,198.51.100.25 yields6records.
+
+
+## v10 Reloadable DNS search routes
+
+Direct link: `/inventory/domains#value_search=192.0.2.25&dns_page=2&search=sample-&page=2&page_size=10`. Optional `domain=<UUID>` preserves the originating detail; list search/filter/page use existing keys, while `dns_page` is independent. Reload fetches fresh results through accepted value_search GET. Submitting a new value or changing DNS page creates a native history entry; Back/Forward restores the value and result page. The explicit return button navigates to the origin list/detail route without value_search. Empty/control/duplicate values show an error with zero result rows. DNS page defaults1 and is bounded100000. Value length1–200 and literal matching unchanged. Previous v9 non-persistent panel limitation is superseded. No live DNS/Cloudflare/schema/osquery change.
+
+
+## v11 Flagged domains
+
+View flagged domains from list/detail uses accepted `domains?outside_known_range=true` (exact stored DNS tag),10domains/page with domain total and hostname search. Each Domain card shows its exact-owner DNS records, child total and10-record independent child pagination; includes both flagged and unflagged records belonging to that flagged Domain. No tag/algorithm recalculation. Back restores entry list/detail and context. Empty/error clears all cards. One parent request plus at most10child-page requests per load, bounded8second timeout; child pages explicit, never silently truncate. Temporary view is not URL-persisted; reload returns original route. Synthetic `--flagged` lab uses48domains/12flagged for2parent pages; integration adds12records to one owner to prove child pagination. No liveCloudflare/schema/osquery change.
+
+
+### v12: flagged view links and browser history
+
+Open `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged=1&flagged_search=sample-&flagged_page=2` in the `--flagged` synthetic lab. Reload retains the flagged view, search and parent page. Searches and parent page buttons push browser history; Back/Forward replay them. Return restores the origin list/detail and parent context. Existing owner DNS type/value/proxied/TTL/tags and child paging remain. Child pages reset to 1 when restoring a route; child paging itself stays local.
+
+`flagged=1` is required and unique. Optional flagged_search is unique, at most 200 characters without controls; flagged_page is a unique integer 1..100000. Invalid values, duplicates or combining flagged view with value_search show an explicit error and zero cards. Parent list page/search parameters retain their existing meaning. No schema, tag algorithm, osquery or Cloudflare changes.
+
+Reproduce: `node --test frontend/test/flagged-navigation.test.mjs frontend/test/flagged-domains.test.mjs`, then `npm test`, `npm run lint`, `npm run build`. Actual HTTP/PostgreSQL and browser evidence is under `Docs/evidence/S0-004/*v12*`.
+
+
+### v13 child DNS routes (supersedes local child-page reset limitation)
+Run `node scripts/inventory-ui-lab.mjs --flagged-child`; open `/inventory/domains#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2`. Optional fixture adds11synthetic DNS to existing sample04, total12/2pages. Reload and Back/Forward retain owner and child page; parent search/page changes clear child selection.
+Unique flagged_owner UUID and child_page integer1..100000 required together; owner must belong to the encoded flagged parent page. Missing/nonflagged/offpage owner or child page outside actual record pages fails closed with explicit error and0cards. One child selection per fragment; other owners start page1. Type/value/proxied/TTL/tags unchanged, no flag algorithm or Cloudflare requests. Test `node --test frontend/test/flagged-child-navigation.test.mjs`.
+
+
+### v14 Domain detail DNS page routes
+Run `node scripts/inventory-ui-lab.mjs --detail-dns`; open `/inventory/domains#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&search=sample-&page=2&page_size=10`. Optional fixture adds30syntheticDNS to sample04;31records/25perpage/page2has6rows. Reload/Back/Forward restore owner/page and preserve provenance/type/value/proxied/TTL/tags. Return keeps list search/page/size.
+Unique detail_dns_page integer1..100000 requires Domain identity, cannot combine flagged/value-search state. Invalid/duplicate/out-of-range page clears details and DNS with explicit error. Uses accepted Domain exact GET and exact-owner DNS GET, no schema/flagalgorithm changes. `dns_page` remains DNS-value-search state; distinct detail_dns_page avoids collision. Test `node --test frontend/test/detail-dns-navigation.test.mjs`.
+
+
+### v15 flagged DNS records (record level)
+`node scripts/inventory-ui-lab.mjs --flagged`; open Domain list/detail, choose View flagged DNS records. Shows only records whose own tags include exact cloudflare:outside-known-range via accepted GET outside_known_range=true. Owner/type/value/proxied/TTL/tags shown; value_search combines with exact flag;10records/page and filtered total.12fixture records/2pages;page2sample44/48. Search198.51.100.25 ->12;192.0.2.25 ->0 despite unflagged stored matches. Empty/failed results clear table;8second abort timeout. Back restores origin list/detail. Temporary panel state resets on reload; flagged-owner view remains separate. No tag recalculation/API/schema/Cloudflare change. `node --test frontend/test/flagged-records.test.mjs`.
+
+
+### v16 flagged-record route persistence
+Supersedes v15 temporary-view reload limit. `node scripts/inventory-ui-lab.mjs --flagged`; open `/inventory/domains#list=1&search=sample-&page=2&page_size=10&flagged_records=1&record_search=198.51.100.25&record_page=2`. Reload/Back/Forward restores flagged record search/page; existing owner/type/value/proxied/TTL/tags/count retained. Return restores parent list/detail.
+Unique flagged_records=1, optional record_search<=200/no controls and record_page1..100000 required; duplicate/invalid/conflicting flagged-owner/value/detailDNS state fails closed. Out-of-range real record page clears rows. Parent search/page separate. `node --test frontend/test/flagged-record-navigation.test.mjs frontend/test/flagged-records.test.mjs`. No API/schema/tag changes.
+
+
+### v17 combined main list: run `node scripts/inventory-ui-lab.mjs --flagged`; open `/inventory/domains#list=1&search=sample-&outside_known_range=true&page=2&page_size=10`. Reload restores search+flag+page; search/flag/pages push history, detail return retains context.12flaggedDomains/page2sample44+48;sample12search1. Unique flag true/false, search<=200/no controls, positive page<=100000 and size10/25/50/100 required when flag present; invalid state clears rows. Existing exact tag predicate unchanged.
+
+## v18 DNS record detail
+
+Click a DNS record value in the main record list, Domain child table, DNS value results or flagged-record results to open exact record detail. Displays owner/type/value/proxied/TTL/tags/provenance and stored flag. Example after `node scripts/inventory-ui-lab.mjs --flagged`: `/inventory/domains#domain=10000000-0000-4000-8000-000000000004&record=10000000-0000-4000-8000-000000000104&search=sample-&page=2&page_size=10`. Record UUID persists on reload/history; Back removes record identity while retaining origin fragment/list/detail context. Missing/malformed/duplicate identity clears every detail field. Run `node --test frontend/test/dns-record-detail.test.mjs`. Full65tests/lint93/schema/build pass. Current evidence uses fresh DOM/history fixture and actual loopback HTTP/PostgreSQL, not native browser verification. Work browser access is disabled; no v18 screenshots or ClickUp uploads claimed.
+
+Browser follow-up 2026-10-25T13:05:33.092425+07:00: after app restart, actual built-in browser verified direct route/reload, native Back/Forward, selection/return and invalid-state clearing. Screenshots are in evidence/S0-004/dns-record-{reload,history,invalid}-v18.png. Prior browser access limitation is resolved; no production/native Linux claim.
+
+## v19 sorting contract
+
+Sort Domains hostname/direction controls combine sort/direction with search,outside_known_range,page,page_size;sort change resets page1. Example --flagged: /inventory/domains#list=1&sort=hostname&direction=desc&search=sample-&outside_known_range=true&page=2&page_size=10 ->sample08/sample04 of12flagged. Reload/native history/detail return preserve context;invalid sort clears all rows. Test frontend/test/combined-domain-navigation.test.mjs. Actual67/67tests,lint93/schema22+2/114FK/buildPASS and3browser screenshots in respective evidence folder. No schema/collector/production mutation.
+
+## v20 sorted related views
+
+Flagged records sort owner/value/type with independent direction;fragment flagged_records=1,record_flag=true,record_search,record_sort,record_direction,record_page. Example --flagged: /inventory/domains#flagged_records=1&record_flag=true&record_search=198.51.100.25&record_sort=owner&record_direction=desc&record_page=2 ->sample08/sample04 of12flagged. Sort resets page1;records_saved bookmark preserves search/flag/sort/page through parent list/detail and reopening. Invalidsort/flag clears rows. Actual69tests/lint93/schema22+2/114FK/buildPASS. Focused tests package-navigation.test.mjs and flagged-record-navigation.test.mjs;actual3browser screenshots per task. No production/credential/liveCloudflare access.
+
+
+## v21 scoped view sorting
+
+Run `node scripts/inventory-ui-lab.mjs --flagged`; append `#list=1&flagged=1&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc` to its printed inventory URL. Sort controls retain search and reset page to 1. Parent return stores an inactive bookmark; reopening restores search/sort/page. Direct routes, reload and native history restore the view. Invalid sort empties only this view and displays an explicit route error. Existing schema and lexical SQL sorting, NULLS LAST and id-ascending ties are retained.
+
+
+## v22 Domain detail DNS sorting
+
+Run `node scripts/inventory-ui-lab.mjs --detail-dns`, then append `#domain=10000000-0000-4000-8000-000000000004&detail_dns_page=2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_search=192.0.2&search=sample-&page=2&page_size=10` to the Domain inventory URL on the printed origin. Sort changes preserve search and reset the page. Direct links, reload and native Back/Forward restore state. Invalid sort clears only the affected list, preserving parent information. Detail search matches type or value, case-insensitively and literally. Exact Domain UUID-to-fqdn owner join is retained. Parameters: search, sort=type|value, direction=asc|desc, page and page_size. SQL identifiers are whitelisted, user search is bound, NULLS LAST and id ascending ties apply.
+
+
+## v23 Flagged owner child DNS sorting
+
+Run `node scripts/inventory-ui-lab.mjs --flagged-child` and append `#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2` to the printed inventory URL. Child sort/search parameters apply to flagged_owner only: child_sort=type|value, child_direction=asc|desc, child_search literal type/value match, child_page. The exact-owner DNS endpoint is reused. Invalid child sort/search empties only that owner child table while retaining owner ID/source/confidence and healthy siblings. One routed child owner is supported at a time. Controls retain search and reset page on sort change. Reload and native Back/Forward restore the complete fragment. NULLS LAST and id ascending ties are retained; no schema change.
+
+
+## v24 Flagged child record return
+
+Run `node scripts/inventory-ui-lab.mjs --flagged-child`; append `#flagged=1&flagged_search=sample-04&flagged_page=1&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2&record=30000000-0000-4000-8000-000000000011` to the Domain /inventory/domains URL on its printed origin. Child record values open DNS record details while retaining the complete flagged owner/child search/sort/page fragment. Back restores that child view; direct record links and reload preserve context. Malformed, missing or duplicate record links clear only record details and reveal the intact child and sibling lists. No schema/entity/production changes.
+
+
+## v25 Complete flagged chain
+
+Run `node scripts/inventory-ui-lab.mjs --flagged-child`; append `#flagged=1&flagged_search=sample-&flagged_page=2&flagged_sort=hostname&flagged_direction=desc&flagged_owner=10000000-0000-4000-8000-000000000004&child_page=2&child_sort=value&child_direction=desc&child_search=192.0.2&record=30000000-0000-4000-8000-000000000011` to the Domain inventory URL on the printed origin. Record Back restores selected owner child sort/search/page; child Back removes child parameters and restores flagged list sort/search/flag/page. Native history traverses all three levels. Invalid record preserves parent/child; invalid child sort preserves list/siblings; invalid flagged list sort retains the selected exact flagged owner child, suppressing invalid sibling list cards. The stored flag is checked through existing GET inventory reads; no recalculation. Direct/reload/native history retain the complete fragment. No schema/entity/production changes.
+
+
+## v26 combined list/detail journey
+
+Run `node scripts/inventory-ui-lab.mjs --detail-dns`; append `#domain=10000000-0000-4000-8000-000000000004&search=sample-&outside_known_range=true&sort=hostname&direction=desc&page=1&page_size=10&detail_dns_search=192.0.2&detail_dns_sort=value&detail_dns_direction=desc&detail_dns_page=2&record=30000000-0000-4000-8000-000000000030` to the Domain inventory URL. Domain list search/flag/sort/page and detail_dns_search/sort/direction/page plus record id share the route. Record Back restores detail, detail Back preserves list and saved detail fields. Invalid record reveals retained Domain details; invalid list/detail sorts clear only their list. Saved detail pages do not activate unrelated views; default DNS page1 is omitted. No schema/entity/production changes.
+
+
+### v27 combined origin journey
+
+Flagged-domain cards now offer Open Domain detail. `domain_origin=flagged` with `flagged_saved=1` preserves the Flagged list search/sort/page alongside the independent Domain list search/flag/sort/page and detail DNS search/sort/page. Record Back restores detail, and detail Back restores its actual origin. Main Domain list selections retain the main-list origin even when Flagged state is bookmarked.
+
+Reproduce with `node scripts/inventory-ui-lab.mjs --detail-dns --flagged`. Sample04 has 31 DNS records, search192.0.2 returns30 and detail page2 returns5. Flagged descending page2 contains Sample04. Synthetic local GETs only; Cloudflare requests0.
+
+`node --test --test-concurrency=1 frontend/test/combined-origin-navigation.test.mjs` runs actual HTTP/PostgreSQL READ ONLY regression for reload, history, origin return/reopen and six independently invalid levels per task. Existing Atlas layout/style and native-evidence limits remain. See verification-v27.json and three v27 screenshots in the task evidence directory.
+
+
+### v28 switching inventory views
+
+The Host and Domain sidebar links restore separate complete fragments from this tab's session storage. Switching away saves the current fragment, including changes made with pushState; switching back restores the exact nested list/detail/record context. Explicit direct URL fragments always win. Native Back/Forward and reload use their own URL; pageshow refreshes sidebar bookmarks after browser history restoration. No inventory rows or credentials are stored, and no server mutation is made.
+
+Reproduce with `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --detail-dns --flagged`. Open the complete Host and Domain fragments from `frontend/test/view-bookmarks.test.mjs` once in the same tab, then switch using the sidebar. Host11 restores Site Host page2 and package/port page2; Sample04 restores DNS page2 and record or correct Domain/Flagged return origin.
+
+Focused proof: `node --test --test-concurrency=1 frontend/test/view-bookmarks.test.mjs`. Both integration tests use actual HTTP/PostgreSQL READ ONLY and six invalid-level round trips per view; the third test checks unsafe saved values and storage denial. If sessionStorage is unavailable, cleared or the fragment exceeds16384 characters, explicit URLs still work but persistence is unavailable. Separate tabs are independent. See verification-v28.json and three actual v28 screenshots.
+
+
+### v29 repeated switching, invalid destination and clean tabs
+
+No-fragment defaults now remove only the current view bookmark; they do not invent #list=1 or copy the other view fragment. A journey created afterward persists normally. Existing invalid saved fragments are restored verbatim into the destination route parser, which shows its own clear error and no affected partial rows; the source bookmark stays exact. An explicit valid destination URL replaces that invalid destination bookmark and restores its journey without changing the source.
+
+The same view-bookmarks.test.mjs now adds exactly three tests: three consecutive round trips from each starting view with exact fragment equality, saved-invalid destination plus explicit repair in both directions, and clean default tabs/new journey creation in both directions. Full suite89/89, lint96modules. V29_ROUND_TRIPS, V29_INVALID_REPAIR and V29_CLEAN_TAB markers are in test-v29.txt. Reuse the combined v28 lab command and full hostRoute/domainRoute in that test. Three real v29 screenshots cover multi-round-trip reload/history/invalid states. Storage and native-evidence limits remain unchanged.
+
+
+### v30 independent tabs and saved URLs
+
+Independent new tabs have separate sessionStorage. Open complete saved Host/Domain fragments from view-bookmarks.test.mjs in a fresh independent tab: explicit URL restores all nested state before any prior bookmark exists. After establishing both views, two sidebar round trips retain exact fragments. Different tabs can hold different Host page and Domain DNS/record journeys without overwriting one another.
+
+Three new tests in the existing file cover two independent stores with distinct journeys, explicit saved URLs in fresh stores plus two round trips, and fresh invalid URL/explicit repair followed by a new clean session. The test harness models independent stores; actual browser tabs separately verify isolation, reload/history, fresh-invalid errors and clean defaults after close. No runtime change was needed. Full suite92/92;lint96.
+
+A fresh independent tab is not a duplicated/opener-created tab: browsers may clone initial sessionStorage for those cases. This evidence claims only independently created tabs without an opener. Existing storage-denial, fragment bound and synthetic/native limits remain.
+
+
+### v31 filtered journeys in isolated tabs
+
+Site-filtered and Unassigned Host rows open detail with distinct explicit origins. Unassigned selection uses host_origin=unassigned and a saved Unassigned search/sort/page bookmark; detail Back returns that exact view. Flagged Domains/detail DNS and Flagged DNS records/record detail preserve their independent list states.
+
+Run `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. The isolated --filtered-tabs fixture makes synthetic Host13..24 unassigned while preserving assigned Host11. Site uses searchhost-/hostname-desc/page1,pickername-desc/searchSite/page2;Unassigned uses searchhost-/hostname-desc/page1 andHost20. Domain uses Flagged searchsample-/hostname-desc/page2 plusSample04 DNSsearch192.0.2/value-desc/page2;record-level uses search198.51.100/value-desc/page2. Full fragments and canonical saved routes are exercised in view-bookmarks.test.mjs.
+
+Exactly3newtests cover paired-tab isolation, fresh0entry saved URLs with2exact list/detail roundtrips and4invalid-filter/repair paths;full95/95,lint96. Actual browser separately checks all four routes and captures3screenshots per task. Existing synthetic/native/storage/opener limitations remain.
+
+
+### v32 filtered journeys across inventory views
+
+Site Host11 and Unassigned Host20 details, Flagged Domains/Sample04 DNS detail and Flagged DNS records/exact record now have dedicated cross-view regression evidence. Save each full canonical detail URL, switch to the opposite inventory sidebar view and return twice: the fragment is exact and the other view retains its state. Detail/record Back and reopen preserve the original filtered list and child page; Domain main-list origin also stays distinct.
+
+Run the v31 combined lab command with --filtered-tabs. When combined with --host-detail, this synthetic-only option now adds30packages/ports toHost20 (31total) so searchpackage/version-desc/page2 and searchsynthetic/pid-desc/page2 each show6rows likeHost11. Existing default fixtures and runtime code are unchanged. filtered32 routes in view-bookmarks.test.mjs reproduce all contexts.
+
+Exactly3newtests cover4filteredcross-view journeys,post-switch origins/reload/history and4invaliddestination repairs with source preservation/newtabdefault. Full98/98;lint96;schema unchanged. Actual browser verifies both tabs,2exactcross-viewtrips,6rows/scopedHostlist,5childDNSrows and all4invaliddestinations. Evidence:verification-v32.json,test/lint/build-v32.txt,3actualscreenshots per task. Existing native/synthetic/storage/model limitations remain.
+
+
+## v33 independent filtered tabs and fresh saved URLs
+
+Run the existing filtered lab with `--host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged`. In independent tabs without opener, pair Site Host11 with Flagged Domain/Sample04, and Unassigned Host20 with Flagged DNS record. Navigate the other tab and compare complete URLs through two round trips per tab. Save the four URLs; close tabs and open each in a new independent session. Establish the opposite filtered view and repeat two exact cross-view round trips. Host scoped page2 has six package and six port rows; Sample04 child DNS page2 has five rows. Test invalid site_sort/unassigned_sort/flagged_sort/record_sort in fresh tabs: switch away/back, require zero affected rows and retained healthy main rows, return to exact source and repair with explicit valid URL. Close and open a no-fragment tab: both views default. Automated zero-entry assertions use Map stores; browser evidence does not enumerate sessionStorage. See verification-v33.json and the three new screenshots.
+
+
+## v34 duplicate and opener tabs (partial native verification)
+
+Use `node scripts/inventory-ui-lab.mjs --host-detail --sites --site-journey --filtered-tabs --detail-dns --flagged --opener-tabs`. The extra control is opt-in lab HTML/script only; production pages are unchanged. Open each complete filtered URL from v33. In Chrome use tab context menu > Duplicate, compare the full URL, navigate only the child to an invalid filtered sort, verify the error and explicit valid-URL repair, then close only the child and check parent URL/bookmark through a cross-view return. The lab link uses target=_blank and rel=opener, refreshes href on click, and visibly reports Boolean(window.opener). Repeat for Site Host, Unassigned Host, Flagged Domain and Flagged record.
+
+Exactly three integration tests model the copied initial store with separate Maps and actual HTTP/PostgreSQL reads; this is distinct from native clone proof. Full104/104, lint96, unchanged22+2/114FK and build pass. Native evidence is PARTIAL because browser control was interrupted; verification-v34.json lists the remaining checks. Do not claim native completion from modeled evidence.

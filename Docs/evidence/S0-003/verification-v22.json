@@ -1,0 +1,39 @@
+{
+  "version": 22,
+  "recordedAt": "2026-10-25T07:55:58.049154+00:00",
+  "scope": "synthetic local PostgreSQL17.5WASM; no native or production claim",
+  "tests": 73,
+  "failures": 0,
+  "lintModules": 93,
+  "schema": {
+    "entities": 22,
+    "junctions": 2,
+    "nativeFKs": 114,
+    "changed": false
+  },
+  "build": "PASS",
+  "view": "Site-filtered Hosts",
+  "total": 16,
+  "searchedTotal": 16,
+  "page2Rows": 6,
+  "apiSortCombinations": 6,
+  "route": "#list=1&site_picker=1&selected_site=00000000-0000-4000-8000-000000000002&picker_page=2&site_search=host-&site_host_page=2&site_sort=hostname&site_direction=desc",
+  "freshDomReload": true,
+  "browserReload": true,
+  "nativeBackForward": true,
+  "invalidSortCases": 4,
+  "invalidListEmpty": true,
+  "parentInformationRetained": true,
+  "stableIdTies": true,
+  "nullsLast": "Explicit SQL NULLS LAST retained/added; no new nullable fixture in this round.",
+  "cloudflareRequests": 0,
+  "readOnlyTransactionTests": true,
+  "failuresAndResolution": [
+    "New DNS search test initially expected 11 but actual was 12 because the existing seed also matched; corrected count, then full suite 73/73 passed.",
+    "Initial edit script assertion stopped before writing any source; duplicate replacement removed and implementation applied."
+  ],
+  "limits": [
+    "Viewport screenshots, not full-page captures.",
+    "Native Linux/osquery AC1/3/4 remain unverified; accepted 600010ms outage retained, not rerun."
+  ]
+}

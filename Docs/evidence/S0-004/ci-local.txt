@@ -1,0 +1,36 @@
+2026-10-25 Asia/Saigon — actual command excerpts, no live Cloudflare request.
+
+$ npm run lint
+lint PASS: 16 modules; syntax and unsafe-code rules
+schema check PASS: 22 entities, 2 junctions, 114 native FKs
+
+$ node --test backend/test/cloudflare.test.mjs
+C-01: 5 mocked calls, all GET; 2 zone pages + 3 record pages; no live credentials/network
+PASS Cloudflare GET-only client reads paginated zones and A/AAAA/CNAME without mutations
+PASS late permission failure exposes no partial scope or token/error body
+PASS rate limit/network retry is bounded and honors capped delay
+PASS pagination drift, duplicate IDs and malformed envelopes fail closed
+PASS explicit test scope and zone path validation prevent accidental broad collection
+C-01 source audit PASS: one transport, fixed origin, GET only; no DNS mutation interface
+tests 6; pass 6; fail 0
+
+$ npm test (sandbox)
+tests 11; pass 9; fail 2
+Both existing loopback HTTP tests failed: connect EACCES 127.0.0.1
+No product code changed to bypass sandbox.
+
+$ npm test (approved escalation for loopback)
+POSTGRES PostgreSQL 17.5 on aarch64-unknown-linux-gnu, compiled by emcc, 32-bit
+UP: 0 -> 24 tables (22 entities + 2 technical junctions), common and entity columns verified
+SEED {"hosts":2,"containers":1,"domains":1,"cve_findings":1}
+FK/validation: orphan owner, group, CVE and polymorphic finding rejected; confidence/port/projection rejected; soft state retains rows
+DOWN: 24 -> 0 tables
+REAPPLY: up -> down PASS
+tests 11; pass 11; fail 0; duration_ms 3363.8121
+
+$ npm run build
+build PASS: backend/src -> backend/dist (native ESM, no transpilation)
+build PASS: frontend/src -> frontend/dist (native ESM, no transpilation)
+build PASS: database migration assets packaged
+
+Only source reader is tested; no DB ingest/idempotency/scheduler/CIDR test claimed.

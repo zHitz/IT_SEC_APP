@@ -1,0 +1,15 @@
+(node:34968) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+STEP1 PASS: distinct fresh simulator created; NOT a Linux kernel/osquery installation
+(node:25920) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+STEP2 PASS: synthetic before-state recorded
+(node:22140) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+STEP3 PASS: collection,queue,batch,retry parameters configured
+(node:2940) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+STEP4 PASS: fresh collector process delivered authenticated HTTP batches
+(node:27584) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+STEP5 PASS: queried2packages/1port and unchanged simulated host state; evidence saved
