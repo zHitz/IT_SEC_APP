@@ -12,6 +12,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build and verify disposable Compose project
         run: python3 scripts/verify-compose.py --output "$RUNNER_TEMP/compose-proof/acceptance.json"
+      - name: Publish allowlisted measured notice
+        if: always()
+        run: python3 scripts/compose-proof-notice.py "$RUNNER_TEMP/compose-proof/acceptance.json"
       - name: Upload narrow sanitized evidence
         if: always()
         uses: actions/upload-artifact@v4
