@@ -16,7 +16,7 @@ Windows không phân biệt `Docs/` và `docs/`: giữ nguyên tên `Docs/` đan
 
 ## Chạy local (PowerShell, từ root repo)
 
-Sau khi nhận checkout repo local (chưa có remote GitHub):
+From a fresh clone of https://github.com/zHitz/IT_SEC_APP.git, enter the repository root:
 
 ```powershell
 Copy-Item .env.example .env
@@ -82,3 +82,9 @@ S0-002 v2 was ACCEPTED by the Lead on 2026-10-24 at22:19; S0-003 and S0-004 were
 ## Osquery ingest PoC (S0-003)
 
 The optional authenticated endpoint, SELECT-only collector, durable queue and isolated simulator lab are documented in `collectors/osquery/README.md` and `API.md`. `npm run osquery:verify` performs a real ten-minute queue/restart experiment using explicitly simulated Linux inventory sources; it is not evidence of native Linux/osquery deployment. See `INSTALL-LAB.md` for exactly five reproducible fresh simulator steps. Existing UI/UX is preserved.
+
+## Disposable CI Docker acceptance capture
+
+The `compose-acceptance` workflow starts its timer before checkout, creates a private temporary env from `.env.example` with a generated disposable database password, and runs the documented `docker compose --env-file PRIVATE up --build -d` path under a unique project name. It requires Engine24+ and Compose2.20.3+, uses loopback ephemeral published ports, checks backend `/health` and the Atlas frontend HTML shell, then removes only its own project containers/volumes. No host npm installation/build is used.
+
+On an existing Docker-capable Linux runner with Python3, reproduce with `python3 scripts/verify-compose.py --output /tmp/atlas-compose-acceptance.json`. Python is capture tooling for CI, not a new prerequisite for the manual Docker instructions above. Only the sanitized JSON report is uploaded; private env and raw build logs are withheld. A fresh hosted checkout may have cached base images/tools and is not proof of a pristine physical machine. HTTP HTML success does not prove browser rendering. Read actual run evidence before claiming the ten-minute AC passed.
