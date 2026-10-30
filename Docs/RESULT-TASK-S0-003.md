@@ -8,7 +8,7 @@
 | Spec version followed | SRS v1.0; TASK-S0-003; live Lead decision 1100390000172265 |
 | Dev agent | Codex — Dev AI Agent |
 | Submission package prepared at | 2026-10-30T11:51:02.197946+00:00 |
-| Source/evidence commit | f3cb824adc44332041a7189b2a7a084dce2c3bf8 |
+| Runtime baseline commit | f3cb824adc44332041a7189b2a7a084dce2c3bf8 (unchanged runtime); v37 test/report commit recorded in coordinator submission |
 
 ## 1. Summary
 
