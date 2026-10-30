@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-30T12:42:41.058257+00:00",
+  "runs": [
+    {
+      "id": 41057072469,
+      "html_url": "https://github.com/zHitz/IT_SEC_APP/actions/runs/41057072469",
+      "head_sha": "a64b3f531e179b8f8fbfc649c26733a49c536bb8",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T12:40:09Z",
+      "updated_at": "2026-10-30T12:40:39Z",
+      "artifacts": [
+        {
+          "id": 12976928188,
+          "name": "compose-acceptance-a64b3f531e179b8f8fbfc649c26733a49c536bb8-41057072469-1",
+          "size_in_bytes": 912,
+          "archive_download_url": "https://api.github.com/repos/zHitz/IT_SEC_APP/actions/artifacts/12976928188/zip"
+        }
+      ]
+    },
+    {
+      "id": 41057079771,
+      "html_url": "https://github.com/zHitz/IT_SEC_APP/actions/runs/41057079771",
+      "head_sha": "a64b3f531e179b8f8fbfc649c26733a49c536bb8",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-30T12:40:12Z",
+      "updated_at": "2026-10-30T12:40:38Z",
+      "artifacts": [
+        {
+          "id": 12976723671,
+          "name": "compose-acceptance-5dd8776c717edef39e1fee1eeb6cd5aaefba60fa-41057079771-1",
+          "size_in_bytes": 911,
+          "archive_download_url": "https://api.github.com/repos/zHitz/IT_SEC_APP/actions/artifacts/12976723671/zip"
+        }
+      ]
+    }
+  ],
+  "artifact_download_attempt": "GitHub REST archive GET returned HTTP401 without authenticated artifact access. No credential search attempted.",
+  "local_docker": "Get-Command docker returned absent",
+  "source_validation": "Python ast.parse PASS; git diff --check PASS",
+  "measurement": "Not retrieved; no elapsed_seconds/health/frontend body claim. Completed job success is indirect execution evidence only."
+}

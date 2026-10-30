@@ -3,7 +3,7 @@
 | Trường | Giá trị |
 |---|---|
 | Task ID | TASK-S0-001 |
-| Result version | v4 |
+| Result version | v5 |
 | Trạng thái | PARTIAL |
 | Spec version đã làm theo | SRS v1.0; TASK-S0-001; HANDBOOK-TL v1.0; Quy chuẩn file result v1.0; quyết định Team Lead trên ClickUp |
 | Dev agent | Codex — Dev AI Agent |
@@ -12,9 +12,13 @@
 
 ## 1. Tóm tắt kết quả
 
+CURRENT v5 (LOCAL-COMPOSE-ACCEPTANCE-001 / QA-EVID-01): implemented disposable Docker acceptance capture and executed two successful GitHub-hosted Compose jobs at a64b3f531e179b8f8fbfc649c26733a49c536bb8. Sanitized artifact download requires authentication (HTTP401); measured JSON has NOT been retrieved, so AC-1/AC-6 remain unverified and overall PARTIAL. All v4 text below is historical.
+
 Đã khởi tạo Git local tại IT_SEC_APP, tạo skeleton backend/frontend, Compose database rỗng, workflow GitHub Actions, env, README và ADR-001. Frontend chỉ giữ style/concept khung cũ, có dark/light và kiểm tra liveness backend, không chứa nghiệp vụ. Local lint → 4 test → build đã xanh, có ảnh browser và commit skeleton đầu tiên. Trạng thái PARTIAL vì chưa có Docker để kiểm chứng AC-1/AC-6 và ADR-001 còn là đề xuất chưa được Team Lead xác nhận. CI GitHub chưa chạy trên remote, sẽ kiểm chứng lại khi push lên GitHub.
 
 ## 2. Đối chiếu acceptance criteria
+
+V5 AC-1: UNVERIFIED: real runner jobs success, but measured report unavailable and hosted runner is not pristine physical machine. AC-6: PREPARATORY: documented Docker sequence exercised by harness with private env/unique project/loopback ports; raw output/measurement not retrieved, no browser rendering claim. AC-2/3/4/5 retain historical accepted evidence separately; no ADR status change or new secret scan claimed. See compose-ci-v5.json for exact source/run/artifact IDs.
 
 | # | Acceptance criterion (copy TASK mục 8) | Đạt? | Bằng chứng |
 |---|---|---|---|
@@ -29,6 +33,8 @@ AC-2 áp dụng thay đổi đã được Team Lead chốt ở comment 110039000
 
 ## 3. Công việc đã làm
 
+V5 added Python-standard-library capture runner and separate Compose CI workflow. Real Docker jobs succeeded; no Docker/WSL/services installed locally. Generated throwaway DB password stays in private temp env, never report. Commands have finite deadline and only own-project volume cleanup.
+
 1. Tái kiểm tra comment task; nhận quyết định repo local và thực thi, đăng comment bắt đầu lại 1100390000159745. Bộ docs đã đọc đủ ở v3, không xác nhận lặp.
 2. Init Git ngay tại IT_SEC_APP; giữ nguyên artifacts của PO, loại HTML/downloaded assets khỏi Git và Docker context. Không chạy Rediver source.
 3. Dựng HTTP boundary, config validation và bootstrap riêng; GET /health chỉ liveness, 404 có request_id, không business API.
@@ -37,6 +43,8 @@ AC-2 áp dụng thay đổi đã được Team Lead chốt ở comment 110039000
 6. Viết ADR đề xuất, README chạy/test/reset/troubleshooting và mapping Docs/; kiểm tra local, ảnh browser, scan pattern; commit skeleton f7db71b07fa859d6c68a74f0f0969f1de0c61d18.
 
 ## 4. Files đã thay đổi
+
+V5 files: scripts/verify-compose.py (version/deadline/env/HTTP/cleanup/report harness); .github/workflows/compose-acceptance.yml (fresh checkout timing and narrow JSON artifact); README.md (existing remote wording correction and capture reproduction/limits); Docs/evidence/S0-001/compose-ci-v5.json (actual run metadata/401 limitation); this canonical RESULT. Other TASK RESULTs untouched.
 
 Các đường dẫn dưới đây tương đối với F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP. Các tài liệu đầu vào đã có được đưa vào Git baseline, không sửa nội dung: SRS PDF, handbook PDF, Mẫu giao task, Quy chuẩn result, TASK-S0-001/002/003/004. Không triển khai các task đó.
 
@@ -96,6 +104,8 @@ Ngoài repo: reports/clickup-monitor/STATE.json cập nhật checkpoint thực t
 
 ## 5. Cách chạy và kiểm chứng
 
+V5 reproduce on existing Docker Linux runner: python3 scripts/verify-compose.py --output /tmp/atlas-compose-acceptance.json. Standard manual Docker path still requires only Docker/Git, not Python. Workflow measures from before checkout. Review only acceptance.json artifact; never upload private env or broad logs. Current actual source a64b3f5; report commit is recorded in coordinator submission.
+
 Root: F:/PROJECT/REVERSE_PROJECT/Project_app/IT_SEC_APP. Node thực tế v24.11.1; không có npm dependencies. Chạy `npm run lint`, `npm test`, `npm run build` theo thứ tự. HTTP test chỉ dùng loopback ephemeral. Nếu sandbox chặn EACCES, dùng quyền chạy local phù hợp; không giảm chính sách toàn cục.
 
 README có các mục: Repo và mapping tài liệu; Yêu cầu; Chạy local (sao .env và biến bắt buộc, Compose, URL frontend và /health); Lint, unit-test và build; Dừng và reset; Xử lý sự cố (port, env/database volume, Compose/image). Đây là đối chiếu từng nhóm yêu cầu §5.3, chưa phải bằng chứng các lệnh Docker đã chạy.
@@ -105,6 +115,8 @@ Compose cần Docker/Git, Compose >=2.20.3, không cần Node host. Copy .env.ex
 Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `node scripts/scan-secrets.mjs`. Xem output trong Docs/evidence/S0-001/secret-scan.json. Quét này là heuristic tracked text, cộng rà tay source/config/env; không chứng minh mọi loại secret không thể tồn tại.
 
 ## 6. Test và kết quả test
+
+V5 actual: Python ast.parse PASS; git diff --check PASS; Docker discovery absent locally. GitHub runs41057072469 and41057079771 completed SUCCESS at a64b3f5. Artifact archive GET returned401. No local Docker result, elapsed-time value, browser screenshot, full-suite rerun or new secret scan claimed.
 
 | Test / kiểm tra | Lệnh hoặc cách test | Kết quả | Output thật |
 |---|---|---|---|
@@ -123,6 +135,8 @@ Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `
 
 ## 7. Vấn đề gặp phải và quyết định tự xử lý
 
+V5 selected isolated existing GitHub-hosted Docker capability as assigned; no workstation changes. CI jobs repeat on push/PR as existing pipeline does. Timing includes checkout but not hosted runner provisioning/queue. Image cache initial count captured by harness, not yet read. Readiness polling bounded600seconds; failure/deadline returns nonzero and report; cleanup own unique project only. GitHub artifact authentication remains unavailable through current unauthenticated API; no credentials searched.
+
 - Lịch sử v1 → v2 → v3 → v4: v1 báo thiếu SRS/repo/chuẩn result; v2 nhận SRS và chuẩn result, chỉ còn thiếu repo; v3 đọc đủ docs theo kickoff và comment BLOCKED; v4 nhận repo local và bỏ blocker đó, triển khai skeleton, local CI/ảnh/scan/commit. Không có verdict REWORK chính thức, đây không phải vòng rework 1/3.
 - Quyết định TL 1100390000159464: IT_SEC_APP là root, init Git local, không chờ remote; CI local tạm thay AC-2 remote. TL 1100390000159463: SRS §26 quyết định hạn Q-01..Q-05, không chặn Sprint 0. TL 1100390000159468/1100390000159589: thực thi ngay, chỉ comment ba mốc, luôn đính kèm RESULT. Không cần ACCEPT v3 để bắt đầu.
 - Trên Windows Docs/docs trỏ cùng directory, giữ tên Docs và ghi mapping README để Linux không tạo hai cây song song. Không đổi tài liệu gốc, không dời/xóa artifacts PO.
@@ -132,6 +146,8 @@ Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `
 
 ## 8. Chưa làm, giới hạn và nợ kỹ thuật
 
+V5 missing: retrieved sanitized measured report, independent evaluation of physical-clean-machine equivalence and native browser rendering. Hosted HTTP success must not be relabeled clean machine/browser proof. Historical v4 absent remote/collector statements below are superseded by later work, not current limitations.
+
 - AC-1 và AC-6 phần Docker chưa kiểm chứng, chưa đo clone → Compose <10 phút. Dockerfiles/Compose mới được đọc kiểm tra, chưa build image/config validation bằng Docker.
 - ADR-001 vẫn PROPOSED; stack native ESM không có type checker, cần TL quyết định trước module lớn. Không giả định đạt NFR quy mô/search/security từ skeleton.
 - Chưa remote/push/CI GitHub, chưa security image scan/pin immutable digest. Health không kiểm tra DB. Không có schema/migration/seed/SSO/auth; chưa dùng dữ liệu thật.
@@ -139,6 +155,8 @@ Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `
 - S0-002/003/004 không thực thi, chờ TL mở sau verdict phù hợp.
 
 ## 9. Điểm nghẽn và việc cần quyết định
+
+V5 exact remaining input: authenticated access to the narrow GitHub acceptance.json artifact (IDs/URLs in compose-ci-v5.json), or reviewer retrieval through existing authorized GitHub session. Public metadata GET succeeds, artifact archive GET401. No new Docker install or production access required. Lead evaluates actual measurements and clean-machine limits before AC verdict.
 
 | ID | Nghẽn ở đâu | Đã thử gì | Cần ai quyết/cung cấp gì |
 |---|---|---|---|
@@ -149,6 +167,8 @@ Scan: đặt GIT_BIN trỏ git thực tế nếu Git không trong PATH, chạy `
 Không còn blocker repo/SRS/Q-01..Q-05. Phần source triển khai được đã làm; PARTIAL vì bằng chứng nghiệm thu còn thiếu và quyết định ADR, chưa tự khai DONE.
 
 ## 10. Đề xuất bước tiếp theo và tự kiểm tra
+
+V5 next: retrieve/verify narrow measured artifact, then Lead evaluates AC-1/AC-6 against actual output; independent current-head QA/required CI still apply, no merge. Checklist: ten original sections retained; six original AC rows retained; actual commands/errors/limits disclosed; no secret/other-task change. History: v5 adds real CI capture path and honest artifact-access limit after v4 local skeleton.
 
 TL review ADR và cấp runner Docker để Dev hoàn tất phần kiểm chứng AC-1/AC-6. Giữ ở S0-001, chỉ sửa theo feedback; chưa mở task phụ thuộc. CI GitHub chưa chạy trên remote, sẽ kiểm chứng lại khi push lên GitHub.
 
