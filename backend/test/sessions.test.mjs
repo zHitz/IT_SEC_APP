@@ -1,0 +1,13 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{createServer}from'node:http';import{createSessionStore}from'../src/auth/sessions.mjs';
+test('opaque session cookie headers, fixation rotation, expiry and logout CSRF on actual loopback HTTP',async()=>{
+ let clock=Date.now(),store;const marker='synthetic-server-only-access-marker';
+ const server=createServer((req,res)=>{try{if(req.url==='/create'){const session=store.create({accessToken:marker,expiresAt:clock+60000},req);res.setHeader('Set-Cookie',session.cookie);res.end(JSON.stringify({csrf:session.csrf}));}else if(req.url==='/logout'){res.setHeader('Set-Cookie',store.logout(req));res.end('{}');}else res.end(JSON.stringify(store.info(req)));}catch(error){res.writeHead(error.status??500).end('{}');}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin=`http://127.0.0.1:${server.address().port}`;store=createSessionStore({origin,now:()=>clock});
+ try{const first=await fetch(origin+'/create'),cookie=first.headers.get('set-cookie'),{csrf}=await first.json();assert.match(cookie,/HttpOnly; SameSite=Lax; Max-Age=60/);assert.ok(!cookie.includes(marker));const headers={cookie:cookie.split(';')[0]};assert.equal(store.accessToken({headers}),marker);
+ const rotation=await fetch(origin+'/create',{headers});assert.equal(store.accessToken({headers}),undefined);const next={cookie:rotation.headers.get('set-cookie').split(';')[0]};const currentCsrf=(await rotation.json()).csrf;assert.notEqual(currentCsrf,csrf);
+ assert.equal((await fetch(origin+'/logout',{method:'POST',headers:next})).status,403);assert.equal((await fetch(origin+'/logout',{method:'POST',headers:{...next,origin:'https://untrusted.example.test','x-csrf-token':currentCsrf}})).status,403);
+ const logout=await fetch(origin+'/logout',{method:'POST',headers:{...next,origin,'x-csrf-token':currentCsrf}});assert.equal(logout.status,200);assert.match(logout.headers.get('set-cookie'),/Max-Age=0/);assert.equal(store.accessToken({headers:next}),undefined);
+ const expiry=store.create({accessToken:marker,expiresAt:clock+1000});clock+=1001;assert.equal(store.accessToken({headers:{cookie:expiry.cookie.split(';')[0]}}),undefined);
+ const secure=createSessionStore({origin:'https://synthetic.test'}).create({accessToken:marker,expiresAt:Date.now()+10000});assert.match(secure.cookie,/^__Host-atlas_session=/);assert.match(secure.cookie,/; Secure$/);console.log('SESSION_INITIAL_PROOF',JSON.stringify({actualHttp:true,httpOnly:true,sameSite:'Lax',httpsSecureCookie:true,fixationRotation:true,csrf403:true,logoutRevoked:true,expiryRevoked:true,tokensSerialized:false}));
+ }finally{await new Promise(r=>server.close(r));}
+});

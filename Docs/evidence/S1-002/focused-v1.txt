@@ -1,0 +1,26 @@
+✔ health serves liveness; unknown routes and writes cannot expose business endpoints (89.4296ms)
+✔ configuration fails closed for missing or invalid ports (0.8837ms)
+OIDC_HTTP_PROOF {"authorization":"[REDACTED]","validRoles":["Admin","Security Analyst","Infra Engineer","Viewer","Auditor"],"status200":6,"status401":["missing","malformed","expired","issuer","audience","tampered","unsigned","algorithm-confusion","ID-token-type","collector"],"status403":["absent","empty","unmapped","Service Owner"],"userIngest401":true,"health200":true,"jwksGets":1,"fixtureResponse":{"data":[{"hostname":"synthetic.test"}]}}
+✔ HTTP inventory enforces signed access tokens and deny-by-default roles without leaking credentials (497.391ms)
+✔ inventory without verifier fails closed while health remains public (14.2956ms)
+OIDC_ROTATION_PROOF {"synthetic":true,"clock":"isolated Date mock; no real elapsed claim","jwksGets":4,"rotation":true,"unknownKey401":true,"expiredCacheProviderFailure401":true,"failureCooldown":true,"untrustedUrlRequests":0}
+✔ actual JWKS rotation, unknown key, bounded failure cache and token URL isolation (233.4533ms)
+✔ OIDC configuration rejects unsafe URLs, cross-origin JWKS, absent audience and symmetric algorithms (0.7635ms)
+OIDC_INITIAL_PROOF {"synthetic":true,"jwksGets":1,"validViewer":true,"missing401":true,"serviceOwner403":true}
+✔ synthetic OIDC verifier uses configured HTTP JWKS and denies missing token and unsupported role (320.8517ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (16.3999ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (17.9714ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.2329ms)
+SESSION_INITIAL_PROOF {"actualHttp":true,"httpOnly":true,"sameSite":"Lax","httpsSecureCookie":true,"fixationRotation":true,"csrf403":true,"logoutRevoked":true,"expiryRevoked":true,"tokensSerialized":false}
+✔ opaque session cookie headers, fixation rotation, expiry and logout CSRF on actual loopback HTTP (91.554ms)
+SSO_NEGATIVE_PROOF {"invalidState401":true,"invalidNonce401":true,"pkceMismatch401":true,"invalidRedirect400":true,"callbackRedirect401":true,"codeReplay401":true,"providerCodeReplay400":true,"adminMissingMfa401":true,"adminMfa200":true,"analystMissingMfa401":true,"analystMfa303":true,"sessionExpiry401":true,"crossOriginLogin403":true,"clock":"injected session clock only"}
+SSO_ROUNDTRIP_PROOF {"syntheticProvider":true,"actualHttp":true,"codePkce":true,"stateNonceVerified":true,"sessionInventory200":true,"logout401":true,"tokenEndpointCalls":9,"browserNative":false}
+✔ actual local code+PKCE roundtrip creates opaque session, authorizes inventory and logs out (273.5476ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 760.6078

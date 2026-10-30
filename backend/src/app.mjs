@@ -2,13 +2,14 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 
 // Liveness only. No claim about database, collectors or production readiness.
-export function createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory } = {}) {
+export function createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso } = {}) {
   const app = createServer(async (request, response) => {
     const requestId = randomUUID();
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('X-Request-Id', requestId);
+    if (sso && await sso.handle(request,response)) return;
     if (request.method === 'GET' && request.url === '/health') {
       response.writeHead(200).end(JSON.stringify({ status: 'ok', service: 'backend', scope: 'liveness' }));
       return;

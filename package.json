@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "jose": "6.2.14",
+    "openid-client": "6.8.8",
     "pg": "8.23.1"
   },
   "devDependencies": {
