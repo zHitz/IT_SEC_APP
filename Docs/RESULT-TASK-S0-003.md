@@ -1,16 +1,18 @@
-# Result — TASK-S0-003: v37 exact ACK and restart recovery evidence; overall PARTIAL
+# Result — TASK-S0-003: v38 relative-time ACK recovery rework; overall PARTIAL
 
 | Field | Value |
 |---|---|
 | Task ID | TASK-S0-003 |
-| Result version | v37 |
+| Result version | v38 |
 | Status | PARTIAL |
 | Spec version followed | SRS v1.0; TASK-S0-003; live Lead decision 1100390000172265 |
 | Dev agent | Codex — Dev AI Agent |
-| Submission package prepared at | 2026-10-30T11:51:02.197946+00:00 |
+| Submission package prepared at | 2026-10-30T12:10:14.276299+00:00 |
 | Runtime baseline commit | f3cb824adc44332041a7189b2a7a084dce2c3bf8 (unchanged runtime); v37 test/report commit recorded in coordinator submission |
 
 ## 1. Summary
+
+CURRENT v38: REWORK1/3 from message14 fixes calendar-fixed ACK fixture dates using one Date.now anchor per test and observations at anchor-2000ms/-1000ms. Runtime unchanged; overall PARTIAL. v37 and older claims below are history.
 
 CURRENT v37: LOCAL-QUEUE-ACK-RECOVERY-001 adds missing real loopback HTTP exact-ACK/permanent-rejection/re-instantiation proof. Tests/evidence only; runtime unchanged. Overall PARTIAL. v36 and older claims below are historical.
 
@@ -19,6 +21,8 @@ CURRENT v36: LOCAL-QUEUE-CONCURRENCY-001 reproduced/fixed acknowledged flush del
 PARTIAL per the latest Lead decision 1100390000172265. Recovered the interrupted bounded native retry and the full test process. All four native journeys remain NOT PROVEN, including Flagged-record opener and original saved-bookmark cross-view return after child closure. All gaps remain OPEN. Current full suite:104/104 pass,0fail; lint96; unchanged schema22+2/114FK; buildPASS. Original native Host AC-1/AC-3/AC-4 remain unverified; previously accepted simulator/outage evidence is retained as historical evidence and was not rerun or reclassified as native.
 
 ## 2. Acceptance criteria
+
+V38 AC-2 follow-up: current focused9/9 and later simulated-date ACK5/5 pass with all retention/FIFO/request assertions unchanged. AC-1/3/4 native gaps, AC-5 mapping and AC-6 boundaries unchanged. This does not replace historical real-duration outage evidence.
 
 V37 AC-2: five response cases retain two byte-identical queue files and block FIFO advance. Wrong ID/accepted:false/malformed JSON use three finite attempts; 401/403 use one request and zero waits. A new queue instance receives two matching ACKs in FIFO order, pending0; an empty flush sends no further requests. AC-1/3/4 native gaps, AC-5 accepted mapping and AC-6 privacy boundaries unchanged; no new proof for those ACs.
 
@@ -234,11 +238,15 @@ Original and V4–V6/QA rows retain their previously accepted evidence boundarie
 
 ## 3. Work completed
 
+V38 changed only the two fixture date expressions to relative times from a single per-test anchor; preserved strict FIFO order and all ACK assertions.
+
 V37 inspected osquery-safety.test.mjs and osquery.test.mjs: existing restart/overflow/unsafe-destination/lab tests do not assert invalid successful ACKs or permanent-rejection FIFO recovery. Added only these missing cases.
 
 Read the live task/Lead decision and live Git/PR state. Reused the existing START; no duplicate START. Ran lint/schema, all tests and build on the recorded source commit. The one bounded retry entered the approved lab URL, then the turn was interrupted before navigation. On resume a fresh address-bar observation differed from the last verified entry, so no navigation/corrective input or second attempt was issued. Recorded that bounded outcome and prior gate-stop separately; created the per-journey evidence matrix. No inventory implementation changed.
 
 ## 4. Files changed
+
+V38 files: backend/test/osquery-queue-ack-recovery.test.mjs; this RESULT; Docs/evidence/S0-003/ack-focused-v38.txt, ack-clock-loader-failure-v38.txt, ack-later-clock-v38.txt, ack-lint-v38.txt, ack-later-clock-v38.mjs. The preload is an isolated proof helper, not product runtime.
 
 V37 changed backend/test/osquery-queue-ack-recovery.test.mjs (five table-driven real HTTP/filesystem cases), Docs/evidence/S0-003/ack-focused-v37.txt and ack-lint-v37.txt (actual output), and this canonical RESULT. No runtime or other TASK RESULT changed.
 
@@ -255,6 +263,8 @@ V36 files: collectors/osquery/queue.mjs (ENOENT-only handling); backend/test/osq
 
 ## 5. Run and verify
 
+V38 current: node --test backend/test/osquery-queue-ack-recovery.test.mjs backend/test/osquery-queue-concurrency.test.mjs backend/test/osquery-safety.test.mjs. Later clock from repo: node --import ./Docs/evidence/S0-003/ack-later-clock-v38.mjs --test backend/test/osquery-queue-ack-recovery.test.mjs. Also npm run lint and git diff --check.
+
 V37 reproduce from repo: `node --test backend/test/osquery-queue-ack-recovery.test.mjs backend/test/osquery-queue-concurrency.test.mjs backend/test/osquery-safety.test.mjs`; `npm run lint`; `git diff --check`.
 
 From the IT_SEC_APP root on Node24:
@@ -268,6 +278,8 @@ npm run build
 Match outputs to the source commit in the header and the hashes in verification-v35.json. Read native-retry-v35.json and the four-journey matrix separately from automated model outputs. Reproduction commands above are local verification, not instructions to bypass a Computer Use safety stop. Do not repeat the bounded retry just to obtain a more favorable result. Complete the remaining native traces through the normal approved setup only after capture is restored.
 
 ## 6. Tests and actual results
+
+V38 actual current focused9pass0fail (490.5343ms); isolated Date.now override to 2026-12-01T12:00:00Z ACK5pass0fail (508.006ms). Lint98 modules/schema22+2/114FK PASS; diff check PASS. Initial absolute Windows --import path failed before tests with ERR_UNSUPPORTED_ESM_URL_SCHEME; corrected file URL passed. Both logs retained. No full suite/build/outage rerun.
 
 V37 actual output: focused 9 tests / 9 pass / 0 fail, duration514.2669ms; lint PASS98 modules; schema PASS22 entities/2 junctions/114 native FKs; diff whitespace PASS. Full suite/build/ten-minute outage not rerun for tests-only changes; v36 full105 pass is historical, not a current v37 full run.
 
@@ -287,6 +299,8 @@ Live Cloudflare requests:0. Synthetic test log includes loopback mock traffic; t
 
 ## 7. Issues and implementation decisions
 
+V38 accepts Lead finding: fixed2026-10-30 fixtures eventually fall outside intended30-day validation. Relative recent timestamps solve test maintenance without weakening runtime validation. Initial preload launch used a Windows path instead of supported file URL; corrected locally. Clock override affects only isolated Node process Date.now, never OS clock. It is simulated later-date evidence, not elapsed-time proof.
+
 V37 no demonstrated product defect, so no runtime change. Retry wait is injected as a counter, not a sleep; real HTTP and queue files are used. Restart means a fresh DurableQueue object reading existing disk files, not OS/process power-loss recovery. Accepted records are counted by the HTTP fixture; this is not new database idempotency proof. No equivalent assertions found in inspected existing tests.
 
 V36 new defect established by ordering acknowledged flush after real enumeration before stat via test subclass. No timing loop/production hook. The earlier audit established no defect; this new regression supplies the missing reproduction. UTF-8 console error interrupted packaging after source commit; resumed packaging without duplicate commit/test execution.
@@ -299,6 +313,8 @@ The background test process finished successfully; its complete output was recov
 
 ## 8. Not done, limitations and technical debt
 
+V38 limits unchanged: queue-object restart only, no power-loss proof; local synthetic HTTP; no native/UI/provider proof or new database idempotency evidence. Historical v37 calendar-dependent fixtures superseded.
+
 V37 local/synthetic only. No native browser/Linux/provider evidence, process crash/fsync fault injection, multi-producer capacity guarantee or new ten-minute experiment. Original unverified AC portions remain open.
 
 V36 synthetic/local only; deterministic concurrency is not native browser/Linux evidence. Original native/integration limits and four UI native gaps remain OPEN/NOT PROVEN. Existing accepted lab scope preserved.
@@ -307,6 +323,8 @@ Every native Duplicate/opener/invalid trace and original saved-bookmark cross-vi
 
 ## 9. Blockers and decisions required
 
+V38 no new blocker. Required CI and independent current-head QA remain merge gates; no merge by Dev.
+
 V37 no new implementation blocker. Independent current-revision QA and required CI remain merge gates; Dev must not merge.
 
 V36 requires independent current-head QA approval before merge. Local coordinator replaces historical ClickUp delivery directions. No new PO scope or security decision requested.
@@ -314,6 +332,8 @@ V36 requires independent current-head QA approval before merge. Local coordinato
 No new PO-level decision is required for this PARTIAL submission. The environment capture limitation remains an execution gap to resolve through the normal approved setup; it does not gate submission under the latest Lead decision. QA approval is still required before any merge. No task status, description or dependency was changed; no self-ACCEPT, no merge, Q-01..Q-05 untouched.
 
 ## 10. Next step and self-check
+
+V38 next: Lead reviews rework1/3 correction and actual current/later-clock output. Ten sections and all six AC rows retained; failures/limits/file list disclosed. History: v38 corrects v37 test-date maintenance only.
 
 V37 next: Lead reviews exact assertions/output and submitted commit. Checklist: ten sections retained; six original AC rows retained separately; all changed files/output/reproduction/limits disclosed; no secrets or new scope; no duplicate outage/full-suite run. History: v37 adds ACK/recovery evidence after bounded v36 concurrency acceptance.
 

@@ -1,0 +1,22 @@
+QUEUE_ACK_RECOVERY {"case":"wrong batch_id","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after wrong batch_id and recovers with exact ACK after re-instantiation (146.2285ms)
+QUEUE_ACK_RECOVERY {"case":"accepted false","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after accepted false and recovers with exact ACK after re-instantiation (48.4309ms)
+QUEUE_ACK_RECOVERY {"case":"malformed JSON","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after malformed JSON and recovers with exact ACK after re-instantiation (44.3332ms)
+QUEUE_ACK_RECOVERY {"case":"unauthorized","failedRequests":1,"retryWaits":0,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after unauthorized and recovers with exact ACK after re-instantiation (37.6664ms)
+QUEUE_ACK_RECOVERY {"case":"forbidden","failedRequests":1,"retryWaits":0,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after forbidden and recovers with exact ACK after re-instantiation (36.626ms)
+✔ enqueue survives acknowledged flush between enumeration and capacity stat without losing new batch (129.3868ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (17.8551ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (22.2424ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.2543ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 490.5343

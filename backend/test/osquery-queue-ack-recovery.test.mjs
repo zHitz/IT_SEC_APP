@@ -30,7 +30,8 @@ for (const [label,status,reply,expectedRequests] of cases) {
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const options={endpoint:`http://127.0.0.1:${server.address().port}/api/v1/ingest/osquery`,token:'synthetic-ack-marker',attempts:3,wait:async()=>{waits++;},log:event=>events.push(event)};
   try{
-   const first=batch('2026-10-30T00:00:00.000Z'),later=batch('2026-10-30T00:00:01.000Z');
+   const anchor=Date.now();
+   const first=batch(new Date(anchor-2000).toISOString()),later=batch(new Date(anchor-1000).toISOString());
    const queue=new DurableQueue({directory});await queue.enqueue(first);await queue.enqueue(later);
    const files=await queue.files();const before=await Promise.all(files.map(file=>readFile(join(directory,file),'utf8')));
    assert.equal((await queue.flush(options)).pending,2);
