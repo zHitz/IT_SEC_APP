@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 
 // Liveness only. No claim about database, collectors or production readiness.
-export function createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso } = {}) {
+export function createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso, readAssets, readAssetDetails } = {}) {
   const app = createServer(async (request, response) => {
     const requestId = randomUUID();
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -23,7 +23,7 @@ export function createApp({ ingestOsquery, readInventory, readExactInventory, au
       return;
     }
     // All enabled inventory endpoints share this fail-closed authorization boundary.
-    if (request.url.startsWith('/api/v1/inventory/') && (readInventory || readExactInventory)) {
+    if ((request.url.startsWith('/api/v1/inventory/') && (readInventory || readExactInventory)) || (/^\/api\/v1\/(assets|hosts)(?:[/?]|$)/.test(request.url) && (readAssets || readAssetDetails))) {
       try {
         if (typeof authorizeInventory !== 'function') throw Object.assign(Error(), {status:401});
         await authorizeInventory(request);
@@ -33,6 +33,18 @@ export function createApp({ ingestOsquery, readInventory, readExactInventory, au
         response.writeHead(status).end(JSON.stringify({error:{code:status===403?'FORBIDDEN':'UNAUTHORIZED',message:'Access denied',request_id:requestId}}));
         return;
       }
+    }
+    const standardURL=new URL(request.url,'http://localhost');
+    const standardDetail=/^\/api\/v1\/assets\/([^/]+)$/.exec(standardURL.pathname);
+    const standardPorts=/^\/api\/v1\/hosts\/([^/]+)\/ports$/.exec(standardURL.pathname);
+    if((standardURL.pathname==='/api/v1/assets'&&readAssets)||((standardDetail||standardPorts)&&readAssetDetails)){
+      if(request.method!=='GET'){response.setHeader('Allow','GET');response.writeHead(405).end(JSON.stringify({error:{code:'METHOD_NOT_ALLOWED',message:'Use GET',request_id:requestId}}));return;}
+      try{
+        if(request.url.length>2048)throw Object.assign(Error(),{status:400,code:'INVALID_QUERY'});
+        const result=standardDetail||standardPorts?await readAssetDetails((standardDetail||standardPorts)[1],!!standardPorts,standardURL.searchParams):await readAssets(standardURL.searchParams);
+        response.writeHead(200).end(JSON.stringify(result));
+      }catch(error){const status=[400,404].includes(error.status)?error.status:503;response.writeHead(status).end(JSON.stringify({error:{code:status===503?'INVENTORY_UNAVAILABLE':error.code,message:status===404?'Asset not found':status===400?'Invalid asset query':'Inventory unavailable',request_id:requestId}}));}
+      return;
     }
     const exactMatch=/^\/api\/v1\/inventory\/(domains|hosts|packages|dns-records)\/([^/?]+)(?:\/(dns-records|hosts))?(?:\?|$)/.exec(request.url);
     if(exactMatch&&readExactInventory){

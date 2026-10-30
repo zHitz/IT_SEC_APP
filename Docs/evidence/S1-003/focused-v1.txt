@@ -1,0 +1,21 @@
+ASSET_HTTP_PROOF {"syntheticHosts":207,"extraPaginationFixtures":205,"defaultPage50":true,"maxPage200":true,"stableTieOrder":true,"combinedFilterTotal":102,"asOf":true,"hostPackagesExcludeImages":true,"exactPorts":true,"unknown404":true,"invalid400":true,"unauthorized401":true,"serviceOwner403":true,"write405":true,"countsUnchanged":true,"sourceEvidenceMetadata":true,"rawContentsExcluded":true,"authorization":"[REDACTED]"}
+✔ standard asset HTTP APIs preserve schema and provenance with signed auth, filters and stable50/200 pages (2299.5776ms)
+ASSET_INITIAL_PROOF {"syntheticHosts":2,"filtersCombined":true,"defaultPageSize":50,"maxPageSize":200,"readOnly":true,"asOf":true,"rawEvidenceContentsExcluded":true}
+✔ standard host asset query uses accepted schema, bound filters and deterministic50/200 pagination (1962.5547ms)
+OIDC_HTTP_PROOF {"authorization":"[REDACTED]","validRoles":["Admin","Security Analyst","Infra Engineer","Viewer","Auditor"],"status200":6,"status401":["missing","malformed","expired","issuer","audience","tampered","unsigned","algorithm-confusion","ID-token-type","collector"],"status403":["absent","empty","unmapped","Service Owner"],"userIngest401":true,"health200":true,"jwksGets":1,"fixtureResponse":{"data":[{"hostname":"synthetic.test"}]}}
+✔ HTTP inventory enforces signed access tokens and deny-by-default roles without leaking credentials (498.4438ms)
+✔ inventory without verifier fails closed while health remains public (9.2551ms)
+(node:32816) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+OSQUERY_LAB_FAST {"synthetic":true,"nativeLinux":false,"nativeOsquery":false,"hosts":3,"offlineMs":1132,"queued":6,"allDelivered":true}
+✔ three isolated lab sources -> authenticated HTTP ingest; disk retry/restart, idempotency, safe five-table projection (5947.0251ms)
+OSQUERY_ALL_ENTITY_TIMESTAMPS {"syntheticObservationTimes":true,"repeatedAndStaleBatches":4,"rows":[{"entity":"Host","first_seen_at":"2026-10-30T18:22:13.740Z","last_seen_at":"2026-10-30T18:23:13.740Z"},{"entity":"ListeningPort","first_seen_at":"2026-10-30T18:22:13.740Z","last_seen_at":"2026-10-30T18:23:13.740Z"},{"entity":"Package","first_seen_at":"2026-10-30T18:22:13.740Z","last_seen_at":"2026-10-30T18:23:13.740Z"}],"latestRawEvidencePreserved":true}
+✔ Host, Package and ListeningPort preserve first_seen and monotonic last_seen across repeats and stale replay (1403.769ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7662.8743

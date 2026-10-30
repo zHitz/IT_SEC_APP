@@ -1,3 +1,4 @@
+import { createAssetReader,createAssetDetailsReader } from './inventory/assets.mjs';
 import { createSso } from './auth/sso.mjs';
 import { createInventoryAuthorizer } from './auth/oidc.mjs';
 import { createApp } from './app.mjs';
@@ -8,7 +9,7 @@ import {createExactInventoryReader} from './inventory/exact-reader.mjs';
 import { createInventoryReader } from './inventory/reader.mjs';
 
 const config = backendConfig(process.env);
-let db, inventoryDb, ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso;
+let db, inventoryDb, ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso, readAssets, readAssetDetails;
 try {
   if (process.env.OSQUERY_AGENT_TOKENS) {
     if (!process.env.DATABASE_URL || !process.env.OSQUERY_RAW_DIRECTORY) throw Error('INGEST_CONFIG');
@@ -33,6 +34,8 @@ try {
     inventoryDb = new pg.Pool({ connectionString: process.env.DATABASE_URL, max: 2,
       options: '-c default_transaction_read_only=on -c statement_timeout=5000' });
     await inventoryDb.query('SELECT 1');
+    readAssets=createAssetReader({db:inventoryDb});
+    readAssetDetails=createAssetDetailsReader({db:inventoryDb});
     readInventory = createInventoryReader({ db: inventoryDb });
     readExactInventory = createExactInventoryReader({db:inventoryDb});
   }
@@ -40,6 +43,6 @@ try {
   console.error('Backend database/configuration failed; no credentials logged.');
   if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); process.exit(1);
 }
-const app = createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso });
+const app = createApp({ ingestOsquery, readInventory, readExactInventory, authorizeInventory, sso, readAssets, readAssetDetails });
 app.listen(config.port, config.host, () => console.log(`Backend listening on configured port ${config.port}`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => app.close(async () => { if (db) await db.end(); if (inventoryDb) await inventoryDb.end(); }));
