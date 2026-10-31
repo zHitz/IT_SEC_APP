@@ -1,0 +1,21 @@
+﻿âœ” Session lifecycle: checkSession and initAuthSession render anonymous, authenticated, and handle logout with CSRF (19.0013ms)
+âœ” AC-1 & AC-3: mountInventoryTable with standard asset API lists, filters, pages hosts and renders safe text (15.5157ms)
+âœ” AC-2: 401 unauthorized / expired session shows safe state, hides retry, clears protected data (8.0686ms)
+âœ” AC-2: 403 forbidden session shows access denied, hides retry, clears protected data (3.8898ms)
+âœ” AC-1 & AC-2: mountInventoryDetail with standard APIs handles 401, 403, and authorized detail/ports (14.9722ms)
+AUTH_INVENTORY_INTEGRATION_PROOF {"proxyAuthRoutes":true,"proxyAssetRoutes":true,"cookieForwarded":true,"setCookiePreserved":true,"csrfForwarded":true,"locationPreserved":true,"methodsEnforced":true,"auth401Preserved":true}
+âœ” Server proxy: forwards auth and standard asset APIs with cookies and headers (116.8128ms)
+HOST_DETAIL_V6_PROOF {"synthetic":true,"actualHttpPostgres":true,"scopedRequests":2,"hostMetadata":true,"packageVersion":true,"processPid":true,"backPreservesSearchPage":true}
+âœ” Host row opens scoped detail; package/version and process/PID render; back preserves list search/pages (2319.3914ms)
+âœ” Host detail rejects cross-host responses and safely exposes retry/back (6.824ms)
+âœ” Host frontend render/search/page and Package/version plus Port/process/PID (32.8307ms)
+HOST_UI_V5_HTTP_PROOF {"synthetic":true,"hosts":26,"hostPackages":24,"hostPorts":25,"search":true,"pages":true,"osVersion":true,"packageVersion":true,"processPid":true,"optIn404":true,"nativeLinux":false}
+âœ” Host page and three proxies use accepted v4 API, actual synthetic database; opt-in defaults remain closed (2330.5458ms)
+â„¹ tests 10
+â„¹ suites 0
+â„¹ pass 10
+â„¹ fail 0
+â„¹ cancelled 0
+â„¹ skipped 0
+â„¹ todo 0
+â„¹ duration_ms 2995.6019
