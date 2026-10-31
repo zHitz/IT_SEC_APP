@@ -1,0 +1,20 @@
+﻿âœ” Session lifecycle: checkSession and initAuthSession render anonymous, authenticated, and handle logout with CSRF (27.5412ms)
+âœ” AC-1 & AC-3: mountInventoryTable with standard asset API lists, filters, pages hosts and renders safe text (16.6209ms)
+âœ” AC-2: 401 unauthorized / expired session shows safe state, hides retry, clears protected data (7.1781ms)
+âœ” AC-2: 403 forbidden session shows access denied, hides retry, clears protected data (4.6462ms)
+âœ” AC-1 & AC-2: mountInventoryDetail with standard APIs handles 401, 403, and authorized detail/ports (15.9639ms)
+AUTH_INVENTORY_INTEGRATION_PROOF {"proxyAuthRoutes":true,"proxyAssetRoutes":true,"cookieForwarded":true,"setCookiePreserved":true,"csrfForwarded":true,"locationPreserved":true,"methodsEnforced":true,"auth401Preserved":true}
+âœ” Server proxy: forwards auth and standard asset APIs with cookies and headers (108.7842ms)
+âœ” AC-1 Page composition: mountHostPage mounts standard asset APIs for list/detail/ports, preserving secondary panels and UUID links (25.8252ms)
+âœ” AC-2 & C5 Session boundary: logout and expiry immediately clear protected list and detail DOM, prevent deferred responses repopulating, and handle logout failure cleanly (19.9292ms)
+âœ” AC-2 LEAD-S1-004-02: Actual 401 propagation from detail or list wipes all protected views, CSRF and header state across the page (16.481ms)
+ACTUAL_LOCAL_COOKIE_SSO_PROXY_PROOF {"livePostgresWasm":true,"syntheticOidcPkce":true,"backendSsoSessionStore":true,"opaqueSessionCookieHttpOnly":true,"noTokensExposedToClient":true,"frontendReverseProxyPassThrough":true,"authenticatedViewerDbRows200":true,"uiDetailAndPortsRendered":true,"csrfProtectedLogoutSuccess":true,"backendSessionInvalidated401":true,"uiViewsClearedOnLogout":true,"serviceOwner403":true,"anonymous401Bearer":true}
+âœ” AC-1, AC-2, AC-3 Genuine local cookie-session-through-proxy proof: live PostgreSQL, synthetic SSO PKCE roundtrip, opaque atlas_session cookie, frontend reverse proxy, Viewer 200, CSRF logout, post-logout 401, Service Owner 403 (2446.7705ms)
+â„¹ tests 10
+â„¹ suites 0
+â„¹ pass 10
+â„¹ fail 0
+â„¹ cancelled 0
+â„¹ skipped 0
+â„¹ todo 0
+â„¹ duration_ms 3221.9016

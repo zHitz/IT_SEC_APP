@@ -35,11 +35,22 @@ export function initAuthSession(document, { fetcher = fetch, onSessionChange } =
     if (detailInfo) detailInfo.replaceChildren();
     const detailRelated = get('detail-related');
     if (detailRelated) detailRelated.replaceChildren();
+    const detailTitle = get('detail-title');
+    if (detailTitle) detailTitle.textContent = 'Host details';
     const detailStatus = get('detail-status');
     if (detailStatus) detailStatus.textContent = 'Session expired or not authenticated. Please log in again.';
     const detailRetry = get('detail-retry');
     if (detailRetry) detailRetry.hidden = true;
   }
+
+  function handleUnauthorized() {
+    setSessionUI({ authenticated: false, expired: true });
+  }
+
+  const onUnauthorized = () => {
+    handleUnauthorized();
+  };
+  document.addEventListener?.('atlas:unauthorized', onUnauthorized);
 
   function setSessionUI(session) {
     if (expiryTimer) {
@@ -111,23 +122,43 @@ export function initAuthSession(document, { fetcher = fetch, onSessionChange } =
     ready: sessionPromise,
     getCsrf: () => currentCsrf,
     setSessionUI,
+    handleUnauthorized,
     destroy() {
+      document.removeEventListener?.('atlas:unauthorized', onUnauthorized);
       if (expiryTimer) clearTimeout(expiryTimer);
     }
   };
 }
 
 export function mountHostPage(document, { fetcher = fetch, navigation, useStandardApi = true } = {}) {
+  let handle401 = () => {};
+  const pageFetcher = async (url, options) => {
+    try {
+      const res = await fetcher(url, options);
+      if (res && res.status === 401) {
+        handle401();
+      }
+      return res;
+    } catch (err) {
+      if (err && err.status === 401) {
+        handle401();
+      }
+      throw err;
+    }
+  };
+
   mountViewBookmarks(document, { navigation });
-  const navUi = mountHostNavigation(document, { fetcher, navigation, useStandardApi });
+  const navUi = mountHostNavigation(document, { fetcher: pageFetcher, navigation, useStandardApi });
   const auth = initAuthSession(document, {
-    fetcher,
+    fetcher: pageFetcher,
     onSessionChange(session) {
       if (!session?.authenticated) {
         navUi.invalidate?.();
       }
     }
   });
+  handle401 = () => auth.handleUnauthorized();
+
   return {
     navUi,
     auth,

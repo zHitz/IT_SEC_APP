@@ -15,6 +15,9 @@ import { migrate, seed } from '../../backend/db/migrate.mjs';
 import { createAssetReader, createAssetDetailsReader } from '../../backend/src/inventory/assets.mjs';
 import { createInventoryAuthorizer } from '../../backend/src/auth/oidc.mjs';
 import { createApp } from '../../backend/src/app.mjs';
+import { randomUUID } from 'node:crypto';
+import { calculatePKCECodeChallenge } from 'openid-client';
+import { createSso } from '../../backend/src/auth/sso.mjs';
 
 const html = await readFile(new URL('../src/hosts.html', import.meta.url), 'utf8');
 const tick = () => new Promise(resolve => setImmediate(resolve));
@@ -589,7 +592,89 @@ test('AC-2 & C5 Session boundary: logout and expiry immediately clear protected 
   page.destroy();
 });
 
-test('AC-1, AC-2, AC-3 Local signed-session + backend + frontend proxy integration: live PostgreSQL, signed JWT, proxy cookie forwarding, Viewer success, Service Owner 403, anonymous 401', async () => {
+test('AC-2 LEAD-S1-004-02: Actual 401 propagation from detail or list wipes all protected views, CSRF and header state across the page', async () => {
+  const { document } = parseHTML(html);
+  const get = id => document.getElementById(id);
+
+  const row = { id: '00000000-0000-4000-8000-000000000001', hostname: 'protected-server', os: 'Debian', os_version: '12', first_seen_at: '2026-10-30', last_seen_at: '2026-10-30' };
+  let detailFail401 = false;
+  let listFail401 = false;
+  let delayedListResolve = null;
+
+  const fetcher = async url => {
+    if (url === '/auth/session') {
+      return { ok: true, status: 200, json: async () => ({ authenticated: true, csrf: 'valid-csrf-token', expiresAt: Date.now() + 60000 }) };
+    }
+    if (url.startsWith('/api/v1/assets?type=host')) {
+      if (listFail401) {
+        return { ok: false, status: 401, json: async () => ({ error: { code: 'UNAUTHORIZED' } }) };
+      }
+      if (delayedListResolve) {
+        await delayedListResolve;
+      }
+      return { ok: true, status: 200, json: async () => ({ data: [row], meta: { page: 1, page_size: 25, total: 1, total_pages: 1 } }) };
+    }
+    if (url.startsWith('/api/v1/assets/')) {
+      if (detailFail401) {
+        return { ok: false, status: 401, json: async () => ({ error: { code: 'UNAUTHORIZED' } }) };
+      }
+      return { ok: true, status: 200, json: async () => ({ data: { ...row, packages: [] }, meta: { packages: { page: 1, page_size: 25, total: 0, total_pages: 1 } } }) };
+    }
+    return { ok: true, status: 200, json: async () => ({ data: [], meta: { page: 1, page_size: 25, total: 0, total_pages: 1 } }) };
+  };
+
+  const nav = {
+    events: new EventTarget(),
+    location: new URL('http://local/inventory/hosts#list=1'),
+    history: { replaceState() {}, pushState() {} }
+  };
+
+  const page = mountHostPage(document, { fetcher, navigation: nav, useStandardApi: true });
+  await page.ready;
+
+  // 1. Initial authenticated state
+  assert.equal(get('session-info').textContent, 'Authenticated session');
+  assert.match(get('inventory-rows').textContent, /protected-server/);
+  assert.equal(page.auth.getCsrf(), 'valid-csrf-token');
+
+  // 2. Open detail view which returns actual 401
+  detailFail401 = true;
+  await page.navUi.core.open(row);
+
+  // Assert common session boundary: detail 401 wiped table rows, reset header to Anonymous, cleared CSRF
+  assert.equal(get('inventory-rows').textContent, '');
+  assert.equal(get('inventory-rows').children.length, 0);
+  assert.equal(get('session-info').textContent, 'Anonymous');
+  assert.equal(page.auth.getCsrf(), null);
+  assert.match(get('detail-status').textContent, /Session expired or not authenticated/);
+  assert.equal(get('detail-retry').hidden, true);
+  assert.equal(get('detail-title').textContent, 'Host details');
+  assert.equal(get('detail-info').children.length, 0);
+  assert.equal(get('detail-related').children.length, 0);
+
+  // 3. Verify delayed in-flight response started before 401 does NOT repopulate protected rows
+  // Set session back to authenticated temporarily to start a fetch
+  page.auth.setSessionUI({ authenticated: true, csrf: 'tok' });
+  let resolveDelayed;
+  delayedListResolve = new Promise(r => { resolveDelayed = r; });
+  const inFlightPromise = page.navUi.core.list.reload();
+
+  // Now 401 arrives from detail
+  detailFail401 = true;
+  await page.navUi.core.open(row);
+  assert.equal(get('inventory-rows').textContent, '');
+
+  // Delayed list response finally arrives
+  resolveDelayed();
+  await inFlightPromise.catch(() => {});
+  await tick();
+  assert.equal(get('inventory-rows').textContent, '');
+  assert.equal(get('inventory-rows').children.length, 0);
+
+  page.destroy();
+});
+
+test('AC-1, AC-2, AC-3 Genuine local cookie-session-through-proxy proof: live PostgreSQL, synthetic SSO PKCE roundtrip, opaque atlas_session cookie, frontend reverse proxy, Viewer 200, CSRF logout, post-logout 401, Service Owner 403', async () => {
   const db = new PGlite();
   let app, provider, frontend;
   const hostId = '00000000-0000-4000-8000-000000000003';
@@ -611,80 +696,151 @@ test('AC-1, AC-2, AC-3 Local signed-session + backend + frontend proxy integrati
       ON CONFLICT (id) DO NOTHING`);
 
     const pair = await generateKeyPair('RS256');
-    const jwk = { ...await exportJWK(pair.publicKey), kid: 'live-ui-jwk', alg: 'RS256', use: 'sig' };
-    provider = createServer((req, res) => {
-      assert.equal(req.url, '/jwks');
+    const publicJwk = { ...await exportJWK(pair.publicKey), kid: 'synthetic-sso', alg: 'RS256', use: 'sig' };
+    const codes = new Map();
+    let callbackUrl, issuerUrl, ssoMode = 'viewer';
+
+    provider = createServer(async (req, res) => {
+      const url = new URL(req.url, issuerUrl);
       res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify({ keys: [jwk] }));
+      if (url.pathname === '/jwks') {
+        res.end(JSON.stringify({ keys: [publicJwk] }));
+        return;
+      }
+      if (url.pathname === '/authorize') {
+        if (url.searchParams.get('redirect_uri') !== callbackUrl || url.searchParams.get('code_challenge_method') !== 'S256') {
+          res.writeHead(400).end('{}');
+          return;
+        }
+        const code = randomUUID();
+        codes.set(code, { challenge: url.searchParams.get('code_challenge'), nonce: url.searchParams.get('nonce'), mode: ssoMode });
+        const target = new URL(callbackUrl);
+        target.searchParams.set('code', code);
+        target.searchParams.set('state', url.searchParams.get('state'));
+        res.writeHead(302, { Location: target.href }).end();
+        return;
+      }
+      if (url.pathname === '/token') {
+        let body = '';
+        for await (const chunk of req) body += chunk;
+        const params = new URLSearchParams(body);
+        const stored = codes.get(params.get('code'));
+        codes.delete(params.get('code'));
+        if (!stored || params.get('redirect_uri') !== callbackUrl || await calculatePKCECodeChallenge(params.get('code_verifier') ?? '') !== stored.challenge) {
+          res.writeHead(400).end(JSON.stringify({ error: 'invalid_grant' }));
+          return;
+        }
+        const nowSec = Math.floor(Date.now() / 1000);
+        const base = { iss: issuerUrl, sub: 'synthetic-user', iat: nowSec, exp: nowSec + 300 };
+        const sign = (payload, typ) => new SignJWT(payload).setProtectedHeader({ alg: 'RS256', kid: 'synthetic-sso', typ }).sign(pair.privateKey);
+        const roles = stored.mode === 'service-owner' ? ['Service Owner'] : ['Viewer'];
+        res.end(JSON.stringify({
+          token_type: 'Bearer',
+          expires_in: 300,
+          access_token: await sign({ ...base, aud: 'inventory-lab', realm_access: { roles } }, 'at+jwt'),
+          id_token: await sign({ ...base, aud: 'synthetic-client', nonce: stored.nonce, amr: ['pwd'] }, 'JWT')
+        }));
+        return;
+      }
+      res.writeHead(404).end('{}');
     });
     await new Promise(r => provider.listen(0, '127.0.0.1', r));
-    const issuer = `http://127.0.0.1:${provider.address().port}`;
+    issuerUrl = `http://127.0.0.1:${provider.address().port}`;
 
-    const signToken = role => new SignJWT({ realm_access: { roles: [role] } })
-      .setProtectedHeader({ alg: 'RS256', typ: 'at+jwt', kid: 'live-ui-jwk' })
-      .setIssuer(issuer)
-      .setAudience('live-ui-lab')
-      .setSubject('live-ui-user')
-      .setIssuedAt()
-      .setExpirationTime('5m')
-      .sign(pair.privateKey);
-
-    const viewerToken = await signToken('Viewer');
-    const serviceOwnerToken = await signToken('Service Owner');
-
+    let sso;
     app = createApp({
+      sso: { handle: (...args) => sso.handle(...args) },
+      authorizeInventory: request => sso.authorize(request),
       readAssets: createAssetReader({ db }),
-      readAssetDetails: createAssetDetailsReader({ db }),
-      authorizeInventory: createInventoryAuthorizer({ issuer, audience: 'live-ui-lab', algorithm: 'RS256', jwksUri: issuer + '/jwks' })
+      readAssetDetails: createAssetDetailsReader({ db })
     });
     await new Promise(r => app.listen(0, '127.0.0.1', r));
-    const backendPort = app.address().port;
+    const backendOrigin = `http://127.0.0.1:${app.address().port}`;
+    callbackUrl = backendOrigin + '/auth/callback';
+
+    sso = createSso({
+      origin: backendOrigin,
+      issuer: issuerUrl,
+      authorizationEndpoint: issuerUrl + '/authorize',
+      tokenEndpoint: issuerUrl + '/token',
+      jwksUri: issuerUrl + '/jwks',
+      clientId: 'synthetic-client',
+      authorizeToken: createInventoryAuthorizer({ issuer: issuerUrl, audience: 'inventory-lab', algorithm: 'RS256', jwksUri: issuerUrl + '/jwks' })
+    });
 
     frontend = createFrontend({
       root: fileURLToPath(new URL('../src/', import.meta.url)),
-      backendOrigin: `http://127.0.0.1:${backendPort}`,
+      backendOrigin,
       inventoryEnabled: true
     });
     await new Promise(r => frontend.listen(0, '127.0.0.1', r));
     const frontendOrigin = `http://127.0.0.1:${frontend.address().port}`;
 
-    const viewerRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`, {
-      headers: { authorization: `Bearer ${viewerToken}` }
+    async function performLogin(mode = 'viewer') {
+      ssoMode = mode;
+      const loginRes = await fetch(`${backendOrigin}/auth/login`, {
+        method: 'POST',
+        headers: { origin: backendOrigin },
+        redirect: 'manual'
+      });
+      assert.equal(loginRes.status, 303);
+      const txCookie = loginRes.headers.getSetCookie()[0].split(';')[0];
+      const authUrl = loginRes.headers.get('location');
+
+      const authRes = await fetch(authUrl, { redirect: 'manual' });
+      assert.equal(authRes.status, 302);
+      const cbUrl = authRes.headers.get('location');
+
+      const cbRes = await fetch(cbUrl, {
+        headers: { cookie: txCookie },
+        redirect: 'manual'
+      });
+      if (mode === 'service-owner') {
+        assert.equal(cbRes.status, 403);
+        const errJson = await cbRes.json();
+        assert.equal(errJson.error.code, 'FORBIDDEN');
+        return null;
+      }
+      assert.equal(cbRes.status, 303);
+      assert.equal(cbRes.headers.get('location'), '/inventory/hosts');
+      const sessionCookie = cbRes.headers.getSetCookie().find(c => c.startsWith('atlas_session=')).split(';')[0];
+      return sessionCookie;
+    }
+
+    const viewerCookie = await performLogin('viewer');
+    assert.ok(/^atlas_session=[A-Za-z0-9_-]{43}$/.test(viewerCookie));
+    assert.ok(!viewerCookie.includes('eyJ'));
+
+    // Test /auth/session through frontend reverse proxy
+    const sessionRes = await fetch(`${frontendOrigin}/auth/session`, {
+      headers: { cookie: viewerCookie }
     });
-    assert.equal(viewerRes.status, 200);
-    const viewerJson = await viewerRes.json();
-    assert.ok(viewerJson.data.some(h => h.id === hostId && h.hostname === 'live-db-host'));
+    assert.equal(sessionRes.status, 200);
+    const sessionData = await sessionRes.json();
+    assert.equal(sessionData.authenticated, true);
+    assert.ok(sessionData.csrf);
+    assert.ok(!('access_token' in sessionData));
 
-    const deniedRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`, {
-      headers: { authorization: `Bearer ${serviceOwnerToken}` }
-    });
-    assert.equal(deniedRes.status, 403);
+    // Mount UI with linkedom
+    let activeCookie = viewerCookie;
+    const proxyFetcher = async (url, options = {}) => {
+      const headers = { ...options.headers };
+      if (activeCookie) headers.cookie = activeCookie;
+      if (backendOrigin) headers.origin = backendOrigin;
+      const target = new URL(url, frontendOrigin);
+      return fetch(target, { ...options, headers });
+    };
 
-    const anonRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`);
-    assert.equal(anonRes.status, 401);
-    assert.equal(anonRes.headers.get('www-authenticate'), 'Bearer');
-
-    const { document } = parseHTML(html);
+    const { document, window } = parseHTML(html);
     const nav = {
       events: new EventTarget(),
       location: new URL('http://local/inventory/hosts#list=1'),
       history: { replaceState() {}, pushState() {} }
     };
-    const proxyFetcher = (url, options = {}) => {
-      if (url === '/auth/session') {
-        return Promise.resolve({
-          ok: true,
-          status: 200,
-          json: async () => ({ authenticated: true, csrf: 'live-csrf', expiresAt: Date.now() + 60000 })
-        });
-      }
-      const headers = { ...options.headers, authorization: `Bearer ${viewerToken}` };
-      return fetch(new URL(url, frontendOrigin), { ...options, headers });
-    };
-
     const page = mountHostPage(document, { fetcher: proxyFetcher, navigation: nav, useStandardApi: true });
     await page.ready;
 
+    assert.equal(document.getElementById('session-info').textContent, 'Authenticated session');
     assert.match(document.getElementById('inventory-rows').textContent, /live-db-host/);
 
     await page.navUi.core.open({ id: hostId, hostname: 'live-db-host', os: 'Debian Live', os_version: '12.5', first_seen_at: '2026-10-24', last_seen_at: '2026-10-24' });
@@ -692,23 +848,74 @@ test('AC-1, AC-2, AC-3 Local signed-session + backend + frontend proxy integrati
     assert.match(document.getElementById('detail-related').textContent, /live-openssl/);
     assert.match(document.getElementById('detail-related').textContent, /22/);
 
-    page.auth.setSessionUI({ authenticated: false });
+    // Logout through UI
+    document.getElementById('logout-button').dispatchEvent(new window.Event('click', { bubbles: true, cancelable: true }));
+    await tick();
+    await new Promise(r => setTimeout(r, 100));
+
+    assert.equal(document.getElementById('session-info').textContent, 'Anonymous');
     assert.equal(document.getElementById('inventory-rows').textContent, '');
     assert.equal(document.getElementById('detail-info').textContent, '');
+    assert.equal(page.auth.getCsrf(), null);
+
+    // Verify backend session was destroyed
+    const afterLogoutRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`, {
+      headers: { cookie: viewerCookie }
+    });
+    assert.equal(afterLogoutRes.status, 401);
 
     page.destroy();
 
-    console.log('SIGNED_LOCAL_AUTH_UI_PROOF', JSON.stringify({
+    // Verify Service Owner role is rejected at SSO boundary with 403 Forbidden
+    const serviceOwnerLoginResult = await performLogin('service-owner');
+    assert.equal(serviceOwnerLoginResult, null);
+
+    // Verify Service Owner signed Bearer token to standard asset API through proxy receives 403
+    const serviceOwnerToken = await new SignJWT({ realm_access: { roles: ['Service Owner'] } })
+      .setProtectedHeader({ alg: 'RS256', kid: 'synthetic-sso', typ: 'at+jwt' })
+      .setIssuer(issuerUrl)
+      .setAudience('inventory-lab')
+      .setSubject('service-owner-user')
+      .setIssuedAt()
+      .setExpirationTime('5m')
+      .sign(pair.privateKey);
+    const serviceOwnerRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`, {
+      headers: { authorization: `Bearer ${serviceOwnerToken}` }
+    });
+    assert.equal(serviceOwnerRes.status, 403);
+
+    // Verify UI safely handles 403 Forbidden state
+    const { document: doc403 } = parseHTML(html);
+    const ui403 = mountInventoryTable(doc403, {
+      mode: 'host',
+      useStandardApi: true,
+      fetcher: () => fetch(`${frontendOrigin}/api/v1/assets?type=host`, { headers: { authorization: `Bearer ${serviceOwnerToken}` } })
+    });
+    await ui403.ready;
+    assert.equal(doc403.getElementById('inventory-total').textContent, 'Access forbidden');
+    assert.match(doc403.getElementById('inventory-status').textContent, /Access forbidden/);
+    assert.equal(doc403.getElementById('inventory-rows').children.length, 0);
+    ui403.destroy();
+
+    // Verify anonymous receives 401 with WWW-Authenticate
+    const anonRes = await fetch(`${frontendOrigin}/api/v1/assets?type=host`);
+    assert.equal(anonRes.status, 401);
+    assert.equal(anonRes.headers.get('www-authenticate'), 'Bearer');
+
+    console.log('ACTUAL_LOCAL_COOKIE_SSO_PROXY_PROOF', JSON.stringify({
       livePostgresWasm: true,
-      jwksIssuer: true,
-      signedViewerToken: true,
-      signedServiceOwnerToken: true,
-      frontendProxyPassThrough: true,
-      viewer200DbRows: true,
+      syntheticOidcPkce: true,
+      backendSsoSessionStore: true,
+      opaqueSessionCookieHttpOnly: true,
+      noTokensExposedToClient: true,
+      frontendReverseProxyPassThrough: true,
+      authenticatedViewerDbRows200: true,
+      uiDetailAndPortsRendered: true,
+      csrfProtectedLogoutSuccess: true,
+      backendSessionInvalidated401: true,
+      uiViewsClearedOnLogout: true,
       serviceOwner403: true,
-      anonymous401Bearer: true,
-      liveDomCompositionRender: true,
-      sessionInvalidationClear: true
+      anonymous401Bearer: true
     }));
   } finally {
     if (frontend) { frontend.closeAllConnections?.(); await new Promise(r => frontend.close(r)); }

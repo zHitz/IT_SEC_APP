@@ -80,6 +80,7 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
    const resources=mode==='domain'?['dns-records']:['packages','listening-ports'];const payloads=await Promise.all(resources.map(resource=>read(resource,pages[resource],controller.signal)));if(current!==version)return;
    get('detail-related').replaceChildren(...resources.map((resource,i)=>renderChildren(resource,payloads[i])));get('detail-status').textContent='';
   }catch(error){
+   if(error.status===401){try{document.dispatchEvent(new (document.defaultView?.CustomEvent||CustomEvent)('atlas:unauthorized',{detail:{error}}));}catch{try{const e=new (document.defaultView?.Event||Event)('atlas:unauthorized');e.detail={error};document.dispatchEvent(e);}catch{}}}
    if(current!==version)return;get('detail-info').replaceChildren();get('detail-related').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';
    if(error.status===401){
      get('detail-status').textContent='Session expired or not authenticated. Please log in again.';

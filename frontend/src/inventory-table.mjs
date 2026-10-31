@@ -98,6 +98,7 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
    const data=validateInventory(await response.json(),state.resource);
    if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize||((state.siteId||state.flag)&&(state.page>Math.max(1,data.meta.total_pages)||(state.siteId&&data.data.some(r=>r.site_id!==state.siteId)))))throw Error('INVALID_RESPONSE');render(data);
   }catch(error){
+   if(error.status===401){try{document.dispatchEvent(new (document.defaultView?.CustomEvent||CustomEvent)('atlas:unauthorized',{detail:{error}}));}catch{try{const e=new (document.defaultView?.Event||Event)('atlas:unauthorized');e.detail={error};document.dispatchEvent(e);}catch{}}}
    if(version!==generation)return;
    state.totalPages=0;get('inventory-page').textContent='Page unavailable';
    get('inventory-rows').replaceChildren();
