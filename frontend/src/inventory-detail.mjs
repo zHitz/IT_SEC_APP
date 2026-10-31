@@ -1,6 +1,6 @@
 import {mountInventoryTable,validateInventory} from './inventory-table.mjs';
 const childColumns={'dns-records':[['type','Type'],['value','Value'],['proxied','Proxied'],['ttl','TTL'],['tags','Tags'],['outside_flag','Outside known range']],packages:[['name','Package'],['version','Version'],['ecosystem','Ecosystem']],'listening-ports':[['protocol','Protocol'],['port','Port'],['bind_address','Bind address'],['process','Process'],['pid','PID']]};
-export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onRecord,onHostPage,onHostSort,onDnsPage,onDnsChange,onListChange,manageHistory=true,resolveHost=false}={}){
+export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onRecord,onHostPage,onHostSort,onDnsPage,onDnsChange,onListChange,manageHistory=true,resolveHost=false,useStandardApi=false}={}){
  const get=id=>document.getElementById(id),history=document.defaultView?.history;
  let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let dnsState={sort:'type',direction:'asc',search:'',invalid:false};let lastFocus;let scopedSort={packages:{sort:'name',direction:'asc'},'listening-ports':{sort:'port',direction:'asc'}};
  const textNode=(tag,text)=>{const el=document.createElement(tag);el.textContent=text??'—';return el;};
@@ -9,13 +9,37 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
   if(mode==='domain'){
    if(dnsState.invalid)return{invalidSort:true};const q=new URLSearchParams({page:String(page),page_size:'25',sort:dnsState.sort,direction:dnsState.direction});if(dnsState.search)q.set('search',dnsState.search);
    const response=await fetcher(`/api/v1/inventory/domains/${encodeURIComponent(selected.id)}/dns-records?${q}`,{signal,headers:{Accept:'application/json'}});
+   if(response.status===401)throw Object.assign(Error('UNAUTHORIZED'),{status:401});
+   if(response.status===403)throw Object.assign(Error('FORBIDDEN'),{status:403});
    if(!response.ok)throw Error(response.status===404?'DOMAIN_NOT_FOUND':'DETAIL_UNAVAILABLE');
    const payload=validateInventory(await response.json(),'dns-records');
    if(payload.meta.page!==page||payload.meta.page_size!==25||page>Math.max(1,payload.meta.total_pages)||payload.data.some(row=>row.domain!==selected.fqdn||!(row.proxied===null||typeof row.proxied==='boolean')||!(row.ttl===null||Number.isSafeInteger(row.ttl))))throw Error('DETAIL_SCOPE_MISMATCH');
    return{...payload,data:payload.data.map(row=>({...row,outside_flag:row.tags.includes('cloudflare:outside-known-range')?'Flagged':'Not flagged'}))};
   }
+  if(useStandardApi){
+   const sortState=scopedSort[resource];if(sortState.invalid)return{invalidSort:true};
+   let url;
+   if(resource==='packages'){
+     url=`/api/v1/assets/${encodeURIComponent(selected.id)}?page=${page}&page_size=25`;
+   }else{
+     url=`/api/v1/hosts/${encodeURIComponent(selected.id)}/ports?page=${page}&page_size=25`;
+   }
+   const response=await fetcher(url,{signal,headers:{Accept:'application/json'}});
+   if(response.status===401)throw Object.assign(Error('UNAUTHORIZED'),{status:401});
+   if(response.status===403)throw Object.assign(Error('FORBIDDEN'),{status:403});
+   if(!response.ok)throw Error('DETAIL_UNAVAILABLE');
+   const resJson=await response.json();
+   if(resource==='packages'){
+     const rows=resJson.data?.packages||[];
+     const meta=resJson.meta?.packages||{page:1,page_size:25,total:rows.length,total_pages:1};
+     return validateInventory({data:rows,meta},'packages');
+   }
+   return validateInventory(resJson,'listening-ports');
+  }
   const sortState=scopedSort[resource];if(sortState.invalid)return{invalidSort:true};const query=new URLSearchParams({sort:sortState.sort,direction:sortState.direction,host_id:selected.id,page:String(page),page_size:'25'});
   if(sortState.search)query.set(resource==='packages'?'search':'process_search',sortState.search);const response=await fetcher(`/api/v1/inventory/${resource}?${query}`,{signal,headers:{Accept:'application/json'}});
+  if(response.status===401)throw Object.assign(Error('UNAUTHORIZED'),{status:401});
+  if(response.status===403)throw Object.assign(Error('FORBIDDEN'),{status:403});
   if(!response.ok)throw Error('DETAIL_UNAVAILABLE');const payload=validateInventory(await response.json(),resource);
   if(payload.meta.page!==page||payload.meta.page_size!==25||page>Math.max(1,payload.meta.total_pages)||payload.data.some(row=>row.host_id!==selected.id))throw Error('DETAIL_SCOPE_MISMATCH');return payload;
  }
@@ -36,15 +60,30 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
   get('detail-related').replaceChildren();if(mode==='domain'||resolveHost)get('detail-info').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';get('detail-status').textContent='Loading details…';get('detail-retry').hidden=true;get('inventory-detail').setAttribute('aria-busy','true');
   try{
    if(mode==='domain'||resolveHost){
-    const parentResource=mode==='host'?'hosts':'domains';
-    const response=await fetcher(`/api/v1/inventory/${parentResource}/${encodeURIComponent(selected.id)}`,{signal:controller.signal,headers:{Accept:'application/json'}});
+    let parentUrl=mode==='host'?(useStandardApi?`/api/v1/assets/${encodeURIComponent(selected.id)}`:`/api/v1/inventory/hosts/${encodeURIComponent(selected.id)}`):`/api/v1/inventory/domains/${encodeURIComponent(selected.id)}`;
+    const response=await fetcher(parentUrl,{signal:controller.signal,headers:{Accept:'application/json'}});
+    if(response.status===401)throw Object.assign(Error('UNAUTHORIZED'),{status:401});
+    if(response.status===403)throw Object.assign(Error('FORBIDDEN'),{status:403});
     if(!response.ok)throw Error(response.status===404?(mode==='host'?'HOST_NOT_FOUND':'DOMAIN_NOT_FOUND'):response.status===400?'INVALID_LINK':'DETAIL_UNAVAILABLE');
-    const payload=await response.json();validateInventory({data:[payload.data],meta:{page:1,page_size:25,total:1,total_pages:1}},parentResource);
+    const payload=await response.json();
+    validateInventory({data:[payload.data],meta:{page:1,page_size:25,total:1,total_pages:1}},mode==='domain'?'domains':'hosts');
     if(payload.data.id!==selected.id)throw Error('DETAIL_SCOPE_MISMATCH');if(current!==version)return;selected=payload.data;get('detail-title').textContent=mode==='host'?selected.hostname:selected.fqdn;info(selected);
    }
    const resources=mode==='domain'?['dns-records']:['packages','listening-ports'];const payloads=await Promise.all(resources.map(resource=>read(resource,pages[resource],controller.signal)));if(current!==version)return;
    get('detail-related').replaceChildren(...resources.map((resource,i)=>renderChildren(resource,payloads[i])));get('detail-status').textContent='';
-  }catch(error){if(current!==version)return;get('detail-info').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';get('detail-status').textContent=error.message==='HOST_NOT_FOUND'?'Host not found. Return to the list.':error.message==='INVALID_LINK'?'Invalid '+mode+' link. Return to the list.':error.message==='DOMAIN_NOT_FOUND'?'Domain not found. Return to the list.':'Could not load the selected '+mode+' details. Retry or return to the list.';get('detail-retry').hidden=false;}
+  }catch(error){
+   if(current!==version)return;get('detail-info').replaceChildren();get('detail-related').replaceChildren();get('detail-title').textContent=mode==='host'?'Host details':'Domain details';
+   if(error.status===401){
+     get('detail-status').textContent='Session expired or not authenticated. Please log in again.';
+     get('detail-retry').hidden=true;
+   }else if(error.status===403){
+     get('detail-status').textContent='Access forbidden. You do not have permission to view these details.';
+     get('detail-retry').hidden=true;
+   }else{
+     get('detail-status').textContent=error.message==='HOST_NOT_FOUND'?'Host not found. Return to the list.':error.message==='INVALID_LINK'?'Invalid '+mode+' link. Return to the list.':error.message==='DOMAIN_NOT_FOUND'?'Domain not found. Return to the list.':'Could not load the selected '+mode+' details. Retry or return to the list.';
+     get('detail-retry').hidden=false;
+   }
+  }
   finally{clearTimeout(timeout);if(current===version)get('inventory-detail').setAttribute('aria-busy','false');}
  }
  function showList(){version++;active?.abort();get('inventory-list').hidden=false;get('inventory-detail').hidden=true;try{lastFocus?.focus();}catch{} }
@@ -53,7 +92,7 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
   get('inventory-list').hidden=true;get('inventory-detail').hidden=false;get('detail-title').textContent=mode==='domain'?row.fqdn:row.hostname;info(row);get('detail-title').focus?.();
   if(invalidDns||invalidHostPages){version++;active?.abort();get('detail-info').replaceChildren();get('detail-related').replaceChildren();get('detail-status').textContent=invalidHostPages?'Invalid Host detail pages. Return to the list.':'Invalid DNS page link. Return to the list.';get('detail-retry').hidden=true;return;}if(recordHistory&&manageHistory)history?.pushState({atlasSelection:{mode,row}},'', '#detail='+encodeURIComponent(row.id));await load();
  }
- const list=mountInventoryTable(document,{mode,fetcher,initialState,onStateChange:onListChange,onSelect:row=>onSelection?onSelection(row):void open(row)});
+ const list=mountInventoryTable(document,{mode,fetcher,initialState,onStateChange:onListChange,onSelect:row=>onSelection?onSelection(row):void open(row),useStandardApi});
  get('detail-back').addEventListener('click',()=>{if(onBack){onBack();return;}showList();history?.replaceState(null,'',document.defaultView.location.pathname);});get('detail-retry').addEventListener('click',()=>void load());
  if(manageHistory)document.defaultView?.addEventListener('popstate',event=>{if(event.state?.atlasSelection?.mode===mode)void open(event.state.atlasSelection.row,{recordHistory:false});else showList();});
  return{ready:list.ready,list,open,back:showList,destroy(){version++;active?.abort();list.destroy();}};

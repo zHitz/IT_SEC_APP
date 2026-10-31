@@ -36,20 +36,67 @@ export function createFrontend({ root, backendOrigin, inventoryEnabled = false }
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
-    if (request.method !== 'GET') { response.writeHead(405).end(); return; }
-    const exactInventoryRoute=/^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+|dns-records\/[^/?]+|packages\/[^/?]+\/hosts)(?:\?|$)/.test(request.url);
-    const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records|hosts|packages|listening-ports|sites)(?:\?|$)/.test(request.url) || exactInventoryRoute;
-    if (inventoryEnabled && (inventoryRoute || inventoryFiles.has(request.url)) && !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.localAddress)) { response.writeHead(403).end(); return; }
+    const exactInventoryRoute = /^\/api\/v1\/inventory\/(?:domains\/[^/?]+(?:\/dns-records)?|hosts\/[^/?]+|dns-records\/[^/?]+|packages\/[^/?]+\/hosts)(?:\?|$)/.test(request.url);
+    const standardAssetRoute = /^\/api\/v1\/(?:assets(?:\/[^/?]+)?|hosts\/[^/?]+\/ports)(?:\?|$)/.test(request.url);
+    const inventoryRoute = /^\/api\/v1\/inventory\/(domains|dns-records|hosts|packages|listening-ports|sites)(?:\?|$)/.test(request.url) || exactInventoryRoute || standardAssetRoute;
+    const authRoute = /^\/auth\/(?:login|callback|session|logout)(?:\?|$)/.test(request.url);
+    if (inventoryEnabled && (inventoryRoute || authRoute || inventoryFiles.has(request.url)) && !['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.localAddress)) { response.writeHead(403).end(); return; }
+    if (inventoryEnabled && authRoute) {
+      const parsed = new URL(request.url, 'http://localhost');
+      const isPost = ['/auth/login', '/auth/logout'].includes(parsed.pathname);
+      const isGet = ['/auth/callback', '/auth/session'].includes(parsed.pathname);
+      if ((isPost && request.method !== 'POST') || (isGet && request.method !== 'GET') || (!isPost && !isGet)) {
+        response.setHeader('Allow', isPost ? 'POST' : 'GET');
+        response.writeHead(405).end();
+        return;
+      }
+      if (request.url.length > 2048) { response.writeHead(400).end(); return; }
+      try {
+        const target = new URL(request.url, upstream);
+        const headers = {};
+        if (request.headers.cookie) headers.cookie = request.headers.cookie;
+        if (request.headers.origin) headers.origin = request.headers.origin;
+        if (request.headers['x-csrf-token']) headers['x-csrf-token'] = request.headers['x-csrf-token'];
+        if (request.headers.accept) headers.accept = request.headers.accept;
+
+        const result = await fetch(target, {
+          method: request.method,
+          headers,
+          signal: AbortSignal.timeout(5000),
+          redirect: 'manual'
+        });
+        const text = await result.text();
+        if (text.length > 1048576) throw Error('UPSTREAM_TOO_LARGE');
+
+        const respHeaders = { 'Cache-Control': 'no-store' };
+        if (result.headers.has('content-type')) respHeaders['Content-Type'] = result.headers.get('content-type');
+        if (result.headers.has('location')) respHeaders['Location'] = result.headers.get('location');
+        if (result.headers.has('x-request-id')) respHeaders['X-Request-Id'] = result.headers.get('x-request-id');
+        const setCookies = result.headers.getSetCookie ? result.headers.getSetCookie() : [];
+        if (setCookies.length) respHeaders['Set-Cookie'] = setCookies;
+
+        response.writeHead(result.status, respHeaders).end(text);
+      } catch {
+        response.writeHead(502, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: { code: 'BACKEND_UNAVAILABLE' } }));
+      }
+      return;
+    }
+    if (request.method !== 'GET') { response.setHeader('Allow', 'GET'); response.writeHead(405).end(); return; }
     if (inventoryEnabled && inventoryRoute) {
       if (request.url.length > 2048) { response.writeHead(400).end(); return; }
       try {
-        // Path is allowlisted and origin fixed; no headers, credentials, cookies or arbitrary targets forwarded.
         const target = new URL(request.url, upstream);
-        const result = await fetch(target, { signal: AbortSignal.timeout(5000), redirect: 'error', headers: { Accept: 'application/json' } });
+        const headers = { Accept: 'application/json' };
+        if (request.headers.cookie) headers.cookie = request.headers.cookie;
+        if (request.headers.authorization) headers.authorization = request.headers.authorization;
+        const result = await fetch(target, { signal: AbortSignal.timeout(5000), redirect: 'error', headers });
         const text = await result.text();
         if (text.length > 1048576) throw Error('UPSTREAM_TOO_LARGE');
         const data = JSON.parse(text);
-        response.writeHead(result.status, { 'Content-Type': 'application/json' }).end(JSON.stringify(data));
+        const respHeaders = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
+        if (result.headers.has('www-authenticate')) respHeaders['WWW-Authenticate'] = result.headers.get('www-authenticate');
+        if (result.headers.has('x-request-id')) respHeaders['X-Request-Id'] = result.headers.get('x-request-id');
+        response.writeHead(result.status, respHeaders).end(JSON.stringify(data));
       } catch { response.writeHead(502, { 'Content-Type': 'application/json' }).end(JSON.stringify({ error: { code: 'BACKEND_UNAVAILABLE' } })); }
       return;
     }

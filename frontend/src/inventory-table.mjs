@@ -8,7 +8,7 @@ const columns = {
 };
 export function validateInventory(data, resource) {
  const meta=data?.meta;
- if(!Array.isArray(data?.data)||!meta||![meta.page,meta.page_size,meta.total,meta.total_pages].every(Number.isSafeInteger)||meta.page<1||meta.page_size<1||meta.page_size>100||meta.total<0||meta.total_pages!==Math.ceil(meta.total/meta.page_size)||data.data.length>meta.page_size)throw Error('INVALID_RESPONSE');
+ if(!Array.isArray(data?.data)||!meta||![meta.page,meta.page_size,meta.total,meta.total_pages].every(Number.isSafeInteger)||meta.page<1||meta.page_size<1||meta.page_size>200||meta.total<0||meta.total_pages!==Math.ceil(meta.total/meta.page_size)||data.data.length>meta.page_size)throw Error('INVALID_RESPONSE');
  for(const row of data.data){
   if(!row||typeof row.id!=='string')throw Error('INVALID_RESPONSE');
   for(const [key]of columns[resource]){
@@ -18,7 +18,7 @@ export function validateInventory(data, resource) {
  }
  return data;
 }
-export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect,onStateChange,initialState={}}={}) {
+export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSelect,onStateChange,initialState={},useStandardApi=false}={}) {
  const get=id=>document.getElementById(id);
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
  const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false,...initialState};
@@ -65,18 +65,46 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
   active?.abort();active=new AbortController();const controller=active,signal=controller.signal,version=++generation;
   state.busy=true;controls();get('inventory-retry').hidden=true;get('inventory-status').textContent='Loading inventory…';
   get('inventory-rows').replaceChildren();get('inventory-total').textContent='Loading inventory…';
-  const query=new URLSearchParams({page:String(state.page),page_size:String(state.pageSize)});
-  if(['hosts','domains'].includes(state.resource)){if(state.sort)query.set('sort',state.sort);if(state.direction)query.set('direction',state.direction);}if(state.resource==='hosts'&&state.siteId)query.set('site_id',state.siteId);if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
+  let url;
+  if(useStandardApi && mode==='host' && state.resource==='hosts'){
+    const q=new URLSearchParams({type:'host',page:String(state.page),page_size:String(state.pageSize)});
+    if(state.search)q.set('q',state.search);
+    if(state.siteId)q.set('site',state.siteId);
+    if(state.env)q.set('env',state.env);
+    if(state.owner)q.set('owner',state.owner);
+    if(state.tag)q.set('tag',state.tag);
+    url=`/api/v1/assets?${q}`;
+  }else{
+    const query=new URLSearchParams({page:String(state.page),page_size:String(state.pageSize)});
+    if(['hosts','domains'].includes(state.resource)){if(state.sort)query.set('sort',state.sort);if(state.direction)query.set('direction',state.direction);}if(state.resource==='hosts'&&state.siteId)query.set('site_id',state.siteId);if(state.search&&state.resource!=='listening-ports')query.set('search',state.search);if(state.flag)query.set('outside_known_range',state.flag);
+    url=`/api/v1/inventory/${state.resource}?${query}`;
+  }
   const timeout=setTimeout(()=>controller.abort(),8000);
   try{
-   if(state.invalidCombined)throw Error('INVALID_COMBINED');const response=await fetcher(`/api/v1/inventory/${state.resource}?${query}`,{signal,headers:{Accept:'application/json'}});
-   if(!response.ok)throw Error('UNAVAILABLE');
+   if(state.invalidCombined)throw Error('INVALID_COMBINED');
+   const response=await fetcher(url,{signal,headers:{Accept:'application/json'}});
+   if(response.status===401)throw Object.assign(Error('UNAUTHORIZED'),{status:401});
+   if(response.status===403)throw Object.assign(Error('FORBIDDEN'),{status:403});
+   if(!response.ok)throw Object.assign(Error('UNAVAILABLE'),{status:response.status});
    const data=validateInventory(await response.json(),state.resource);
    if(version!==generation)return;if(data.meta.page!==state.page||data.meta.page_size!==state.pageSize||((state.siteId||state.flag)&&(state.page>Math.max(1,data.meta.total_pages)||(state.siteId&&data.data.some(r=>r.site_id!==state.siteId)))))throw Error('INVALID_RESPONSE');render(data);
   }catch(error){
    if(version!==generation)return;
-   state.totalPages=0;get('inventory-page').textContent='Page unavailable';get('inventory-total').textContent='Inventory unavailable';
-   get('inventory-status').textContent=error.message==='INVALID_COMBINED'?(mode==='host'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Invalid combined Domain filter. Check search, flag and page.'):'Could not load inventory. Check that the local inventory API is enabled, then try again.';get('inventory-retry').hidden=false;
+   state.totalPages=0;get('inventory-page').textContent='Page unavailable';
+   get('inventory-rows').replaceChildren();
+   if(error.status===401){
+     get('inventory-total').textContent='Authentication required';
+     get('inventory-status').textContent='Session expired or not authenticated. Please log in to view host inventory.';
+     get('inventory-retry').hidden=true;
+   }else if(error.status===403){
+     get('inventory-total').textContent='Access forbidden';
+     get('inventory-status').textContent='Access forbidden. Your account does not have permission to view inventory.';
+     get('inventory-retry').hidden=true;
+   }else{
+     get('inventory-total').textContent='Inventory unavailable';
+     get('inventory-status').textContent=error.message==='INVALID_COMBINED'?(mode==='host'?'Invalid combined Host filter. Check Site ID, hostname and page.':'Invalid combined Domain filter. Check search, flag and page.'):'Could not load inventory. Check that the local inventory API is enabled, then try again.';
+     get('inventory-retry').hidden=false;
+   }
   }finally{clearTimeout(timeout);if(version===generation){state.busy=false;controls();}}
  }
  const userLoad=()=>onStateChange&&['hosts','domains'].includes(state.resource)?onStateChange({...state,siteId:siteInput?.value??'',sort:sortInput?.value??'hostname',direction:directionInput?.value??'asc'}):load();
