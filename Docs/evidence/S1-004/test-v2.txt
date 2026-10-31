@@ -1,0 +1,19 @@
+﻿âœ” Session lifecycle: checkSession and initAuthSession render anonymous, authenticated, and handle logout with CSRF (26.7419ms)
+âœ” AC-1 & AC-3: mountInventoryTable with standard asset API lists, filters, pages hosts and renders safe text (16.4086ms)
+âœ” AC-2: 401 unauthorized / expired session shows safe state, hides retry, clears protected data (7.1805ms)
+âœ” AC-2: 403 forbidden session shows access denied, hides retry, clears protected data (4.7155ms)
+âœ” AC-1 & AC-2: mountInventoryDetail with standard APIs handles 401, 403, and authorized detail/ports (15.6811ms)
+AUTH_INVENTORY_INTEGRATION_PROOF {"proxyAuthRoutes":true,"proxyAssetRoutes":true,"cookieForwarded":true,"setCookiePreserved":true,"csrfForwarded":true,"locationPreserved":true,"methodsEnforced":true,"auth401Preserved":true}
+âœ” Server proxy: forwards auth and standard asset APIs with cookies and headers (109.8067ms)
+âœ” AC-1 Page composition: mountHostPage mounts standard asset APIs for list/detail/ports, preserving secondary panels and UUID links (26.0733ms)
+âœ” AC-2 & C5 Session boundary: logout and expiry immediately clear protected list and detail DOM, prevent deferred responses repopulating, and handle logout failure cleanly (20.6795ms)
+SIGNED_LOCAL_AUTH_UI_PROOF {"livePostgresWasm":true,"jwksIssuer":true,"signedViewerToken":true,"signedServiceOwnerToken":true,"frontendProxyPassThrough":true,"viewer200DbRows":true,"serviceOwner403":true,"anonymous401Bearer":true,"liveDomCompositionRender":true,"sessionInvalidationClear":true}
+âœ” AC-1, AC-2, AC-3 Local signed-session + backend + frontend proxy integration: live PostgreSQL, signed JWT, proxy cookie forwarding, Viewer success, Service Owner 403, anonymous 401 (2336.6078ms)
+â„¹ tests 9
+â„¹ suites 0
+â„¹ pass 9
+â„¹ fail 0
+â„¹ cancelled 0
+â„¹ skipped 0
+â„¹ todo 0
+â„¹ duration_ms 3163.4793

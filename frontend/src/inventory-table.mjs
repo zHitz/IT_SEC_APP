@@ -23,6 +23,15 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
  const resourceButtons=mode==='host'?[['domains-tab','hosts'],['records-tab','packages'],['ports-tab','listening-ports']]:[['domains-tab','domains'],['records-tab','dns-records']];
  const state={resource:mode==='host'?'hosts':'domains',search:'',flag:'',page:1,pageSize:25,totalPages:0,busy:false,...initialState};
  let generation=0,active;let siteInput,sortInput,directionInput;if(mode==='host'){const label=document.createElement('label');label.textContent='Site ID filter';siteInput=document.createElement('input');siteInput.setAttribute('aria-label','Site ID filter');siteInput.placeholder='All Sites or Site UUID';siteInput.value=state.siteId??'';label.append(siteInput);get('inventory-search').append(label);for(const [name,values,key]of [['Sort Hosts',['hostname','os','os_version'],'sort'],['Sort direction',['asc','desc'],'direction']]){const l=document.createElement('label');l.textContent=name;const select=document.createElement('select');select.setAttribute('aria-label',name);for(const value of values){const o=document.createElement('option');o.value=value;o.textContent=value;select.append(o);}[...select.querySelectorAll('option')].find(o=>o.value===(values.includes(state[key])?state[key]:values[0])).selected=true;l.append(select);get('inventory-search').append(l);if(key==='sort')sortInput=select;else directionInput=select;select.addEventListener('change',()=>{state.page=1;void userLoad();});}}
+  function clearProtected(){
+   generation++;active?.abort();state.busy=false;state.totalPages=0;get('inventory-rows')?.replaceChildren();
+   const p=get('inventory-page');if(p)p.textContent='Page unavailable';
+   const t=get('inventory-total');if(t)t.textContent='Authentication required';
+   const s=get('inventory-status');if(s)s.textContent='Session expired or not authenticated. Please log in to view host inventory.';
+   const r=get('inventory-retry');if(r)r.hidden=true;controls();
+  }
+  const onSessionChange=e=>{const sess=e?.detail||e?.session;if(sess&&!sess.authenticated)clearProtected();};
+  document.addEventListener?.('atlas:session-change',onSessionChange);
  if(mode==='domain'){for(const [name,values,key]of [['Sort Domains',['hostname'],'sort'],['Sort direction',['asc','desc'],'direction']]){const l=document.createElement('label');l.textContent=name;const select=document.createElement('select');select.setAttribute('aria-label',name);for(const value of values){const o=document.createElement('option');o.value=value;o.textContent=value;select.append(o);}const options=[...select.querySelectorAll('option')];(options.find(o=>o.value===state[key])??options[0]).selected=true;l.append(select);get('inventory-search').append(l);if(key==='sort')sortInput=select;else directionInput=select;select.addEventListener('change',()=>{state.page=1;void userLoad();});}}
  function render(data){
   const head=document.createElement('tr');
@@ -116,5 +125,5 @@ export function mountInventoryTable(document,{fetcher=fetch,mode='domain',onSele
  get('inventory-prev').addEventListener('click',()=>{if(!get('inventory-prev').disabled){state.page--;void userLoad();}});
  get('inventory-next').addEventListener('click',()=>{if(!get('inventory-next').disabled){state.page++;void userLoad();}});
  get('inventory-retry').addEventListener('click',()=>void load());
- return {ready:load(),state,reload:load,setSiteInput(value){if(siteInput)siteInput.value=value;},setSort(sort,direction){for(const [select,value]of [[sortInput,sort],[directionInput,direction]])if(select){for(const o of select.querySelectorAll('option'))o.selected=false;const options=[...select.querySelectorAll('option')];(options.find(o=>o.value===value)??options[0]).selected=true;}},destroy(){generation++;active?.abort();}};
+ return {ready:load(),state,reload:load,setSiteInput(value){if(siteInput)siteInput.value=value;},setSort(sort,direction){for(const [select,value]of [[sortInput,sort],[directionInput,direction]])if(select){for(const o of select.querySelectorAll('option'))o.selected=false;const options=[...select.querySelectorAll('option')];(options.find(o=>o.value===value)??options[0]).selected=true;}},clear:clearProtected,invalidate:clearProtected,destroy(){document.removeEventListener?.('atlas:session-change',onSessionChange);generation++;active?.abort();}};
 }

@@ -3,6 +3,14 @@ const childColumns={'dns-records':[['type','Type'],['value','Value'],['proxied',
 export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initialState={},onSelection,onBack,onPackage,onRecord,onHostPage,onHostSort,onDnsPage,onDnsChange,onListChange,manageHistory=true,resolveHost=false,useStandardApi=false}={}){
  const get=id=>document.getElementById(id),history=document.defaultView?.history;
  let selected,version=0,active;const pages={packages:1,'listening-ports':1,'dns-records':1};let dnsState={sort:'type',direction:'asc',search:'',invalid:false};let lastFocus;let scopedSort={packages:{sort:'name',direction:'asc'},'listening-ports':{sort:'port',direction:'asc'}};
+ function clearProtected(){
+  version++;active?.abort();selected=null;get('detail-info')?.replaceChildren();get('detail-related')?.replaceChildren();
+  const t=get('detail-title');if(t)t.textContent=mode==='host'?'Host details':'Domain details';
+  const s=get('detail-status');if(s)s.textContent='Session expired or not authenticated. Please log in again.';
+  const r=get('detail-retry');if(r)r.hidden=true;get('inventory-detail')?.setAttribute('aria-busy','false');list?.clear?.();
+ }
+ const onSessionChange=e=>{const sess=e?.detail||e?.session;if(sess&&!sess.authenticated)clearProtected();};
+ document.addEventListener?.('atlas:session-change',onSessionChange);
  const textNode=(tag,text)=>{const el=document.createElement(tag);el.textContent=text??'—';return el;};
  function info(row){get('detail-info').replaceChildren();for(const [key,label]of(mode==='domain'?[['fqdn','Domain'],['id','Domain ID'],['source','Source'],['first_seen_at','First seen'],['last_seen_at','Last seen'],['confidence','Confidence'],['tags','Tags']]:[['hostname','Hostname'],['os','OS'],['os_version','OS version'],['id','Host ID']])){get('detail-info').append(textNode('dt',label),textNode('dd',Array.isArray(row[key])?row[key].join(', '):row[key]));}}
  async function read(resource,page,signal){
@@ -30,7 +38,7 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
    if(!response.ok)throw Error('DETAIL_UNAVAILABLE');
    const resJson=await response.json();
    if(resource==='packages'){
-     const rows=resJson.data?.packages||[];
+     const rows=(resJson.data?.packages||[]).map(p=>({host_id:selected.id,...p}));
      const meta=resJson.meta?.packages||{page:1,page_size:25,total:rows.length,total_pages:1};
      return validateInventory({data:rows,meta},'packages');
    }
@@ -95,5 +103,5 @@ export function mountInventoryDetail(document,{mode='host',fetcher=fetch,initial
  const list=mountInventoryTable(document,{mode,fetcher,initialState,onStateChange:onListChange,onSelect:row=>onSelection?onSelection(row):void open(row),useStandardApi});
  get('detail-back').addEventListener('click',()=>{if(onBack){onBack();return;}showList();history?.replaceState(null,'',document.defaultView.location.pathname);});get('detail-retry').addEventListener('click',()=>void load());
  if(manageHistory)document.defaultView?.addEventListener('popstate',event=>{if(event.state?.atlasSelection?.mode===mode)void open(event.state.atlasSelection.row,{recordHistory:false});else showList();});
- return{ready:list.ready,list,open,back:showList,destroy(){version++;active?.abort();list.destroy();}};
+ return{ready:list.ready,list,open,back:showList,clear:clearProtected,invalidate:clearProtected,destroy(){document.removeEventListener?.('atlas:session-change',onSessionChange);version++;active?.abort();list.destroy();}};
 }
