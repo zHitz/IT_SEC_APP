@@ -1,0 +1,29 @@
+(node:21480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ IP literal normalization and strict network payload bounds (17.3483ms)
+S2_IP_DB_PROOF {"hostId":"e5a72ebc-e8a5-8229-8345-d923baa1eff8","dualStack":true,"interfaces":3,"legacyPreserved":true,"staleReplayIgnored":true,"emptyClearsCurrentOnly":true}
+✔ transactional IP snapshots preserve legacy, identity, first seen and monotonic replay (2145.9333ms)
+S2_IP_HTTP_PROOF {"synthetic":true,"source":"SQLite read-only projection","postgres":"PGlite","dualStack":true,"splitBatches":4,"exactAckDrained":true,"signedViewerListDetail":true,"wrongHost403":true,"invalidNetwork422":true,"failedNetworkPreserves":true,"rollbackPreserves":true,"hostId":"5a5031b7-a4a5-8461-9971-548fe2cea79c"}
+✔ read-only source to durable queue authenticated HTTP PostgreSQL and signed inventory APIs (2026.1007ms)
+QUEUE_ACK_RECOVERY {"case":"wrong batch_id","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after wrong batch_id and recovers with exact ACK after re-instantiation (149.5085ms)
+QUEUE_ACK_RECOVERY {"case":"accepted false","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after accepted false and recovers with exact ACK after re-instantiation (50.9325ms)
+QUEUE_ACK_RECOVERY {"case":"malformed JSON","failedRequests":3,"retryWaits":2,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after malformed JSON and recovers with exact ACK after re-instantiation (43.8996ms)
+QUEUE_ACK_RECOVERY {"case":"unauthorized","failedRequests":1,"retryWaits":0,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after unauthorized and recovers with exact ACK after re-instantiation (39.069ms)
+QUEUE_ACK_RECOVERY {"case":"forbidden","failedRequests":1,"retryWaits":0,"retainedUnchanged":2,"recoveredExactAcks":2,"pending":0}
+✔ queue retains FIFO after forbidden and recovers with exact ACK after re-instantiation (36.2803ms)
+✔ enqueue survives acknowledged flush between enumeration and capacity stat without losing new batch (133.4457ms)
+✔ ingest rejects unknown credential, forged host, malformed/oversized/sensitive payload without touching store (15.8915ms)
+✔ queue survives re-instantiation, refuses overflow without eviction, rejects unsafe destination (21.3272ms)
+✔ fixed collector projections are SELECT-only and exclude sensitive columns (2.4052ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4593.482

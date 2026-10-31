@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { validateBatch } from './osquery-model.mjs';
+import { validateBatch, normalizeInterface } from './osquery-model.mjs';
 
 function identity(value) {
   const b = createHash('sha256').update(value).digest().subarray(0, 16);
@@ -31,6 +31,22 @@ export function createOsqueryStore({ db, rawDirectory, environment = 'lab' }) {
           WHERE EXCLUDED.observed_at>=host.observed_at`,
         [hostId,batch.host.host_uuid,batch.host.hostname,batch.host.os,batch.host.os_version,at,raw,environment]);
         const actualId = (await db.query('SELECT id FROM asset_inventory.host WHERE host_uuid=$1', [batch.host.host_uuid])).rows[0].id;
+        if (Object.hasOwn(batch, 'network_interfaces')) {
+          const network = batch.network_interfaces.map(normalizeInterface);
+          // Host row lock from the upsert serializes concurrent observations across store instances.
+          const updated = await db.query(`UPDATE asset_inventory.host SET ip_addresses=$2::inet[]
+            WHERE id=$1 AND observed_at=$3 RETURNING id`,
+          [actualId, [...new Set(network.map(row => row.address))].sort(), at]);
+          if (updated.rows.length) for (const row of network) {
+            await db.query(`INSERT INTO asset_inventory.network_interface
+              (id,host_id,interface,ip,cidr,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment)
+              VALUES($1,$2,$3,$4,$5,'osquery',$6,$6,$6,'confirmed',$7,$8)
+              ON CONFLICT(id) DO UPDATE SET cidr=EXCLUDED.cidr,last_seen_at=EXCLUDED.last_seen_at,
+                observed_at=EXCLUDED.observed_at,raw_ref=EXCLUDED.raw_ref
+              WHERE EXCLUDED.observed_at>=network_interface.observed_at`,
+            [identity(JSON.stringify(['osquery:interface',actualId,row.interface,row.address])),actualId,row.interface,row.address,row.cidr,at,raw,environment]);
+          }
+        }
         for (const p of batch.packages) {
           await db.query(`INSERT INTO asset_inventory.package
             (id,name,version,normalized_version,ecosystem,source_host_or_image,source_kind,source,first_seen_at,last_seen_at,observed_at,confidence,raw_ref,environment)

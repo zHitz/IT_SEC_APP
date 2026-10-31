@@ -9,14 +9,14 @@ export async function readSource(config, onQuery = () => {}) {
   if (config.sourceMode === 'sqlite-lab') {
     const { DatabaseSync } = await import('node:sqlite');
     const db = new DatabaseSync(config.labDatabase, { readOnly: true });
-    try { for (const [table, sql] of Object.entries(queries)) { onQuery(table, sql); data[table] = db.prepare(sql).all(); } }
+    try { for (const [table, sql] of Object.entries(queries)) { onQuery(table, sql); try { data[table] = db.prepare(sql).all(); } catch (error) { if (table !== 'interface_addresses') throw error; } } }
     finally { db.close(); }
   } else if (config.sourceMode === 'osqueryi') {
     for (const [table, sql] of Object.entries(queries)) {
       onQuery(table, sql);
       const args = ['--json', '--disable_events=true', `--config_path=${config.osqueryConfig}`, sql];
       try { const { stdout } = await execute(config.osqueryBinary, args, { timeout: config.queryTimeoutMs, maxBuffer: 16 * 1024 * 1024, windowsHide: true }); data[table] = JSON.parse(stdout); }
-      catch { throw Error('OSQUERY_READ_FAILED'); }
+      catch { if (table !== 'interface_addresses') throw Error('OSQUERY_READ_FAILED'); }
     }
   } else throw Error('SOURCE_MODE');
   return data;
@@ -41,6 +41,7 @@ export function buildBatches(data, config, collectedAt = new Date().toISOString(
     for (const [kind, row] of rows.slice(offset, offset + config.maxBatchRows)) {
       if (kind === 'records') batch.process_evidence.records.push(row); else batch[kind].push(row);
     }
+    if (Object.hasOwn(data, 'interface_addresses')) batch.network_interfaces = data.interface_addresses.map(({interface: name, address, mask}) => ({interface: name, address, mask}));
     batch.process_evidence.non_listening_count = batch.process_evidence.records.length;
     batches.push(validateBatch(batch));
   }

@@ -1,0 +1,3 @@
+Initial privacy regression: expected five fixed table keys; approved interface_addresses sixth projection added. Updated expected allowlist and asserted exact SELECT. Rerun3pass.
+Initial HTTP integration: timestamp textual comparison Z versus PostgreSQL +00:00 failed with identical instant. Corrected to Date.parse comparison. No product defect hidden.
+Full suite native-readiness assertion expected logicalTableCount5, but approved network projection reports6. Adjusted count assertion; native execution remains false. Full output retained separately.

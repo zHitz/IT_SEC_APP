@@ -39,7 +39,8 @@ test('queue survives re-instantiation, refuses overflow without eviction, reject
  }finally{if(dirname(resolve(directory))!==resolve(tmpdir())||!basename(directory).startsWith('atlas-queue-test-'))throw Error('UNSAFE_TEMP_CLEANUP');await rm(directory,{recursive:true,force:true});}
 });
 test('fixed collector projections are SELECT-only and exclude sensitive columns',()=>{
- assert.deepEqual(Object.keys(queries),['system_info','os_version','packages','listening_ports','processes']);
+ assert.deepEqual(Object.keys(queries),['system_info','os_version','packages','listening_ports','interface_addresses','processes']);
+ assert.equal(queries.interface_addresses,'SELECT interface, address, mask FROM interface_addresses');
  for(const [table,sql]of Object.entries(queries)){
   assert.match(sql,new RegExp(`^SELECT [a-z_, ]+ FROM ${table}$`));
   assert.doesNotMatch(sql,/\*|cmdline|environ|password|token|path|file|history|;/i);

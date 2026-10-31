@@ -1,0 +1,15 @@
+(node:8760) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ IP literal normalization and strict network payload bounds (16.2136ms)
+S2_IP_DB_PROOF {"hostId":"e5a72ebc-e8a5-8229-8345-d923baa1eff8","dualStack":true,"interfaces":3,"legacyPreserved":true,"staleReplayIgnored":true,"emptyClearsCurrentOnly":true}
+✔ transactional IP snapshots preserve legacy, identity, first seen and monotonic replay (2130.5719ms)
+S2_IP_HTTP_PROOF {"synthetic":true,"source":"SQLite read-only projection","postgres":"PGlite","dualStack":true,"splitBatches":4,"exactAckDrained":true,"signedViewerListDetail":true,"wrongHost403":true,"invalidNetwork422":true,"failedNetworkPreserves":true,"rollbackPreserves":true,"hostId":"5a5031b7-a4a5-8461-9971-548fe2cea79c"}
+✔ read-only source to durable queue authenticated HTTP PostgreSQL and signed inventory APIs (2089.5305ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4650.5697

@@ -1,0 +1,11 @@
+✔ both native osquery configs validate strictly; unsafe view/options/content fail closed (10.8195ms)
+NATIVE_READINESS_ACTUAL {"exitCode":2,"report":{"event":"osquery_native_readiness","platform":"win32","configs":[{"ecosystem":"deb","packagesView":"SELECT name, version FROM deb_packages","eventsDisabled":true,"logicalTableCount":6},{"ecosystem":"rpm","packagesView":"SELECT name, version FROM rpm_packages","eventsDisabled":true,"logicalTableCount":6}],"nativeExecuted":false,"binaryExecuted":false,"networkRequests":0,"tokenRead":false,"distributionInstalled":false,"status":"NATIVE_NOT_AVAILABLE","reason":"PLATFORM_NOT_LINUX"},"audit":{"event":"network_sentinel","attempts":0}}
+✔ native availability never pretends execution and current-platform CLI is network-free (153.064ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 305.5229

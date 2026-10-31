@@ -8,7 +8,7 @@ import {validateOsqueryConfig,inspectNative} from '../../collectors/osquery/nati
 test('both native osquery configs validate strictly; unsafe view/options/content fail closed',async()=>{
  for(const ecosystem of ['deb','rpm']){
   const config=JSON.parse(await readFile(`collectors/osquery/osquery.${ecosystem}.conf`,'utf8'));
-  assert.equal(validateOsqueryConfig(config,ecosystem).logicalTableCount,5);
+  assert.equal(validateOsqueryConfig(config,ecosystem).logicalTableCount,6);
   for(const changed of [{...config,extra:{}},{...config,options:{disable_events:'false'}},{...config,views:{packages:'SELECT * FROM processes'}},{...config,views:{packages:config.views.packages+'; SELECT cmdline FROM processes'}}])assert.throws(()=>validateOsqueryConfig(changed,ecosystem));
  }
 });
